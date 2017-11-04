@@ -57,28 +57,6 @@
 					<div class="form-group">
 						<div class="group">
 							<span class="col-sm-2 control-span col-md-offset-3"> &nbsp;&nbsp; <label
-								th:text="#{pages.user.modifyUserInfo.input.sex}" th:remove="tag"></label>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							</span>
-							<div class="col-sm-4 radio-group">
-								<div class="checkbox-inline iradio_square-blue checked">
-									<input type="radio" name="sex" value="1"
-										th:checked="${userEntity.sex == 1}?'checked'" /> <label
-										th:text="#{pages.user.modifyUserInfo.input.sex.male}"
-										th:remove="tag"></label>
-								</div>
-								<div class="checkbox-inline">
-									<input type="radio" name="sex" value="0"
-										th:checked="${userEntity.sex == 0}?'checked'" /> <label
-										th:text="#{pages.user.modifyUserInfo.input.sex.female}"
-										th:remove="tag"></label>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="group">
-							<span class="col-sm-2 control-span col-md-offset-3"> &nbsp;&nbsp; <label
 								th:text="#{pages.user.modifyUserInfo.input.position}"
 								th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
 							</span>
@@ -115,7 +93,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" style="display:none">
 						<div class="group">
 							<input type="hidden" name="token" th:value="${session.token}" />
 							<span class="col-sm-2 control-span col-md-offset-3"> &nbsp;&nbsp; <label
@@ -139,7 +117,7 @@
 						</div>
 					</div>
 					 
-					<div class="form-group x_content_button">
+					<div class="form-group text-center">
 						<button class="btn btn-primary submit-btn">
 							<i class="fa fa-check"></i> <span
 								th:text="#{pages.user.modifyUserInfo.button.mod}"
