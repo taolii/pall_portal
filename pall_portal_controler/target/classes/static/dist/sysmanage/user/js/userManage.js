@@ -2,7 +2,7 @@ $(document).ready(function() {
 	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
 	var _table = $table.dataTable($.extend(true,
-		{pageLength: 10,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
+		{pageLength: 10,ordering: false,scrollX: true,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 		{
         ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
             //手动控制遮罩
@@ -50,17 +50,17 @@ $(document).ready(function() {
         },
         columns: [
         	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
-        	{className : "ellipsis",data: "operatorid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
-            {className : "ellipsis",data: "account",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
-            {className : "ellipsis",data: "name",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+        	{className : "ellipsis",data: "operatorid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false},
+            {className : "ellipsis",data: "account",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
+            {className : "ellipsis",data: "name",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
             {data : "sex",render : function(data,type, row, meta) {
-                    return data==1?"男":"女";}
+                    return data==1?"男":"女";},width:"80px"
             },
             {className : "ellipsis",data: "position",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
             {className : "ellipsis",data: "mobile",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
             {className : "ellipsis",data: "email",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
             {data : "operatorType",render : function(data,type, row, meta) {
-                return data==1?'系统管理员':'普通用户';}
+                return data==1?'系统管理员':'普通用户';},width:"80px"
             },
             {className : "ellipsis",data : "createTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
             {className : "ellipsis",data : "updateTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
@@ -70,14 +70,8 @@ $(document).ready(function() {
                 "<button id='editPwdRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-key'></i></button>"+
                 "<button id='delRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
                 "</div>";
-              }, width : "60px"}
+              }, width : "100px"}
         ],
-        "columnDefs": [
-            {
-              "targets": [ 1 ],
-              "visible": false
-            }
-          ],
         "drawCallback": function( settings ) {
             //渲染完毕后的回调
             //清空全选状态
@@ -168,13 +162,32 @@ $(document).ready(function() {
 			       $("#modPwdDataForm [name=account]").val(item.account);
 			    },
 			    addItemShow: function() {
-			    	$("#addUserModal").modal("show");
+			    	$addUserModal=$("#addUserModal");
+			    	$addUserModal.draggable({ 
+			    		scroll: true, scrollSensitivity: 100,
+			    		cursor: "move"});
+			    	$addUserModal.css("overflow", "hidden");
+			    	$addUserModal.css("overflow-y", "auto");
+			    	$addUserModal.modal("show");
+			    	$('#addDataForm').data('bootstrapValidator').resetForm(true);
 			    },
 			    editItemShow: function() {
-			        $("#modUserModal").modal("show");
+			    	$modUserModal=$("#modUserModal");
+			        $modUserModal.draggable({ 
+			    		scroll: true, scrollSensitivity: 100,
+			    		cursor: "move"});
+			        $modUserModal.css("overflow", "hidden");
+			        $modUserModal.css("overflow-y", "auto");
+			        $modUserModal.modal("show");
 			    },
 			    editPwdItemShow: function() {
-			        $("#modUserPwdModal").modal("show");
+			    	$modUserPwdModal=$("#modUserPwdModal");
+			        $modUserPwdModal.draggable({ 
+			    		scroll: true, scrollSensitivity: 100,
+			    		cursor: "move"});
+			        $modUserPwdModal.css("overflow", "hidden");
+			        $modUserPwdModal.css("overflow-y", "auto");
+			        $modUserPwdModal.modal("show");
 			    },
 			    deleteItem : function(selectedItems) {
 			        var message;

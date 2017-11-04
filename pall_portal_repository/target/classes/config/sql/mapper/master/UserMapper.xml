@@ -11,7 +11,7 @@
 	    </if>
  	</select> 
  	<select id="findUserList" resultType="com.pall.portal.repository.entity.user.UserEntity" parameterType="com.pall.portal.repository.entity.user.UserQueryFormEntity"> 
- 		select OPERATORID,NAME,ACCOUNT,SEX,POSITION,DEPTID,MOBILE,EMAIL,GROUPLIST,PROVINCEID,OPERATORTYPE,STATUS,UPDATEPWDFLAG,str_to_date(createtime,'%Y-%m-%d %H:%i:%s')createtime,str_to_date(UPDATETIME,'%Y-%m-%d %H:%i:%s')updatetime from t_ums_admininfo a 
+ 		select OPERATORID,NAME,ACCOUNT,SEX,POSITION,DEPTID,MOBILE,EMAIL,GROUPLIST,PROVINCEID,OPERATORTYPE,STATUS,UPDATEPWDFLAG,date_format(a.createtime, '%Y-%m-%d %H:%i:%s') createtime,date_format(a.UPDATETIME, '%Y-%m-%d %H:%i:%s') UPDATETIME from t_ums_admininfo a 
  		where 1=1
  		<if test="account != null and account != '' ">  
 	       AND a.ACCOUNT = #{account}  

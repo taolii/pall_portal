@@ -127,4 +127,8 @@ table.jambo_table tbody tr:hover td {
 .defect-panel-heading {
     border-color: #917c59;
 }
-
+.radio-group{
+	border: 1px solid #917c59;
+	padding-left: 2px;
+	padding-bottom: 4px;
+}

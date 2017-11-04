@@ -12,6 +12,11 @@
       	<script type="text/javascript" src="/dist/sysmanage/user/js/addUserInfo.js"></script>
       	<script type="text/javascript" src="/dist/sysmanage/user/js/modifyUserInfo.js"></script>
       	<script type="text/javascript" src="/dist/sysmanage/user/js/adminModifyPwd.js"></script>
+      	<style type="text/css">
+      		#datatable th{   
+    			white-space: nowrap !important;  
+			}  
+      	</style>
     </head>
     <body>
         <div th:fragment="content">
@@ -38,7 +43,7 @@
 		                            </div>
 		                            <div id="stepOne" class="panel-collapse collapse in  ">
 		                                <div class="panel-body">
-		                                	<div class="col-md-3">
+		                                	<div class="col-md-3 ">
 			                                	<div class="input-group">
 			                                		<span class="input-group-addon"><a class="glyphicon glyphicon-user"></a></span>
 							                        <input type="text" name="account" class="form-control" th:placeholder="#{pages.user.userManage.form.account.input.tip}"/>
@@ -92,11 +97,11 @@
     					</div>
     				</div>
                  	<div class="row" id="div-table-container">
-                 		<table id="datatable" class="table table-striped jambo_table datatable-bordered table-condensed compact" >
+                 		<table id="datatable" class="table jambo_table datatable-bordered" >
 							<thead>
 								<tr>
 									<th>
-										<input type="checkbox" name="cb-check-all"/>
+										<input class="iCheck" type="checkbox" name="cb-check-all"/>
 									</th>
 									<th th:text="#{pages.user.userManage.table.title.operatorid}"></th>
 									<th th:text="#{pages.user.userManage.table.title.account}"></th>

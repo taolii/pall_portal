@@ -9,7 +9,7 @@
 	<div th:fragment="content">
 		<div id="modUserModal" class="modal fade" tabindex="-1" role="dialog"
 			aria-hidden="true" style="display: none;">
-			<div class="modal-dialog">
+			<div class="modal-dialog" style="width:560px;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
@@ -21,8 +21,8 @@
 								th:text="#{pages.user.modifyUserInfo.title}" th:remove="tag"></label>
 						</h4>
 					</div>
-					<div class="modal-body">
-						<form method="POST" id="modDataForm" class="form-horizontal" >
+					<form method="POST" id="modDataForm" class="form-horizontal" >
+						<div class="modal-body" style="height: 380px;">
 							<div class="form-group">
 								<div class="group">
 								<input type="hidden" name="operatorid" />
@@ -31,7 +31,7 @@
 										th:text="#{pages.user.modifyUserInfo.input.username}"
 										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<input type="text" name="account" class="form-control" readonly="true"
 											th:placeholder="#{pages.user.modifyUserInfo.input.username.tip}" />
 									</div>
@@ -43,7 +43,7 @@
 										&nbsp; <label th:text="#{pages.user.modifyUserInfo.input.name}"
 										th:remove="tag"></label>
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<input name="name" class="form-control input-group-sm"
 											th:placeholder="#{pages.user.modifyUserInfo.input.name.tip}" />
 									</div>
@@ -56,7 +56,7 @@
 										th:text="#{pages.user.modifyUserInfo.input.sex}" th:remove="tag"></label>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									</span>
-									<div class="col-sm-6 radio-group">
+									<div class="col-sm-7 radio-group">
 										<div class="checkbox-inline">
 											<input type="radio" name="sex" value="1"/>
 
@@ -79,7 +79,7 @@
 										th:remove="tag"></label>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<input name="position" class="form-control input-group-sm"
 											th:placeholder="#{pages.user.modifyUserInfo.input.position.tip}" />
 									</div>
@@ -93,7 +93,7 @@
 										th:remove="tag"></label>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<input name="email" class="form-control"
 											th:placeholder="#{pages.user.modifyUserInfo.input.email.tip}" />
 									</div>
@@ -107,7 +107,7 @@
 										th:text="#{pages.user.modifyUserInfo.input.mobile}"
 										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<input name="mobile" class="form-control input-group-sm"
 											th:placeholder="#{pages.user.modifyUserInfo.input.mobile.tip}" />
 									</div>
@@ -120,7 +120,7 @@
 										th:text="#{pages.user.modifyUserInfo.input.opertype}"
 										th:remove="tag"></label>
 									</span>
-									<div class="col-sm-6 radio-group">
+									<div class="col-sm-7 radio-group">
 										<div class="checkbox-inline">
 											<input type="radio" name="operatorType" value="2"
 												checked="checked" /> <label
@@ -133,22 +133,20 @@
 												th:remove="tag"></label>
 										</div>
 									</div>
-								</div>
 							</div>
-							<div class="form-group x_content_button">
-								<button class="btn btn-primary submit-btn col-md-offset-4">
-									<i class="fa fa-check"></i> <span
-										th:text="#{pages.user.modifyUserInfo.button.mod}" th:remove="tag"></span>
-								</button>
-								<button type="button" class="btn btn-primary"
-									data-dismiss="modal">
-									<i class="fa fa-close"></i> <span
-										th:text="#{pages.user.modifyUserInfo.button.shut}"
-										th:remove="tag"></span>
-								</button>
-							</div>
-						</form>
+						</div>
 					</div>
+					<div class="modal-footer"> 
+						<button class="btn btn-primary submit-btn">
+							<i class="fa fa-check"></i> 
+							<span th:text="#{pages.user.modifyUserInfo.button.mod}" th:remove="tag"></span>
+						</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">
+							<i class="fa fa-close"></i> 
+							<span th:text="#{pages.user.modifyUserInfo.button.shut}" th:remove="tag"></span>
+						</button>
+					</div>
+				</form>
 				</div>
 			</div>
 		</div>

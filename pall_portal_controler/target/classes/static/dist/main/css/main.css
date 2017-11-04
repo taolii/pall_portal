@@ -200,13 +200,6 @@ table.dataTable{border-collapse:collapse !important;}
 	padding-right: 0px;
     padding-left: 0px;
 }
-.radio-group {
-	border: 1px solid #917c59;
-    padding: 6px 12px;
-    height:34px;
-    line-height: 1.4285;
-    text-align:left;
-}
 .form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .radio, .form-horizontal .radio-inline {
     padding-top: 0px;
     font-size: 14px;
