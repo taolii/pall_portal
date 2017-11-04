@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{pages.system.name}+'-'+#{pages.error.errorModel.title}"></title>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/x-icon" href="/favicon.png"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<link type="text/css" rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/vendors/font-awesome/css/font-awesome.min.css" />
+    <script type="text/javascript" src="/vendors/jquery/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/dist/common/js/public.js"></script>
+</head>
+<body>
+    <div th:include="this :: content"></div>
+</body>
+</html>

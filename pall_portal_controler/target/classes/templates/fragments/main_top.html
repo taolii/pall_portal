@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/indexModel">
+    <head>
+        <title th:text="#{pages.system.name}+'-'+#{pages.index.main_top.title}"></title>
+    </head>
+    <body>
+	    <div th:fragment="content">
+	    	 <div class="nav_menu">
+	            <nav>
+		            <div class="nav toggle">
+		                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+		            </div>
+		            <div class="model-head">
+			    		<label th:text="#{pages.index.main_left.loginip}"></label>：<span th:text="${session.LOGIN_USER.loginIP}"></span>
+		                &nbsp;&nbsp;&nbsp;&nbsp;<label th:text="#{pages.index.main_left.logintime}"></label>：
+		                <span th:text="${#dates.format(session.LOGIN_USER.loginTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+			    	</div>
+	            </nav>
+          	</div>
+		</div>
+    </body>
+</html>

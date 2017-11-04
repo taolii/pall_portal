@@ -1,0 +1,197 @@
+package com.pall.portal.service.user;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.alibaba.druid.util.StringUtils;
+import com.pall.portal.common.constants.IResponseConstants;
+import com.pall.portal.common.datatables.Entity.DatatablesView;
+import com.pall.portal.common.i18n.ResourceUtils;
+import com.pall.portal.common.response.BaseResponse;
+import com.pall.portal.common.response.BaseTablesResponse;
+import com.pall.portal.repository.entity.user.ModifyUPwdEntity;
+import com.pall.portal.repository.entity.user.UserEntity;
+import com.pall.portal.repository.entity.user.UserPermissionEntity;
+import com.pall.portal.repository.entity.user.UserQueryFormEntity;
+import com.pall.portal.repository.mapper.user.UserManageDao;
+import com.pall.portal.service.user.UserManageService;
+
+@Repository
+public class UserManageServiceImpl implements UserManageService{
+	/*
+	 * 系统日志
+	 */
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());  
+	@Autowired
+	private UserManageDao userManageDao;
+	@Autowired
+	private ResourceUtils resourceUtils;
+	@Override
+	public BaseResponse findUserByUserName(String operatorid,String  userName) throws Exception { 
+		BaseResponse baseResponse=new BaseResponse();
+		UserEntity userEntity=userManageDao.findUserByUserName(operatorid,userName);
+		if(userEntity!=null){
+			List<UserEntity> returnObjects=new ArrayList<UserEntity>();
+			returnObjects.add(userEntity);
+			baseResponse.setReturnObjects(returnObjects);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}else{
+			baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.service.findUserByUserName.nofound"));
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+		}
+		return baseResponse;
+	}
+	@Override
+	public BaseResponse addUser(UserEntity userEntity) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			//判断用户是否重复
+			UserEntity vuserEntity=userManageDao.findUserByUserName(null,userEntity.getAccount());
+			if(vuserEntity!=null && !StringUtils.isEmpty(vuserEntity.getAccount())){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.account.exists"));
+			}else{
+				int resultNum=userManageDao.addUser(userEntity);
+				if(resultNum>0){
+					UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
+					userPermissionEntity.setOperatorid(userEntity.getOperatorid());
+					userPermissionEntity.setOperatorType(userEntity.getOperatorType());
+					resultNum=userManageDao.addUserPermission(userPermissionEntity);
+					if(resultNum>0){
+						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+					}else{
+						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+						baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.failed"));
+					}
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.failed"));
+				}
+			}
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("usermanage.addUser.service.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.exception"));
+		}
+		return baseResponse;
+	}
+
+	@Override
+	public BaseResponse modifyUser(UserEntity userEntity) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			int resultNum=userManageDao.modifyUser(userEntity);
+			if(resultNum>0){
+				List<String> operatorids=new ArrayList<String>();
+				operatorids.add(String.valueOf(userEntity.getOperatorid()));
+				resultNum=userManageDao.delUserPermission(operatorids);
+				if(resultNum>0){
+					UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
+					userPermissionEntity.setOperatorid(userEntity.getOperatorid());
+					userPermissionEntity.setOperatorType(userEntity.getOperatorType());
+					resultNum=userManageDao.addUserPermission(userPermissionEntity);
+					if(resultNum>0){
+						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+					}else{
+						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+						baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.failed"));
+					}
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.failed"));
+				}
+			}else{
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyUser.dao.update.account.nofound"));
+			}
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("usermanage.modifyUser.service.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyUser.service.exception"));
+		}
+		return baseResponse;
+	}
+
+	@Override
+	public BaseResponse delUser(List<String> operatorids) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			
+			userManageDao.delUser(operatorids);
+			userManageDao.delUserPermission(operatorids);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("usermanage.delUser.service.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.delUser.service.exception"));
+		}
+		return baseResponse;
+	}
+
+	@Override
+	public BaseResponse modifyPwd(ModifyUPwdEntity modifyUPwdEntity,boolean isAdmin) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			if(!isAdmin){
+				baseResponse = findUserByUserName(modifyUPwdEntity.getOperatorid(),null);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					UserEntity userEntity=(UserEntity)baseResponse.getReturnObjects().get(0);
+					if(!modifyUPwdEntity.getPassword().equals(userEntity.getPassword())){
+						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+						baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyPwd.service.input.old.passwd.error"));
+						return baseResponse;
+					}
+				}
+			}
+			if(!modifyUPwdEntity.getNewPwd().equals(modifyUPwdEntity.getEnsureNewPwd())){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyPwd.service.inconformity.newandnewensure.passwd"));
+			}else{
+				modifyUPwdEntity.setPassword(modifyUPwdEntity.getNewPwd());
+				int resultNum=userManageDao.modifyPwd(modifyUPwdEntity);
+				if(resultNum>0){
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyPwd.dao.update.account.nofound"));
+				}
+			}
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("usermanage.modifyPwd.service.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyPwd.service.exception"));
+		}
+		return baseResponse;
+	}
+
+	@Override
+	public BaseTablesResponse findUserList(UserQueryFormEntity  userQueryFormEntity) throws Exception {
+		BaseTablesResponse baseResponse=new BaseTablesResponse();
+		try{
+			//查询总记录数
+			int totalRecords=userManageDao.findUserTotalRecords(userQueryFormEntity);
+			//分页查询结果集
+			List<UserEntity> userEntitys=userManageDao.findUserList(userQueryFormEntity);
+			DatatablesView datatablesViews=new DatatablesView();
+			datatablesViews.setDraw(userQueryFormEntity.getDraw());
+			if(userEntitys!=null){
+				datatablesViews.setiTotalDisplayRecords(totalRecords);
+				datatablesViews.setRecordsTotal(totalRecords);
+				datatablesViews.setData(userEntitys);
+			}
+			baseResponse.setDatatablesView(datatablesViews);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("usermanage.userManage.service.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.userManage.service.exception"));
+		}
+		return baseResponse;
+	}
+	
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/indexModel">
+<head>
+<title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
+<script type="text/javascript" src="/dist/main/js/index.js"></script>
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>
+					<i class="fa fa-bars"></i>&nbsp;&nbsp;&nbsp;&nbsp; <span
+						th:text="#{pages.index.main_index.title}" th:remove="tag"></span>
+				</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+					</li>
+					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<img alt="" class="wokflow" src="/dist/main/images/wokflow_bg.jpg" />
+			</div>
+		</div>
+	</div>
+</body>
+</html>

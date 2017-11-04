@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title th:text="#{pages.system.name}+'-'+#{pages.defect.addDefectInfo.title}"></title>
+</head>
+<body>
+	<div th:fragment="content">
+		<div id="addDefectModal" class="modal fade" tabindex="-1" role="dialog"
+			aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel2">
+							<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label
+								th:text="#{pages.defect.addDefectInfo.title}" th:remove="tag"></label>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form method="POST" id="addDataForm" class="form-horizontal" >
+							<div class="form-group">
+								<div class="group">
+									<input type="hidden" name="token" />
+									<input type="hidden" name="dataType" />
+									<span class="col-sm-3 control-span col-md-offset-1">
+										&nbsp;&nbsp; <label
+										th:text="#{pages.defect.addDefectInfo.input.configname}"
+										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
+									</span>
+									<div class="col-sm-6 control-input">
+										<input type="text" name="configName" class="form-control"
+											th:placeholder="#{pages.defect.addDefectInfo.input.configname.tip}" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="group">
+									<span class="col-sm-3 control-span col-md-offset-1">
+										&nbsp; <label th:text="#{pages.defect.addDefectInfo.textarea.description}"
+										th:remove="tag"></label>
+									</span>
+									<div class="col-sm-6 control-input">
+										<textarea name="description" rows="3" class="form-control input-group-sm"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="form-group x_content_button">
+								<button class="btn btn-primary submit-btn col-md-offset-4">
+									<i class="fa fa-check"></i> <span
+										th:text="#{pages.defect.addDefectInfo.button.add}" th:remove="tag"></span>
+								</button>
+								<button type="button" class="btn btn-primary"
+									data-dismiss="modal">
+									<i class="fa fa-close"></i> <span
+										th:text="#{pages.defect.addDefectInfo.button.shut}"
+										th:remove="tag"></span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

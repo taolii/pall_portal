@@ -1,0 +1,229 @@
+$(document).ready(function() {
+	var $wrapper = $('#div-table-container');
+	var $table = $('#datatable');
+	var _table = $table.dataTable($.extend(true,
+		{pageLength: 10,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
+		{
+        ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
+            //手动控制遮罩
+            $wrapper.spinModal();
+            //封装请求参数
+            var param = {};
+            param.draw = data.draw;
+            param.startPageNum = data.start;
+            param.pageSize = data.length;
+            var formData = $("#queryForm").serializeArray();
+            formData.forEach(function (e) {
+                param[e.name] = e.value;
+            });
+            $.ajax({
+                    type: "post",
+                    url: "/user/userManage",
+                    cache : false,  //禁用缓存
+                    data: param,    //传入已封装的参数
+                    dataType: "json",
+                    success: function(result) {
+                    	 //异常判断与处理
+                        if (result.resultCode!=0) {
+                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>用户信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
+                        	$wrapper.spinModal(false);
+                        	return ;
+                        }
+                        //封装返回数据，这里仅演示了修改属性名
+                        var returnData = {};
+                        returnData.draw = result.datatablesView.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                        returnData.recordsTotal = result.datatablesView.recordsTotal;
+                        returnData.recordsFiltered =result.datatablesView.recordsTotal;
+                        returnData.data = result.datatablesView.data;
+                        //关闭遮罩
+                        $wrapper.spinModal(false);
+                        //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                        callback(returnData);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    	var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
+                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>用户信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
+                        $wrapper.spinModal(false);
+                    }
+                });
+        },
+        columns: [
+        	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
+        	{className : "ellipsis",data: "operatorid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "account",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "name",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {data : "sex",render : function(data,type, row, meta) {
+                    return data==1?"男":"女";}
+            },
+            {className : "ellipsis",data: "position",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "mobile",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "email",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {data : "operatorType",render : function(data,type, row, meta) {
+                return data==1?'系统管理员':'普通用户';}
+            },
+            {className : "ellipsis",data : "createTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data : "updateTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "td-operation",data: null,render : function(data,type, row, meta) {
+            	return "<div class='btn-group'>"+
+                "<button id='editRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-edit'></i></button>"+
+                "<button id='editPwdRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-key'></i></button>"+
+                "<button id='delRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
+                "</div>";
+              }, width : "60px"}
+        ],
+        "columnDefs": [
+            {
+              "targets": [ 1 ],
+              "visible": false
+            }
+          ],
+        "drawCallback": function( settings ) {
+            //渲染完毕后的回调
+            //清空全选状态
+            $(":checkbox[name='cb-check-all']",$wrapper).prop('checked', false);
+            //默认选中第一行
+            $("tbody tr",$table).eq(0).click();
+        }
+    })).api();
+	$("#datatable_length").hide();
+	$("#btn-query").click(function(){
+		_table.draw();
+	});
+	$("#btn_refresh").click(function(){
+		_table.draw();
+	});
+	$("#btn-add").click(function(){
+		userManage.addItemShow();
+	});
+	$("#btn-delAll").click(function(){
+		var arrItemId = [];
+        $("tbody :checkbox:checked",$table).each(function(i) {
+            var item = _table.row($(this).closest('tr')).data();
+            arrItemId.push(item);
+        });
+        userManage.deleteItem(arrItemId);
+	});
+	$table.on("change",":checkbox",function() {
+        if ($(this).is("[name='cb-check-all']")) {
+            //全选
+            $(":checkbox",$table).prop("checked",$(this).prop("checked"));
+        }else{
+            //一般复选
+            var checkbox = $("tbody :checkbox",$table);
+            $(":checkbox[name='cb-check-all']",$table).prop('checked', checkbox.length == checkbox.filter(':checked').length);
+        }
+    }).on("click",".td-checkbox",function(event) {
+        //点击单元格即点击复选框
+        !$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click");
+    }).on("click","#editRow",function() {
+        //点击编辑按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        userManage.currentItem = item;
+        userManage.editItemInit(item);
+        userManage.editItemShow();
+    }).on("click","#editPwdRow",function() {
+            //点击编辑按钮
+            var item = _table.row($(this).closest('tr')).data();
+            $(this).closest('tr').addClass("active").siblings().removeClass("active");
+            userManage.currentItem = item;
+            userManage.editPwdItemInit(item);
+            userManage.editPwdItemShow();
+    }).on("click","#delRow",function() {
+        //点击删除按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        userManage.deleteItem([item]);
+    });
+	 var userManage = {
+			    currentItem : null,
+			    fuzzySearch : true,
+			    editItemInit : function(item) {
+			        if (!item) {
+			            return;
+			        }
+			       $("#modDataForm [name=operatorid]").val(item.operatorid);
+			       $("#modDataForm [name=account]").val(item.account);
+			       $("#modDataForm [name=name]").val(item.name);
+			       $("#modDataForm [name=position]").val(item.position);
+			       $("#modDataForm [name=email]").val(item.email);
+			       $("#modDataForm [name=mobile]").val(item.mobile);
+			       $("#modDataForm [name=sex]").each(function(i){
+			    	   if($(this).val()==item.sex){
+			    		   $(this).prop("checked",true);
+			    	   }
+			       });
+			       $("#modDataForm [name=operatorType]").each(function(i){
+			    	   if($(this).val()==item.operatorType){
+			    		   $(this).prop("checked",true);
+			    	   }
+			       });
+			    },
+			    editPwdItemInit : function(item) {
+			        if (!item) {
+			            return;
+			        }
+			       $("#modPwdDataForm [name=operatorid]").val(item.operatorid);
+			       $("#modPwdDataForm [name=account]").val(item.account);
+			    },
+			    addItemShow: function() {
+			    	$("#addUserModal").modal("show");
+			    },
+			    editItemShow: function() {
+			        $("#modUserModal").modal("show");
+			    },
+			    editPwdItemShow: function() {
+			        $("#modUserPwdModal").modal("show");
+			    },
+			    deleteItem : function(selectedItems) {
+			        var message;
+			        if (selectedItems&&selectedItems.length) {
+			            if (selectedItems.length == 1) {
+			                message = "确定要删除 '"+selectedItems[0].account+"' 吗?";
+			 
+			            }else{
+			                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
+			            }
+			            Lobibox.confirm({
+			                msg: message,
+			                title:Lobibox.base.OPTIONS.title.info,
+			                callback: function ($this, type) {
+			                    if (type === 'yes') {
+			                    	var operatorids="";
+			                    	$(selectedItems).each(function(i) {
+			                    		operatorids=operatorids+selectedItems[i].operatorid+",";
+			                        });
+			                    	operatorids=operatorids.substr(operatorids,operatorids.length-1);
+			                    	$.post("/user/delUser",{"operatorids":operatorids}, function(result) {
+			                    		if(result.resultCode==0){
+			                    			Lobibox.alert('success', {
+			                                    msg: "<h3><span class='green'>删除用户成功</span>",
+			                                    title:Lobibox.base.OPTIONS.title.success,
+			                                    width:Lobibox.base.OPTIONS.width,
+			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
+			                                });
+			                    			$("#btn_refresh").click();
+			                    		}else{
+			                    			Lobibox.alert('error', {
+			                                    msg: '<span class="red">删除用户失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+			                                    title:Lobibox.base.OPTIONS.title.error,
+			                                    width:Lobibox.base.OPTIONS.width,
+			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+			                                });
+			                    		}
+			                        },'json'); 
+			                    }
+			                }
+			            });
+			        }else{
+			        	Lobibox.alert('info', {
+			    	        msg: "请先选中要删除的记录",
+			    	        title:Lobibox.base.OPTIONS.title.info,
+			    	        width:Lobibox.base.OPTIONS.width,
+			    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
+			    	    });
+			        }
+			    }
+			};
+});
