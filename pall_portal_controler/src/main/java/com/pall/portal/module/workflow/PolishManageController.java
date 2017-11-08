@@ -52,6 +52,7 @@ import com.pall.portal.init.TableDataConfigInitiator;
 import com.pall.portal.init.UmsConfigInitiator;
 import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
+import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
@@ -99,7 +100,30 @@ public class PolishManageController{
 		model.addAttribute("tmpDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_THROWMILLSTONEPOS)));
 		model.addAttribute("polishDefectConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT)));
 		model.addAttribute("polishTableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
-		
+		//工作面类型
+		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
+		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
+		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
+		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.work"));
+		workingfaceTypes.add(dataConfigTypeEntity1);
+		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
+		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
+		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.nowork"));
+		workingfaceTypes.add(dataConfigTypeEntity2);
+		model.addAttribute("workingfaceTypes", workingfaceTypes);
+		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
+		model.addAttribute("workingfaceDefectConfigs", wdataConfigEntitys);
+		List<DataConfigEntity> dataConfigEntitys=new ArrayList<DataConfigEntity>();
+		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
+		if(nwdataConfigEntitys==null){
+			nwdataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
+		if(wdataConfigEntitys==null){
+			wdataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
+		dataConfigEntitys.addAll(nwdataConfigEntitys);
+		dataConfigEntitys.addAll(wdataConfigEntitys);
+		model.addAttribute("defectConfigs",dataConfigEntitys);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
 		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
 		if(tableFieldBindMap!=null){
@@ -141,6 +165,7 @@ public class PolishManageController{
 			baseResponse.setResultMsg(resourceUtils.getMessage("polishmanage.controler.polishManage.exception"));
 			
 		}
+		logger.info("jsonData:"+jsonData);
 		 return jsonData;
     }
 	/*
@@ -151,7 +176,7 @@ public class PolishManageController{
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME);
+			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
 					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
@@ -160,7 +185,7 @@ public class PolishManageController{
 						defectEntity.setDefectName(dataConfigEntity.getConfigName());
 						defectEntity.setDefectType(dataConfigEntity.getDataType());
 						defectEntity.setDefectValue(Integer.parseInt(requestValue));
-						defectEntity.setDefectID(polishEntity.getPolishID());
+						//defectEntity.setDefectID(polishEntity.getPolishID());
 						sumDefectValue=sumDefectValue+Integer.parseInt(requestValue);
 						defects.add(defectEntity);
 					}
@@ -182,9 +207,10 @@ public class PolishManageController{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,polishEntity,dataConfigEntitys);
-				if(sumDefectValue>polishEntity.getCasualInspectionNum()){
+				sumDefectValue=sumDefectValue+getDefectEntitys(request,polishEntity,ndataConfigEntitys);if(sumDefectValue>polishEntity.getCasualInspectionNum()){
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 					baseResponse.setResultMsg(resourceUtils.getMessage("polishmanage.controler.addPolish.defect.sumvalue.gratherthan.CasualInspectionNum"));
 				}else{
@@ -218,8 +244,10 @@ public class PolishManageController{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,polishEntity,dataConfigEntitys);
+				sumDefectValue=sumDefectValue+getDefectEntitys(request,polishEntity,ndataConfigEntitys);
 				if(sumDefectValue>polishEntity.getCasualInspectionNum()){
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 					baseResponse.setResultMsg(resourceUtils.getMessage("polishmanage.controler.modPolish.defect.sumvalue.gratherthan.CasualInspectionNum"));

@@ -7,24 +7,33 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
-	$('#addDefectButton').on('click', function() {
+	$("#workingfaceType").change(function(){
+		var workingfaceType=$(this).val();
+		$("#addefect").empty();
+		$("#defect").find("option").each(function(){
+			  if(workingfaceType==$(this).attr("dataType")){
+				  $("#addefect").append("<option value='"+$(this).val()+"'>"+$(this).html()+"</option>");
+			  };
+		  }); 
+		   
+	});
+	$addDefectPanel=$('#addDefectPanel'),
+    $addDefectButton=$('#addDefectButton');
+	$addDefectButton.on('click', function() {
         var $that     = $(this),
-            $template = $('#template'),
-            $polishTableName=$('#polishTableName'),
-            $defectPanelBody=$('#defect_panel_body'),
-            $addDefect=$('#addDefect'),
-            $newRow   =$template.clone().removeAttr('id').find('.defect').html($addDefect.find("option:selected").text()).end();
-            var defectName=$polishTableName.val()+$addDefect.val();
-            $newRow=$newRow.find('input').attr('name', defectName).end().
+        $template = $('#template'),
+        $addDefect=$('#addefect'),
+        $workingfaceType=$('#workingfaceType'),
+        $newRow   =$template.clone().removeAttr('id').find('.defect').html($addDefect.find("option:selected").text()).end();
+        $newRow=$newRow.find('input').attr('name', $addDefect.val()).end().
         	on('click', '.removeButton', function() {
-                $('#addDataForm').bootstrapValidator('removeField', defectName);
+        		$addDataForm.bootstrapValidator('removeField', $addDefect.val());
                 $newRow.remove();
-                if($defectPanelBody.find(".removeButton").length<=0){
-                	$("#defectPanel").hide();
+                if($addDefectPanel.find(".removeButton").length<=0){
+                	$addDefectPanel.hide();
                 }
-            });;
-            
-            if($defectPanelBody.find("[name='"+defectName+"']").length>0){
+            });
+            if($addDefectPanel.find("[name='"+$addDefect.val()+"']").length>0){
             	var v_msg=$addDefect.find("option:selected").text()+'已经存在，不允许重复';
             	Lobibox.alert('success', {
                     msg: v_msg,
@@ -34,10 +43,12 @@ $(document).ready(function() {
                 });
             	return;
             }else{
-            	$("#defectPanel").show();
+            	$addDefectPanel.show();
             }
-            $defectPanelBody.append($newRow).show();
-	        $('#addDataForm').bootstrapValidator('addField', defectName, {
+            $("#workingface"+$workingfaceType.val()).find(".panel-body").each(function(){
+            	$(this).append($newRow).show();
+			});
+            $('#addDataForm').bootstrapValidator('addField', $addDefect.val(), {
 	            message: '缺损值必须为数字类型',
 	            validators: {
 	                digits: {
@@ -166,6 +177,10 @@ $(document).ready(function() {
     			$("#defect_panel_body").empty();
     			$("#defectPanel").hide();
     			$form.data('bootstrapValidator').resetForm(true);
+    			$addDefectPanel.find(".panel-body").each(function(){
+    				$(this).empty();
+    			});
+    			$addDefectPanel.hide();
     			$("#addModal").modal("hide");
     			$("#btn_refresh").click();
     		}else{

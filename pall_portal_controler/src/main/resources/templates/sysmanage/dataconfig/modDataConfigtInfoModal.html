@@ -9,7 +9,7 @@
 	<div th:fragment="content">
 		<div id="modDefectModal" class="modal fade" tabindex="-1" role="dialog"
 			aria-hidden="true" style="display: none;">
-			<div class="modal-dialog">
+			<div class="modal-dialog" style="width:560px;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
@@ -21,18 +21,16 @@
 								th:text="#{pages.dataConfig.modDataConfigInfo.title}" th:remove="tag"></label>
 						</h4>
 					</div>
-					<div class="modal-body">
-						<form method="POST" id="modDataForm" class="form-horizontal" >
+					<form method="POST" id="modDataForm" class="form-horizontal" >
+						<div class="modal-body" style="height: 300px;">
 							<div class="form-group">
 								<div class="group">
 								<input type="hidden" name="dataid" />
 								<input type="hidden" name="token" />
 									<span class="col-sm-3 control-span col-md-offset-1">
-										&nbsp;&nbsp; <label
-										th:text="#{pages.dataConfig.modDataConfigInfo.input.configname}"
-										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
+										<label th:text="#{pages.dataConfig.modDataConfigInfo.input.configname}" th:remove="tag"></label>
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<input type="text" name="configName" class="form-control" readonly="true"
 											th:placeholder="#{pages.dataConfig.modDataConfigInfo.input.configname.tip}" />
 									</div>
@@ -40,29 +38,27 @@
 							</div>
 							<div class="form-group">
 								<div class="group">
-									<span class="col-sm-3 control-span col-md-offset-1">
+									<span class="col-sm-3 control-span col-md-offset-1" style="padding-bottom:39px">
 										&nbsp; <label th:text="#{pages.dataConfig.modDataConfigInfo.textarea.description}"
 										th:remove="tag"></label>
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<textarea name="description" rows="3"  class="form-control input-group-sm"></textarea>
 									</div>
 								</div>
 							</div>
-							<div class="form-group x_content_button">
-								<button class="btn btn-primary submit-btn col-md-offset-4">
-									<i class="fa fa-check"></i> <span
-										th:text="#{pages.dataConfig.modDataConfigInfo.button.mod}" th:remove="tag"></span>
-								</button>
-								<button type="button" class="btn btn-primary"
-									data-dismiss="modal">
-									<i class="fa fa-close"></i> <span
-										th:text="#{pages.dataConfig.modDataConfigInfo.button.shut}"
-										th:remove="tag"></span>
-								</button>
-							</div>
-						</form>
 					</div>
+					<div class="modal-footer"> 
+							<button class="btn btn-primary submit-btn">
+								<i class="fa fa-check"></i> 
+								<span th:text="#{pages.dataConfig.modDataConfigInfo.button.mod}" th:remove="tag"></span>
+							</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal">
+								<i class="fa fa-close"></i> 
+								<span th:text="#{pages.dataConfig.modDataConfigInfo.button.shut}" th:remove="tag"></span>
+							</button> 
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

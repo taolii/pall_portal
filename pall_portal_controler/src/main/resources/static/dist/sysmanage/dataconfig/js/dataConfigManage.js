@@ -144,10 +144,22 @@ $(document).ready(function() {
 		            $("#addDataForm [name=dataType]").val(dataType);
 			    },
 			    addItemShow: function() {
-			    	$("#addDefectModal").modal("show");
+			    	$addDefectModal=$("#addDefectModal");
+			    	$addDefectModal.draggable({ 
+			    		scroll: true, scrollSensitivity: 100,
+			    		cursor: "move"});
+			    	$addDefectModal.css("overflow", "hidden");
+			    	$addDefectModal.css("overflow-y", "auto");
+			    	$addDefectModal.modal("show");
 			    },
 			    editItemShow: function() {
-			        $("#modDefectModal").modal("show");
+			        $modDefectModal=$("#modDefectModal");
+			    	$modDefectModal.draggable({ 
+			    		scroll: true, scrollSensitivity: 100,
+			    		cursor: "move"});
+			    	$modDefectModal.css("overflow", "hidden");
+			    	$modDefectModal.css("overflow-y", "auto");
+			    	$modDefectModal.modal("show");
 			    },
 			    deleteItem : function(selectedItems) {
 			        var message;

@@ -209,7 +209,7 @@ public class OpticalFilmingManageController{
 						defectEntity.setDefectName(dataConfigEntity.getConfigName());
 						defectEntity.setDefectType(dataConfigEntity.getDataType());
 						defectEntity.setDefectValue(Integer.parseInt(requestValue));
-						defectEntity.setDefectID(opticalCoatingEntity.getOpfID());
+						//defectEntity.setDefectID(opticalCoatingEntity.getOpfID());
 						sumDefectValue=sumDefectValue+Integer.parseInt(requestValue);
 						defects.add(defectEntity);
 					}

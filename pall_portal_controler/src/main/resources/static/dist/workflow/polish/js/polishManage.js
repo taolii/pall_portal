@@ -151,45 +151,49 @@ $(document).ready(function() {
 			       $("#modDataForm [name=polishTime]").val(item.polishTime);
 			       $("#modDataForm [name=fixtureNumber]").val(item.fixtureNumber);
 			       $("#modDataForm [name=throwMillstoneNum]").val(item.throwMillstoneNum);
-			       $("#modDataForm [name=throwMillstonePosition]").find("option[value='"+item.throwMillstonePosition+"']").attr("selected",true);
+			       $("#modDataForm [name=throwMillstonePosition]").val(item.throwMillstonePosition);
 			       $("#modDataForm [name=inputLotNum]").val(item.inputLotNum);
 			       $("#modDataForm [name=casualInspectionNum]").val(item.casualInspectionNum);
 			       $("#modDataForm [name=polishLotNum]").val(item.inputLotNum);
+			       $("#modDataForm [name=measuredValues]").val(item.measuredValues);
 			       $("#modDataForm [name=inputQty]").val(item.inputQty);
-			       $("#modDataForm [name=partNum]").find("option[value='"+item.partNum+"']").attr("selected",true);
+			       $("#modDataForm [name=partNum]").val(item.partNum);
 			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
-			       var polishTableName=$("#polishTableName").val();
-			       $template = $('#modTemplate');
-			       $defectPanelBody=$('#modDefect_panel_body');
-			       $modDefect=$('#modDefect');
-			       $("#modDefect_panel_body").empty();
+			       $polishTableName=$("#polishTableName");
+			       $modTemplate = $('#modTemplate');
+			       $modDefectPanel=$('#modDefectPanel');
+			       $modDefectPanel.find(".panel-body").each(function(){
+	    				$(this).empty();
+	    			});
 			       $.each(tableFieldBinds, function(index, tableField){
-			   		if(tableField.fieldName.indexOf(polishTableName)==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
-			   			$("#modDefectPanel").show();
-			            $newRow   =$template.clone().removeAttr('id').find('.defect').html(tableField.headline).end();
-			            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
-			        	on('click', '.removeButton', function() {
-			                $('#modDataForm').bootstrapValidator('removeField', tableField.fieldName);
-			                $newRow.remove();
-			                if($defectPanelBody.find(".removeButton").length<=0){
-			                	$("#modDefectPanel").hide();
-			                }
-			            });
-			            $defectPanelBody.append($newRow).show();
-			            $("#modDataForm [name="+tableField.fieldName+"]").val($(item).attr(tableField.fieldName));
-			            $('#modDataForm').bootstrapValidator('addField', tableField.fieldName, {
-				            message: '缺损值必须为数字类型',
-				            validators: {
-				                digits: {
-				                    message: '缺损值必须为数字类型'
+				   		if(tableField.fieldName.indexOf($polishTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
+				   			$modDefectPanel.show();
+				            $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html(tableField.headline).end();
+				            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
+				        	on('click', '.removeButton', function() {
+				                $('#modDataForm').bootstrapValidator('removeField', defectName);
+				                $newRow.remove();
+				                if($modDefectPanel.find(".removeButton").length<=0){
+				                	$modDefectPanel.hide();
 				                }
-				            }
-				        });
-			   		}
-			       });
-			       if($defectPanelBody.find(".removeButton").length<=0){
-	                	$("#modDefectPanel").hide();
-	                }
+				            });
+				            $("#modWorkingface"+tableField.defectType).find(".panel-body").each(function(){
+				            	$(this).append($newRow).show();
+							});
+				            $("#modDataForm [name="+tableField.fieldName+"]").val($(item).attr(tableField.fieldName));
+				            $('#modDataForm').bootstrapValidator('addField', tableField.fieldName, {
+					            message: '缺损值必须为数字类型',
+					            validators: {
+					                digits: {
+					                    message: '缺损值必须为数字类型'
+					                }
+					            }
+					        });
+				   		}
+				       });
+				       if($modDefectPanel.find(".removeButton").length<=0){
+		                	$modDefectPanel.hide();
+		                }
 			    },
 			    addItemShow: function() {
 			    	$addModal.draggable({ 

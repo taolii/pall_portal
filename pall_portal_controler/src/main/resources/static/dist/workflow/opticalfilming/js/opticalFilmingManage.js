@@ -156,7 +156,7 @@ $(document).ready(function() {
 			       $("#modDataForm [name=scrapQty]").val(item.scrapQty);
 			       $("#modDataForm [name=qcUseQty]").val(item.qcUseQty);
 			       $("#modDataForm [name=toAPSQty]").val(item.toAPSQty);
-			       $("#modDataForm [name=partNum]").find("option[value='"+item.partNum+"']").attr("selected",true);
+			       $("#modDataForm [name=partNum]").val(item.partNum);
 			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
 			       $.each(tableFieldBinds, function(index, tableField){
 			   		if(tableField.fieldName.indexOf($opticalFilmingTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){

@@ -93,7 +93,7 @@
                         			<input type='text' name="inputQty" class="form-control" /> 
                     			</div>
 							</div>
-							<div class="form-group" style="margin-bottom:0px">
+							<!-- div class="form-group" style="margin-bottom:0px">
 								<div class="group">
 									<div class='col-sm-10 input-group col-md-offset-1' style="margin-bottom:0px">  
 									   	<select id="addDefect" name="addDefect" class="form-control">
@@ -105,8 +105,52 @@
                      					</span> 
             						</div>
 								</div>
+							</div -->
+							<div class="form-group" style="margin-bottom:0px">
+								<div class="group">
+									<div class='col-sm-10 col-md-offset-1' style="padding-left:0px"> 
+										<div class="col-md-5 col-sm-4 form-group" style="padding-left:0px;margin-bottom:0px;padding-right:1px">
+					                        <select name="workingfaceType" id="workingfaceType" class="form-control">
+							                   <option  th:each="workingfaceType:${workingfaceTypes}" th:text="${workingfaceType.dataTypeName}" th:value="${workingfaceType.dataType}">
+							                   </option>
+	                                    	</select> 
+                      					</div>
+										<div class="col-md-5 col-sm-6 form-group" style="margin-bottom:0px;padding-left:1px;padding-right:1px">
+					                        <select id="addefect" name="addDefect" class="form-control">
+							                   <option  th:each="polishDefectConfig:${workingfaceDefectConfigs}" th:text="${polishDefectConfig.configName}" th:value="${polishTableName}+${polishDefectConfig.dataid}">
+							                   </option>
+	                                    </select>
+                      					</div>
+									   	<select id="defect" style="display:none">
+							                   <option  th:each="polishDefectConfig:${defectConfigs}" th:text="${polishDefectConfig.configName}" th:attr="dataType=${polishDefectConfig.dataType}" dataType="$dataType" th:value="${polishTableName}+${polishDefectConfig.dataid}">
+							                   </option>
+	                                    </select>
+	                                    <div class="col-md-1 col-sm-6 form-group has-feedback" style="margin-bottom:0px;padding-left:1px;padding-right:1px">
+					                        <span class="btn btn-warning form-control" id="addDefectButton">  
+                     						<label th:text="#{pages.workflow.polish.addPolish.form.button.fefect.add}" th:remove="tag"></label>
+                     					</span>
+                      					</div>
+									     
+            						</div>
+								</div>
 							</div>
 							<div class="form-group">
+								<div class="col-md-10 col-md-offset-1" id="addDefectPanel" role="tablist" aria-multiselectable="true" style="display:none;margin-top:10px;padding-left:0px;">
+				                      <div class="panel defect-panel" th:each="workingfaceType:${workingfaceTypes}" th:id="workingface+${workingfaceType.dataType}" >
+				                        <div class="panel-heading collapsed defect-panel-heading" style="cursor: pointer;"  role="tab" th:id="head+${workingfaceType.dataType}" data-toggle="collapse"  th:href="'#collapse'+${workingfaceType.dataType}" aria-expanded="true" 
+				                         th:attr="aria-controls='collapse'+${workingfaceType.dataType}"  aria-controls="$aria-controls">
+				                          <h4 class="panel-title" th:text="${workingfaceType.dataTypeName}"></h4>
+				                        </div>
+				                        <div  th:id="collapse+${workingfaceType.dataType}" class="panel-collapse collapse in" role="tabpanel" 
+				                        th:attr="aria-labelledby='head'+${workingfaceType.dataType}"  aria-labelledby="$aria-labelledby" aria-expanded="true">
+				                          <div class="panel-body">
+				                            
+				                          </div>
+				                        </div>
+				                      </div>
+								</div>
+							</div>
+							<!-- div class="form-group">
 								<div class="group col-md-11" id="defectPanel" style="display:none;margin-top:10px">
                      				<div class="panel-group col-md-offset-1" style="margin-bottom:0px">
 		                        			<div class="panel panel-primary" style="border-color:#917c59;">
@@ -118,7 +162,7 @@
 		                        			</div>
 		                    			</div>  
 								</div>
-							</div>
+							</div -->
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1">  
                      				<label th:text="#{pages.workflow.polish.addPolish.form.casualInspectionNum}" th:remove="tag"></label>
@@ -133,6 +177,14 @@
                      			</span> 
 								<div class='col-md-6 control-input'>  
 			                    	<input type='text' name="polishLotNum" class="form-control" />  
+            					</div>
+							</div>
+							<div class="form-group">
+								<span class="col-md-4 control-span col-md-offset-1">  
+                     				<label th:text="#{pages.workflow.polish.addPolish.form.measuredValues}" th:remove="tag"></label> 
+                     			</span> 
+								<div class='col-md-6 control-input'>  
+			                    	<input type='text' name="measuredValues" class="form-control" />  
             					</div>
 							</div>
 							<div class="form-group">

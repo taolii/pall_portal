@@ -45,7 +45,7 @@ $(document).ready(function() {
             $("#modWorkingface"+$modWorkingfaceType.val()).find(".panel-body").each(function(){
             	$(this).append($newRow).show();
 			});
-            $modDataForm.bootstrapValidator('addField', $addDefect.val(), {
+            $modDataForm.bootstrapValidator('addField', $modDefect.val(), {
 	            message: '缺损值必须为数字类型',
 	            validators: {
 	                digits: {

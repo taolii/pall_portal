@@ -34,6 +34,14 @@ public class KeyConstants {
 	 */
 	public static final String DATACONFIG_TYPE_POLISH_DEFECT="dataconfig/type/polishdefect";
 	/*
+	 * 抛光表工作面的缺损信息在数据配置表中的类型
+	 */
+	public static final String DATACONFIG_TYPE_POLISH_DEFECT_WF="dataconfig/type/polishdefect/workingface";
+	/*
+	 * 抛光表非工作面的缺损信息在数据配置表中的类型
+	 */
+	public static final String DATACONFIG_TYPE_POLISH_DEFECT_NWF="dataconfig/type/polishdefect/noworkingface";
+	/*
 	 * 抛光管理页面excel下载子目录名称
 	 */
 	public static final String POLISH_DOWNLOAD_SUBDIRECTORY="polish/download/subdirectory";

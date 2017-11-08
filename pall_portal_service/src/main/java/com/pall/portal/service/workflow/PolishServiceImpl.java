@@ -75,7 +75,8 @@ public class PolishServiceImpl implements PolishService{
 		}
 		if(defectids.size()>0){
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF)));
 			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
 			if(null!=defectEntitys){
 				for(DefectEntity defectEntity:defectEntitys){

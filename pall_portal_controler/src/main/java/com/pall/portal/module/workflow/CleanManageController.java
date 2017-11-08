@@ -173,7 +173,7 @@ public class CleanManageController{
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME);
+			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
 					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
@@ -182,7 +182,7 @@ public class CleanManageController{
 						defectEntity.setDefectName(dataConfigEntity.getConfigName());
 						defectEntity.setDefectType(dataConfigEntity.getDataType());
 						defectEntity.setDefectValue(Integer.parseInt(requestValue));
-						defectEntity.setDefectID(cleanEntity.getCleanID());
+						//defectEntity.setDefectID(cleanEntity.getCleanID());
 						sumDefectValue=sumDefectValue+Integer.parseInt(requestValue);
 						defects.add(defectEntity);
 					}

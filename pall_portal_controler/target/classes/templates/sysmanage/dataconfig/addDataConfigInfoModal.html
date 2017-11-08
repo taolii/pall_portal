@@ -9,7 +9,7 @@
 	<div th:fragment="content">
 		<div id="addDefectModal" class="modal fade" tabindex="-1" role="dialog"
 			aria-hidden="true" style="display: none;">
-			<div class="modal-dialog">
+			<div class="modal-dialog" style="width:560px;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
@@ -21,18 +21,16 @@
 								th:text="#{pages.dataConfig.addDataConfigInfo.title}" th:remove="tag"></label>
 						</h4>
 					</div>
-					<div class="modal-body">
-						<form method="POST" id="addDataForm" class="form-horizontal" >
+					<form method="POST" id="addDataForm" class="form-horizontal" >
+						<div class="modal-body" style="height: 300px;">
 							<div class="form-group">
 								<div class="group">
 									<input type="hidden" name="token" />
 									<input type="hidden" name="dataType" />
 									<span class="col-sm-3 control-span col-md-offset-1">
-										&nbsp;&nbsp; <label
-										th:text="#{pages.dataConfig.addDataConfigInfo.input.configname}"
-										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
+										<label th:text="#{pages.dataConfig.addDataConfigInfo.input.configname}" th:remove="tag"></label>
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<input type="text" name="configName" class="form-control"
 											th:placeholder="#{pages.dataConfig.addDataConfigInfo.input.configname.tip}" />
 									</div>
@@ -40,29 +38,27 @@
 							</div>
 							<div class="form-group">
 								<div class="group">
-									<span class="col-sm-3 control-span col-md-offset-1">
+									<span class="col-sm-3 control-span col-md-offset-1" style="padding-bottom:39px">
 										&nbsp; <label th:text="#{pages.dataConfig.addDataConfigInfo.textarea.description}"
 										th:remove="tag"></label>
 									</span>
-									<div class="col-sm-6 control-input">
+									<div class="col-sm-7 control-input">
 										<textarea name="description" rows="3" class="form-control input-group-sm"></textarea>
 									</div>
 								</div>
 							</div>
-							<div class="form-group x_content_button">
-								<button class="btn btn-primary submit-btn col-md-offset-4">
-									<i class="fa fa-check"></i> <span
-										th:text="#{pages.dataConfig.addDataConfigInfo.button.add}" th:remove="tag"></span>
-								</button>
-								<button type="button" class="btn btn-primary"
-									data-dismiss="modal">
-									<i class="fa fa-close"></i> <span
-										th:text="#{pages.dataConfig.addDataConfigInfo.button.shut}"
-										th:remove="tag"></span>
-								</button>
-							</div>
-						</form>
 					</div>
+					<div class="modal-footer"> 
+							<button class="btn btn-primary submit-btn">
+								<i class="fa fa-check"></i> 
+								<span th:text="#{pages.dataConfig.addDataConfigInfo.button.add}" th:remove="tag"></span>
+							</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal">
+								<i class="fa fa-close"></i> 
+								<span th:text="#{pages.dataConfig.addDataConfigInfo.button.shut}" th:remove="tag"></span>
+							</button> 
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

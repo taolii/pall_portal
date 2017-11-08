@@ -34,8 +34,8 @@
 								 </div>
                 			</div>
 							<div class="form-group">
-								<input id="cleanTableName" name="cleanTableName" th:value="${cleanTableName}"/>
-								<input name="cleanID"/>
+								<input type="hidden" id="cleanTableName" name="cleanTableName" th:value="${cleanTableName}"/>
+								<input type="hidden" name="cleanID"/>
 								<span class="col-md-4 control-span col-md-offset-1"> 
 			                         <label th:text="#{pages.workflow.clean.modClean.form.cleanTime}" th:remove="tag"></label>
                      			</span> 

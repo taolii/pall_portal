@@ -7,45 +7,58 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
-	$('#modDefectButton').on('click', function() {
-        var $that     = $(this),
-            $template = $('#modTemplate'),
-            $polishTableName=$('#polishTableName'),
-            $defectPanelBody=$('#modDefect_panel_body'),
-            $modDefect=$('#modDefect'),
-            $newRow   =$template.clone().removeAttr('id').find('.defect').html($modDefect.find("option:selected").text()).end();
-            var defectName=$polishTableName.val()+$modDefect.val();
-            $newRow=$newRow.find('input').attr('name', defectName).end().
-        	on('click', '.removeButton', function() {
-                $('#modDataForm').bootstrapValidator('removeField', defectName);
-                $newRow.remove();
-                if($defectPanelBody.find(".removeButton").length<=0){
-                	$("#modDefectPanel").hide();
-                }
-            });
-            
-            if($defectPanelBody.find("[name='"+defectName+"']").length>0){
-            	var v_msg=$addDefect.find("option:selected").text()+'已经存在，不允许重复';
-            	Lobibox.alert('success', {
-                    msg: v_msg,
-                    title:Lobibox.base.OPTIONS.title.success,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-                });
-            	return;
-            }else{
-            	$("#modDefectPanel").show();
-            }
-            $defectPanelBody.append($newRow).show();
-	        $('#modDataForm').bootstrapValidator('addField', defectName, {
-	            message: '缺损值必须为数字类型',
-	            validators: {
-	                digits: {
-	                    message: '缺损值必须为数字类型'
+	$("#modWorkingfaceType").change(function(){
+		var workingfaceType=$(this).val();
+		$("#modDefect").empty();
+		$("#modAllDefect").find("option").each(function(){
+			  if(workingfaceType==$(this).attr("dataType")){
+				  $("#modDefect").append("<option value='"+$(this).val()+"'>"+$(this).html()+"</option>");
+			  };
+		  }); 
+		   
+	});
+	 $modDefectPanel=$('#modDefectPanel'),
+	    $modDefectButton=$('#modDefectButton');
+		$modDefectButton.on('click', function() {
+	        var $that     = $(this),
+	        $modTemplate = $('#modTemplate'),
+	        $modDefect=$('#modDefect'),
+	        $modWorkingfaceType=$('#modWorkingfaceType'),
+	        $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html($modDefect.find("option:selected").text()).end();
+	        $newRow=$newRow.find('input').attr('name', $modDefect.val()).end().
+	        	on('click', '.removeButton', function() {
+	        		$modDataForm.bootstrapValidator('removeField', $modDefect.val());
+	                $newRow.remove();
+	                if($modDefectPanel.find(".removeButton").length<=0){
+	                	$modDefectPanel.hide();
 	                }
+	            });
+	       
+	            if($modDefectPanel.find("[name='"+$modDefect.val()+"']").length>0){
+	            	var v_msg=$modDefect.find("option:selected").text()+'已经存在，不允许重复';
+	            	Lobibox.alert('success', {
+	                    msg: v_msg,
+	                    title:Lobibox.base.OPTIONS.title.success,
+	                    width:Lobibox.base.OPTIONS.width,
+	                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
+	                });
+	            	return;
+	            }else{
+	            	$modDefectPanel.show();
 	            }
-	        });
-    });
+	            $("#modWorkingface"+$modWorkingfaceType.val()).find(".panel-body").each(function(){
+	            	
+	            	$(this).append($newRow).show();
+				});
+	            $('#modDataForm').bootstrapValidator('addField', $modDefect.val(), {
+		            message: '缺损值必须为数字类型',
+		            validators: {
+		                digits: {
+		                    message: '缺损值必须为数字类型'
+		                }
+		            }
+		        });
+	    });
 
     $('#modDataForm').bootstrapValidator({
         message: 'This value is not valid',
@@ -163,8 +176,11 @@ $(document).ready(function() {
                     width:Lobibox.base.OPTIONS.width,
                     buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
                 });
-    			$("#defect_panel_body").empty();
-    			$("#defect_panel_body").hide();
+    			 $modDefectPanel=$('#modDefectPanel');
+			       $modDefectPanel.find(".panel-body").each(function(){
+	    				$(this).empty();
+	    			});
+			       $modDefectPanel.hide();
     			$form.data('bootstrapValidator').resetForm(true);
     			$("#modModal").modal("hide");
     			$("#btn_refresh").click();

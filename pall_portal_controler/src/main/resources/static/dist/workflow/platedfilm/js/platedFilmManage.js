@@ -164,7 +164,7 @@ $(document).ready(function() {
 			       $("#modDataForm [name=toHUBQty]").val(item.toHUBQty);
 			       $("#modDataForm [name=remainQty]").val(item.remainQty);
 			       $("#modDataForm [name=apsCondition]").val(item.apsCondition);
-			       $("#modDataForm [name=partNum]").find("option[value='"+item.partNum+"']").attr("selected",true);
+			       $("#modDataForm [name=partNum]").val(item.partNum);
 			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
 			    },
 			    addItemShow: function() {

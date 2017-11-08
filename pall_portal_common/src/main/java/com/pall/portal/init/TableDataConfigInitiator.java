@@ -107,11 +107,15 @@ public class TableDataConfigInitiator {
 	 */
 	private void updateTableColInfo(Map<String,Map<Integer,List<TableHeaderConfigEntity>>> tableHeaderMap,Map<String,Map<Integer,List<TableHeaderConfigEntity>>> dynamicDataMap){
 		for(String tableName:dynamicDataMap.keySet()){
+			//行数据
 			Map<Integer,List<TableHeaderConfigEntity>> tableRowHeaderConfigMap=tableHeaderMap.get(tableName);
+			//动态数据
 			Map<Integer,List<TableHeaderConfigEntity>> dynamicRowDataMap=dynamicDataMap.get(tableName);
 			if(null!=dynamicRowDataMap && dynamicRowDataMap.size()>0){
+				//动态数据所在行，每列存在的数据个数 key:列号 value：对象个数
 				Map<Integer,Integer> colsObjectNumDynamicDataMap=new HashMap<Integer,Integer>();
 				int dynamicRowNum=-1;
+				//获取动态数据所在行号
 				for(Integer rowNum:dynamicRowDataMap.keySet()){
 					dynamicRowNum=rowNum;
 				}
@@ -128,12 +132,25 @@ public class TableDataConfigInitiator {
 					TableHeaderConfigEntity temptableHeaderConfig=null;
 					for(TableHeaderConfigEntity tableHeaderConfig:tempTableHeaderConfigs){
 						if(dynamicRowNum!=rowNum && null!=colsObjectNumDynamicDataMap.get(tableHeaderConfig.getColNum())){
-							tableHeaderConfig.setCols(tableHeaderConfig.getCols()+colsObjectNumDynamicDataMap.get(tableHeaderConfig.getColNum())-1);
+							int oldColNum=tableHeaderConfig.getColNum();
+							int maxColNum=tableHeaderConfig.getCols()+tableHeaderConfig.getColNum()-1;
+							for(Integer colNum:colsObjectNumDynamicDataMap.keySet()){
+								if(colNum>=oldColNum && colNum<=maxColNum){
+									tableHeaderConfig.setCols(tableHeaderConfig.getCols()+colsObjectNumDynamicDataMap.get(colNum)-1);
+									if(temptableHeaderConfig!=null){
+										tableHeaderConfig.setColNum(temptableHeaderConfig.getColNum()+temptableHeaderConfig.getCols());
+									}
+								}
+							}
+							temptableHeaderConfig=tableHeaderConfig;
+							continue;
 						}
 						if(temptableHeaderConfig!=null){
 							tableHeaderConfig.setColNum(temptableHeaderConfig.getColNum()+temptableHeaderConfig.getCols());
+							temptableHeaderConfig=tableHeaderConfig;
+						}else if(dynamicRowNum==rowNum){
+							temptableHeaderConfig=tableHeaderConfig;
 						}
-						temptableHeaderConfig=tableHeaderConfig;
 					}
 				}
 			}
