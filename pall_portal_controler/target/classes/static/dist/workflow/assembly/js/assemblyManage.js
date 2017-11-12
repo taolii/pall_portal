@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#queryOptTime').datetimepicker({  
+	$('#queryDeliveryTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     }); 
@@ -46,14 +46,14 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/workflow/opticalFilmingManage",
+                    url: "/workflow/assemblyManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
                     success: function(result) {
                     	 //异常判断与处理
                         if (result.resultCode!=0) {
-                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>光学镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
+                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>组装信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
                         	$wrapper.spinModal(false);
                         	return ;
                         }
@@ -72,7 +72,7 @@ $(document).ready(function() {
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     	var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
-                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>光学镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
+                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>组装信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
                         $wrapper.spinModal(false);
                     }
                 });
@@ -144,22 +144,25 @@ $(document).ready(function() {
 			        }
 			       $modDefectPanel=$('#modDefectPanel'),
 			       $modTemplate = $('#modTemplate'),
-			       $opticalFilmingTableName=$("#opticalFilmingTableName"),
+			       $assemblyTableName=$("#assemblyTableName"),
 			       $modDefect=$('#modDefect');
-			       $("#modDataForm [name=opfID]").val(item.opfID);
-			       $("#modDataForm [name=optTime]").val(item.optTime);
+			       $("#modDataForm [name=assemblyID]").val(item.assemblyID);
+			       $("#modDataForm [name=deliveryTime]").val(item.deliveryTime);
+			       $("#modDataForm [name=trayLotNum]").val(item.trayLotNum);
 			       $("#modDataForm [name=inputLotNum]").val(item.inputLotNum);
 			       $("#modDataForm [name=inputQty]").val(item.inputQty);
 			       $("#modDataForm [name=fixtureNum]").val(item.fixtureNum);
+			       $("#modDataForm [name=hubLotNum]").val(item.hubLotNum);
 			       $("#modDataForm [name=outputLotNum]").val(item.outputLotNum);
 			       $("#modDataForm [name=outputQty]").val(item.outputQty);
 			       $("#modDataForm [name=scrapQty]").val(item.scrapQty);
 			       $("#modDataForm [name=qcUseQty]").val(item.qcUseQty);
 			       $("#modDataForm [name=toAPSQty]").val(item.toAPSQty);
-			       $("#modDataForm [name=partNum]").find("option[value='"+item.partNum+"']").attr("selected",true);
+			       $("#modDataForm [name=partNum]").val(item.partNum);
 			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
+			       $("#modDataForm [name=remark]").val(item.remark);
 			       $.each(tableFieldBinds, function(index, tableField){
-			   		if(tableField.fieldName.indexOf($opticalFilmingTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
+			   		if(tableField.fieldName.indexOf($assemblyTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
 			   			$modDefectPanel.show();
 			            $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html(tableField.headline).end();
 			            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
@@ -205,7 +208,7 @@ $(document).ready(function() {
 			    	$modModal.modal("show");
 			    },
 			    exportItem:function(){
-			         $.post("/workflow/exportOpticalFilming",$queryForm.serializeArray(), function(result) {
+			         $.post("/workflow/exportAssembly",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
 		    	    		 var downUrl = '/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
@@ -234,15 +237,15 @@ $(document).ready(function() {
 			                title:Lobibox.base.OPTIONS.title.info,
 			                callback: function ($this, type) {
 			                    if (type === 'yes') {
-			                    	var opfIDs="";
+			                    	var assemblyIDS="";
 			                    	$(selectedItems).each(function(i) {
-			                    		opfIDs=opfIDs+selectedItems[i].opfID+",";
+			                    		assemblyIDS=assemblyIDS+selectedItems[i].assemblyID+",";
 			                        });
-			                    	opfIDs=opfIDs.substr(opfIDs,opfIDs.length-1);
-			                    	$.post("/workflow/delOpticalFilming",{"opfIDs":opfIDs}, function(result) {
+			                    	assemblyIDS=assemblyIDS.substr(assemblyIDS,assemblyIDS.length-1);
+			                    	$.post("/workflow/delAssembly",{"assemblyIDS":assemblyIDS}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>光学镀膜信息删除成功</span>",
+			                                    msg: "<h3><span class='green'>组装信息删除成功</span>",
 			                                    title:Lobibox.base.OPTIONS.title.success,
 			                                    width:Lobibox.base.OPTIONS.width,
 			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
@@ -250,7 +253,7 @@ $(document).ready(function() {
 			                    			$("#btn_refresh").click();
 			                    		}else{
 			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">光学镀膜信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+			                                    msg: '<span class="red">组装信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
 			                                    title:Lobibox.base.OPTIONS.title.error,
 			                                    width:Lobibox.base.OPTIONS.width,
 			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#modFormOptTime').datetimepicker({  
+	$('#modFormDeliveryTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     }); 
@@ -45,7 +45,7 @@ $(document).ready(function() {
             $("#modWorkingface"+$modWorkingfaceType.val()).find(".panel-body").each(function(){
             	$(this).append($newRow).show();
 			});
-            $modDataForm.bootstrapValidator('addField', $addDefect.val(), {
+            $modDataForm.bootstrapValidator('addField', $modDefect.val(), {
 	            message: '缺损值必须为数字类型',
 	            validators: {
 	                digits: {
@@ -63,10 +63,10 @@ $(document).ready(function() {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	optTime: {
+        	trayLotNum: {
                 validators: {
                     notEmpty: {
-                        message: 'Date不能为空'
+                        message: 'TRAY#不能为空'
                     }
                 }
             },
@@ -94,6 +94,13 @@ $(document).ready(function() {
                     }
                 }
             },
+            hubLotNum: {
+                validators: {
+                    notEmpty: {
+                        message: 'HUB Lot#不能为空'
+                    }
+                }
+            },
             outputLotNum: {
                 validators: {
                     notEmpty: {
@@ -111,6 +118,13 @@ $(document).ready(function() {
 	                }
                 }
             },
+            scrapQty: {
+                validators: {
+                    digits: {
+	                    message: 'Scrap Qty(pcs)值必须为数字'
+	                }
+                }
+            },
             partNum: {
                 validators: {
                     notEmpty: {
@@ -124,16 +138,23 @@ $(document).ready(function() {
                         message: 'Work Order Number不能为空'
                     }
                 }
+            },
+            remark: {
+                validators: {
+                    notEmpty: {
+                        message: 'Remark不能为空'
+                    }
+                }
             }
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/workflow/modOpticalFilming",  $form.serialize(), function(result) {
+    	$.post("/workflow/modAssembly",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
-                    msg: "<h3><span class='green'>更新光学镀膜信息成功</span>",
+                    msg: "<h3><span class='green'>更新组装信息成功</span>",
                     title:Lobibox.base.OPTIONS.title.success,
                     width:Lobibox.base.OPTIONS.width,
                     buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
@@ -147,7 +168,7 @@ $(document).ready(function() {
     			$("#btn_refresh").click();
     		}else{
     			Lobibox.alert('error', {
-                    msg: '<span class="red">更新光学镀膜信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+                    msg: '<span class="red">更新组装信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
                     title:Lobibox.base.OPTIONS.title.error,
                     width:Lobibox.base.OPTIONS.width,
                     buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}

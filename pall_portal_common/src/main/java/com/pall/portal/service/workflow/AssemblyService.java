@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
-import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
-import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
+import com.pall.portal.repository.entity.workflow.AssemblyEntity;
+import com.pall.portal.repository.entity.workflow.AssemblyQueryFormEntity;
 
 /*
  * 工作流服务接口
@@ -15,33 +15,33 @@ import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
 @Service
 public interface AssemblyService {
 	/*
-	 * 根据条件查询光学镀膜记录信息
-	 * @param opticalFilmingQueryFormEntity 光学镀膜信息查询对象
+	 * 根据条件查询组装记录信息
+	 * @param assemblyQueryFormEntity 组装信息查询对象
 	 * @return 查询结果
 	 */
-	public BaseTablesResponse queryOpticalFilmingList(OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity) throws Exception;
+	public BaseTablesResponse queryAssemblyList(AssemblyQueryFormEntity  assemblyQueryFormEntity) throws Exception;
 	/*
-	 * 添加光学镀膜信息
-	 * @param opticalCoatingEntity 光学镀膜信息
+	 * 添加组装信息
+	 * @param assemblyEntity 组装信息
 	 * @return 添加结果
 	 */
-	public BaseResponse addOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception;
+	public BaseResponse addAssembly(AssemblyEntity assemblyEntity) throws Exception;
 	/*
-	 * 修改光学镀膜信息
-	 * @param opticalCoatingEntity 光学镀膜信息
+	 * 修改组装信息
+	 * @param assemblyEntity 组装信息
 	 * @return 修改结果
 	 */
-	public BaseResponse modifyOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception;
+	public BaseResponse modifyAssembly(AssemblyEntity assemblyEntity) throws Exception;
 	/*
 	 * 删除光学镀膜信息
-	 * @param optIDs 需要删除的光学镀膜信息列表
+	 * @param assemblyIDS 需要删除的组装信息列表
 	 * @return 删除结果
 	 */
-	public BaseResponse delOpticalFilming(List<Integer> optIDs) throws Exception;
+	public BaseResponse delAssembly(List<Integer> assemblyIDS) throws Exception;
 	/*
 	 * 导出光学镀膜信息
-	 * @param opticalFilmingQueryFormEntity 光学镀膜信息查询对象
+	 * @param assemblyQueryFormEntity 组装信息查询对象
 	 * @return 导出结果
 	 */
-	public BaseResponse exportOpticalFilming(OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity) throws Exception;
+	public BaseResponse exportAssembly(AssemblyQueryFormEntity  assemblyQueryFormEntity) throws Exception;
 }

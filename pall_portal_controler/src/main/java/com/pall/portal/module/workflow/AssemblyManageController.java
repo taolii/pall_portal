@@ -2,7 +2,6 @@ package com.pall.portal.module.workflow;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,25 +42,26 @@ import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.common.support.excel.ExcelDataNode;
 import com.pall.portal.common.support.excel.ExcelHeaderNode;
+import com.pall.portal.common.tools.ExcelTools;
 import com.pall.portal.common.tools.JSONTools;
 import com.pall.portal.context.HolderContext;
 import com.pall.portal.init.DataConfigInitiator;
 import com.pall.portal.init.TableDataConfigInitiator;
 import com.pall.portal.init.UmsConfigInitiator;
 import com.pall.portal.interceptor.support.AuthToken;
-import com.pall.portal.repository.entity.workflow.AssemblyEntity.ADD;
-import com.pall.portal.repository.entity.workflow.AssemblyEntity.SAVE;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.workflow.AssemblyEntity;
+import com.pall.portal.repository.entity.workflow.AssemblyEntity.ADD;
+import com.pall.portal.repository.entity.workflow.AssemblyEntity.SAVE;
+import com.pall.portal.repository.entity.workflow.AssemblyQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
-import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
-import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
 import com.pall.portal.service.excel.IExcelHandler;
 import com.pall.portal.service.workflow.AssemblyService;
 /*
- * 光学镀膜管理控制器
+ * 组装管理控制器
  */
 @Controller
 public class AssemblyManageController{
@@ -89,28 +88,29 @@ public class AssemblyManageController{
 	@Value("${system.default.file.download.path}")
 	private String downloadFilePath;
 	/*
-	 * 光学镀膜管理
+	 * 组装管理
 	 */
 	@RequestMapping(value="workflow/assemblyManage", method= RequestMethod.GET)
     public  String assemblyManage(Model model, HttpServletRequest request) {	
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
+		model.addAttribute("remarkDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_REMARK)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
-		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
-		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("opticalfilmingManage.form.defecttype.select.work"));
+		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
+		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("assemblyManage.form.defecttype.select.work"));
 		workingfaceTypes.add(dataConfigTypeEntity1);
 		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
-		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
-		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("opticalfilmingManage.form.defecttype.select.nowork"));
+		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
+		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("assemblyManage.form.defecttype.select.nowork"));
 		workingfaceTypes.add(dataConfigTypeEntity2);
 		model.addAttribute("workingfaceTypes", workingfaceTypes);
-		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
+		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
 		model.addAttribute("workingfaceDefectConfigs", wdataConfigEntitys);
 		List<DataConfigEntity> dataConfigEntitys=new ArrayList<DataConfigEntity>();
-		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
+		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
 		if(nwdataConfigEntitys==null){
 			nwdataConfigEntitys=new ArrayList<DataConfigEntity>();
 		}
@@ -120,9 +120,9 @@ public class AssemblyManageController{
 		dataConfigEntitys.addAll(nwdataConfigEntitys);
 		dataConfigEntitys.addAll(wdataConfigEntitys);
 		model.addAttribute("defectConfigs",dataConfigEntitys);
-		model.addAttribute("tableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+		model.addAttribute("tableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -142,52 +142,52 @@ public class AssemblyManageController{
 	   return "workflow/assembly/assemblyManage";
     }
 	@RequestMapping(value="workflow/assemblyManage", method= RequestMethod.POST)
-    public @ResponseBody String assemblyManage(Model model,OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity, HttpServletRequest request) {
-        if(opticalFilmingQueryFormEntity.getPageSize()==0){
-        	opticalFilmingQueryFormEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
+    public @ResponseBody String assemblyManage(Model model,AssemblyQueryFormEntity  assemblyQueryFormEntity, HttpServletRequest request) {
+        if(assemblyQueryFormEntity.getPageSize()==0){
+        	assemblyQueryFormEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
         }
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=assemblyService.queryOpticalFilmingList(opticalFilmingQueryFormEntity);
+			baseResponse=assemblyService.queryAssemblyList(assemblyQueryFormEntity);
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
-				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
 				jsonData= JSONTools.defectsOverturnFiled(jsonData,defectTypes);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.opticalFilmingManage.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.controler.assemblyManage.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.opticalFilmingManage.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.controler.assemblyManage.exception"));
 			
 		}
 		 return jsonData;
     }
 	/*
-	 * 添加光学镀膜信息
+	 * 添加组装信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addAssembly", method= RequestMethod.POST)
-    public  @ResponseBody String addAssembly(@Validated(ADD.class) OpticalCoatingEntity opticalCoatingEntity,BindingResult result,Model model,HttpServletRequest request) {
+    public  @ResponseBody String addAssembly(@Validated(ADD.class) AssemblyEntity assemblyEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
-				int sumDefectValue=getDefectEntitys(request,opticalCoatingEntity,dataConfigEntitys);
-				sumDefectValue=sumDefectValue+getDefectEntitys(request,opticalCoatingEntity,ndataConfigEntitys);
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
+				int sumDefectValue=getDefectEntitys(request,assemblyEntity,dataConfigEntitys);
+				sumDefectValue=sumDefectValue+getDefectEntitys(request,assemblyEntity,ndataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
 				if(at!=null && at.getUserEntity()!=null){
-					opticalCoatingEntity.setOperatorid(at.getUserEntity().getOperatorid());
+					assemblyEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				baseResponse=assemblyService.addOpticalFilming(opticalCoatingEntity);
+				baseResponse=assemblyService.addAssembly(assemblyEntity);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.addOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.controler.addAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.addOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.controler.addAssembly.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
@@ -195,12 +195,12 @@ public class AssemblyManageController{
 	/*
 	 * 封装缺损请求参数对象
 	 */
-	private int getDefectEntitys(HttpServletRequest request,OpticalCoatingEntity opticalCoatingEntity,List<DataConfigEntity> dataConfigEntitys){
+	private int getDefectEntitys(HttpServletRequest request,AssemblyEntity assemblyEntity,List<DataConfigEntity> dataConfigEntitys){
 		int sumDefectValue=0;
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME);
+			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
 					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
@@ -209,124 +209,96 @@ public class AssemblyManageController{
 						defectEntity.setDefectName(dataConfigEntity.getConfigName());
 						defectEntity.setDefectType(dataConfigEntity.getDataType());
 						defectEntity.setDefectValue(Integer.parseInt(requestValue));
-						defectEntity.setDefectID(opticalCoatingEntity.getOpfID());
 						sumDefectValue=sumDefectValue+Integer.parseInt(requestValue);
 						defects.add(defectEntity);
 					}
 			}
 		}
-		if(opticalCoatingEntity.getDefects()==null){
-			opticalCoatingEntity.setDefects(new ArrayList<DefectEntity>());
+		if(assemblyEntity.getDefects()==null){
+			assemblyEntity.setDefects(new ArrayList<DefectEntity>());
 		}
-		opticalCoatingEntity.getDefects().addAll(defects);
+		assemblyEntity.getDefects().addAll(defects);
 		return sumDefectValue;
 	}
 	/*
-	 * 修改光学镀膜信息
+	 * 修改组装信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/modAssembly", method= RequestMethod.POST)
-    public  @ResponseBody String modAssembly(@Validated(SAVE.class) OpticalCoatingEntity opticalCoatingEntity,BindingResult result,Model model,HttpServletRequest request) {
+    public  @ResponseBody String modAssembly(@Validated(SAVE.class) AssemblyEntity assemblyEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
-				int sumDefectValue=getDefectEntitys(request,opticalCoatingEntity,dataConfigEntitys);
-				sumDefectValue=sumDefectValue+getDefectEntitys(request,opticalCoatingEntity,ndataConfigEntitys);
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
+				int sumDefectValue=getDefectEntitys(request,assemblyEntity,dataConfigEntitys);
+				sumDefectValue=sumDefectValue+getDefectEntitys(request,assemblyEntity,ndataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
 				if(at!=null && at.getUserEntity()!=null){
-					opticalCoatingEntity.setOperatorid(at.getUserEntity().getOperatorid());
+					assemblyEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				baseResponse=assemblyService.modifyOpticalFilming(opticalCoatingEntity);
+				baseResponse=assemblyService.modifyAssembly(assemblyEntity);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.modifyOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.controler.modifyAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.modifyOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.controler.modifyAssembly.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
     }
 	/*
-	 * 删除光学镀膜信息
+	 * 删除组装信息
 	 */
 	@RequestMapping(value="workflow/delAssembly", method= RequestMethod.POST)
-    public @ResponseBody String delAssembly(@RequestParam("opfIDs") String opfIDs,Model model,HttpServletRequest request) {
+    public @ResponseBody String delAssembly(@RequestParam("assemblyIDS") String assemblyIDS,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
-			String[] aoopfID=opfIDs.split(",");
-			List<Integer> tempOpticalFilming=new ArrayList<Integer>();
-			for(String opfid:aoopfID){
-				tempOpticalFilming.add(Integer.parseInt(opfid));
+			String[] aoassemblyIDS=assemblyIDS.split(",");
+			List<Integer> tempAssemblys=new ArrayList<Integer>();
+			for(String asemblyID:aoassemblyIDS){
+				tempAssemblys.add(Integer.parseInt(asemblyID));
 			}
-			baseResponse=assemblyService.delOpticalFilming(tempOpticalFilming);
+			baseResponse=assemblyService.delAssembly(tempAssemblys);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.delOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.controler.delAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.delOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.controler.delAssembly.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
     }
 	/*
-	 * 导出光学镀膜信息
+	 * 导出组装信息
 	 */
 	@RequestMapping(value="workflow/exportAssembly", method= RequestMethod.POST)
-    public @ResponseBody String exportAssembly(Model model,OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity, HttpServletRequest request) {
+    public @ResponseBody String exportAssembly(Model model,AssemblyQueryFormEntity assemblyQueryFormEntity, HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
-			baseResponse=assemblyService.exportOpticalFilming(opticalFilmingQueryFormEntity);
+			baseResponse=assemblyService.exportAssembly(assemblyQueryFormEntity);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.controler.exportAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.controler.exportAssembly.exception"));
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
-	        List<OpticalCoatingEntity> opticalCoatingEntitys=(List<OpticalCoatingEntity>)baseResponse.getReturnObjects();
+	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
+	        List<AssemblyEntity> assemblyEntitys=(List<AssemblyEntity>)baseResponse.getReturnObjects();
 	        
 	        int currentRowNum=excelheadlinesMap.size();
 	        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
-	        if(null!=opticalCoatingEntitys && opticalCoatingEntitys.size()>0){
+	        if(null!=assemblyEntitys && assemblyEntitys.size()>0){
 	        	if(!StringUtils.isEmpty(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
-	        		if(opticalCoatingEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+	        		if(assemblyEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
 	        			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-	        			baseResponse.setResultMsg(resourceUtils.getMessage("copticalfilmingManage.controler.exportOpticalFilming.records.limits")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
+	        			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.controler.exportAssembly.records.limits")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
 	        			baseResponse.setReturnObjects(null);
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	Map<String,ExcelHeaderNode> fieldNameBindMap=TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
-	        	 for(OpticalCoatingEntity opticalCoatingEntity:opticalCoatingEntitys){
-	        		 List<ExcelDataNode> excelDataNodes=new ArrayList<ExcelDataNode>();
-	        		 Field[] fields= opticalCoatingEntity.getClass().getDeclaredFields();
-	        		 for(Field field:fields){
-	        			 if(null!=fieldNameBindMap.get(field.getName().toLowerCase())){
-	        				 field.setAccessible(true); 
-	        				 ExcelDataNode excelDataNode=new ExcelDataNode();
-	        				 excelDataNode.setColNum(fieldNameBindMap.get(field.getName().toLowerCase()).getColNum());
-	        				 ReflectionUtils.getField(field, opticalCoatingEntity);
-	        				 excelDataNode.setData(String.valueOf(ReflectionUtils.getField(field, opticalCoatingEntity)));
-	    	        		 excelDataNodes.add(excelDataNode);
-	        			 }
-	        		 }
-	        		 List<DefectEntity> defectEntitys=opticalCoatingEntity.getDefects();
-	        		 if(defectEntitys!=null){
-	        			 for(DefectEntity defectEntity:defectEntitys){
-	        				 if(null!=fieldNameBindMap.get(defectEntity.getFieldName().toLowerCase())){
-		        				 ExcelDataNode excelDataNode=new ExcelDataNode();
-		        				 excelDataNode.setColNum(fieldNameBindMap.get(defectEntity.getFieldName().toLowerCase()).getColNum());
-		        				 excelDataNode.setData(String.valueOf(defectEntity.getDefectValue()));
-		    	        		 excelDataNodes.add(excelDataNode);
-		        			 }
-	        			 }
-	        		 }
-	        		 rowdatas.put(currentRowNum, excelDataNodes);
-	        		 currentRowNum++;
-	        	 }
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME), assemblyEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();
@@ -334,14 +306,14 @@ public class AssemblyManageController{
         	downloadFileFullPath.append(File.separator);
         	downloadFileFullPath.append(downloadFilePath);
         	downloadFileFullPath.append(File.separator);
-        	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DOWNLOAD_SUBDIRECTORY));
+        	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DOWNLOAD_SUBDIRECTORY));
         	downloadFileFullPath.append(File.separator);
         	
         	//设置下载保存文件路径名称
         	StringBuilder fileName=new StringBuilder();
         	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
         	fileName.append("_");
-        	fileName.append(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.filename"));
+        	fileName.append(resourceUtils.getMessage("assemblyManage.controler.exportAssembly.filename"));
         	fileName.append("_");
         	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
         	fileName.append(sf.format(new Date()));
@@ -350,19 +322,19 @@ public class AssemblyManageController{
 	        try {
 	        	Files.createParentDirs(new File(downloadFileFullPath.toString()+fileName.toString()));
 	        	out=new FileSystemResource(downloadFileFullPath.toString()+fileName.toString()).getOutputStream();
-				Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.filename"), excelheadlinesMap, rowdatas);
+				Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("assemblyManage.controler.exportAssembly.filename"), excelheadlinesMap, rowdatas);
 				workbook.write(out);
 				List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
 				ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
 				excelSaveEntity.setFileName(fileName.toString());
-				excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DOWNLOAD_SUBDIRECTORY));
+				excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DOWNLOAD_SUBDIRECTORY));
 				excelSaveEntitys.add(excelSaveEntity);
 				baseResponse.setReturnObjects(excelSaveEntitys);
 				return JSON.toJSONString(baseResponse);
 			} catch (Exception e) {
-				logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception"),e);
+				logger.error(resourceUtils.getMessage("assemblyManage.controler.exportAssembly.exception"),e);
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-				baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception")+":"+e.toString());
+				baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.controler.exportAssembly.exception")+":"+e.toString());
 			}finally{
 				IOUtils.close(out);
 			}

@@ -17,12 +17,11 @@ import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.init.UmsConfigInitiator;
+import com.pall.portal.repository.entity.workflow.AssemblyEntity;
+import com.pall.portal.repository.entity.workflow.AssemblyQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
-import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
-import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
 import com.pall.portal.repository.mapper.workflow.AssemblyDao;
 import com.pall.portal.repository.mapper.workflow.DefectDao;
-import com.pall.portal.service.workflow.AssemblyService;
 
 /*
  * 工作流服务实现类
@@ -40,43 +39,43 @@ public class AssemblyServiceImpl implements AssemblyService{
 	@Autowired
 	private ResourceUtils resourceUtils;
 	@Override
-	public BaseTablesResponse queryOpticalFilmingList(OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity) throws Exception {
+	public BaseTablesResponse queryAssemblyList(AssemblyQueryFormEntity  assemblyQueryFormEntity) throws Exception {
 		BaseTablesResponse baseResponse=new BaseTablesResponse();
 		try{
 			//查询总记录数
-			int totalRecords=assemblyDao.queryOpticalFilmingTotalRecords(opticalFilmingQueryFormEntity);
+			int totalRecords=assemblyDao.queryAssemblyQueryTotalRecords(assemblyQueryFormEntity);
 			//分页查询结果集
-			List<OpticalCoatingEntity> opticalCoatingEntitys=assemblyDao.queryOpticalFilmingList(opticalFilmingQueryFormEntity);
+			List<AssemblyEntity> assemblyEntitys=assemblyDao.queryAssemblyQueryList(assemblyQueryFormEntity);
 			DatatablesView datatablesViews=new DatatablesView();
-			datatablesViews.setDraw(opticalFilmingQueryFormEntity.getDraw());
-			if(opticalCoatingEntitys!=null){
+			datatablesViews.setDraw(assemblyQueryFormEntity.getDraw());
+			if(assemblyEntitys!=null){
 				datatablesViews.setiTotalDisplayRecords(totalRecords);
 				datatablesViews.setRecordsTotal(totalRecords);
-				datatablesViews.setData(getDefectRecords(opticalCoatingEntitys));
+				datatablesViews.setData(getDefectRecords(assemblyEntitys));
 			}
 			baseResponse.setDatatablesView(datatablesViews);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.queryOpticalFilmingList.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.workflow.service.queryassemblyList.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.service.queryOpticalFilmingList.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.service.queryassemblyList.exception"));
 		}
 		return baseResponse;
 	}
 	/*
 	 * 获取缺损信息
 	 */
-	private List<OpticalCoatingEntity> getDefectRecords(List<OpticalCoatingEntity> opticalCoatingEntitys) throws Exception{
+	private List<AssemblyEntity> getDefectRecords(List<AssemblyEntity> assemblyEntitys) throws Exception{
 		List<Integer> defectids=new ArrayList<Integer>();
-		Map<Integer,OpticalCoatingEntity> map=new HashMap<Integer,OpticalCoatingEntity>();
-		for(OpticalCoatingEntity opticalCoatingEntity:opticalCoatingEntitys){
-			defectids.add(opticalCoatingEntity.getOpfID());
-			map.put(opticalCoatingEntity.getOpfID(),opticalCoatingEntity);
+		Map<Integer,AssemblyEntity> map=new HashMap<Integer,AssemblyEntity>();
+		for(AssemblyEntity assemblyEntity:assemblyEntitys){
+			defectids.add(assemblyEntity.getAssemblyID());
+			map.put(assemblyEntity.getAssemblyID(),assemblyEntity);
 		}
 		if(defectids.size()>0){
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF)));
 			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
 			if(null!=defectEntitys){
 				for(DefectEntity defectEntity:defectEntitys){
@@ -89,112 +88,112 @@ public class AssemblyServiceImpl implements AssemblyService{
 				}
 			}
 		}
-		return opticalCoatingEntitys;
+		return assemblyEntitys;
 	}
 	@Override
-	public BaseResponse addOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception {
+	public BaseResponse addAssembly(AssemblyEntity assemblyEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			int resultNum=assemblyDao.addOpticalFilming(opticalCoatingEntity);
+			int resultNum=assemblyDao.addAssembly(assemblyEntity);
 			if(resultNum>0){
-				List<DefectEntity> defects=opticalCoatingEntity.getDefects();
+				List<DefectEntity> defects=assemblyEntity.getDefects();
 				if(defects!=null && defects.size()>0){
 					for(DefectEntity defectEntity:defects){
-						defectEntity.setDefectID(opticalCoatingEntity.getOpfID());
+						defectEntity.setDefectID(assemblyEntity.getAssemblyID());
 					}
 					resultNum=defectDao.addDefectResult(defects);
 					if(resultNum>0){
 						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 					}else{
 						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-						baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.dao.addDefectResult.failed"));
+						baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.dao.addDefectResult.failed"));
 					}
 				}else{
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 				}
 			}else{
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-				baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.dao.addOpticalFilming.failed"));
+				baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.dao.addAssembly.failed"));
 			}
 		}catch(Exception e){
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.addOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.workflow.service.addAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.service.addOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.service.addAssembly.exception"));
 		}
 		return baseResponse;
 	}
 	@Override
-	public BaseResponse  modifyOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception {
+	public BaseResponse  modifyAssembly(AssemblyEntity assemblyEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			int resultNum=assemblyDao.modifyOpticalFilming(opticalCoatingEntity);
+			int resultNum=assemblyDao.modifyAssembly(assemblyEntity);
 			if(resultNum>0){
-				List<DefectEntity> defects=opticalCoatingEntity.getDefects();
+				List<DefectEntity> defects=assemblyEntity.getDefects();
 				if(defects!=null && defects.size()>0){
 					List<Integer> defectIDs=new ArrayList<Integer>();
-					defectIDs.add(opticalCoatingEntity.getOpfID());
+					defectIDs.add(assemblyEntity.getAssemblyID());
 					List<Integer> defectTypes=new ArrayList<Integer>();
 					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF)));
 					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF)));
 					defectDao.delDefectResult(defectIDs,defectTypes);
 					for(DefectEntity defectEntity:defects){
-						defectEntity.setDefectID(opticalCoatingEntity.getOpfID());
+						defectEntity.setDefectID(assemblyEntity.getAssemblyID());
 					}
 					resultNum=defectDao.addDefectResult(defects);
 					if(resultNum>0){
 						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 					}else{
 						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-						baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.dao.addDefectResult.failed"));
+						baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.dao.addDefectResult.failed"));
 					}
 				}else{
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 				}
 			}else{
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-				baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.dao.modifyOpticalFilming.failed"));
+				baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.dao.modifyAssembly.failed"));
 			}
 		}catch(Exception e){
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.modifyOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.workflow.service.modifyAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.service.modifyOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.service.modifyAssembly.exception"));
 		}
 		return baseResponse;
 	}
 	@Override
-	public BaseResponse delOpticalFilming(List<Integer> opfIDs) throws Exception {
+	public BaseResponse delAssembly(List<Integer> assemblyIDS) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			assemblyDao.delOpticalFilming(opfIDs);
+			assemblyDao.delAssembly(assemblyIDS);
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF)));
-			defectDao.delDefectResult(opfIDs,defectTypes);
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF)));
+			defectDao.delDefectResult(assemblyIDS,defectTypes);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.delOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.workflow.service.delAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.service.delOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.service.delAssembly.exception"));
 		}
 		return baseResponse;
 	}
 	@Override
-	public BaseResponse exportOpticalFilming(OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity) throws Exception {
+	public BaseResponse exportAssembly(AssemblyQueryFormEntity  assemblyQueryFormEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			opticalFilmingQueryFormEntity.setStartPageNum(0);
+			assemblyQueryFormEntity.setStartPageNum(0);
 			//查询总记录数
-			int totalRecords=assemblyDao.queryOpticalFilmingTotalRecords(opticalFilmingQueryFormEntity);
+			int totalRecords=assemblyDao.queryAssemblyQueryTotalRecords(assemblyQueryFormEntity);
 			//分页查询结果集
-			opticalFilmingQueryFormEntity.setPageSize(totalRecords);
-			List<OpticalCoatingEntity> opticalCoatingEntitys=assemblyDao.queryOpticalFilmingList(opticalFilmingQueryFormEntity);
-			opticalCoatingEntitys=getDefectRecords(opticalCoatingEntitys);
-			baseResponse.setReturnObjects(opticalCoatingEntitys);
+			assemblyQueryFormEntity.setPageSize(totalRecords);
+			List<AssemblyEntity> assemblyEntitys=assemblyDao.queryAssemblyQueryList(assemblyQueryFormEntity);
+			assemblyEntitys=getDefectRecords(assemblyEntitys);
+			baseResponse.setReturnObjects(assemblyEntitys);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.exportOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("assemblyManage.workflow.service.exportAssembly.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.service.exportOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.service.exportAssembly.exception"));
 		}
 		return baseResponse;
 	}

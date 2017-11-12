@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{pages.system.name}+'-'+#{pages.workflow.opticalfilming.addOpticalfilming.title}"></title>
+<title th:text="#{pages.system.name}+'-'+#{pages.workflow.assembly.addAssembly.title}"></title>
 </head>
 <body>
 	<div th:fragment="content">
@@ -16,7 +16,7 @@
 						</button>
 						<h4 class="modal-title" id="modal_title_label">
 							<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label
-								th:text="#{pages.workflow.opticalfilming.addOpticalfilming.title}" th:remove="tag"></label>
+								th:text="#{pages.workflow.assembly.addAssembly.title}" th:remove="tag"></label>
 						</h4>
 					</div>
 					<form method="POST" id="addDataForm" class="form-horizontal" >
@@ -35,15 +35,23 @@
                 			</div>
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1"> 
-			                         <label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.optTime}" th:remove="tag"></label>
+			                         <label th:text="#{pages.workflow.assembly.addAssembly.form.deliveryTime}" th:remove="tag"></label>
                      			</span> 
 								<div class='col-md-6 control-input' >  
-			                         <input type='text' name="optTime" id='addFormOptTime' class="form-control form_datetime"/>
+			                         <input type='text' name="deliveryTime" id='addFormDeliveryTime' class="form-control form_datetime"/>
             					</div> 
 							</div>
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.inputLotNum}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.trayLotNum}" th:remove="tag"></label> 
+                     			</span> 
+								<div class='col-md-6 control-input'>  
+			                        <input type='text' name="trayLotNum" class="form-control" />  
+            					</div>
+							</div>
+							<div class="form-group">
+								<span class="col-md-4 control-span col-md-offset-1">  
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.inputLotNum}" th:remove="tag"></label> 
                      			</span> 
 								<div class='col-md-6 control-input'>  
 			                        <input type='text' name="inputLotNum" class="form-control" />  
@@ -51,7 +59,7 @@
 							</div>
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.inputQty}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.inputQty}" th:remove="tag"></label> 
                      			</span>  
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="inputQty" class="form-control" />  
@@ -59,7 +67,7 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.fixtureNum}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.fixtureNum}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="fixtureNum" class="form-control" />  
@@ -67,7 +75,15 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.outputLotNum}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.hubLotNum}" th:remove="tag"></label> 
+                     			</span>
+								<div class='col-md-6 control-input'>  
+			                         <input type='text' name="hubLotNum" class="form-control" />  
+            					</div>
+							</div>
+							<div class="form-group">
+								 <span class="col-md-4 control-span col-md-offset-1">  
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.outputLotNum}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="outputLotNum" class="form-control" />  
@@ -75,7 +91,7 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.outputQty}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.outputQty}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="outputQty" class="form-control" />  
@@ -83,7 +99,7 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.scrapQty}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.scrapQty}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="scrapQty" class="form-control" />  
@@ -110,7 +126,7 @@
 	                                    </select>
 	                                    <div class="col-md-1 col-sm-6 form-group has-feedback" style="margin-bottom:0px;padding-left:1px;padding-right:1px">
 					                        <span class="btn btn-warning form-control" id="addDefectButton">  
-                     						<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.button.defect.add}" th:remove="tag"></label>
+                     						<label th:text="#{pages.workflow.assembly.addAssembly.button.defect.add}" th:remove="tag"></label>
                      					</span>
                       					</div>
 									     
@@ -135,23 +151,7 @@
 							</div>
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.qcUseQty}" th:remove="tag"></label>
-                     			</span>  
-								<div class='col-md-6 control-input'>  
-			                    	<input type='text' name="qcUseQty" class="form-control" />  
-            					</div>
-							</div>
-							<div class="form-group">
-								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.toAPSQty}" th:remove="tag"></label>
-                     			</span>  
-								<div class='col-md-6 control-input'>  
-			                    	<input type='text' name="toAPSQty" class="form-control" />  
-            					</div>
-							</div>
-							<div class="form-group">
-								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.partNum}" th:remove="tag"></label>
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.partNum}" th:remove="tag"></label>
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                    	<select name="partNum" class="form-control">
@@ -163,21 +163,33 @@
 							<div class="form-group">
 								<input type="hidden" name="token" />
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.workOrderNum}" th:remove="tag"></label>
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.workOrderNum}" th:remove="tag"></label>
                      			</span> 
 								<div class='col-md-6 control-input'>  
 			                        <input type='text' name="workOrderNum" class="form-control" />  
+            					</div>
+							</div>
+							<div class="form-group">
+								<input type="hidden" name="token" />
+								<span class="col-md-4 control-span col-md-offset-1">  
+                     				<label th:text="#{pages.workflow.assembly.addAssembly.form.remark}" th:remove="tag"></label>
+                     			</span> 
+								<div class='col-md-6 control-input'> 
+									<select name="remark" class="form-control">
+							              <option  th:each="dataConfig:${remarkDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                </select>   
             					</div>
 							</div>
 					</div>
 					<div class="modal-footer"> 
 						<button class="btn btn-primary">
 							<i class="fa fa-check"></i> <span
-										th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.button.add}" th:remove="tag"></span>
+										th:text="#{pages.workflow.assembly.addAssembly.form.button.add}" th:remove="tag"></span>
 						</button>
 						<button type="button" class="btn btn-primary" data-dismiss="modal">
 							<i class="fa fa-close"></i> <span
-										th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.button.shut}"
+										th:text="#{pages.workflow.assembly.addAssembly.form.button.shut}"
 										th:remove="tag"></span>
 						</button> 
 					</div>

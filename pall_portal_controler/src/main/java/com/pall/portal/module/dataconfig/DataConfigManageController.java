@@ -73,6 +73,10 @@ public class DataConfigManageController{
 		dataConfigTypeEntity3.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT));
 		dataConfigTypeEntity3.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.defect.opticalFilming"));
 		dataConfigTypes.add(dataConfigTypeEntity3);
+		DataConfigTypeEntity dataConfigTypeEntity5=new DataConfigTypeEntity();
+		dataConfigTypeEntity5.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT));
+		dataConfigTypeEntity5.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.defect.assembly"));
+		dataConfigTypes.add(dataConfigTypeEntity5);
 		model.addAttribute("dataConfigTypes", dataConfigTypes);
 		model.addAttribute("sinfoDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SCRAP_INFO)));
 	   return "sysmanage/defect/defectManage";
@@ -92,6 +96,10 @@ public class DataConfigManageController{
 		dataConfigTypeEntity3.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SCRAP_INFO));
 		dataConfigTypeEntity3.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.scrapinfo"));
 		dataConfigTypes.add(dataConfigTypeEntity3);
+		DataConfigTypeEntity dataConfigTypeEntity4=new DataConfigTypeEntity();
+		dataConfigTypeEntity4.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_REMARK));
+		dataConfigTypeEntity4.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.remark"));
+		dataConfigTypes.add(dataConfigTypeEntity4);
 		model.addAttribute("dataConfigTypes", dataConfigTypes);
 	   return "sysmanage/dataconfig/dataConfigManage";
     }

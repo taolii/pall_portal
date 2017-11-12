@@ -14,9 +14,17 @@ public class AssemblyQueryFormEntity {
 	 */
 	private int pageSize;
 	/*
-	 * 镀膜日期
+	 * 交付日期
 	 */
-	private String optTime;
+	private String deliveryTime;
+	/*
+	 * TRAY#
+	 */
+	private String trayLotNum;
+	/*
+	 * HUB#
+	 */
+	private String hubLotNum;
 	/*
 	 * input LOT#
 	 */
@@ -37,6 +45,10 @@ public class AssemblyQueryFormEntity {
 	 * 工单号
 	 */
 	private String workOrderNum;
+	/*
+	 * drop down T01….T17  是TRAY#
+	 */
+	private String remark;
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -55,11 +67,23 @@ public class AssemblyQueryFormEntity {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	public String getOptTime() {
-		return optTime;
+	public String getDeliveryTime() {
+		return deliveryTime;
 	}
-	public void setOptTime(String optTime) {
-		this.optTime = optTime;
+	public void setDeliveryTime(String deliveryTime) {
+		this.deliveryTime = deliveryTime;
+	}
+	public String getTrayLotNum() {
+		return trayLotNum;
+	}
+	public void setTrayLotNum(String trayLotNum) {
+		this.trayLotNum = trayLotNum;
+	}
+	public String getHubLotNum() {
+		return hubLotNum;
+	}
+	public void setHubLotNum(String hubLotNum) {
+		this.hubLotNum = hubLotNum;
 	}
 	public String getInputLotNum() {
 		return inputLotNum;
@@ -90,6 +114,12 @@ public class AssemblyQueryFormEntity {
 	}
 	public void setWorkOrderNum(String workOrderNum) {
 		this.workOrderNum = workOrderNum;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 }

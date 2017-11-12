@@ -13,53 +13,51 @@ public class AssemblyEntity {
 	/*
 	 * 唯一标示
 	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.opfid.NotEmpty}",groups={SAVE.class})
-	private Integer opfID;
+	@NotNull(message="{assemblyManage.form.valid.assemblyEntity.assemblyID.NotEmpty}",groups={SAVE.class})
+	private Integer assemblyID;
 	/*
-	 * 镀膜日期
+	 * 交付日期
 	 */
-	@NotEmpty(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.optTime.NotEmpty}",groups={SAVE.class,ADD.class})
-	private String optTime;
-	
+	private String deliveryTime;
+	/*
+	 * TRAY#
+	 */
+	@NotEmpty(message="{assemblyManage.form.valid.assemblyEntity.trayLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	private String trayLotNum;
 	/*
 	 * input LOT#
 	 */
-	@NotEmpty(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.inputLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	@NotEmpty(message="{assemblyManage.form.valid.assemblyEntity.inputLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String inputLotNum;
 	/*
 	 * input Qty(pcs)
 	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.inputQty.NotEmpty}",groups={SAVE.class,ADD.class})
+	@NotNull(message="{assemblyManage.form.valid.assemblyEntity.inputQty.NotEmpty}",groups={SAVE.class,ADD.class})
 	private Integer inputQty;
 	/*
 	 * 光纤的料号及批次号,Fixture#
 	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.fixtureNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	@NotNull(message="{assemblyManage.form.valid.assemblyEntity.fixtureNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String fixtureNum;
+	/*
+	 * HUB#
+	 */
+	@NotNull(message="{assemblyManage.form.valid.assemblyEntity.hubLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	private String hubLotNum;
 	/*
 	 * Output LOT#
 	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.outputLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	@NotNull(message="{assemblyManage.form.valid.assemblyEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String outputLotNum;
 	/*
 	 * output Qty(pcs)
 	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
+	@NotNull(message="{assemblyManage.form.valid.assemblyEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
 	private Integer outputQty;
 	/*
 	 * 碎片数量Scrap Qty(pcs)
 	 */
 	private Integer scrapQty;
-	/*
-	 * QC Use Qty(pcs)
-	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.qcUseQty.NotEmpty}",groups={SAVE.class,ADD.class})
-	private Integer qcUseQty;
-	/*
-	 * To APS coating Qty(pcs)
-	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.toAPSQty.NotEmpty}",groups={SAVE.class,ADD.class})
-	private Integer toAPSQty;
 	/*
 	 * 缺损信息
 	 */
@@ -68,13 +66,18 @@ public class AssemblyEntity {
 	/*
 	 * 零件号
 	 */
-	@NotEmpty(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.partNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	@NotEmpty(message="{assemblyManage.form.valid.assemblyEntity.partNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String partNum;
 	/*
 	 * 工单号
 	 */
-	@NotEmpty(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.workOrderNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	@NotEmpty(message="{assemblyManage.form.valid.assemblyEntity.workOrderNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String workOrderNum;
+	/*
+	 * drop down T01….T17  是TRAY#
+	 */
+	@NotEmpty(message="{assemblyManage.form.valid.assemblyEntity.remark.NotEmpty}",groups={SAVE.class,ADD.class})
+	private String remark;
 	/*
 	 * 录入时间
 	 */
@@ -92,17 +95,24 @@ public class AssemblyEntity {
 	 */
 	private String operatorName;
 	
-	public Integer getOpfID() {
-		return opfID;
+	
+	public Integer getAssemblyID() {
+		return assemblyID;
 	}
-	public void setOpfID(Integer opfID) {
-		this.opfID = opfID;
+	public void setAssemblyID(Integer assemblyID) {
+		this.assemblyID = assemblyID;
 	}
-	public String getOptTime() {
-		return optTime;
+	public String getDeliveryTime() {
+		return deliveryTime;
 	}
-	public void setOptTime(String optTime) {
-		this.optTime = optTime;
+	public void setDeliveryTime(String deliveryTime) {
+		this.deliveryTime = deliveryTime;
+	}
+	public String getTrayLotNum() {
+		return trayLotNum;
+	}
+	public void setTrayLotNum(String trayLotNum) {
+		this.trayLotNum = trayLotNum;
 	}
 	public String getInputLotNum() {
 		return inputLotNum;
@@ -122,6 +132,12 @@ public class AssemblyEntity {
 	public void setFixtureNum(String fixtureNum) {
 		this.fixtureNum = fixtureNum;
 	}
+	public String getHubLotNum() {
+		return hubLotNum;
+	}
+	public void setHubLotNum(String hubLotNum) {
+		this.hubLotNum = hubLotNum;
+	}
 	public String getOutputLotNum() {
 		return outputLotNum;
 	}
@@ -140,18 +156,6 @@ public class AssemblyEntity {
 	public void setScrapQty(Integer scrapQty) {
 		this.scrapQty = scrapQty;
 	}
-	public Integer getQcUseQty() {
-		return qcUseQty;
-	}
-	public void setQcUseQty(Integer qcUseQty) {
-		this.qcUseQty = qcUseQty;
-	}
-	public Integer getToAPSQty() {
-		return toAPSQty;
-	}
-	public void setToAPSQty(Integer toAPSQty) {
-		this.toAPSQty = toAPSQty;
-	}
 	public List<DefectEntity> getDefects() {
 		return defects;
 	}
@@ -169,6 +173,12 @@ public class AssemblyEntity {
 	}
 	public void setWorkOrderNum(String workOrderNum) {
 		this.workOrderNum = workOrderNum;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	public String getInputTime() {
 		return inputTime;

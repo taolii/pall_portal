@@ -6,7 +6,7 @@
       layout:decorator="fragments/indexModel">
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title th:text="#{pages.system.name}+'-'+#{pages.workflow.opticalfilming.title}"></title>
+        <title th:text="#{pages.system.name}+'-'+#{pages.workflow.assembly.title}"></title>
         <script src="/vendors/spin-2.1.0/jquery.spin.merge.js"></script>
         <script type="text/javascript" src="/dist/workflow/assembly/js/assemblyManage.js"></script>
     	<script type="text/javascript" src="/dist/workflow/assembly/js/addAssemblyInfo.js"></script>
@@ -16,7 +16,7 @@
         <div th:fragment="content">
         	<div class="x_panel ">
                  <div class="x_title ">
-                    <h2><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label th:text="#{pages.workflow.opticalfilming.form.title}" th:remove="tag"></label></h2>
+                    <h2><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label th:text="#{pages.workflow.assembly.form.title}" th:remove="tag"></label></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -32,20 +32,26 @@
 		                        <div class="panel panel-primary">
 		                            <div class="panel-heading">
 		                                <h4 class="panel-title">
-		                                	<i class="fa fa-search"></i><a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.workflow.opticalfilming.form.title}"></a>
+		                                	<i class="fa fa-search"></i><a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.workflow.assembly.form.title}"></a>
 		                              	</h4>
 		                            </div>
 		                            <div id="stepOne" class="panel-collapse collapse in  ">
 		                                <div class="panel-body">
 		                                <div class="col-md-4">
 			                                	<div class='input-group date'>  
-			                                		<span class="input-group-addon" th:text="#{pages.workflow.opticalfilming.form.optTime}">  
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.deliveryTime}">  
                 									</span>  
-									                <input type='text' name="optTime"  id='queryOptTime' class="form-control" />  
+									                <input type='text' name="deliveryTime"  id='queryDeliveryTime' class="form-control" />  
 									                <span class="input-group-addon">  
 									                    <span class="glyphicon glyphicon-calendar"></span>  
 									                </span>  
             									</div> 
+				                      		</div>
+				                      		<div class="col-md-4">
+			                                	<div class="input-group">
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.trayLotNum}"></span>
+							                        <input type="text" name="trayLotNum" class="form-control"/>
+			                                	</div>
 				                      		</div>
 				                  			<div class="col-md-4">
 			                                	<div class="input-group">
@@ -65,11 +71,17 @@
 							                        <input type="text" name="fixtureNum" class="form-control"/>
 			                                	</div>
 				                      		</div>
+				                      		<div class="col-md-4">
+			                                	<div class="input-group">
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.hubLotNum}"></span>
+							                        <input type="text" name="hubLotNum" class="form-control"/>
+			                                	</div>
+				                      		</div>
 											<div class="col-md-4">
 			                                	<div class="input-group">
-			                                		<span class="input-group-addon" th:text="#{pages.workflow.opticalfilming.form.partNum}"></span>
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.partNum}"></span>
 							                        <select name="partNum" class="form-control">
-							                        	<option value="" th:text="#{pages.workflow.opticalfilming.form.partNum.select.all}"></option>
+							                        	<option value="" th:text="#{pages.workflow.assembly.form.partNum.select.all}"></option>
 							                        	<option  th:each="dataConfig:${pnDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
 							                        	</option>
 	                                    			</select>
@@ -77,14 +89,24 @@
 						                    </div>
 						                    <div class="col-md-4">
 			                                	<div class="input-group">
-			                                		<span class="input-group-addon" th:text="#{pages.workflow.opticalfilming.form.workOrderNum}"></span>
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.workOrderNum}"></span>
 							                        <input type="text" name="workOrderNum" class="form-control" />
+			                                	</div>
+						                    </div>
+						                     <div class="col-md-4">
+			                                	<div class="input-group">
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.remark}"></span>
+							                        <select name="remark" class="form-control">
+							                        	<option value="" th:text="#{pages.workflow.assembly.remark.select.all}"></option>
+										              	<option  th:each="dataConfig:${remarkDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+										              	</option>
+	                                				</select> 
 			                                	</div>
 						                    </div>
 						                    <div class="form-group has-feedback text-center">
 						                        <button id="btn-query" class="btn btn-primary" type="button">
 						                        <i class="fa fa-search"></i>
-			                 						<span th:text="#{pages.workflow.opticalfilming.form.query.button.tip}" th:remove="tag"></span>
+			                 						<span th:text="#{pages.workflow.assembly.form.query.button.tip}" th:remove="tag"></span>
 												</button> 
 						                    </div>
 		                                </div>
@@ -98,19 +120,19 @@
 					        <div class="btn-group">
 					            <button type="button" class="btn btn-primary btn-sm" id="btn-add">
 					                <i class="fa fa-plus"></i>
-					                <span th:text="#{pages.workflow.opticalfilming.table.button.add}" th:remove="tag"></span>
+					                <span th:text="#{pages.workflow.assembly.table.button.add}" th:remove="tag"></span>
 					            </button>
 					            <button type="button" class="btn btn-primary btn-sm" id="btn-delAll">
 					                <i class="fa fa-remove"></i>
-					                <span th:text="#{pages.workflow.opticalfilming.table.button.batchdel}" th:remove="tag"></span>
+					                <span th:text="#{pages.workflow.assembly.table.button.batchdel}" th:remove="tag"></span>
 					            </button>
 					            <button type="button" class="btn btn-primary btn-sm" id="btn-export">
 					                <i class="fa fa-download"></i>
-					                <span th:text="#{pages.workflow.opticalfilming.table.button.export}" th:remove="tag"></span>
+					                <span th:text="#{pages.workflow.assembly.table.button.export}" th:remove="tag"></span>
 					            </button>
 					            <button id="btn_refresh" type="button" class="btn btn-primary btn-sm">
 					                <i class="fa fa-refresh"></i>
-					                <span th:text="#{pages.workflow.opticalfilming.table.button.refresh}" th:remove="tag"></span>
+					                <span th:text="#{pages.workflow.assembly.table.button.refresh}" th:remove="tag"></span>
 					            </button>
 					        </div>
     					</div>
@@ -135,10 +157,10 @@
         		</div>
             </div>
           	<div class="clearfix"></div>
-          	<div id="addOpticalFilmingModal">
+          	<div id="addAssemblyModal">
 				<div th:replace="workflow/assembly/addAssemblyModal:: content"></div>
 			</div>
-			<div id="modOpticalFilmingModal">
+			<div id="modAssemblyModal">
 				<div th:replace="workflow/assembly/modAssemblyModal:: content"></div>
 			</div>
         </div>

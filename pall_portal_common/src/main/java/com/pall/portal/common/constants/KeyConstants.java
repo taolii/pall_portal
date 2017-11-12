@@ -26,6 +26,10 @@ public class KeyConstants {
 	 */
 	public static final String DATACONFIG_TYPE_SCRAP_INFO="dataconfig/type/scrapinfo";
 	/*
+	 * 数据配置表代表remark的配置类型
+	 */
+	public static final String DATACONFIG_TYPE_REMARK="dataconfig/type/remark";
+	/*
 	 *excel结果集导出最大限制数
 	 */
 	public static final String EXCEL_EXPORT_RECORDS_LIMITS="excel/export/records/limits";
@@ -97,6 +101,26 @@ public class KeyConstants {
 	 * 光学镀膜管理页面excel下载子目录名称
 	 */
 	public static final String PLATEDFILM_DOWNLOAD_SUBDIRECTORY="platedFilm/download/subdirectory";
+	/*
+	 * 数据配置表代表组装 defect的配置类型
+	 */
+	public static final String DATACONFIG_TYPE_ASSEMBLY_DEFECT="dataconfig/type/assemblyDefect";
+	/*
+	 * 组装流程配置表名
+	 */
+	public static final String WORKFLOW_ASSEMBLY_TABLENAME="workflow/assembly/tablename";
+	/*
+	 * 组装表工作面的缺损信息在数据配置表中的类型
+	 */
+	public static final String DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF="dataconfig/type/assemblyDefect/workingface";
+	/*
+	 * 组装表非工作面的缺损信息在数据配置表中的类型
+	 */
+	public static final String DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF="dataconfig/type/assemblyDefect/noworkingface";
+	/*
+	 * 组装管理页面excel下载子目录名称
+	 */
+	public static final String ASSEMBLY_DOWNLOAD_SUBDIRECTORY="assembly/download/subdirectory";
 	/*
 	 * 初始化excel样式配置对象时设置的标题栏配置名
 	 */

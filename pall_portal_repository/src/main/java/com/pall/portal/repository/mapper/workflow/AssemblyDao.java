@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
-import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
+import com.pall.portal.repository.entity.workflow.AssemblyEntity;
+import com.pall.portal.repository.entity.workflow.AssemblyQueryFormEntity;
 
 /*
  * 工作流数据访问层
@@ -14,34 +14,34 @@ import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
 @Repository("assemblyDao")
 public interface AssemblyDao {
 	/*
-	 * 根据条件查询光学镀膜记录信息
-	 * @param opticalFilmingQueryFormEntity 光学镀膜信息查询对象
+	 * 根据条件查询组装记录信息
+	 * @param assemblyQueryFormEntity 组装信息查询对象
 	 * @return 查询结果
 	 */
-	public List<OpticalCoatingEntity> queryOpticalFilmingList(OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity);
+	public List<AssemblyEntity> queryAssemblyQueryList(AssemblyQueryFormEntity  assemblyQueryFormEntity);
 	/*
-	 * 根据条件查询光学镀膜记录数
-	 * @param opticalFilmingQueryFormEntity 光学镀膜信息查询对象
+	 * 根据条件查询组装记录数
+	 * @param assemblyQueryFormEntity 组装信息查询对象
 	 * @return 查询结果
 	 */
-	public int queryOpticalFilmingTotalRecords(OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity);
+	public int queryAssemblyQueryTotalRecords(AssemblyQueryFormEntity  assemblyQueryFormEntity);
 	/*
-	 * 添加光学镀膜信息
-	 * @param opticalCoatingEntity 光学镀膜信息
+	 * 添加组装信息
+	 * @param assemblyEntity 组装信息
 	 * @return 添加结果
 	 */
-	public int addOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception;
+	public int addAssembly(AssemblyEntity assemblyEntity) throws Exception;
 	/*
-	 * 修改光学镀膜信息
-	 * @param opticalCoatingEntity 光学镀膜信息
+	 * 修改组装信息
+	 * @param assemblyEntity 组装信息
 	 * @return 修改结果
 	 */
-	public int modifyOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception;
+	public int modifyAssembly(AssemblyEntity assemblyEntity) throws Exception;
 	/*
-	 * 删除光学镀膜信息
-	 * @param optIDs 需要删除的光学镀膜信息列表
+	 * 删除组装信息
+	 * @param assemblyIDS 需要删除的组装信息列表
 	 * @return 删除结果
 	 */
-	public int delOpticalFilming(@Param("opfIDs") List<Integer> opfIDs) throws Exception;
+	public int delAssembly(@Param("assemblyIDS") List<Integer> assemblyIDS) throws Exception;
 	
 }

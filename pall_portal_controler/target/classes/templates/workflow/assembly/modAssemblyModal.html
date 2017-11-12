@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{pages.system.name}+'-'+#{pages.workflow.opticalfilming.modOpticalfilming.title}"></title>
+<title th:text="#{pages.system.name}+'-'+#{pages.workflow.assembly.modAssembly.title}"></title>
 </head>
 <body>
 	<div th:fragment="content">
@@ -16,7 +16,7 @@
 						</button>
 						<h4 class="modal-title" id="modal_title_label">
 							<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label
-								th:text="#{pages.workflow.opticalfilming.modOpticalfilming.title}" th:remove="tag"></label>
+								th:text="#{pages.workflow.assembly.modAssembly.title}" th:remove="tag"></label>
 						</h4>
 					</div>
 					<form method="POST" id="modDataForm" class="form-horizontal" >
@@ -34,18 +34,26 @@
 								 </div>
                 			</div>
 							<div class="form-group">
-								<input id="opticalFilmingTableName" name="opticalFilmingTableName" th:value="${tableName}"/>
-								<input name="opfID"/>
+								<input type="hidden" id="assemblyTableName" name="assemblyTableName" th:value="${tableName}"/>
+								<input type="hidden" name="assemblyID"/>
 								<span class="col-md-4 control-span col-md-offset-1"> 
-			                         <label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.optTime}" th:remove="tag"></label>
+			                         <label th:text="#{pages.workflow.assembly.modAssembly.form.deliveryTime}" th:remove="tag"></label>
                      			</span> 
 								<div class='col-md-6 control-input' >  
-			                         <input type='text' name="optTime" id='modFormOptTime' class="form-control form_datetime"/>
+			                         <input type='text' name="deliveryTime" id='modFormDeliveryTime' class="form-control form_datetime"/>
             					</div> 
 							</div>
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.inputLotNum}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.trayLotNum}" th:remove="tag"></label> 
+                     			</span> 
+								<div class='col-md-6 control-input'>  
+			                        <input type='text' name="trayLotNum" class="form-control" />  
+            					</div>
+							</div>
+							<div class="form-group">
+								<span class="col-md-4 control-span col-md-offset-1">  
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.inputLotNum}" th:remove="tag"></label> 
                      			</span> 
 								<div class='col-md-6 control-input'>  
 			                        <input type='text' name="inputLotNum" class="form-control" />  
@@ -53,7 +61,7 @@
 							</div>
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.inputQty}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.inputQty}" th:remove="tag"></label> 
                      			</span>  
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="inputQty" class="form-control" />  
@@ -61,7 +69,7 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.fixtureNum}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.fixtureNum}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="fixtureNum" class="form-control" />  
@@ -69,7 +77,15 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.outputLotNum}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.hubLotNum}" th:remove="tag"></label> 
+                     			</span>
+								<div class='col-md-6 control-input'>  
+			                         <input type='text' name="hubLotNum" class="form-control" />  
+            					</div>
+							</div>
+							<div class="form-group">
+								 <span class="col-md-4 control-span col-md-offset-1">  
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.outputLotNum}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="outputLotNum" class="form-control" />  
@@ -77,7 +93,7 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.outputQty}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.outputQty}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="outputQty" class="form-control" />  
@@ -85,7 +101,7 @@
 							</div>
 							<div class="form-group">
 								 <span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.addOpticalfilming.form.scrapQty}" th:remove="tag"></label> 
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.scrapQty}" th:remove="tag"></label> 
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                         <input type='text' name="scrapQty" class="form-control" />  
@@ -112,7 +128,7 @@
 	                                    </select>
 	                                    <div class="col-md-1 col-sm-6 form-group has-feedback" style="margin-bottom:0px;padding-left:1px;padding-right:1px">
 					                        <span class="btn btn-warning form-control" id="modDefectButton">  
-                     						<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.button.fefect.add}" th:remove="tag"></label>
+                     						<label th:text="#{pages.workflow.assembly.modAssembly.button.fefect.add}" th:remove="tag"></label>
                      					</span>
                       					</div>
 									     
@@ -137,23 +153,7 @@
 							</div>
 							<div class="form-group">
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.qcUseQty}" th:remove="tag"></label>
-                     			</span>  
-								<div class='col-md-6 control-input'>  
-			                    	<input type='text' name="qcUseQty" class="form-control" />  
-            					</div>
-							</div>
-							<div class="form-group">
-								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.toAPSQty}" th:remove="tag"></label>
-                     			</span>  
-								<div class='col-md-6 control-input'>  
-			                    	<input type='text' name="toAPSQty" class="form-control" />  
-            					</div>
-							</div>
-							<div class="form-group">
-								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.partNum}" th:remove="tag"></label>
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.partNum}" th:remove="tag"></label>
                      			</span>
 								<div class='col-md-6 control-input'>  
 			                    	<select name="partNum" class="form-control">
@@ -165,21 +165,33 @@
 							<div class="form-group">
 								<input type="hidden" name="token" />
 								<span class="col-md-4 control-span col-md-offset-1">  
-                     				<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.workOrderNum}" th:remove="tag"></label>
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.workOrderNum}" th:remove="tag"></label>
                      			</span> 
 								<div class='col-md-6 control-input'>  
 			                        <input type='text' name="workOrderNum" class="form-control" />  
+            					</div>
+							</div>
+							<div class="form-group">
+								<input type="hidden" name="token" />
+								<span class="col-md-4 control-span col-md-offset-1">  
+                     				<label th:text="#{pages.workflow.assembly.modAssembly.form.remark}" th:remove="tag"></label>
+                     			</span> 
+								<div class='col-md-6 control-input'>  
+			                        <select name="remark" class="form-control">
+							              <option  th:each="dataConfig:${remarkDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                </select>   
             					</div>
 							</div>
 					</div>
 					<div class="modal-footer"> 
 						<button class="btn btn-primary">
 							<i class="fa fa-check"></i> <span
-										th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.button.mod}" th:remove="tag"></span>
+										th:text="#{pages.workflow.assembly.modAssembly.form.button.mod}" th:remove="tag"></span>
 						</button>
 						<button type="button" class="btn btn-primary" data-dismiss="modal">
 							<i class="fa fa-close"></i> <span
-										th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.button.shut}"
+										th:text="#{pages.workflow.assembly.modAssembly.form.button.shut}"
 										th:remove="tag"></span>
 						</button> 
 					</div>
