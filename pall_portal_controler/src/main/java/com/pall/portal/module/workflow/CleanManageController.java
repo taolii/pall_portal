@@ -45,6 +45,7 @@ import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.common.support.excel.ExcelDataNode;
 import com.pall.portal.common.support.excel.ExcelHeaderNode;
+import com.pall.portal.common.tools.ExcelTools;
 import com.pall.portal.common.tools.JSONTools;
 import com.pall.portal.context.HolderContext;
 import com.pall.portal.init.DataConfigInitiator;
@@ -163,6 +164,7 @@ public class CleanManageController{
 			baseResponse.setResultMsg(resourceUtils.getMessage("cleanmanage.controler.cleanManage.exception"));
 			
 		}
+		logger.info("jsonData:"+jsonData);
 		 return jsonData;
     }
 	/*
@@ -218,9 +220,11 @@ public class CleanManageController{
 					}
 					double yield=0;
 					if(sumDefectValue!=0){
-						yield=new BigDecimal((float)sumDefectValue/cleanEntity.getOutputQty()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						yield=new BigDecimal(1-(float)sumDefectValue/cleanEntity.getOutputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+					}else{
+						yield=1;
 					}
-					cleanEntity.setYield((1-yield)*100);
+					cleanEntity.setYield(yield*100);
 					baseResponse=cleanService.addClean(cleanEntity);
 				}
 			}
@@ -256,9 +260,11 @@ public class CleanManageController{
 					}
 					double yield=0;
 					if(sumDefectValue!=0){
-						yield=new BigDecimal((float)sumDefectValue/cleanEntity.getOutputQty()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						yield=new BigDecimal(1-(float)sumDefectValue/cleanEntity.getOutputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+					}else{
+						yield=1;
 					}
-					cleanEntity.setYield((1-yield)*100);
+					cleanEntity.setYield(yield*100);
 					baseResponse=cleanService.modifyClean(cleanEntity);
 				}
 			}
@@ -320,34 +326,7 @@ public class CleanManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	Map<String,ExcelHeaderNode> fieldNameBindMap=TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
-	        	 for(CleanEntity cleanEntity:cleanEntitys){
-	        		 List<ExcelDataNode> excelDataNodes=new ArrayList<ExcelDataNode>();
-	        		 Field[] fields= cleanEntity.getClass().getDeclaredFields();
-	        		 for(Field field:fields){
-	        			 if(null!=fieldNameBindMap.get(field.getName().toLowerCase())){
-	        				 field.setAccessible(true); 
-	        				 ExcelDataNode excelDataNode=new ExcelDataNode();
-	        				 excelDataNode.setColNum(fieldNameBindMap.get(field.getName().toLowerCase()).getColNum());
-	        				 ReflectionUtils.getField(field, cleanEntity);
-	        				 excelDataNode.setData(String.valueOf(ReflectionUtils.getField(field, cleanEntity)));
-	    	        		 excelDataNodes.add(excelDataNode);
-	        			 }
-	        		 }
-	        		 List<DefectEntity> defectEntitys=cleanEntity.getDefects();
-	        		 if(defectEntitys!=null){
-	        			 for(DefectEntity defectEntity:defectEntitys){
-	        				 if(null!=fieldNameBindMap.get(defectEntity.getFieldName().toLowerCase())){
-		        				 ExcelDataNode excelDataNode=new ExcelDataNode();
-		        				 excelDataNode.setColNum(fieldNameBindMap.get(defectEntity.getFieldName().toLowerCase()).getColNum());
-		        				 excelDataNode.setData(String.valueOf(defectEntity.getDefectValue()));
-		    	        		 excelDataNodes.add(excelDataNode);
-		        			 }
-	        			 }
-	        		 }
-	        		 rowdatas.put(currentRowNum, excelDataNodes);
-	        		 currentRowNum++;
-	        	 }
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME), cleanEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

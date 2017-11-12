@@ -188,7 +188,7 @@ public class TableDataConfigInitiator {
 							excelHeaderNode.setRowspan(tableHeaderConfig.getRows());
 							excelHeaderNode.setInvisible(tableHeaderConfig.getInvisible());
 							excelHeaderNode.setDefectType(tableHeaderConfig.getDataType());
-							tempTableFieldBindConfigMap.put(tableHeaderConfig.getFieldName().toLowerCase(), excelHeaderNode);
+							tempTableFieldBindConfigMap.put(tableHeaderConfig.getFieldName(), excelHeaderNode);
 						}
 					}
 				}

@@ -22,6 +22,10 @@ public class KeyConstants {
 	 */
 	public static final String DATACONFIG_TYPE_THROWMILLSTONEPOS="dataconfig/type/throwMillstonePosition";
 	/*
+	 * 数据配置表代表scrap info的配置类型
+	 */
+	public static final String DATACONFIG_TYPE_SCRAP_INFO="dataconfig/type/scrapinfo";
+	/*
 	 *excel结果集导出最大限制数
 	 */
 	public static final String EXCEL_EXPORT_RECORDS_LIMITS="excel/export/records/limits";

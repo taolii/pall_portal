@@ -59,7 +59,7 @@ public class DataConfigManageController{
 	 * 缺损管理
 	 */
 	@RequestMapping(value="defect/defectManage", method= RequestMethod.GET)
-    public  String userManage(Model model, HttpServletRequest request) {
+    public  String defectManage(Model model, HttpServletRequest request) {
 		List<DataConfigTypeEntity> dataConfigTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
 		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT));
@@ -74,6 +74,7 @@ public class DataConfigManageController{
 		dataConfigTypeEntity3.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.defect.opticalFilming"));
 		dataConfigTypes.add(dataConfigTypeEntity3);
 		model.addAttribute("dataConfigTypes", dataConfigTypes);
+		model.addAttribute("sinfoDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SCRAP_INFO)));
 	   return "sysmanage/defect/defectManage";
     }
 	@RequestMapping(value="dataconfig/dataConfigManage", method= RequestMethod.GET)
@@ -87,6 +88,10 @@ public class DataConfigManageController{
 		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_THROWMILLSTONEPOS));
 		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.throwmillstoneposition"));
 		dataConfigTypes.add(dataConfigTypeEntity2);
+		DataConfigTypeEntity dataConfigTypeEntity3=new DataConfigTypeEntity();
+		dataConfigTypeEntity3.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SCRAP_INFO));
+		dataConfigTypeEntity3.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.scrapinfo"));
+		dataConfigTypes.add(dataConfigTypeEntity3);
 		model.addAttribute("dataConfigTypes", dataConfigTypes);
 	   return "sysmanage/dataconfig/dataConfigManage";
     }

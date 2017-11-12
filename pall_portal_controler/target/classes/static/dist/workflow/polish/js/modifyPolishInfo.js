@@ -27,7 +27,7 @@ $(document).ready(function() {
 	        $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html($modDefect.find("option:selected").text()).end();
 	        $newRow=$newRow.find('input').attr('name', $modDefect.val()).end().
 	        	on('click', '.removeButton', function() {
-	        		$modDataForm.bootstrapValidator('removeField', $modDefect.val());
+	        		$('#modDataForm').bootstrapValidator('removeField', $modDefect.val());
 	                $newRow.remove();
 	                if($modDefectPanel.find(".removeButton").length<=0){
 	                	$modDefectPanel.hide();

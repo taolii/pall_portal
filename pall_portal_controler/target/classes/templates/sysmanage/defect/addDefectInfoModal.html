@@ -33,9 +33,12 @@
 										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
 									</span>
 									<div class="col-sm-7 control-input">
-										<input type="text" name="configName" class="form-control"
-											th:placeholder="#{pages.defect.addDefectInfo.input.configname.tip}" />
+										<select id="configName" name="configName" class="form-control">
+							              <option  th:each="dataConfig:${sinfoDataConfigs}"  th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                	</select>
 									</div>
+									
 								</div>
 							</div>
 							<div class="form-group">

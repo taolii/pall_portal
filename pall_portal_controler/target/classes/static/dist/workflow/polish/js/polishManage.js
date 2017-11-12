@@ -171,7 +171,7 @@ $(document).ready(function() {
 				            $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html(tableField.headline).end();
 				            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
 				        	on('click', '.removeButton', function() {
-				                $('#modDataForm').bootstrapValidator('removeField', defectName);
+				                $('#modDataForm').bootstrapValidator('removeField', tableField.fieldName);
 				                $newRow.remove();
 				                if($modDefectPanel.find(".removeButton").length<=0){
 				                	$modDefectPanel.hide();

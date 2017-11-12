@@ -45,6 +45,7 @@ import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.common.support.excel.ExcelDataNode;
 import com.pall.portal.common.support.excel.ExcelHeaderNode;
+import com.pall.portal.common.tools.ExcelTools;
 import com.pall.portal.common.tools.JSONTools;
 import com.pall.portal.context.HolderContext;
 import com.pall.portal.init.DataConfigInitiator;
@@ -165,7 +166,6 @@ public class PolishManageController{
 			baseResponse.setResultMsg(resourceUtils.getMessage("polishmanage.controler.polishManage.exception"));
 			
 		}
-		logger.info("jsonData:"+jsonData);
 		 return jsonData;
     }
 	/*
@@ -220,9 +220,11 @@ public class PolishManageController{
 					}
 					double yield=0;
 					if(sumDefectValue!=0){
-						yield=new BigDecimal((float)sumDefectValue/polishEntity.getCasualInspectionNum()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						yield=new BigDecimal(1-(float)sumDefectValue/polishEntity.getCasualInspectionNum()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+					}else{
+						yield=1;
 					}
-					polishEntity.setYield((1-yield)*100);
+					polishEntity.setYield(yield*100);
 					baseResponse=polishService.addPolish(polishEntity);
 				}
 			}
@@ -258,9 +260,11 @@ public class PolishManageController{
 					}
 					double yield=0;
 					if(sumDefectValue!=0){
-						yield=new BigDecimal((float)sumDefectValue/polishEntity.getCasualInspectionNum()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						yield=new BigDecimal(1-(float)sumDefectValue/polishEntity.getCasualInspectionNum()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+					}else{
+						yield=1;
 					}
-					polishEntity.setYield((1-yield)*100);
+					polishEntity.setYield(yield*100);
 					baseResponse=polishService.modifyPolish(polishEntity);
 				}
 			}
@@ -322,34 +326,7 @@ public class PolishManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	Map<String,ExcelHeaderNode> fieldNameBindMap=TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
-	        	 for(PolishEntity polishEntity:polishEntitys){
-	        		 List<ExcelDataNode> excelDataNodes=new ArrayList<ExcelDataNode>();
-	        		 Field[] fields= polishEntity.getClass().getDeclaredFields();
-	        		 for(Field field:fields){
-	        			 if(null!=fieldNameBindMap.get(field.getName().toLowerCase())){
-	        				 field.setAccessible(true); 
-	        				 ExcelDataNode excelDataNode=new ExcelDataNode();
-	        				 excelDataNode.setColNum(fieldNameBindMap.get(field.getName().toLowerCase()).getColNum());
-	        				 ReflectionUtils.getField(field, polishEntity);
-	        				 excelDataNode.setData(String.valueOf(ReflectionUtils.getField(field, polishEntity)));
-	    	        		 excelDataNodes.add(excelDataNode);
-	        			 }
-	        		 }
-	        		 List<DefectEntity> defectEntitys=polishEntity.getDefects();
-	        		 if(defectEntitys!=null){
-	        			 for(DefectEntity defectEntity:defectEntitys){
-	        				 if(null!=fieldNameBindMap.get(defectEntity.getFieldName().toLowerCase())){
-		        				 ExcelDataNode excelDataNode=new ExcelDataNode();
-		        				 excelDataNode.setColNum(fieldNameBindMap.get(defectEntity.getFieldName().toLowerCase()).getColNum());
-		        				 excelDataNode.setData(String.valueOf(defectEntity.getDefectValue()));
-		    	        		 excelDataNodes.add(excelDataNode);
-		        			 }
-	        			 }
-	        		 }
-	        		 rowdatas.put(currentRowNum, excelDataNodes);
-	        		 currentRowNum++;
-	        	 }
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME), polishEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

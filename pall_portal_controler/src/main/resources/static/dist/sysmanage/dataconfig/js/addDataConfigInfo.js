@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	$("#configName").change(function(){
+		_table.draw();
+	});
     $('#addDataForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
