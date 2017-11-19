@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.portal.repository.mapper.workflow.ChemicalReagentDao"> 
+	<select id="queryChemicalReagentList" resultType="com.pall.portal.repository.entity.workflow.ChemicalReagentEntity"
+	parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity"> 
+ 		select f.cr_id crID,f.lot lot,f.input_time inputTime,f.update_time updateTime,
+f.operatorid,g.account operatorName from t_ums_workflow_chemical_reagent f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+		<if test="lot != null and lot != '' ">  
+	       AND f.lot = #{lot}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryChemicalReagentTotalRecords" resultType="int" parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity"> 
+ 		select count(1) from t_ums_workflow_chemical_reagent f  where 1=1
+		<if test="lot != null and lot != '' ">  
+	       AND f.lot = #{lot}  
+	    </if>
+ 	</select>
+ 	
+    <insert id="addChemicalReagent" parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentEntity">
+    	<selectKey keyProperty="crID" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_ums_workflow_chemical_reagent(coating_time,pf_time,input_lot_num,input_qty,fixture_num,aps_bottle,output_lot_num,
+output_qty,scrap_qty,under_iqc_qty,q_num,k_num,qc_use_qty,functional_test_qty,to_hub_qty,remain_qty,
+aps_condition,part_num,work_order_num,operatorid,input_time,update_time)
+        values(#{coatingTime},#{pfTime},#{inputLotNum},#{inputQty},#{fixtureNum},#{apsBottle},#{outputLotNum},#{outputQty},#{scrapQty},#{underIQCQty},
+        #{qNum},#{kNum},#{qcUseQty},#{functionalTestQty},#{toHUBQty},#{remainQty},#{apsCondition},#{partNum},#{workOrderNum},#{operatorid},now(),now())
+    </insert>
+    <update id="modifyChemicalReagent" parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentEntity">
+        update  t_ums_workflow_chemical_reagent f set f.coating_time=#{coatingTime},f.pf_time=#{pfTime},f.input_lot_num=#{inputLotNum},f.input_qty=#{inputQty},f.fixture_num=#{fixtureNum},f.aps_bottle=#{apsBottle},f.output_lot_num=#{outputLotNum},
+f.output_qty=#{outputQty},f.scrap_qty=#{scrapQty},f.under_iqc_qty=#{underIQCQty},f.q_num=#{qNum},f.k_num=#{kNum},f.qc_use_qty=#{qcUseQty},f.functional_test_qty=#{functionalTestQty},f.to_hub_qty=#{toHUBQty},f.remain_qty=#{remainQty},
+f.aps_condition=#{apsCondition},f.part_num=#{partNum},f.work_order_num=#{workOrderNum},f.operatorid=#{operatorid},f.update_time=now()
+        where f.pf_id=#{pfID}
+    </update>
+    <delete id="delChemicalReagent"  parameterType="java.util.List">  
+        DELETE FROM t_ums_workflow_chemical_reagent WHERE cr_id in 
+        <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+</mapper> 

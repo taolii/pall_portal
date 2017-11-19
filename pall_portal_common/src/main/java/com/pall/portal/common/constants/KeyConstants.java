@@ -106,6 +106,10 @@ public class KeyConstants {
 	 */
 	public static final String DATACONFIG_TYPE_ASSEMBLY_DEFECT="dataconfig/type/assemblyDefect";
 	/*
+	 * 数据配置表代表化学试剂配置类型
+	 */
+	public static final String DATACONFIG_TYPE_CHEMICAL_REAGENT="dataconfig/type/chemicalReagent";
+	/*
 	 * 组装流程配置表名
 	 */
 	public static final String WORKFLOW_ASSEMBLY_TABLENAME="workflow/assembly/tablename";
@@ -121,6 +125,14 @@ public class KeyConstants {
 	 * 组装管理页面excel下载子目录名称
 	 */
 	public static final String ASSEMBLY_DOWNLOAD_SUBDIRECTORY="assembly/download/subdirectory";
+	/*
+	 * 化学试剂流程配置表名
+	 */
+	public static final String WORKFLOW_CHEMICALREAGENT_TABLENAME="workflow/chemicalReagent/tablename";
+	/*
+	 * 化学试剂管理页面excel下载子目录名称
+	 */
+	public static final String CHEMICALREAGENT_DOWNLOAD_SUBDIRECTORY="chemicalReagent/download/subdirectory";
 	/*
 	 * 初始化excel样式配置对象时设置的标题栏配置名
 	 */

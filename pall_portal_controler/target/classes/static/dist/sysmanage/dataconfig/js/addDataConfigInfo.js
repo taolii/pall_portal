@@ -41,6 +41,7 @@ $(document).ready(function() {
                 });
     			$form.data('bootstrapValidator').resetForm(true);
     			$("#addDefectModal").modal("hide");
+    			$("#queryForm [name=dataType]").val($("#addDataForm [name=dataType]").val());
     			$("#btn_refresh").click();
     		}else{
     			Lobibox.alert('error', {

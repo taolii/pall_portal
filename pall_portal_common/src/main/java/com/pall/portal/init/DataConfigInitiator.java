@@ -25,6 +25,7 @@ public class DataConfigInitiator {
 	 */
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());  
 	private static Map<String,List<DataConfigEntity>> dataConfigMap=new ConcurrentHashMap<String,List<DataConfigEntity>>();
+	
 	/*
 	 * 数据配置管理服务
 	 */

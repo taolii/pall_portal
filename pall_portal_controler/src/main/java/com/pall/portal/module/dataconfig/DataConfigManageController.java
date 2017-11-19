@@ -100,6 +100,10 @@ public class DataConfigManageController{
 		dataConfigTypeEntity4.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_REMARK));
 		dataConfigTypeEntity4.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.remark"));
 		dataConfigTypes.add(dataConfigTypeEntity4);
+		DataConfigTypeEntity dataConfigTypeEntity5=new DataConfigTypeEntity();
+		dataConfigTypeEntity5.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CHEMICAL_REAGENT));
+		dataConfigTypeEntity5.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.chemical.reagent"));
+		dataConfigTypes.add(dataConfigTypeEntity5);
 		model.addAttribute("dataConfigTypes", dataConfigTypes);
 	   return "sysmanage/dataconfig/dataConfigManage";
     }

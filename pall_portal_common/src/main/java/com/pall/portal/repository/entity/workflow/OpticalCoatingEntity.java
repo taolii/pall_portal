@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /*
- * 清洗信息
+ * 光学镀膜信息
  */
 public class OpticalCoatingEntity {
 	/*

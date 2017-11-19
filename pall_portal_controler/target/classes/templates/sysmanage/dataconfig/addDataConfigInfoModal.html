@@ -25,8 +25,20 @@
 						<div class="modal-body" style="height: 300px;">
 							<div class="form-group">
 								<div class="group">
+			                         <span class="col-sm-3 control-span col-md-offset-1">
+			                               <label th:text="#{pages.dataConfig.dataConfigManage.form.dataConfigType.titile}" th:remove="tag"></label>
+			                         </span>
+			                         <div class="col-sm-7 control-input">
+										<select name="dataType" class="form-control">
+							               <option  th:each="dataConfigType:${dataConfigTypes}" th:text="${dataConfigType.dataTypeName}" th:value="${dataConfigType.dataType}">
+							              	</option>
+	                                 	</select>
+									</div>
+						        </div>
+						    </div>
+							<div class="form-group">
+								<div class="group">
 									<input type="hidden" name="token" />
-									<input type="hidden" name="dataType" />
 									<span class="col-sm-3 control-span col-md-offset-1">
 										<label th:text="#{pages.dataConfig.addDataConfigInfo.input.configname}" th:remove="tag"></label>
 									</span>
