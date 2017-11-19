@@ -205,15 +205,15 @@ $(document).ready(function() {
 			                title:Lobibox.base.OPTIONS.title.info,
 			                callback: function ($this, type) {
 			                    if (type === 'yes') {
-			                    	var pfIDs="";
+			                    	var crIDs="";
 			                    	$(selectedItems).each(function(i) {
-			                    		pfIDs=pfIDs+selectedItems[i].pfID+",";
+			                    		crIDs=crIDs+selectedItems[i].crID+",";
 			                        });
-			                    	pfIDs=pfIDs.substr(pfIDs,pfIDs.length-1);
-			                    	$.post("/workflow/delPlatedFilm",{"pfIDs":pfIDs}, function(result) {
+			                    	crIDs=crIDs.substr(crIDs,crIDs.length-1);
+			                    	$.post("/workflow/delChemicalReagent",{"crIDs":crIDs}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>化学镀膜信息删除成功</span>",
+			                                    msg: "<h3><span class='green'>生化镀膜信息删除成功</span>",
 			                                    title:Lobibox.base.OPTIONS.title.success,
 			                                    width:Lobibox.base.OPTIONS.width,
 			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
@@ -221,7 +221,7 @@ $(document).ready(function() {
 			                    			$("#btn_refresh").click();
 			                    		}else{
 			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">化学镀膜信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+			                                    msg: '<span class="red">生化镀膜信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
 			                                    title:Lobibox.base.OPTIONS.title.error,
 			                                    width:Lobibox.base.OPTIONS.width,
 			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}

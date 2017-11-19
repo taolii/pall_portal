@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	$('#addFormInPutDate').datetimepicker({  
+        format: 'YYYY-MM-DD',  
+        locale: moment.locale('zh-cn')  
+    }); 
 	$addDataForm=$('#addDataForm'),
 	$addChemicalReagentButton=$('#addChemicalReagentButton'),
 	$addChemicalReagentButton.on('click', function() {
@@ -63,101 +67,88 @@ $(document).ready(function() {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	coatingTime: {
+        	lot: {
                 validators: {
                     notEmpty: {
-                        message: 'Coating Date不能为空'
+                        message: 'Lot不能为空'
                     }
                 }
             },
-            pfTime: {
+            rawMaterial: {
                 validators: {
                     notEmpty: {
-                        message: 'Date不能为空'
+                        message: 'FIBER RAW MATERIAL不能为空'
                     }
                 }
             },
-            inputLotNum: {
+            inPutDate: {
                 validators: {
                     notEmpty: {
-                        message: 'Input LOT#不能为空'
+                        message: 'FIBER INPUT DATE不能为空'
                     }
+                }
+            },
+            coatingStation: {
+                validators: {
+                	 notEmpty: {
+                         message: 'Coating Station不能为空'
+                     }
+                }
+            },
+            docRev: {
+                validators: {
+                    notEmpty: {
+                        message: 'DOC.REV不能为空'
+                    }
+                }
+            },
+            goodsQty: {
+                validators: {
+                    notEmpty: {
+                        message: 'goods Qty(pcs)不能为空'
+                    },
+                    digits: {
+	                    message: 'goods Qty(pcs)值必须为数字'
+	                }
                 }
             },
             inputQty: {
                 validators: {
-                	 notEmpty: {
-                         message: 'Input Qty(pcs)不能为空'
-                     },
-                    digits: {
-	                    message: 'Input Qty(pcs)值必须为数字'
-	                }
-                }
-            },
-            fixtureNum: {
-                validators: {
                     notEmpty: {
-                        message: 'Fixture#不能为空'
-                    }
-                }
-            },
-            outputLotNum: {
-                validators: {
-                    notEmpty: {
-                        message: 'Output LOT#不能为空'
-                    }
-                }
-            },
-            outputQty: {
-                validators: {
-                    notEmpty: {
-                        message: 'Output Qty(pcs)不能为空'
+                        message: 'input Qty(pcs)不能为空'
                     },
                     digits: {
-	                    message: 'Output Qty(pcs)值必须为数字'
+	                    message: 'input Qty(pcs)值必须为数字'
 	                }
-                }
-            },
-            apsBottle: {
-                validators: {
-                    notEmpty: {
-                        message: 'APS Bottle不能为空'
-                    }
-                }
-            },
-            underIQCQty: {
-                validators: {
-                    notEmpty: {
-                        message: 'Under IQC Qty(pcs)不能为空'
-                    },
-                    digits: {
-	                    message: 'Under IQC Qty(pcs)值必须为数字'
-	                }
-                }
-            },
-            partNum: {
-                validators: {
-                    notEmpty: {
-                        message: 'Part NUM不能为空'
-                    }
-                }
-            },
-            workOrderNum: {
-                validators: {
-                    notEmpty: {
-                        message: 'Work Order Number不能为空'
-                    }
                 }
             }
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
     	var $form = $(e.target);
+    	if($('#addChemicalReagentPanel').find('input').length==0){
+    		Lobibox.alert('error', {
+                msg: '<span class="red">请添加混合化学试剂信息</span><br/>',
+                title:Lobibox.base.OPTIONS.title.error,
+                width:Lobibox.base.OPTIONS.width,
+                buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+            });
+    		return;
+    	}
+    	if($("#addDataForm [id=assemblyOutputLotNum]").find(".panel-body").find(":checked").length==0){
+    		Lobibox.alert('error', {
+                msg: '<span class="red">请添加组装站位信息</span><br/>',
+                title:Lobibox.base.OPTIONS.title.error,
+                width:Lobibox.base.OPTIONS.width,
+                buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+            });
+    		return;
+    	}
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/workflow/addPlatedFilm",  $form.serialize(), function(result) {
+    	$.post("/workflow/addChemicalReagent",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
-                    msg: "<h3><span class='green'>添加化学镀膜信息成功</span>",
+                    msg: "<h3><span class='green'>添加生化镀膜信息成功</span>",
                     title:Lobibox.base.OPTIONS.title.success,
                     width:Lobibox.base.OPTIONS.width,
                     buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
@@ -167,7 +158,7 @@ $(document).ready(function() {
     			$("#btn_refresh").click();
     		}else{
     			Lobibox.alert('error', {
-                    msg: '<span class="red">添加化学镀膜信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+                    msg: '<span class="red">添加生化镀膜信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
                     title:Lobibox.base.OPTIONS.title.error,
                     width:Lobibox.base.OPTIONS.width,
                     buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}

@@ -2,6 +2,7 @@ package com.pall.portal.module.workflow;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,8 +53,10 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity;
+import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity;
-import com.pall.portal.repository.entity.workflow.DefectEntity;
+import com.pall.portal.repository.entity.workflow.ChemicalReagentRelationEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.ADD;
@@ -176,25 +179,23 @@ public class ChemicalReagentManageController{
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addChemicalReagent", method= RequestMethod.POST)
-    public  @ResponseBody String addChemicalReagent(@Validated(ADD.class) OpticalCoatingEntity opticalCoatingEntity,BindingResult result,Model model,HttpServletRequest request) {
+    public  @ResponseBody String addChemicalReagent(@Validated(ADD.class) ChemicalReagentEntity chemicalReagentEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
-				int sumDefectValue=getDefectEntitys(request,opticalCoatingEntity,dataConfigEntitys);
-				sumDefectValue=sumDefectValue+getDefectEntitys(request,opticalCoatingEntity,ndataConfigEntitys);
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CHEMICAL_REAGENT));
+				chemicalReagentEntity=getFieldEntitys(request,chemicalReagentEntity,dataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
 				if(at!=null && at.getUserEntity()!=null){
-					opticalCoatingEntity.setOperatorid(at.getUserEntity().getOperatorid());
+					chemicalReagentEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				baseResponse=opticalFilmingService.addOpticalFilming(opticalCoatingEntity);
+				baseResponse=chemicalReagentService.addChemicalReagent(chemicalReagentEntity);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.addOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("chemicalReagentManage.controler.addChemicalReagent.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.addOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("chemicalReagentManage.controler.addChemicalReagent.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
@@ -202,56 +203,65 @@ public class ChemicalReagentManageController{
 	/*
 	 * 封装缺损请求参数对象
 	 */
-	private int getDefectEntitys(HttpServletRequest request,OpticalCoatingEntity opticalCoatingEntity,List<DataConfigEntity> dataConfigEntitys){
-		int sumDefectValue=0;
-		List<DefectEntity> defects=new ArrayList<DefectEntity>();
+	private ChemicalReagentEntity  getFieldEntitys(HttpServletRequest request,ChemicalReagentEntity chemicalReagentEntity,List<DataConfigEntity> dataConfigEntitys){
+		String[] assemblyOutputLotNums=request.getParameterValues("assemblyOutputLotNum");
+		if(assemblyOutputLotNums!=null && assemblyOutputLotNums.length>0){
+			if(chemicalReagentEntity.getChemicalReagentRelations()==null){
+				chemicalReagentEntity.setChemicalReagentRelations(new ArrayList<ChemicalReagentRelationEntity>());
+			}
+			for(String assemblyOutputLotNum:assemblyOutputLotNums){
+				ChemicalReagentRelationEntity chemicalReagentRelationEntity=new ChemicalReagentRelationEntity();
+				chemicalReagentRelationEntity.setAssemblyOutputLotNum(assemblyOutputLotNum);
+				chemicalReagentEntity.getChemicalReagentRelations().add(chemicalReagentRelationEntity);
+			}
+		}
+		List<ChemicalCompoundReagentsEntity> compoundReagents=new ArrayList<ChemicalCompoundReagentsEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME);
+			String chemicalReagentTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CHEMICALREAGENT_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
-					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
+					requestValue=request.getParameter(chemicalReagentTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
-						DefectEntity defectEntity=new DefectEntity();
-						defectEntity.setDataid(dataConfigEntity.getDataid());
-						defectEntity.setDefectName(dataConfigEntity.getConfigName());
-						defectEntity.setDefectType(dataConfigEntity.getDataType());
-						defectEntity.setDefectValue(Integer.parseInt(requestValue));
-						//defectEntity.setDefectID(opticalCoatingEntity.getOpfID());
-						sumDefectValue=sumDefectValue+Integer.parseInt(requestValue);
-						defects.add(defectEntity);
+						ChemicalCompoundReagentsEntity chemicalCompoundReagentsEntity=new ChemicalCompoundReagentsEntity();
+						chemicalCompoundReagentsEntity.setCompoundReagentsName(chemicalReagentTableName+dataConfigEntity.getDataid());
+						chemicalCompoundReagentsEntity.setCompoundReagentsSN(requestValue);
+						compoundReagents.add(chemicalCompoundReagentsEntity);
 					}
 			}
 		}
-		if(opticalCoatingEntity.getDefects()==null){
-			opticalCoatingEntity.setDefects(new ArrayList<DefectEntity>());
+		//不良率计算
+		if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getGoodsQty()>0){
+			double yield=new BigDecimal(1-(float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setTheoryYield(yield*100);
 		}
-		opticalCoatingEntity.getDefects().addAll(defects);
-		return sumDefectValue;
+		if(chemicalReagentEntity.getCompoundReagents()==null){
+			chemicalReagentEntity.setCompoundReagents(new ArrayList<ChemicalCompoundReagentsEntity>());
+		}
+		chemicalReagentEntity.getCompoundReagents().addAll(compoundReagents);
+		return chemicalReagentEntity;
 	}
 	/*
 	 * 修改生化镀膜信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/modChemicalReagent", method= RequestMethod.POST)
-    public  @ResponseBody String modChemicalReagent(@Validated(SAVE.class) OpticalCoatingEntity opticalCoatingEntity,BindingResult result,Model model,HttpServletRequest request) {
+    public  @ResponseBody String modChemicalReagent(@Validated(SAVE.class) ChemicalReagentEntity chemicalReagentEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
-				int sumDefectValue=getDefectEntitys(request,opticalCoatingEntity,dataConfigEntitys);
-				sumDefectValue=sumDefectValue+getDefectEntitys(request,opticalCoatingEntity,ndataConfigEntitys);
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CHEMICAL_REAGENT));
+				chemicalReagentEntity=getFieldEntitys(request,chemicalReagentEntity,dataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
 				if(at!=null && at.getUserEntity()!=null){
-					opticalCoatingEntity.setOperatorid(at.getUserEntity().getOperatorid());
+					chemicalReagentEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				baseResponse=opticalFilmingService.modifyOpticalFilming(opticalCoatingEntity);
+				baseResponse=chemicalReagentService.modifyChemicalReagent(chemicalReagentEntity);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.modifyOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("chemicalReagentManage.controler.modifyChemicalReagent.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.modifyOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("chemicalReagentManage.controler.modifyChemicalReagent.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
