@@ -53,6 +53,7 @@ public class ChemicalReagentEntity {
 	/*
 	 * 理论良率
 	 */
+	@NotNull(message="{chemicalReagentManage.form.valid.chemicalReagentEntity.theoryYield.NotEmpty",groups={SAVE.class,ADD.class})
 	private double theoryYield;
 	/*
 	 * 实际良率

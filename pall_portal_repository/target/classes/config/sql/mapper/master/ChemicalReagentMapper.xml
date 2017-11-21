@@ -63,7 +63,7 @@
     	</foreach> 
     </insert>
     <select id="queryChemicalCompoundReagents" resultType="com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity" parameterType="java.util.List"> 
- 		select f.cr_id crID,f.compound_reagents_name compoundReagentsName,f.compound_reagents_sn compoundReagentsSN from t_ums_workflow_compound_reagents f cr_id in 
+ 		select f.cr_id crID,f.compound_reagents_name compoundReagentsName,f.compound_reagents_sn compoundReagentsSN from t_ums_workflow_compound_reagents f where cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 
@@ -71,7 +71,7 @@
  	<select id="queryChemicalReagentRelations" resultType="com.pall.portal.repository.entity.workflow.ChemicalReagentRelationEntity" parameterType="java.util.List"> 
  		select a.cr_id crID,a.out_lot_num assemblyOutputLotNum,b.output_lot_num pfOutputLotNum,c.output_lot_num ocOutputLotNum from t_ums_workflow_chemical_reagent_relation a
 		left join t_ums_workflow_platedfilm b on a.out_lot_num=b.output_lot_num LEFT JOIN t_ums_workflow_opticalfilming c on c.output_lot_num=b.output_lot_num
-		where a.cr_id
+		where a.cr_id in
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 

@@ -137,27 +137,68 @@ $(document).ready(function() {
 			    editItemInit : function(item) {
 			        if (!item) {
 			            return;
-			        }			   
-			       $("#modDataForm [name=pfID]").val(item.pfID);
-			       $("#modDataForm [name=coatingTime]").val(item.coatingTime);
-			       $("#modDataForm [name=pfTime]").val(item.pfTime);
-			       $("#modDataForm [name=inputLotNum]").val(item.inputLotNum);
+			        }
+			       $chemicalReagentTableName=$("#chemicalReagentTableName"),
+			       $modChemicalReagentPanel=$('#modChemicalReagentPanel'),
+			       $crDataConfigType=$('#crDataConfigType'),
+			       $modTemplate = $('#template');
+			       $("#modDataForm [name=crID]").val(item.crID);
+			       $("#modDataForm [name=lot]").val(item.lot);
+			       $("#modDataForm [name=rawMaterial]").val(item.rawMaterial);
+			       $("#modDataForm [name=inPutDate]").val(item.inPutDate);
+			       $("#modDataForm [name=coatingStation]").val(item.coatingStation);
+			       $("#modDataForm [name=docRev]").val(item.docRev);
+			       $("#modDataForm [name=goodsQty]").val(item.goodsQty);
 			       $("#modDataForm [name=inputQty]").val(item.inputQty);
-			       $("#modDataForm [name=fixtureNum]").val(item.fixtureNum);
-			       $("#modDataForm [name=apsBottle]").val(item.apsBottle);
-			       $("#modDataForm [name=outputLotNum]").val(item.outputLotNum);
-			       $("#modDataForm [name=outputQty]").val(item.outputQty);
-			       $("#modDataForm [name=scrapQty]").val(item.scrapQty);
-			       $("#modDataForm [name=underIQCQty]").val(item.underIQCQty);
-			       $("#modDataForm [name=qNum]").val(item.qNum);
-			       $("#modDataForm [name=kNum]").val(item.kNum);
-			       $("#modDataForm [name=qcUseQty]").val(item.qcUseQty);
-			       $("#modDataForm [name=underIQCQty]").val(item.underIQCQty);
-			       $("#modDataForm [name=toHUBQty]").val(item.toHUBQty);
-			       $("#modDataForm [name=remainQty]").val(item.remainQty);
-			       $("#modDataForm [name=apsCondition]").val(item.apsCondition);
-			       $("#modDataForm [name=partNum]").val(item.partNum);
-			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
+			       $("#modDataForm [name=theoryYield]").val(item.theoryYield);
+			       $.each(tableFieldBinds, function(index, tableField){
+				   		if(tableField.fieldName.indexOf($chemicalReagentTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
+				   			$modChemicalReagentPanel.show();
+				            $newRow   =$modTemplate.clone().removeAttr('id').find('.chemicalReagent').html(tableField.headline).end();
+				            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
+				        	on('click', '.removeButton', function() {
+				        		$modDataForm.bootstrapValidator('removeField', $modChemicalReagent.val());
+				                $newRow.remove();
+				                if($modChemicalReagentPanel.find(".removeButton").length<=0){
+				                	$modChemicalReagentPanel.hide();
+				                }
+				            });
+				          
+				            $("#modWorkingface"+$crDataConfigType.val()).find(".panel-body").each(function(){
+				            	$(this).append($newRow).show();
+							});
+				            $("#modDataForm [name="+tableField.fieldName+"]").val($(item).attr(tableField.fieldName));
+				            $('#modDataForm').bootstrapValidator('addField', tableField.fieldName, {
+				            	message: '试剂编号不能为空',
+					            validators: {
+					            	notEmpty: {
+				                        message: '试剂编号不能为空'
+				                    }
+					            }
+					        });
+				   		}
+				       });
+				       if($modChemicalReagentPanel.find(".removeButton").length<=0){
+				    	   $modChemicalReagentPanel.hide();
+		                }
+				       //更新组装站位信息
+				       $checkTemplate = $('#checkTemplate');
+				       $assemblyOutputLotNumPanel=$("#modDataForm [id=assemblyOutputLotNum]").find(".panel-body");
+				       var assemblyOutputLotNums=item.assemblyOutputLotNums.split(",");
+				       if(assemblyOutputLotNums){
+				    	   for(i in assemblyOutputLotNums)
+				    	   {
+				    	       if(assemblyOutputLotNums[i]){
+				    	    	   $newRow=$checkTemplate.clone().removeAttr('id').find('input').val(assemblyOutputLotNums[i]).end().
+				    	        	on('click', '.removeButton', function() {
+				    	                $(this).parent().parent().remove();
+				    	            });
+				    	    	   $assemblyOutputLotNumPanel.each(function(){
+				    	        	$(this).append($newRow).show();
+				    			});
+				    	       };
+				    	   }
+				       }
 			    },
 			    addItemShow: function() {
 			    	$addModal.draggable({ 
@@ -176,7 +217,7 @@ $(document).ready(function() {
 			    	$modModal.modal("show");
 			    },
 			    exportItem:function(){
-			         $.post("/workflow/exportPlatedFilm",$queryForm.serializeArray(), function(result) {
+			         $.post("/workflow/exportChemicalReagent",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
 		    	    		 var downUrl = '/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;

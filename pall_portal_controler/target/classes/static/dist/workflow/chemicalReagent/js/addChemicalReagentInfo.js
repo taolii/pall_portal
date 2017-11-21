@@ -121,6 +121,16 @@ $(document).ready(function() {
 	                    message: 'input Qty(pcs)值必须为数字'
 	                }
                 }
+            },
+            theoryYield: {
+                validators: {
+                    notEmpty: {
+                        message: 'theoretical Yield不能为空'
+                    },
+                    digits: {
+	                    message: 'theoretical Yield值必须为数字'
+	                }
+                }
             }
         }
     }).on('success.form.bv', function(e) {

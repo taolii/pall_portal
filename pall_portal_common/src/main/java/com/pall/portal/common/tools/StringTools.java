@@ -37,4 +37,18 @@ public class StringTools {
 		}
 		return indexStr.length();
 	}
+	/**
+	 * join string.
+	 * 
+	 * @param array String array.
+	 * @return String.
+	 */
+	public static String join(String[] array)
+	{
+		if( array.length == 0 ) return "";
+		StringBuilder sb = new StringBuilder();
+		for( String s : array )
+			sb.append(s);
+		return sb.toString();
+	}
 }

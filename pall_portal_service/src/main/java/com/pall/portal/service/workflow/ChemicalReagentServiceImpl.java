@@ -10,19 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.alibaba.druid.util.StringUtils;
 import com.pall.portal.common.constants.IResponseConstants;
-import com.pall.portal.common.constants.KeyConstants;
 import com.pall.portal.common.datatables.Entity.DatatablesView;
 import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
-import com.pall.portal.init.UmsConfigInitiator;
 import com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentRelationEntity;
-import com.pall.portal.repository.entity.workflow.CleanEntity;
-import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.mapper.workflow.ChemicalReagentDao;
 
 /*
@@ -54,8 +51,19 @@ public class ChemicalReagentServiceImpl implements ChemicalReagentService{
 				datatablesViews.setData(chemicalReagentEntitys);
 				Map<Integer,ChemicalReagentEntity> chemicalReagentMap=new HashMap<Integer,ChemicalReagentEntity>();
 				for(ChemicalReagentEntity chemicalReagentEntity:chemicalReagentEntitys){
+					if(chemicalReagentEntity.getChemicalReagentRelations()==null){
+						chemicalReagentEntity.setChemicalReagentRelations(new ArrayList<ChemicalReagentRelationEntity>());
+					}
+					if(chemicalReagentEntity.getCompoundReagents()==null){
+						chemicalReagentEntity.setCompoundReagents(new ArrayList<ChemicalCompoundReagentsEntity>());
+					}
+					chemicalReagentEntity.setAssemblyOutputLotNums("");
+					chemicalReagentEntity.setPfOutputLotNums("");
+					chemicalReagentEntity.setOcOutputLotNums("");
 					chemicalReagentMap.put(chemicalReagentEntity.getCrID(), chemicalReagentEntity);
 				}
+				getChemicalCompoundReagents(chemicalReagentMap);
+				getChemicalReagentRelations(chemicalReagentMap);
 			}
 			baseResponse.setDatatablesView(datatablesViews);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
@@ -70,43 +78,46 @@ public class ChemicalReagentServiceImpl implements ChemicalReagentService{
 	 * 封装化学混合试剂信息
 	 */
 	private List<ChemicalReagentEntity> getChemicalCompoundReagents(Map<Integer,ChemicalReagentEntity> chemicalReagentMap) throws Exception{
-		/*List<Integer> crIDs=new ArrayList<Integer>();
+		List<Integer> crIDs=new ArrayList<Integer>();
+		List<ChemicalReagentEntity> chemicalReagents=new ArrayList<ChemicalReagentEntity>();
 		crIDs.addAll(chemicalReagentMap.keySet());
 		List<ChemicalCompoundReagentsEntity> chemicalCompoundReagents=chemicalReagentDao.queryChemicalCompoundReagents(crIDs);
 		if(chemicalCompoundReagents!=null && chemicalCompoundReagents.size()>0){
 			for(ChemicalCompoundReagentsEntity ChemicalCompoundReagentsEntity:chemicalCompoundReagents){
-				if(ChemicalCompoundReagentsEntity.)
+				if(chemicalReagentMap.get(ChemicalCompoundReagentsEntity.getCrID())!=null){
+					chemicalReagentMap.get(ChemicalCompoundReagentsEntity.getCrID()).getCompoundReagents().add(ChemicalCompoundReagentsEntity);
+				}
 			}
-		}*/
-		return null;
+		}
+		chemicalReagents.addAll(chemicalReagentMap.values());
+		return chemicalReagents;
 	}
 	/*
 	 * 封装化学试剂关系对象信息
 	 */
 	private List<ChemicalReagentEntity> getChemicalReagentRelations(Map<Integer,ChemicalReagentEntity> chemicalReagentMap) throws Exception{
-		/*List<Integer> defectids=new ArrayList<Integer>();
-		Map<Integer,CleanEntity> map=new HashMap<Integer,CleanEntity>();
-		for(CleanEntity cleanEntity:cleanEntitys){
-			defectids.add(cleanEntity.getCleanID());
-			map.put(cleanEntity.getCleanID(),cleanEntity);
-		}
-		if(defectids.size()>0){
-			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF)));
-			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
-			if(null!=defectEntitys){
-				for(DefectEntity defectEntity:defectEntitys){
-					if(null!=map.get(defectEntity.getDefectID())){
-						if(null==map.get(defectEntity.getDefectID()).getDefects()){
-							map.get(defectEntity.getDefectID()).setDefects(new ArrayList<DefectEntity>());
-						}
-						map.get(defectEntity.getDefectID()).getDefects().add(defectEntity);
+		List<Integer> crIDs=new ArrayList<Integer>();
+		List<ChemicalReagentEntity> chemicalReagents=new ArrayList<ChemicalReagentEntity>();
+		crIDs.addAll(chemicalReagentMap.keySet());
+		List<ChemicalReagentRelationEntity> chemicalReagentRelations=chemicalReagentDao.queryChemicalReagentRelations(crIDs);
+		if(chemicalReagentRelations!=null && chemicalReagentRelations.size()>0){
+			for(ChemicalReagentRelationEntity chemicalReagentRelationEntity:chemicalReagentRelations){
+				if(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID())!=null){
+					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getAssemblyOutputLotNum())){
+						chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setAssemblyOutputLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getAssemblyOutputLotNums()+chemicalReagentRelationEntity.getAssemblyOutputLotNum()+",");
 					}
+					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getPfOutputLotNum())){
+						chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setPfOutputLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getPfOutputLotNums()+chemicalReagentRelationEntity.getPfOutputLotNum()+",");
+					}
+					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getOcOutputLotNum())){
+						chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOcOutputLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getOcOutputLotNums()+chemicalReagentRelationEntity.getOcOutputLotNum()+",");
+					}
+					chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getChemicalReagentRelations().add(chemicalReagentRelationEntity);
 				}
 			}
-		}*/
-		return null;
+		}
+		chemicalReagents.addAll(chemicalReagentMap.values());
+		return chemicalReagents;
 	}
 	@Override
 	public BaseResponse addChemicalReagent(ChemicalReagentEntity chemicalReagentEntity) throws Exception {
@@ -227,6 +238,23 @@ public class ChemicalReagentServiceImpl implements ChemicalReagentService{
 			chemicalReagentQueryFormEntity.setPageSize(totalRecords);
 			List<ChemicalReagentEntity> chemicalReagentEntitys=chemicalReagentDao.queryChemicalReagentList(chemicalReagentQueryFormEntity);
 			baseResponse.setReturnObjects(chemicalReagentEntitys);
+			if(chemicalReagentEntitys!=null){
+				Map<Integer,ChemicalReagentEntity> chemicalReagentMap=new HashMap<Integer,ChemicalReagentEntity>();
+				for(ChemicalReagentEntity chemicalReagentEntity:chemicalReagentEntitys){
+					if(chemicalReagentEntity.getChemicalReagentRelations()==null){
+						chemicalReagentEntity.setChemicalReagentRelations(new ArrayList<ChemicalReagentRelationEntity>());
+					}
+					if(chemicalReagentEntity.getCompoundReagents()==null){
+						chemicalReagentEntity.setCompoundReagents(new ArrayList<ChemicalCompoundReagentsEntity>());
+					}
+					chemicalReagentEntity.setAssemblyOutputLotNums("");
+					chemicalReagentEntity.setPfOutputLotNums("");
+					chemicalReagentEntity.setOcOutputLotNums("");
+					chemicalReagentMap.put(chemicalReagentEntity.getCrID(), chemicalReagentEntity);
+				}
+				getChemicalCompoundReagents(chemicalReagentMap);
+				getChemicalReagentRelations(chemicalReagentMap);
+			}
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.exportOpticalFilming.exception"),e);

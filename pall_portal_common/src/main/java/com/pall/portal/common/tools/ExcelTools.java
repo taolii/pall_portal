@@ -1,6 +1,7 @@
 package com.pall.portal.common.tools;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,9 +9,12 @@ import java.util.Map;
 
 import org.springframework.util.ReflectionUtils;
 
+import com.alibaba.druid.util.StringUtils;
 import com.pall.portal.common.support.excel.ExcelDataNode;
 import com.pall.portal.common.support.excel.ExcelHeaderNode;
 import com.pall.portal.init.TableDataConfigInitiator;
+import com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity;
+import com.pall.portal.repository.entity.workflow.DefectEntity;
 
 public class ExcelTools {
 	/*
@@ -25,16 +29,50 @@ public class ExcelTools {
 		Map<String,ExcelHeaderNode> fieldNameBindMap=TableDataConfigInitiator.getExcelFieldBindConfig(tableName);
 	   	 for(Object objEntity:objEntitys){
 	   		 List<ExcelDataNode> excelDataNodes=new ArrayList<ExcelDataNode>();
-	   		 Field[] fields= objEntity.getClass().getDeclaredFields();
-	   		 for(Field field:fields){
-	   			 if(null!=fieldNameBindMap.get(field.getName().toLowerCase())){
-	   				 field.setAccessible(true); 
-	   				 ExcelDataNode excelDataNode=new ExcelDataNode();
-	   				 excelDataNode.setColNum(fieldNameBindMap.get(field.getName().toLowerCase()).getColNum());
-	   				 ReflectionUtils.getField(field, objEntity);
-	   				 Object obj=ReflectionUtils.getField(field, objEntity);
-	   				 excelDataNode.setData(obj==null?"":String.valueOf(obj));
-		        		 excelDataNodes.add(excelDataNode);
+	   		 Map<String,Field> fieldMap=ReflectUtils.getBeanPropertyFields(objEntity.getClass());
+	   		 if(fieldMap!=null && fieldMap.size()>0){
+	   			 for(String fieldName:fieldMap.keySet()){
+	   				fieldMap.get(fieldName).setAccessible(true); 
+	   				if(ReflectUtils.isPrimitive(fieldMap.get(fieldName).getType()) && null!=fieldNameBindMap.get(fieldName)){
+		   				ExcelDataNode excelDataNode=new ExcelDataNode();
+		   				excelDataNode.setColNum(fieldNameBindMap.get(fieldName).getColNum());
+		   				Object obj=ReflectionUtils.getField(fieldMap.get(fieldName), objEntity);
+		   				excelDataNode.setData(obj==null?"":String.valueOf(obj));
+			        	excelDataNodes.add(excelDataNode);
+		   			 }else if(fieldMap.get(fieldName).getType() == java.util.List.class){
+		   				 if(fieldMap.get(fieldName).getGenericType() instanceof ParameterizedType){
+		   					ParameterizedType pt = (ParameterizedType)fieldMap.get(fieldName).getGenericType();
+		   					if(pt!=null &&  pt.getActualTypeArguments()!=null && pt.getActualTypeArguments().length>0){
+		   						if(pt.getActualTypeArguments()[0]==ChemicalCompoundReagentsEntity.class){
+		   							List<ChemicalCompoundReagentsEntity> chemicalCompoundReagents=(List<ChemicalCompoundReagentsEntity>)ReflectionUtils.getField(fieldMap.get(fieldName), objEntity);
+		   							if(chemicalCompoundReagents!=null){
+		   								for(ChemicalCompoundReagentsEntity ChemicalCompoundReagentsEntity:chemicalCompoundReagents){
+		   									if(StringUtils.isEmpty(ChemicalCompoundReagentsEntity.getCompoundReagentsName()))continue;
+				   							 if(null!=fieldNameBindMap.get(ChemicalCompoundReagentsEntity.getCompoundReagentsName())){
+									   				ExcelDataNode excelDataNode=new ExcelDataNode();
+									   				excelDataNode.setColNum(fieldNameBindMap.get(ChemicalCompoundReagentsEntity.getCompoundReagentsName()).getColNum());
+									   				excelDataNode.setData(ChemicalCompoundReagentsEntity.getCompoundReagentsSN());
+										        	excelDataNodes.add(excelDataNode);
+							   				   }
+				   							}
+		   							}
+		   						}else if(pt.getActualTypeArguments()[0]==DefectEntity.class){
+		   							List<DefectEntity> defectEntitys=(List<DefectEntity>)ReflectionUtils.getField(fieldMap.get(fieldName), objEntity);
+		   							if(defectEntitys!=null){
+		   								for(DefectEntity defectEntity:defectEntitys){
+		   									if(StringUtils.isEmpty(defectEntity.getFieldName()))continue;
+				   							 if(null!=fieldNameBindMap.get(defectEntity.getFieldName())){
+									   				ExcelDataNode excelDataNode=new ExcelDataNode();
+									   				excelDataNode.setColNum(fieldNameBindMap.get(defectEntity.getFieldName()).getColNum());
+									   				excelDataNode.setData(String.valueOf(defectEntity.getDefectValue()));
+										        	excelDataNodes.add(excelDataNode);
+							   				   }
+				   							}
+		   							}
+		   						}
+		   					}
+		   				 }
+		   			 }
 	   			 }
 	   		 }
 	   		 rowdatas.put(currentRowNum, excelDataNodes);

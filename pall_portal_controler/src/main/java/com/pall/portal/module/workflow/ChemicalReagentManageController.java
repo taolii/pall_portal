@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.util.IOUtils;
 import com.google.common.io.Files;
@@ -44,7 +46,6 @@ import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.common.support.excel.ExcelDataNode;
 import com.pall.portal.common.support.excel.ExcelHeaderNode;
 import com.pall.portal.common.tools.ExcelTools;
-import com.pall.portal.common.tools.JSONTools;
 import com.pall.portal.context.HolderContext;
 import com.pall.portal.init.DataConfigInitiator;
 import com.pall.portal.init.TableDataConfigInitiator;
@@ -61,10 +62,8 @@ import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.ADD;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.SAVE;
-import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
 import com.pall.portal.service.excel.IExcelHandler;
 import com.pall.portal.service.workflow.ChemicalReagentService;
-import com.pall.portal.service.workflow.OpticalFilmingService;
 /*
  * 生化镀膜管理控制器
  */
@@ -79,8 +78,6 @@ public class ChemicalReagentManageController{
 	/*
 	 * 工作流服务管理接口
 	 */
-	@Autowired
-	private OpticalFilmingService opticalFilmingService;
 	@Autowired
 	private ChemicalReagentService chemicalReagentService;
 	/*
@@ -103,6 +100,7 @@ public class ChemicalReagentManageController{
 		model.addAttribute("assemblyTableHeaderConfigs", assemblyTableHeaderConfigs);
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CHEMICALREAGENT_TABLENAME));
 		model.addAttribute("crDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CHEMICAL_REAGENT)));
+		model.addAttribute("crDataConfigType", UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CHEMICAL_REAGENT));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
 		model.addAttribute("remarkDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_REMARK)));
@@ -164,7 +162,7 @@ public class ChemicalReagentManageController{
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> chemicalReagentTypes=new ArrayList<String>();
 				chemicalReagentTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CHEMICALREAGENT_TABLENAME));
-				jsonData= JSONTools.defectsOverturnFiled(jsonData,chemicalReagentTypes);
+				jsonData= chemicalReagentOverturnFiled(jsonData,chemicalReagentTypes);
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("chemicalReagentManage.controler.chemicalReagentManage.exception"),e);
@@ -174,6 +172,37 @@ public class ChemicalReagentManageController{
 		}
 		 return jsonData;
     }
+	public  String chemicalReagentOverturnFiled(String jsonData,List<String> chemicalReagentTypes){
+		JSONObject jsonObject=JSON.parseObject(jsonData);
+		JSONArray jsonArray=jsonObject.getJSONObject("datatablesView").getJSONArray("data");
+		for(int i=0;i<jsonArray.size();i++){
+			JSONObject tempjsonObject=jsonArray.getJSONObject(i);
+			JSONArray chemicalReagentJSONArray=tempjsonObject.getJSONArray("compoundReagents");
+			if(chemicalReagentJSONArray==null)continue;
+			for(int j=0;j<chemicalReagentJSONArray.size();j++){
+				tempjsonObject.put(chemicalReagentJSONArray.getJSONObject(j).getString("compoundReagentsName"),chemicalReagentJSONArray.getJSONObject(j).getString("compoundReagentsSN"));
+			}
+			tempjsonObject.remove("compoundReagents");
+		}
+		Map<String,ExcelHeaderNode> tableFieldBindMap=null;
+		if(chemicalReagentTypes!=null){
+			for(String chemicalReagentType:chemicalReagentTypes){
+				tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(chemicalReagentType);
+				if(tableFieldBindMap!=null){
+					for(String fieldName:tableFieldBindMap.keySet()){
+						for(int i=0;i<jsonArray.size();i++){
+							JSONObject tempjsonObject=jsonArray.getJSONObject(i);
+							if(tempjsonObject.get(fieldName)==null){
+								tempjsonObject.put(fieldName,"");
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return JSON.toJSONString(jsonObject,SerializerFeature.WriteMapNullValue);
+	}
 	/*
 	 * 添加生化镀膜信息
 	 */
@@ -230,9 +259,13 @@ public class ChemicalReagentManageController{
 			}
 		}
 		//不良率计算
-		if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getGoodsQty()>0){
-			double yield=new BigDecimal(1-(float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			chemicalReagentEntity.setTheoryYield(yield*100);
+		if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getInputQty()>0){
+			double yield=new BigDecimal((float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setActualYield(yield*100);
+		}
+		if(chemicalReagentEntity.getTheoryYield()!=0){
+			double yield=new BigDecimal((float)chemicalReagentEntity.getActualYield()/chemicalReagentEntity.getTheoryYield()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setTheoryActualYield(yield*100);
 		}
 		if(chemicalReagentEntity.getCompoundReagents()==null){
 			chemicalReagentEntity.setCompoundReagents(new ArrayList<ChemicalCompoundReagentsEntity>());
@@ -291,32 +324,32 @@ public class ChemicalReagentManageController{
 	 * 导出生化镀膜信息
 	 */
 	@RequestMapping(value="workflow/exportChemicalReagent", method= RequestMethod.POST)
-    public @ResponseBody String exportChemicalReagent(Model model,OpticalFilmingQueryFormEntity  opticalFilmingQueryFormEntity, HttpServletRequest request) {
+    public @ResponseBody String exportChemicalReagent(Model model,ChemicalReagentQueryFormEntity  chemicalReagentQueryFormEntity, HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
-			baseResponse=opticalFilmingService.exportOpticalFilming(opticalFilmingQueryFormEntity);
+			baseResponse=chemicalReagentService.exportChemicalReagent(chemicalReagentQueryFormEntity);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception"),e);
+			logger.error(resourceUtils.getMessage("chemicalReagentManage.controler.exportChemicalReagent.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("chemicalReagentManage.controler.exportChemicalReagent.exception"));
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
-	        List<OpticalCoatingEntity> opticalCoatingEntitys=(List<OpticalCoatingEntity>)baseResponse.getReturnObjects();
+	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CHEMICALREAGENT_TABLENAME));
+	        List<ChemicalReagentEntity> chemicalReagentEntitys=(List<ChemicalReagentEntity>)baseResponse.getReturnObjects();
 	        
 	        int currentRowNum=excelheadlinesMap.size();
 	        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
-	        if(null!=opticalCoatingEntitys && opticalCoatingEntitys.size()>0){
+	        if(null!=chemicalReagentEntitys && chemicalReagentEntitys.size()>0){
 	        	if(!StringUtils.isEmpty(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
-	        		if(opticalCoatingEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+	        		if(chemicalReagentEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
 	        			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-	        			baseResponse.setResultMsg(resourceUtils.getMessage("copticalfilmingManage.controler.exportOpticalFilming.records.limits")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
+	        			baseResponse.setResultMsg(resourceUtils.getMessage("chemicalReagentManage.controler.exportChemicalReagent.records.limits")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
 	        			baseResponse.setReturnObjects(null);
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME), opticalCoatingEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CHEMICALREAGENT_TABLENAME), chemicalReagentEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();
@@ -324,14 +357,14 @@ public class ChemicalReagentManageController{
         	downloadFileFullPath.append(File.separator);
         	downloadFileFullPath.append(downloadFilePath);
         	downloadFileFullPath.append(File.separator);
-        	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DOWNLOAD_SUBDIRECTORY));
+        	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.CHEMICALREAGENT_DOWNLOAD_SUBDIRECTORY));
         	downloadFileFullPath.append(File.separator);
         	
         	//设置下载保存文件路径名称
         	StringBuilder fileName=new StringBuilder();
         	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
         	fileName.append("_");
-        	fileName.append(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.filename"));
+        	fileName.append(resourceUtils.getMessage("chemicalReagentManage.controler.exportChemicalReagent.filename"));
         	fileName.append("_");
         	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
         	fileName.append(sf.format(new Date()));
@@ -340,19 +373,19 @@ public class ChemicalReagentManageController{
 	        try {
 	        	Files.createParentDirs(new File(downloadFileFullPath.toString()+fileName.toString()));
 	        	out=new FileSystemResource(downloadFileFullPath.toString()+fileName.toString()).getOutputStream();
-				Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.filename"), excelheadlinesMap, rowdatas);
+				Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("chemicalReagentManage.controler.exportChemicalReagent.filename"), excelheadlinesMap, rowdatas);
 				workbook.write(out);
 				List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
 				ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
 				excelSaveEntity.setFileName(fileName.toString());
-				excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DOWNLOAD_SUBDIRECTORY));
+				excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.CHEMICALREAGENT_DOWNLOAD_SUBDIRECTORY));
 				excelSaveEntitys.add(excelSaveEntity);
 				baseResponse.setReturnObjects(excelSaveEntitys);
 				return JSON.toJSONString(baseResponse);
 			} catch (Exception e) {
-				logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception"),e);
+				logger.error(resourceUtils.getMessage("chemicalReagentManage.controler.exportChemicalReagent.records.limits"),e);
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-				baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.exportOpticalFilming.exception")+":"+e.toString());
+				baseResponse.setResultMsg(resourceUtils.getMessage("chemicalReagentManage.controler.exportChemicalReagent.records.limits")+":"+e.toString());
 			}finally{
 				IOUtils.close(out);
 			}

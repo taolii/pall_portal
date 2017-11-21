@@ -126,7 +126,46 @@ public class TableDataConfigInitiator {
 						colsObjectNumDynamicDataMap.put(tableHeaderConfig.getColNum(), colsObjectNumDynamicDataMap.get(tableHeaderConfig.getColNum())+1);
 					}
 				}
-				for(int rowNum:tableRowHeaderConfigMap.keySet()){
+				if(colsObjectNumDynamicDataMap!=null && colsObjectNumDynamicDataMap.size()>0){
+					int tempDynamicColNum=0;
+					for(int dynamicColNum:colsObjectNumDynamicDataMap.keySet()){
+						if(tempDynamicColNum==0){
+							tempDynamicColNum=dynamicColNum;
+						}else if(dynamicColNum>tempDynamicColNum){
+							tempDynamicColNum=colsObjectNumDynamicDataMap.get(tempDynamicColNum)+dynamicColNum-1;
+						}
+						for(int rowNum:tableRowHeaderConfigMap.keySet()){
+							List<TableHeaderConfigEntity> tempTableHeaderConfigs=tableRowHeaderConfigMap.get(rowNum);
+							Collections.sort(tempTableHeaderConfigs);
+							TableHeaderConfigEntity temptableHeaderConfig=null;
+							for(TableHeaderConfigEntity tableHeaderConfig:tempTableHeaderConfigs){
+								//大于当前列的，则各行列累加
+								if(tableHeaderConfig.getColNum()>tempDynamicColNum && colsObjectNumDynamicDataMap.get(dynamicColNum)>1){
+									tableHeaderConfig.setColNum(tableHeaderConfig.getColNum()+colsObjectNumDynamicDataMap.get(dynamicColNum)-1);
+								}else if(tableHeaderConfig.getColNum()==tempDynamicColNum){
+									if(dynamicRowNum==rowNum){
+										if(temptableHeaderConfig==null){
+											temptableHeaderConfig=tableHeaderConfig;
+										}else{
+											tableHeaderConfig.setColNum(temptableHeaderConfig.getColNum()+temptableHeaderConfig.getCols());
+											temptableHeaderConfig=tableHeaderConfig;
+										}
+									}else{
+										//不是当前行,则占用列数累加
+										tableHeaderConfig.setCols(tableHeaderConfig.getCols()+colsObjectNumDynamicDataMap.get(dynamicColNum)-1);
+									}
+								}else{
+									if(dynamicRowNum!=rowNum){
+										if(tableHeaderConfig.getCols()>1 && tableHeaderConfig.getColNum()+tableHeaderConfig.getCols()>tempDynamicColNum){
+											tableHeaderConfig.setCols(tableHeaderConfig.getCols()+colsObjectNumDynamicDataMap.get(dynamicColNum)-1);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				/*for(int rowNum:tableRowHeaderConfigMap.keySet()){
 					List<TableHeaderConfigEntity> tempTableHeaderConfigs=tableRowHeaderConfigMap.get(rowNum);
 					Collections.sort(tempTableHeaderConfigs);
 					TableHeaderConfigEntity temptableHeaderConfig=null;
@@ -146,13 +185,22 @@ public class TableDataConfigInitiator {
 							continue;
 						}
 						if(temptableHeaderConfig!=null){
-							tableHeaderConfig.setColNum(temptableHeaderConfig.getColNum()+temptableHeaderConfig.getCols());
+							if(colsObjectNumDynamicDataMap!=null){
+								for(Integer colNum:colsObjectNumDynamicDataMap.keySet()){
+									if(tableHeaderConfig.getColNum()>colNum){
+										tableHeaderConfig.setColNum(tableHeaderConfig.getColNum()+colsObjectNumDynamicDataMap.get(colNum));
+									}
+								}
+							}
+							if(tableHeaderConfig.getColNum()<=temptableHeaderConfig.getColNum()){
+								tableHeaderConfig.setColNum(temptableHeaderConfig.getColNum()+temptableHeaderConfig.getCols());
+							}
 							temptableHeaderConfig=tableHeaderConfig;
 						}else if(dynamicRowNum==rowNum){
 							temptableHeaderConfig=tableHeaderConfig;
 						}
 					}
-				}
+				}*/
 			}
 		}
 	}
@@ -283,7 +331,7 @@ public class TableDataConfigInitiator {
 			for(Integer rowNum:tempMap.keySet()){
 				for(ExcelHeaderNode excelHeaderNode:tempMap.get(rowNum)){
 					if(!StringUtils.isEmpty(excelHeaderNode.getFieldName())){
-						tempExcelFieldBindConfigMap.put(excelHeaderNode.getFieldName().toLowerCase(), excelHeaderNode);
+						tempExcelFieldBindConfigMap.put(excelHeaderNode.getFieldName(), excelHeaderNode);
 					}
 				}
 			}
