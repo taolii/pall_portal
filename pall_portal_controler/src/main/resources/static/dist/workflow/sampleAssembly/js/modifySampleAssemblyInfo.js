@@ -155,5 +155,12 @@ $(document).ready(function() {
                 });
     		}
         },'json'); 
+    }).on('error.form.bv', function(e, data) {
+    	Lobibox.alert('error', {
+            msg: '<span class="red">参数非法，请检查参数</span>',
+            title:Lobibox.base.OPTIONS.title.error,
+            width:Lobibox.base.OPTIONS.width,
+            buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+        });
     });
 });
