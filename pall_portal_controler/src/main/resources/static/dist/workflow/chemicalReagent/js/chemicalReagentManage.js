@@ -152,6 +152,7 @@ $(document).ready(function() {
 			       $("#modDataForm [name=goodsQty]").val(item.goodsQty);
 			       $("#modDataForm [name=inputQty]").val(item.inputQty);
 			       $("#modDataForm [name=theoryYield]").val(item.theoryYield);
+			       $("#modWorkingface"+$crDataConfigType.val()).find(".panel-body").empty();
 			       $.each(tableFieldBinds, function(index, tableField){
 				   		if(tableField.fieldName.indexOf($chemicalReagentTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
 				   			$modChemicalReagentPanel.show();
@@ -185,6 +186,7 @@ $(document).ready(function() {
 				       //更新组装站位信息
 				       $checkTemplate = $('#checkTemplate');
 				       $assemblyOutputLotNumPanel=$("#modDataForm [id=assemblyOutputLotNum]").find(".panel-body");
+				       $assemblyOutputLotNumPanel.empty();
 				       var assemblyOutputLotNums=item.assemblyOutputLotNums.split(",");
 				       if(assemblyOutputLotNums){
 				    	   for(i in assemblyOutputLotNums)

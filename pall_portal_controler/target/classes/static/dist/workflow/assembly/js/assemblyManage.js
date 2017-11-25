@@ -162,6 +162,7 @@ $(document).ready(function() {
 			       $("#modDataForm [name=partNum]").val(item.partNum);
 			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
 			       $("#modDataForm [name=remark]").val(item.remark);
+			       $('#modDefectPanel').find('.panel-body').each(function(){$(this).empty()});
 			       $.each(tableFieldBinds, function(index, tableField){
 			   		if(tableField.fieldName.indexOf($assemblyTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
 			   			$modDefectPanel.show();

@@ -159,6 +159,7 @@ $(document).ready(function() {
 			       $("#modDataForm [name=toOCQty]").val(item.toOCQty);
 			       $("#modDataForm [name=partNum]").val(item.partNum);
 			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
+			       $('#modDefectPanel').find('.panel-body').each(function(){$(this).empty()});
 			       $.each(tableFieldBinds, function(index, tableField){
 			   		if(tableField.fieldName.indexOf($cleanTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
 			   			$modDefectPanel.show();
