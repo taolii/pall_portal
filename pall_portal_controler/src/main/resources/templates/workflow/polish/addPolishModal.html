@@ -38,7 +38,7 @@
 								<span class="col-md-4 control-span col-md-offset-1"> 
 			                         <label th:text="#{pages.workflow.polish.addPolish.form.pickingTime}" th:remove="tag"></label>
                      			</span> 
-								<div class='col-md-6 control-input' >  
+								<div class='col-md-6 control-input ' >  
 			                         <input type='text' name="pickingTime" id='addFormPickingTime' class="form-control form_datetime"/>
             					</div> 
 							</div>
@@ -192,7 +192,7 @@
                      				<label th:text="#{pages.workflow.polish.addPolish.form.partNum}" th:remove="tag"></label>
                      			</span>
 								<div class='col-md-6 control-input'>  
-			                    	<select name="partNum" class="form-control">
+			                    	<select name="partNum" class="select2_single form-control">
 							              <option  th:each="dataConfig:${pnDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
 							              </option>
 	                                </select>  

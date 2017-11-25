@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	var init=true;
 	$('#queryDeliveryTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
@@ -43,7 +44,7 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/workflow/assemblyManage",
+                    url: contextPath+"/workflow/assemblyManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",

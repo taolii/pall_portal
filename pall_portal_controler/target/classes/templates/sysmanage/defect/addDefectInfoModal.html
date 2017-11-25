@@ -25,6 +25,35 @@
 					<div class="modal-body" style="height: 300px;">
 							<div class="form-group">
 								<div class="group">
+									<span class="col-sm-3 control-span col-md-offset-1">
+										&nbsp; <label th:text="#{pages.defect.defectManage.form.workflow.titile}"
+										th:remove="tag"></label>
+									</span>
+									<div class="col-sm-7 control-input">
+										<select name="workflow" class="form-control" disabled="disabled">
+					                        <option  th:each="dataConfigType:${dataConfigTypes}" th:text="${dataConfigType.dataTypeName}" th:value="${dataConfigType.dataType}">
+							              	</option>				                                   
+	                                    </select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="group">
+									<span class="col-sm-3 control-span col-md-offset-1">
+										&nbsp; <label th:text="#{pages.defect.defectManage.form.defecttype.titile}"
+										th:remove="tag"></label>
+									</span>
+									<div class="col-sm-7 control-input">
+										<select name="defectType" class="form-control" disabled="disabled">
+					                        <!--  option value="" th:text="#{pages.defect.defectManage.form.defecttype.select.uninvolved}"></option-->
+					                        <option value="2" th:text="#{pages.defect.defectManage.form.defecttype.select.work}"></option>
+					                        <option value="1" th:text="#{pages.defect.defectManage.form.defecttype.select.nowork}"></option>
+	                                    </select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="group">
 									<input type="hidden" name="token" />
 									<input type="hidden" name="dataType" />
 									<span class="col-sm-3 control-span col-md-offset-1">

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
 	var _table = $table.dataTable($.extend(true,
@@ -18,7 +19,7 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/user/userManage",
+                    url: contextPath+"/user/userManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -208,7 +209,7 @@ $(document).ready(function() {
 			                    		operatorids=operatorids+selectedItems[i].operatorid+",";
 			                        });
 			                    	operatorids=operatorids.substr(operatorids,operatorids.length-1);
-			                    	$.post("/user/delUser",{"operatorids":operatorids}, function(result) {
+			                    	$.post(contextPath+"/user/delUser",{"operatorids":operatorids}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
 			                                    msg: "<h3><span class='green'>删除用户成功</span>",

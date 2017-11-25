@@ -18,6 +18,14 @@ public class CleanQueryFormEntity {
 	 */
 	private String cleanTime;
 	/*
+	 * 清洗日期
+	 */
+	private String startCleanTime;
+	/*
+	 * 清洗日期
+	 */
+	private String endCleanTime;
+	/*
 	 * Clean LOT#
 	 */
 	private String cleanLotNum;
@@ -71,6 +79,18 @@ public class CleanQueryFormEntity {
 	}
 	public void setWorkOrderNum(String workOrderNum) {
 		this.workOrderNum = workOrderNum;
+	}
+	public String getStartCleanTime() {
+		return startCleanTime;
+	}
+	public void setStartCleanTime(String startCleanTime) {
+		this.startCleanTime = startCleanTime;
+	}
+	public String getEndCleanTime() {
+		return endCleanTime;
+	}
+	public void setEndCleanTime(String endCleanTime) {
+		this.endCleanTime = endCleanTime;
 	}
 	
 }

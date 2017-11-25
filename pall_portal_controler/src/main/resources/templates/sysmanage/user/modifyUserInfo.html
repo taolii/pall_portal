@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title
 	th:text="#{pages.system.name}+'-'+#{pages.user.modifyUserInfo.title}"></title>
-<script type="text/javascript" src="/dist/sysmanage/user/js/modifyUserInfo.js"></script>
+<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/modifyUserInfo.js(path=${contextPath})}"></script>
 </head>
 <body>
 	<div th:fragment="content">

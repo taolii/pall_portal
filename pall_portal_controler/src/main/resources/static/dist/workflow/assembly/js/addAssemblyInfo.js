@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$('#addFormDeliveryTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -151,7 +152,7 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/workflow/addAssembly",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/workflow/addAssembly",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
                     msg: "<h3><span class='green'>添加组装信息成功</span>",

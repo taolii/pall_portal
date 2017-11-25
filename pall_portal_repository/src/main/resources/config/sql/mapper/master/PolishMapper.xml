@@ -12,6 +12,13 @@
 	    <if test="polishTime != null and polishTime != '' ">  
 	       AND f.polish_time = #{polishTime}  
 	    </if>
+	    <if test="startPolishTime != null and startPolishTime != '' ">  
+	       AND f.polish_time &gt;= #{startPolishTime}  
+	    </if>
+	    <if test="endPolishTime != null and endPolishTime != '' ">  
+	       AND f.polish_time &lt;= #{endPolishTime}  
+	    </if>
+	    
 	    <if test="inputLotNum != null and inputLotNum != '' ">  
 	       AND f.input_lot_num = #{inputLotNum}  
 	    </if>
@@ -33,6 +40,12 @@
 	    </if>
 	    <if test="polishTime != null and polishTime != '' ">  
 	       AND f.polish_time = #{polishTime}  
+	    </if>
+	    <if test="startPolishTime != null and startPolishTime != '' ">  
+	       AND f.polish_time &gt;= #{startPolishTime}  
+	    </if>
+	    <if test="endPolishTime != null and endPolishTime != '' ">  
+	       AND f.polish_time &lt;= #{endPolishTime}  
 	    </if>
 	    <if test="inputLotNum != null and inputLotNum != '' ">  
 	       AND f.input_lot_num = #{inputLotNum}  

@@ -7,10 +7,9 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.workflow.assembly.title}"></title>
-        <script src="/vendors/spin-2.1.0/jquery.spin.merge.js"></script>
-        <script type="text/javascript" src="/dist/workflow/assembly/js/assemblyManage.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/assembly/js/addAssemblyInfo.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/assembly/js/modifyAssemblyInfo.js"></script>
+        <script type="text/javascript" th:src="@{{path}/dist/workflow/assembly/js/assemblyManage.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/assembly/js/addAssemblyInfo.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/assembly/js/modifyAssemblyInfo.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">

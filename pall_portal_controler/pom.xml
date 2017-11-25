@@ -5,8 +5,8 @@
     <artifactId>pall_portal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.pall.portal.controler</groupId>
-   <artifactId>portal_controler</artifactId>
+  <groupId>com.pall.portal</groupId>
+   <artifactId>pall_portal_controler</artifactId>
   <packaging>jar</packaging>
   <version>1.0.1</version>
   <dependencies>
@@ -79,12 +79,12 @@
 		<artifactId>poi-ooxml</artifactId>
 	</dependency>
 	<dependency>
-		 <groupId>com.pall.portal.common</groupId>
+		 <groupId>com.pall.portal</groupId>
 		 <artifactId>pall_portal_common</artifactId>
 		 <version>1.0.1</version>
 	</dependency>
 	<dependency>
-		 <groupId>com.pall.portal.service</groupId>
+		 <groupId>com.pall.portal</groupId>
 		 <artifactId>pall_portal_service</artifactId>
 		 <version>1.0.1</version>
 	</dependency>

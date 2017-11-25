@@ -22,6 +22,14 @@ public class PolishQueryFormEntity {
 	 */
 	private String polishTime;
 	/*
+	 * 抛光时间
+	 */
+	private String startPolishTime;
+	/*
+	 * 抛光时间
+	 */
+	private String endPolishTime;
+	/*
 	 * 供应商来料LOT#
 	 */
 	private String inputLotNum;
@@ -91,4 +99,17 @@ public class PolishQueryFormEntity {
 	public void setWorkOrderNum(String workOrderNum) {
 		this.workOrderNum = workOrderNum;
 	}
+	public String getStartPolishTime() {
+		return startPolishTime;
+	}
+	public void setStartPolishTime(String startPolishTime) {
+		this.startPolishTime = startPolishTime;
+	}
+	public String getEndPolishTime() {
+		return endPolishTime;
+	}
+	public void setEndPolishTime(String endPolishTime) {
+		this.endPolishTime = endPolishTime;
+	}
+	
 }

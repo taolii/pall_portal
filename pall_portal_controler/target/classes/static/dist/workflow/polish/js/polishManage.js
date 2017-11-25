@@ -1,12 +1,18 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$('#queryPickingTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     }); 
-	$('#queryPolishTime').datetimepicker({  
+	$('#queryStartPolishTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
+	$('#queryEndPolishTime').datetimepicker({  
+        format: 'YYYY-MM-DD',  
+        locale: moment.locale('zh-cn')  
+    });
+	
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
     ];
@@ -50,7 +56,7 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/workflow/polishManage",
+                    url: contextPath+"/workflow/polishManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -212,10 +218,10 @@ $(document).ready(function() {
 			    	$modModal.modal("show");
 			    },
 			    exportItem:function(){
-			         $.post("/workflow/exportPolish",$queryForm.serializeArray(), function(result) {
+			         $.post(contextPath+"/workflow/exportPolish",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-		    	    		 var downUrl = '/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
 		    	    		 window.location.href = downUrl;
                     		}else{
                     			Lobibox.alert('error', {
@@ -246,7 +252,7 @@ $(document).ready(function() {
 			                    		polishIDs=polishIDs+selectedItems[i].polishID+",";
 			                        });
 			                    	polishIDs=polishIDs.substr(polishIDs,polishIDs.length-1);
-			                    	$.post("/workflow/delPolish",{"polishIDs":polishIDs}, function(result) {
+			                    	$.post(contextPath+"/workflow/delPolish",{"polishIDs":polishIDs}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
 			                                    msg: "<h3><span class='green'>抛光信息删除成功</span>",

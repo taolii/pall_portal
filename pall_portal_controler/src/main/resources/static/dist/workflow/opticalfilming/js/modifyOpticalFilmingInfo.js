@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$('#modFormOptTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -130,7 +131,7 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/workflow/modOpticalFilming",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/workflow/modOpticalFilming",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
                     msg: "<h3><span class='green'>更新光学镀膜信息成功</span>",

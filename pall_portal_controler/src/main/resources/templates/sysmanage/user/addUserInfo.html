@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
-<script type="text/javascript" src="/dist/user/js/addUserInfo.js"></script>
+<script type="text/javascript" th:src="@{{path}/dist/user/js/addUserInfo.js(path=${contextPath})}"></script>
 </head>
 <body>
 	<div th:fragment="content">

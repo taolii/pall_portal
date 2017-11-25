@@ -1,10 +1,8 @@
 package com.pall.portal.repository.entity.user;
 
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 /*
@@ -18,18 +16,18 @@ public class UserEntity {
 	/*
 	 * 操作员名称
 	 */
-	//@NotEmpty(message="{usermanage.form.valid.UserEntity.name.NotEmpty}",groups={ADD.class,SAVE.class})
+	@NotBlank(message="{usermanage.form.valid.UserEntity.name.NotEmpty}",groups={ADD.class,SAVE.class})
 	private String name;
 	/*
 	 * 用户账号
 	 */
-	@NotEmpty(message="{usermanage.form.valid.UserEntity.account.NotEmpty}",groups={ADD.class,SAVE.class})
+	@NotBlank(message="{usermanage.form.valid.UserEntity.account.NotEmpty}",groups={ADD.class,SAVE.class})
 	@Length(min=4,max=18, message="{usermanage.form.valid.UserEntity.account.Length}",groups={ADD.class,SAVE.class}) 
 	private String account;
 	/*
 	 * 登录密码 
 	 */
-	@NotEmpty(message="{usermanage.form.valid.UserEntity.password.NotEmpty}",groups={ADD.class})
+	@NotBlank(message="{usermanage.form.valid.UserEntity.password.NotEmpty}",groups={ADD.class})
 	@Length(min=4,max=18, message="{usermanage.form.valid.UserEntity.password.Length}",groups={ADD.class,SAVE.class}) 
 	private String password;
 	/*
@@ -48,13 +46,13 @@ public class UserEntity {
 	/*
 	 * 手机
 	 */
-	@NotEmpty(message="{usermanage.form.valid.UserEntity.mobile.NotEmpty}",groups={ADD.class,SAVE.class})
-	@Pattern(regexp="^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$",message="{usermanage.form.valid.UserEntity.mobile.Pattern}",groups={ADD.class,SAVE.class}) 
+	@NotBlank(message="{usermanage.form.valid.UserEntity.mobile.NotEmpty}",groups={ADD.class,SAVE.class})
+	//@Pattern(regexp="^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$",message="{usermanage.form.valid.UserEntity.mobile.Pattern}",groups={ADD.class,SAVE.class}) 
 	private String mobile;
 	/*
 	 * 电子信箱
 	 */
-	@NotEmpty(message="{usermanage.form.valid.UserEntity.email.NotEmpty}",groups={ADD.class,SAVE.class})
+	@NotBlank(message="{usermanage.form.valid.UserEntity.email.NotEmpty}",groups={ADD.class,SAVE.class})
 	@Email(message="{usermanage.form.valid.UserEntity.email.Pattern}",groups={ADD.class,SAVE.class}) 
 	private String email;
 	/*

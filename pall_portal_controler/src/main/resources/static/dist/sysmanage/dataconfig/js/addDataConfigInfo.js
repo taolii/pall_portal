@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$("#configName").change(function(){
 		_table.draw();
 	});
@@ -31,7 +32,7 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/dataconfig/addDataconfig",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/dataconfig/addDataconfig",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
                     msg: "<h3><span class='green'>添加数据配置信息成功</span>",

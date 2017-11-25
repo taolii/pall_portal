@@ -7,9 +7,9 @@ $(function() {
     var leftHeight = $(".login-box div.col-md-6:first-child").height();
     $(".login-box div.col-md-6:last-child").height(leftHeight);
 });
-function reloadcode() {
+function reloadcode(contextPath) {
 	var verify = document.getElementById('safeCode');  
-	verify.setAttribute('src', '/getValidCode?it=' + Math.random());/*Math.random()点击验证码图片随机生成  */  
+	verify.setAttribute('src', contextPath+'/getValidCode?it=' + Math.random());/*Math.random()点击验证码图片随机生成  */  
 }
 function findPwd() {
 	var fpAltert=$("#fpAltert").html();

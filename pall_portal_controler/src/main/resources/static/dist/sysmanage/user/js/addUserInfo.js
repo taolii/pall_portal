@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
     $('#addDataForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -16,6 +17,13 @@ $(document).ready(function() {
                         min: 4,
                         max: 18,
                         message: '登录账号长度应该满足4-18位'
+                    }
+                }
+            },
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: '操作员名称不能为空'
                     }
                 }
             },
@@ -61,7 +69,7 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/user/addUser",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/user/addUser",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
                     msg: "<h3><span class='green'>添加用户成功</span>",

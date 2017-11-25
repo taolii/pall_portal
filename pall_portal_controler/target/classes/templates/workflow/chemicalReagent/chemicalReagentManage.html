@@ -7,11 +7,10 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.workflow.chemicalReagentManage.title}"></title>
-        <script src="/vendors/spin-2.1.0/jquery.spin.merge.js"></script>
-        <script type="text/javascript" src="/dist/workflow/chemicalReagent/js/chemicalReagentManage.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/chemicalReagent/js/addChemicalReagentInfo.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/chemicalReagent/js/modifyChemicalReagentInfo.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/chemicalReagent/js/assemblyManageModal.js"></script>
+        <script type="text/javascript" th:src="@{{path}/dist/workflow/chemicalReagent/js/chemicalReagentManage.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/chemicalReagent/js/addChemicalReagentInfo.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/chemicalReagent/js/modifyChemicalReagentInfo.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/chemicalReagent/js/assemblyManageModal.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">

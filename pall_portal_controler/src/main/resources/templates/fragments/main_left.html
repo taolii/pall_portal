@@ -11,13 +11,13 @@
     <div th:fragment="content" th:remove="tag">
     	<div class="left_col scroll-view" >
 	           	 <div class="navbar nav_title" style="border: 0;">
-              <a href="/index" class="site_title"><i class="fa fa-paw"></i> <span style="font-size:16px;" th:text="#{pages.system.name}" ></span></a>
+              <a th:href="@{{path}/index(path=${contextPath})}" class="site_title"><i class="fa fa-paw"></i> <span style="font-size:16px;" th:text="#{pages.system.name}" ></span></a>
             </div>
             <div class="clearfix"></div>
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="/dist/main/images/img.png" alt="..." class="img-circle profile_img"/>
+                <img th:src="@{{path}/dist/main/images/img.png(path=${contextPath})}" alt="..." class="img-circle profile_img"/>
               </div>
               <div class="profile_info">
                 <span th:text="#{pages.index.main_left.welcomelogin}"></span>
@@ -40,7 +40,7 @@
                         <ul class="nav child_menu">
                             <div th:each="pm : ${ppm.subMenuInfos}" th:remove="tag">
                                 <li>
-                                    <a th:id="'menu_'+${pm.pmenuInfo.menuid}" th:href="${pm.pmenuInfo.menuUrl}" >
+                                    <a th:id="'menu_'+${pm.pmenuInfo.menuid}" th:href="${#httpServletRequest.getContextPath()}+${pm.pmenuInfo.menuUrl}" >
                                         <label th:text="${pm.pmenuInfo.menuName}" th:remove="tag"></label>
                                     </a>
                                 </li>
@@ -54,14 +54,14 @@
             </div>
             
             <div class="sidebar-footer hidden-small">
-	            <a data-toggle="tooltip" data-placement="top" th:title="#{pages.index.main_left.tooltip.modify.userinfo.tip}"  th:href="'/user/modifyUser?operatorid='+${session.LOGIN_USER.userEntity.operatorid}">
+	            <a data-toggle="tooltip" data-placement="top" th:title="#{pages.index.main_left.tooltip.modify.userinfo.tip}"  th:href="${#httpServletRequest.getContextPath()}+'/user/modifyUser?operatorid='+${session.LOGIN_USER.userEntity.operatorid}">
 	              	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 	            </a>
-	            <a data-toggle="tooltip" data-placement="top"  th:title="#{pages.index.main_left.tooltip.modify.passwd.tip}" th:href="'/user/modifyPwd?operatorid='+${session.LOGIN_USER.userEntity.operatorid}">
+	            <a data-toggle="tooltip" data-placement="top"  th:title="#{pages.index.main_left.tooltip.modify.passwd.tip}" th:href="${#httpServletRequest.getContextPath()}+'/user/modifyPwd?operatorid='+${session.LOGIN_USER.userEntity.operatorid}">
 	               	<span aria-hidden="true" class="fa fa-key"> </span>
 	               	
 	            </a>
-              	<a  class="logout-href" data-toggle="tooltip" data-placement="top" th:title="#{pages.index.main_left.tooltip.logout.tip}" onClick="logout();" href="javascript:void(0)">
+              	<a  class="logout-href" data-toggle="tooltip" data-placement="top" th:title="#{pages.index.main_left.tooltip.logout.tip}" th:onClick="'logout(\''+${#httpServletRequest.getContextPath()}+'\');'" href="javascript:void(0)">
                 	<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               	</a>
               	<a data-toggle="tooltip" data-placement="top">

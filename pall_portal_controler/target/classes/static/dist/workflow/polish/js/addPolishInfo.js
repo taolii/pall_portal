@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$('#addFormPickingTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -166,7 +167,7 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/workflow/addPolish",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/workflow/addPolish",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
                     msg: "<h3><span class='green'>添加抛光信息成功</span>",
@@ -176,12 +177,12 @@ $(document).ready(function() {
                 });
     			$("#defect_panel_body").empty();
     			$("#defectPanel").hide();
-    			$form.data('bootstrapValidator').resetForm(true);
-    			$addDefectPanel.find(".panel-body").each(function(){
+    			//$form.data('bootstrapValidator').resetForm(true);
+    			/*$addDefectPanel.find(".panel-body").each(function(){
     				$(this).empty();
     			});
-    			$addDefectPanel.hide();
-    			$("#addModal").modal("hide");
+    			$addDefectPanel.hide();*/
+    			//$("#addModal").modal("hide");
     			$("#btn_refresh").click();
     		}else{
     			Lobibox.alert('error', {

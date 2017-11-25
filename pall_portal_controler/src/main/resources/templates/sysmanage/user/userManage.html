@@ -7,11 +7,10 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.user.userManage.title}"></title>
-        <script src="/vendors/spin-2.1.0/jquery.spin.merge.js"></script>
-      	<script type="text/javascript" src="/dist/sysmanage/user/js/userManage.js"></script>
-      	<script type="text/javascript" src="/dist/sysmanage/user/js/addUserInfo.js"></script>
-      	<script type="text/javascript" src="/dist/sysmanage/user/js/modifyUserInfo.js"></script>
-      	<script type="text/javascript" src="/dist/sysmanage/user/js/adminModifyPwd.js"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/userManage.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/addUserInfo.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/modifyUserInfo.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/adminModifyPwd.js(path=${contextPath})}"></script>
       	<style type="text/css">
       		#datatable th{   
     			white-space: nowrap !important;  

@@ -1,8 +1,13 @@
 $(document).ready(function() {
-	$('#queryCleanTimeTime').datetimepicker({  
+	var contextPath=$("#contextPath").val();
+	$('#queryStartCleanTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
-    }); 
+    });
+	$('#queryEndCleanTime').datetimepicker({  
+        format: 'YYYY-MM-DD',  
+        locale: moment.locale('zh-cn')  
+    });
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
     ];
@@ -46,7 +51,7 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/workflow/cleanManage",
+                    url: contextPath+"/workflow/cleanManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -201,10 +206,10 @@ $(document).ready(function() {
 			    	$modModal.modal("show");
 			    },
 			    exportItem:function(){
-			         $.post("/workflow/exportClean",$queryForm.serializeArray(), function(result) {
+			         $.post(contextPath+"/workflow/exportClean",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-		    	    		 var downUrl = '/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
 		    	    		 window.location.href = downUrl;
                     		}else{
                     			Lobibox.alert('error', {
@@ -235,7 +240,7 @@ $(document).ready(function() {
 			                    		cleanIDs=cleanIDs+selectedItems[i].cleanID+",";
 			                        });
 			                    	cleanIDs=cleanIDs.substr(cleanIDs,cleanIDs.length-1);
-			                    	$.post("/workflow/delClean",{"cleanIDs":cleanIDs}, function(result) {
+			                    	$.post(contextPath+"/workflow/delClean",{"cleanIDs":cleanIDs}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
 			                                    msg: "<h3><span class='green'>清洗信息删除成功</span>",

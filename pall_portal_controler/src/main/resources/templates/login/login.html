@@ -5,21 +5,20 @@
 <head>
     <title th:text="#{pages.system.name}+'-'+#{pages.login.title}"></title>
     <meta charset="utf-8"/>
-    <link rel="icon" type="image/x-icon" href="/favicon.png"/>
+    <link rel="icon" type="image/x-icon" th:href="@{{path}/favicon.png(path=${contextPath})}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <script type="text/javascript" src="/vendors/jquery/jquery-1.12.3.min.js"></script>
-    <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="/vendors/lobibox/css/lobibox.min.css" />
-	<link type="text/css" rel="stylesheet" href="/dist/common/css/common.css"/>
-    <link rel="stylesheet" href="/vendors/font-awesome/css/font-awesome.min.css" />
-    <script type="text/javascript" src="/dist/common/js/public.js"></script>
-    <link rel="stylesheet" href="/dist/login/css/login.css"/>
-    <script type="text/javascript" src="/vendors/lobibox/js/lobibox.min.js"></script>
-    <script type="text/javascript" src="/dist/login/js/login.js"></script>
-    <script type="text/javascript" src="/dist/common/js/constant.js"></script>
+    <script type="text/javascript" th:src="@{{path}/vendors/jquery/jquery-1.12.3.min.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/vendors/bootstrap/js/bootstrap.min.js(path=${contextPath})}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap/css/bootstrap.min.css(path=${contextPath})}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/lobibox/css/lobibox.min.css(path=${contextPath})}" />
+	<link type="text/css" rel="stylesheet" th:href="@{{path}/dist/common/css/common.css(path=${contextPath})}"/>
+    <link rel="stylesheet" th:href="@{{path}/vendors/font-awesome/css/font-awesome.min.css(path=${contextPath})}" />
+    <script type="text/javascript" th:src="@{{path}/dist/common/js/public.js(path=${contextPath})}"></script>
+    <link rel="stylesheet" th:href="@{{path}/dist/login/css/login.css(path=${contextPath})}"/>
+    <script type="text/javascript" th:src="@{{path}/vendors/lobibox/js/lobibox.min.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/dist/login/js/login.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/dist/common/js/constant.js(path=${contextPath})}"></script>
 </head>
 <body>
     <div class="container text-center" style="text-align:center;border:1px #3b8cff solid;"></div>
@@ -48,7 +47,7 @@
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-check"></a> </span>
 	                                <input name="validCode" type="text" class="form-control" th:placeholder="#{pages.login.input.validcode.tip}" />
 	                                <span class="input-group-addon" style="margin:0px;padding:1px;"> 
-	                                	<img  onclick="reloadcode();" id="safeCode"  style="cursor:pointer" th:alt="#{pages.login.image.validcode.tip}"  src="/getValidCode"/>  
+	                                	<img  th:onclick="'reloadcode(\''+${#httpServletRequest.getContextPath()}+'\');'" id="safeCode"  style="cursor:pointer" th:alt="#{pages.login.image.validcode.tip}"  th:src="@{{path}/getValidCode(path=${contextPath})}"/>  
 	                                </span>
 	                            </div>
 	                        </div>
@@ -64,7 +63,7 @@
 	            </div>
 	            <div class="col-md-6 hidden-sm hidden-xs">
 	               <div class="form-group form-group-lg text-left">
-	               <img alt="" src="/dist/login/images/login-box-bg.jpg"/>
+	               <img alt="" th:src="@{{path}/dist/login/images/login-box-bg.jpg(path=${contextPath})}"/>
 	               </div>
 	            </div>
 	            

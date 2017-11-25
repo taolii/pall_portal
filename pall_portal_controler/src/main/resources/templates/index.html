@@ -5,7 +5,7 @@
 	layout:decorator="fragments/indexModel">
 <head>
 <title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
-<script type="text/javascript" src="/dist/main/js/index.js"></script>
+<script type="text/javascript" src="@{{path}/dist/main/js/index.js(path=${contextPath})}"></script>
 </head>
 <body>
 	<div th:fragment="content">
@@ -23,7 +23,7 @@
 				<div class="clearfix"></div>
 			</div>
 			<div class="x_content">
-				<img alt="" class="wokflow" src="/dist/main/images/wokflow_bg.jpg" />
+				<img alt="" class="wokflow" th:src="@{{path}/dist/main/images/wokflow_bg.jpg(path=${contextPath})}" />
 			</div>
 		</div>
 	</div>

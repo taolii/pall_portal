@@ -2,7 +2,7 @@
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
 <mapper namespace="com.pall.portal.repository.mapper.user.UserManageDao"> 
 	<select id="findUserByUserName" resultType="com.pall.portal.repository.entity.user.UserEntity" parameterType="java.lang.String"> 
- 		select OPERATORID,NAME,ACCOUNT,PASSWORD,SEX,POSITION,DEPTID,MOBILE,EMAIL,GROUPLIST,PROVINCEID,OPERATORTYPE,STATUS,UPDATEPWDFLAG,UPDATETIME from t_ums_admininfo f where 1=1 
+ 		select OPERATORID,NAME,ACCOUNT,PASSWORD,SEX,POSITION,DEPTID,MOBILE,EMAIL,GROUPLIST,PROVINCEID,OPERATORTYPE,STATUS,UPDATEPWDFLAG,date_format(UPDATETIME, '%Y-%m-%d %H:%i:%s') UPDATETIME from t_ums_admininfo f where 1=1 
  		<if test="userName != null and userName != '' ">  
 	       AND f.ACCOUNT = #{userName}  
 	    </if>
@@ -38,13 +38,13 @@
 	    </if> 
  	</select>
  	<update id="modifyUser" parameterType="com.pall.portal.repository.entity.user.UserEntity">
-         update t_ums_admininfo f set NAME=#{name},SEX=#{sex},POSITION=#{position},MOBILE=#{mobile},EMAIL=#{email},OPERATORTYPE=#{operatorType},UPDATETIME=now()  where f.OPERATORID = #{operatorid}
+         update t_ums_admininfo f set NAME=#{name},SEX=ifnull(#{sex},SEX),POSITION=ifnull(#{position},POSITION),MOBILE=#{mobile},EMAIL=#{email},OPERATORTYPE=#{operatorType},UPDATETIME=now()  where f.OPERATORID = #{operatorid}
     </update>
     <insert id="addUser" parameterType="com.pall.portal.repository.entity.user.UserEntity">
     	<selectKey keyProperty="operatorid" order="AFTER" resultType="java.lang.Integer">
             select LAST_INSERT_ID()
         </selectKey>
-         insert into t_ums_admininfo(NAME,ACCOUNT,SEX,POSITION,MOBILE,EMAIL,OPERATORTYPE,CREATETIME,UPDATETIME)values(#{name},#{account},#{sex},#{position},#{mobile},#{email},#{operatorType},now(),now())
+         insert into t_ums_admininfo(NAME,ACCOUNT,PASSWORD,SEX,POSITION,MOBILE,EMAIL,OPERATORTYPE,CREATETIME,UPDATETIME)values(#{name},#{account},#{password},#{sex},#{position},#{mobile},#{email},#{operatorType},now(),now())
     </insert>
     <insert id="addUserPermission" parameterType="com.pall.portal.repository.entity.user.UserPermissionEntity">
          insert into t_ums_userpermission(operatorid,roleid)values(

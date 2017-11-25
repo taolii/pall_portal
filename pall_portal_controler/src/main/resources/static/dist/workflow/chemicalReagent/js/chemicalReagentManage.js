@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
     ];
@@ -42,7 +43,7 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/workflow/chemicalReagentManage",
+                    url: contextPath+"/workflow/chemicalReagentManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -217,10 +218,10 @@ $(document).ready(function() {
 			    	$modModal.modal("show");
 			    },
 			    exportItem:function(){
-			         $.post("/workflow/exportChemicalReagent",$queryForm.serializeArray(), function(result) {
+			         $.post(contextPath+"/workflow/exportChemicalReagent",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-		    	    		 var downUrl = '/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
 		    	    		 window.location.href = downUrl;
                     		}else{
                     			Lobibox.alert('error', {
@@ -251,7 +252,7 @@ $(document).ready(function() {
 			                    		crIDs=crIDs+selectedItems[i].crID+",";
 			                        });
 			                    	crIDs=crIDs.substr(crIDs,crIDs.length-1);
-			                    	$.post("/workflow/delChemicalReagent",{"crIDs":crIDs}, function(result) {
+			                    	$.post(contextPath+"/workflow/delChemicalReagent",{"crIDs":crIDs}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
 			                                    msg: "<h3><span class='green'>生化镀膜信息删除成功</span>",

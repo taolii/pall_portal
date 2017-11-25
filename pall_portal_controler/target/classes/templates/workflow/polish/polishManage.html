@@ -7,10 +7,9 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.workflow.polish.title}"></title>
-        <script src="/vendors/spin-2.1.0/jquery.spin.merge.js"></script>
-        <script type="text/javascript" src="/dist/workflow/polish/js/polishManage.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/polish/js/addPolishInfo.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/polish/js/modifyPolishInfo.js"></script>
+        <script type="text/javascript" th:src="@{{path}/dist/workflow/polish/js/polishManage.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/polish/js/addPolishInfo.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/polish/js/modifyPolishInfo.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">
@@ -37,23 +36,32 @@
 		                            </div>
 		                            <div id="stepOne" class="panel-collapse collapse in  ">
 		                                <div class="panel-body">
-		                                <div class="col-md-4">
-			                                	<div class='input-group date'>  
-			                                		<span class="input-group-addon" th:text="#{pages.workflow.polish.form.pickingTime}">  
-                     									领料日期
+				                      		 <div class="col-md-4">
+			                                	<div class='input-group date' >  
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.polish.form.startPolishTime}">  
                 									</span>  
-									                <input type='text' name="pickingTime"  id='queryPickingTime' class="form-control" />  
+									                <input type='text' name="startPolishTime" id='queryStartPolishTime' class="form-control" />  
 									                <span class="input-group-addon">  
 									                    <span class="glyphicon glyphicon-calendar"></span>  
 									                </span>  
             									</div> 
 				                      		</div>
-				                      		 <div class="col-md-4">
+				                      		<div class="col-md-4">
 			                                	<div class='input-group date' >  
-			                                		<span class="input-group-addon" th:text="#{pages.workflow.polish.form.polishTime}">  
-                     									Polish Date
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.polish.form.endPolishTime}">  
                 									</span>  
-									                <input type='text' name="polishTime" id='queryPolishTime' class="form-control" />  
+									                <input type='text' name="endPolishTime" id='queryEndPolishTime' class="form-control" />  
+									                <span class="input-group-addon">  
+									                    <span class="glyphicon glyphicon-calendar"></span>  
+									                </span>  
+            									</div> 
+				                      		</div>
+				                      		<div class="col-md-4">
+			                                <div class='input-group date'>  
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.polish.form.pickingTime}">  
+                     									领料日期
+                									</span>  
+									                <input type='text' name="pickingTime"  id='queryPickingTime' class="form-control" />  
 									                <span class="input-group-addon">  
 									                    <span class="glyphicon glyphicon-calendar"></span>  
 									                </span>  

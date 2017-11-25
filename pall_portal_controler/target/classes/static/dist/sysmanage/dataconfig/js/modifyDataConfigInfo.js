@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
     $('#modDataForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -28,7 +29,7 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/dataconfig/modDataconfig",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/dataconfig/modDataconfig",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
                     msg: "<h3><span class='green'>数据配置更新成功</span>",

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$('#queryCoatingTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -50,7 +51,7 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/workflow/platedFilmManage",
+                    url: contextPath+"/workflow/platedFilmManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -184,10 +185,10 @@ $(document).ready(function() {
 			    	$modModal.modal("show");
 			    },
 			    exportItem:function(){
-			         $.post("/workflow/exportPlatedFilm",$queryForm.serializeArray(), function(result) {
+			         $.post(contextPath+"/workflow/exportPlatedFilm",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-		    	    		 var downUrl = '/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
 		    	    		 window.location.href = downUrl;
                     		}else{
                     			Lobibox.alert('error', {
@@ -218,7 +219,7 @@ $(document).ready(function() {
 			                    		pfIDs=pfIDs+selectedItems[i].pfID+",";
 			                        });
 			                    	pfIDs=pfIDs.substr(pfIDs,pfIDs.length-1);
-			                    	$.post("/workflow/delPlatedFilm",{"pfIDs":pfIDs}, function(result) {
+			                    	$.post(contextPath+"/workflow/delPlatedFilm",{"pfIDs":pfIDs}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
 			                                    msg: "<h3><span class='green'>化学镀膜信息删除成功</span>",

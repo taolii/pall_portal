@@ -7,10 +7,9 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.defect.defectManage.title}"></title>
-        <script src="/vendors/spin-2.1.0/jquery.spin.merge.js"></script>
-      	<script type="text/javascript" src="/dist/sysmanage/defect/js/defectManage.js"></script>
-      	<script type="text/javascript" src="/dist/sysmanage/defect/js/addDefectInfo.js"></script>
-      	<script type="text/javascript" src="/dist/sysmanage/defect/js/modifyDefectInfo.js"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/defect/js/defectManage.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/defect/js/addDefectInfo.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/defect/js/modifyDefectInfo.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">

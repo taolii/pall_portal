@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$('#addFormInPutDate').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -155,7 +156,7 @@ $(document).ready(function() {
     		return;
     	}
     	var bv = $form.data('bootstrapValidator');
-    	$.post("/workflow/addChemicalReagent",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/workflow/addChemicalReagent",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			Lobibox.alert('success', {
                     msg: "<h3><span class='green'>添加生化镀膜信息成功</span>",

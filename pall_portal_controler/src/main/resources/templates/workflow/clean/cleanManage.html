@@ -7,10 +7,9 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.workflow.clean.title}"></title>
-        <script src="/vendors/spin-2.1.0/jquery.spin.merge.js"></script>
-        <script type="text/javascript" src="/dist/workflow/clean/js/cleanManage.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/clean/js/addCleanInfo.js"></script>
-    	<script type="text/javascript" src="/dist/workflow/clean/js/modifyCleanInfo.js"></script>
+        <script type="text/javascript" th:src="@{{path}/dist/workflow/clean/js/cleanManage.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/clean/js/addCleanInfo.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/workflow/clean/js/modifyCleanInfo.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">
@@ -39,9 +38,19 @@
 		                                <div class="panel-body">
 		                                <div class="col-md-4">
 			                                	<div class='input-group date'>  
-			                                		<span class="input-group-addon" th:text="#{pages.workflow.clean.form.cleanTime}">  
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.clean.form.startCleanTime}">  
                 									</span>  
-									                <input type='text' name="cleanTime"  id='queryCleanTimeTime' class="form-control" />  
+									                <input type='text' name="startCleanTime"  id='queryStartCleanTime' class="form-control" />  
+									                <span class="input-group-addon">  
+									                    <span class="glyphicon glyphicon-calendar"></span>  
+									                </span>  
+            									</div> 
+				                      		</div>
+				                      		<div class="col-md-4">
+			                                	<div class='input-group date'>  
+			                                		<span class="input-group-addon" th:text="#{pages.workflow.clean.form.endCleanTime}">  
+                									</span>  
+									                <input type='text' name="endCleanTime"  id='queryEndCleanTime' class="form-control" />  
 									                <span class="input-group-addon">  
 									                    <span class="glyphicon glyphicon-calendar"></span>  
 									                </span>  

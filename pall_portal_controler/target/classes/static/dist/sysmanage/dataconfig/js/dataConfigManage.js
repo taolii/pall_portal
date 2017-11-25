@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
 	var _table = $table.dataTable($.extend(true,
@@ -20,7 +21,7 @@ $(document).ready(function() {
             param["dataType"] = dataType;
             $.ajax({
                     type: "post",
-                    url: "/dataconfig/dataConfigManage",
+                    url: contextPath+"/dataconfig/dataConfigManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -180,7 +181,7 @@ $(document).ready(function() {
 			                    		dataids=dataids+selectedItems[i].dataid+",";
 			                        });
 			                    	dataids=dataids.substr(dataids,dataids.length-1);
-			                    	$.post("/dataconfig/delDataconfig",{"dataids":dataids}, function(result) {
+			                    	$.post(contextPath+"/dataconfig/delDataconfig",{"dataids":dataids}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
 			                                    msg: "<h3><span class='green'>删除数据配置信息成功</span>",

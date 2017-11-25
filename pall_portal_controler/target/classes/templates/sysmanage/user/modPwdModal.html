@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title th:text="#{pages.system.name}+'-'+#{pages.user.modifyPwd.title}"></title>
-<script type="text/javascript" src="/dist/user/js/modifyPwd.js"></script>
+<script type="text/javascript" th:src="@{{path}/dist/user/js/modifyPwd.js(path=${contextPath})}"></script>
 </head>
 <body>
 	<div th:fragment="content">

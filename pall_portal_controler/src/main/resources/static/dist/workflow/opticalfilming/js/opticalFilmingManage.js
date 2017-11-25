@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var contextPath=$("#contextPath").val();
 	$('#queryOptTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -46,7 +47,7 @@ $(document).ready(function() {
             });
             $.ajax({
                     type: "post",
-                    url: "/workflow/opticalFilmingManage",
+                    url: contextPath+"/workflow/opticalFilmingManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -205,10 +206,10 @@ $(document).ready(function() {
 			    	$modModal.modal("show");
 			    },
 			    exportItem:function(){
-			         $.post("/workflow/exportOpticalFilming",$queryForm.serializeArray(), function(result) {
+			         $.post(contextPath+"/workflow/exportOpticalFilming",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-		    	    		 var downUrl = '/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
 		    	    		 window.location.href = downUrl;
                     		}else{
                     			Lobibox.alert('error', {
@@ -239,7 +240,7 @@ $(document).ready(function() {
 			                    		opfIDs=opfIDs+selectedItems[i].opfID+",";
 			                        });
 			                    	opfIDs=opfIDs.substr(opfIDs,opfIDs.length-1);
-			                    	$.post("/workflow/delOpticalFilming",{"opfIDs":opfIDs}, function(result) {
+			                    	$.post(contextPath+"/workflow/delOpticalFilming",{"opfIDs":opfIDs}, function(result) {
 			                    		if(result.resultCode==0){
 			                    			Lobibox.alert('success', {
 			                                    msg: "<h3><span class='green'>光学镀膜信息删除成功</span>",
