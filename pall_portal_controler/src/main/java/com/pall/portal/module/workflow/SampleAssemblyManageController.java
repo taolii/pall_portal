@@ -330,7 +330,7 @@ public class SampleAssemblyManageController{
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();
-        	downloadFileFullPath.append(Class.class.getResource("/").getPath());
+        	downloadFileFullPath.append(this.getClass().getResource("/").getPath());
         	downloadFileFullPath.append(File.separator);
         	downloadFileFullPath.append(downloadFilePath);
         	downloadFileFullPath.append(File.separator);

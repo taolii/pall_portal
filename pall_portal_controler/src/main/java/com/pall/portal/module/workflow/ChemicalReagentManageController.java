@@ -59,7 +59,6 @@ import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentRelationEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
-import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.ADD;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.SAVE;
 import com.pall.portal.service.excel.IExcelHandler;
@@ -353,7 +352,7 @@ public class ChemicalReagentManageController{
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();
-        	downloadFileFullPath.append(Class.class.getResource("/").getPath());
+        	downloadFileFullPath.append(this.getClass().getResource("/").getPath());
         	downloadFileFullPath.append(File.separator);
         	downloadFileFullPath.append(downloadFilePath);
         	downloadFileFullPath.append(File.separator);

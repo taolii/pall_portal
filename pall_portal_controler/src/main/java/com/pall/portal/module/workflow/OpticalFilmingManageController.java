@@ -2,7 +2,6 @@ package com.pall.portal.module.workflow;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -304,7 +302,7 @@ public class OpticalFilmingManageController{
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();
-        	downloadFileFullPath.append(Class.class.getResource("/").getPath());
+        	downloadFileFullPath.append(this.getClass().getResource("/").getPath());
         	downloadFileFullPath.append(File.separator);
         	downloadFileFullPath.append(downloadFilePath);
         	downloadFileFullPath.append(File.separator);

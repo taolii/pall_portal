@@ -44,7 +44,7 @@ public class WorkflowManageController{
 	@RequestMapping(value="workflow/excelfileDownload", method= RequestMethod.GET)
     public void excelfileDownload(Model model,@RequestParam("fileName") String fileName,@RequestParam("subDirectory") String subDirectory, HttpServletRequest request,HttpServletResponse response) {
 		StringBuilder downloadFileFullPath=new StringBuilder();
-		downloadFileFullPath.append(Class.class.getResource("/").getPath());
+		downloadFileFullPath.append(this.getClass().getResource("/").getPath());
     	downloadFileFullPath.append(File.separator);
     	downloadFileFullPath.append(downloadFilePath);
     	downloadFileFullPath.append(File.separator);
