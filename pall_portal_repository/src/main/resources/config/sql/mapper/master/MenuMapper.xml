@@ -9,5 +9,40 @@
 	    </if> 
  		)
  	</select> 
-	
+	<select id="queryMenuList" resultType="com.pall.portal.repository.entity.menu.MenuInfoEntity"
+	parameterType="com.pall.portal.repository.entity.menu.QueryMenuFormEntity"> 
+ 		select MENUID,MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION from t_ums_menuinfo where 1=1
+ 		 <if test="menuName != null and menuName != ''">  
+	       AND menuName like '%#{menuName}%'
+	    </if>
+	    <if test="pMenuid != null and pMenuid != ''">  
+	       AND PMENUID=#{pMenuid, jdbcType=INTEGER}
+	    </if>
+	     order by menuid desc 
+ 	</select> 
+	<select id="queryMenuTotalRecords" resultType="int"
+	parameterType="com.pall.portal.repository.entity.menu.QueryMenuFormEntity"> 
+ 		select count(1) from t_ums_menuinfo where 1=1
+ 		<if test="menuName != null and menuName != ''">  
+	       AND menuName like '%#{menuName}%'
+	    </if>
+	    <if test="pMenuid != null and pMenuid != ''">  
+	       AND PMENUID=#{pMenuid, jdbcType=INTEGER}
+	    </if>
+ 	</select>
+ 	<update id="modMenu" parameterType="com.pall.portal.repository.entity.menu.MenuInfoEntity">
+         update t_ums_menuinfo f set MENUNAME=#{menuName},DESCRIPTION=#{description},MENUURL=#{menuUrl},MENUICON=#{menuIcon},LEAF=#{leaf},DISABLED=#{disabled},PMENUID=#{pmenuid},SORT=#{sort} where f.roleid = #{roleid}
+    </update>
+    <insert id="addMenu" parameterType="com.pall.portal.repository.entity.menu.MenuInfoEntity">
+    	<selectKey keyProperty="menuid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+         insert into t_ums_menuinfo(MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION)values(#{menuName},#{menuIcon},#{menuUrl},#{leaf},#{disabled},#{pmenuid},#{sort},#{description})
+    </insert>
+    <delete id="delMenu"  parameterType="java.util.List">  
+        DELETE FROM t_ums_menuinfo WHERE menuid in 
+        <foreach collection="menuids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
 </mapper> 

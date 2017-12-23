@@ -8,20 +8,28 @@
     <link rel="icon" type="image/x-icon" th:href="@{{path}/favicon.png(path=${contextPath})}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <script type="text/javascript" th:src="@{{path}/vendors/jquery/jquery-1.12.3.min.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/vendors/bootstrap/js/bootstrap.min.js(path=${contextPath})}"></script>
     <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap/css/bootstrap.min.css(path=${contextPath})}"/>
     <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/lobibox/css/lobibox.min.css(path=${contextPath})}" />
+    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.css(path=${contextPath})}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.brighttheme.css(path=${contextPath})}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.history.css(path=${contextPath})}"/>
+	<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.buttons.css(path=${contextPath})}"/>
 	<link type="text/css" rel="stylesheet" th:href="@{{path}/dist/common/css/common.css(path=${contextPath})}"/>
-    <link rel="stylesheet" th:href="@{{path}/vendors/font-awesome/css/font-awesome.min.css(path=${contextPath})}" />
-    <script type="text/javascript" th:src="@{{path}/dist/common/js/public.js(path=${contextPath})}"></script>
-    <link rel="stylesheet" th:href="@{{path}/dist/login/css/login.css(path=${contextPath})}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{{path}/dist/login/css/login.css(path=${contextPath})}"/>
+
+    <script type="text/javascript" th:src="@{{path}/vendors/jquery/jquery-1.12.3.min.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/vendors/bootstrap/js/bootstrap.min.js(path=${contextPath})}"></script>
     <script type="text/javascript" th:src="@{{path}/vendors/lobibox/js/lobibox.min.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.reference.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.history.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.buttons.js(path=${contextPath})}"></script>
+    <script type="text/javascript" th:src="@{{path}/dist/common/js/public.js(path=${contextPath})}"></script>
     <script type="text/javascript" th:src="@{{path}/dist/login/js/login.js(path=${contextPath})}"></script>
     <script type="text/javascript" th:src="@{{path}/dist/common/js/constant.js(path=${contextPath})}"></script>
+    
 </head>
 <body>
-    <div class="container text-center" style="text-align:center;border:1px #3b8cff solid;"></div>
     <div class="container text-center">
         <div class="login-main">
              <div class="row login-box">
@@ -58,7 +66,6 @@
 	                            <a href="#" style="float:right;margin-top:12px;" th:title="#{pages.login.forget.passwd.tip}" th:text="#{pages.login.forget.passwd}" onclick="findPwd();"></a>
 	                        </p>
 	                    </div>
-	                    
 	                </form>
 	            </div>
 	            <div class="col-md-6 hidden-sm hidden-xs">

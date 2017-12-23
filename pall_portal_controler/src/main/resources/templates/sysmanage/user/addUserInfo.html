@@ -67,18 +67,11 @@
 								th:text="#{pages.user.addUserInfo.input.sex}" th:remove="tag"></label>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							</span>
-							<div class="col-sm-4 radio-group">
-								<div class="checkbox-inline">
-									<input type="radio" name="sex" value="1" checked="checked" />
-
-									<label th:text="#{pages.user.addUserInfo.input.sex.male}"
-										th:remove="tag"></label>
-								</div>
-								<div class="checkbox-inline">
-									<input type="radio" name="sex" value="0" /> <label
-										th:text="#{pages.user.addUserInfo.input.sex.female}"
-										th:remove="tag"></label>
-								</div>
+							<div class="col-sm-4 control-input">
+								<select name="sex" class="form-control select2">
+					               <option value="1" th:text="#{pages.user.addUserInfo.input.sex.male}"></option>
+					               <option value="2" th:text="#{pages.user.addUserInfo.input.sex.female}"></option>
+	                            </select>
 							</div>
 						</div>
 					</div>

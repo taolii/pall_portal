@@ -33,8 +33,8 @@ public class UserEntity {
 	/*
 	 * 性别0为男，1为女
 	 */
-	@Range(min =0,max = 1, message = "{usermanage.form.valid.UserEntity.sex.Range}",groups={ADD.class,SAVE.class})  
-	private int sex;
+	@NotBlank(message = "{usermanage.form.valid.UserEntity.sex.NotEmpty}",groups={ADD.class,SAVE.class})  
+	private String sex;
 	/*
 	 * 职务
 	 */
@@ -110,10 +110,11 @@ public class UserEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getSex() {
+	
+	public String getSex() {
 		return sex;
 	}
-	public void setSex(int sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 	public String getPosition() {

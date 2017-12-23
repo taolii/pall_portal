@@ -5,19 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pall.portal.common.constants.IResponseConstants;
+import com.pall.portal.common.datatables.Entity.DatatablesView;
+import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
+import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.repository.entity.menu.MenuInfoEntity;
+import com.pall.portal.repository.entity.menu.QueryMenuFormEntity;
 import com.pall.portal.repository.entity.menu.TreeMenuInfo;
 import com.pall.portal.repository.mapper.menu.MenuManageDao;
-import com.pall.portal.service.menu.MenuManageService;
 @Repository
 public class MenuManageServiceImpl implements MenuManageService{
+	/*
+	 * 系统日志
+	 */
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MenuManageDao menuManageDao;
+	@Autowired
+	private ResourceUtils resourceUtils;
 	@Override
 	public BaseResponse getMenusByPMenuid(int pmenuid,String operatorid) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
@@ -60,5 +71,78 @@ public class MenuManageServiceImpl implements MenuManageService{
 			}
 		}
 		return treeMenuInfos;
+	}
+	@Override
+	public BaseTablesResponse queryMenuList(QueryMenuFormEntity queryMenuFormEntity) throws Exception {
+		BaseTablesResponse baseResponse=new BaseTablesResponse();
+		try{
+			//查询总记录数
+			int totalRecords=menuManageDao.queryMenuTotalRecords(queryMenuFormEntity);
+			//分页查询结果集
+			List<MenuInfoEntity> menuEntitys=menuManageDao.queryMenuList(queryMenuFormEntity);
+			DatatablesView datatablesViews=new DatatablesView();
+			datatablesViews.setDraw(queryMenuFormEntity.getDraw());
+			if(menuEntitys!=null){
+				datatablesViews.setiTotalDisplayRecords(totalRecords);
+				datatablesViews.setRecordsTotal(totalRecords);
+				datatablesViews.setData(menuEntitys);
+			}
+			baseResponse.setDatatablesView(datatablesViews);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("menumanage.service.queryMenuList.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.queryMenuList.exception")+e.toString());
+		}
+		return baseResponse;
+	}
+	@Override
+	public BaseResponse delMenu(List<String> menuids) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			menuManageDao.delMenu(menuids);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("menumanage.service.delMenu.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.delMenu.exception")+e.toString());
+		}
+		return baseResponse;
+	}
+	@Override
+	public BaseResponse addMenu(MenuInfoEntity menuEntity) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			int resultNum=menuManageDao.addMenu(menuEntity);
+			if(resultNum>0){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+			}else{
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.dao.addMenu.failed"));
+			}
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("menumanage.service.addMenu.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.addMenu.exception")+e.toString());
+		}
+		return baseResponse;
+	}
+	@Override
+	public BaseResponse modMenu(MenuInfoEntity menuEntity) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			int resultNum=menuManageDao.modMenu(menuEntity);
+			if(resultNum>0){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+			}else{
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.dao.modMenu.dao.failed"));
+			}
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("menumanage.service.modMenu.service.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.modMenu.service.exception")+e.toString());
+		}
+		return baseResponse;
 	}
 }

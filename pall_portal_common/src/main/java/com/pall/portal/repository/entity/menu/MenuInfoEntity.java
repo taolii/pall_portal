@@ -1,4 +1,7 @@
 package com.pall.portal.repository.entity.menu;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 /*
  * 菜单对象
  */
@@ -10,6 +13,7 @@ public class MenuInfoEntity {
 	/*
 	 *  菜单名称
 	 */
+	@NotEmpty(message="{menumanage.form.valid.MenuInfoEntity.menuName.NotEmpty}")
 	private String menuName;
 	/*
 	 * 菜单图标

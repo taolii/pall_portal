@@ -28,7 +28,7 @@ $(document).ready(function() {
                     success: function(result) {
                     	 //异常判断与处理
                         if (result.resultCode!=0) {
-                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>缺损信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
+                        	showNotice('Error','<span style="padding-top:5px">缺损信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
                         	$wrapper.spinModal(false);
                         	return ;
                         }
@@ -47,7 +47,8 @@ $(document).ready(function() {
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     	var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
                     	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>缺损信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
-                        $wrapper.spinModal(false);
+                    	showNotice('Error','<span style="padding-top:5px">缺损信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>','error',1000*10);
+                    	$wrapper.spinModal(false);
                     }
                 });
         },
@@ -185,32 +186,17 @@ $(document).ready(function() {
 			                    	dataids=dataids.substr(dataids,dataids.length-1);
 			                    	$.post(contextPath+"/dataconfig/delDataconfig",{"dataids":dataids}, function(result) {
 			                    		if(result.resultCode==0){
-			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>删除缺损信息成功</span>",
-			                                    title:Lobibox.base.OPTIONS.title.success,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-			                                });
+			                    			showNotice('Success',"删除缺损信息成功",'success',1000*5);
 			                    			$("#btn_refresh").click();
 			                    		}else{
-			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">删除缺损信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-			                                    title:Lobibox.base.OPTIONS.title.error,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-			                                });
-			                    		}
+			                    			showNotice('Error','<span style="padding-top:5px">删除缺损信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+				                    	}
 			                        },'json'); 
 			                    }
 			                }
 			            });
 			        }else{
-			        	Lobibox.alert('info', {
-			    	        msg: "请先选中要删除的记录",
-			    	        title:Lobibox.base.OPTIONS.title.info,
-			    	        width:Lobibox.base.OPTIONS.width,
-			    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
-			    	    });
+			        	showNotice('Info',"请先选中要删除的记录",'info',1000*5);
 			        }
 			    }
 			};

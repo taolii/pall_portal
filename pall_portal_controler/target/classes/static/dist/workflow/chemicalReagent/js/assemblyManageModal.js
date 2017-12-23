@@ -125,7 +125,6 @@ $(document).ready(function() {
         }else{
             //一般复选
         	var item = _assemblyTable.row($(this).closest('tr')).data();
-        	alert("tr"+$(this).closest('tr').html());
         	if($(this).closest('tr').find('input').is(':checked')){
         		insertAssemblyOutputLotNum(item,true);
         	}else{
