@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,7 +56,7 @@ public class MenuController {
     }
 	
 	@RequestMapping(value="menu/menuManage", method= RequestMethod.POST)
-    public @ResponseBody String menuManage(Model model,QueryMenuFormEntity  queryMenuFormEntity, HttpServletRequest request) {
+    public @ResponseBody String menuManage(Model model,@RequestBody QueryMenuFormEntity  queryMenuFormEntity, HttpServletRequest request) {
         if(queryMenuFormEntity.getPageSize()<=0){
         	queryMenuFormEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
         }
@@ -68,6 +69,7 @@ public class MenuController {
 			baseResponse.setResultMsg(resourceUtils.getMessage("menuManage.controler.menuManage.exception")+e.toString());
 			
 		}
+		logger.info(JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue));
 	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
     }
 	/*

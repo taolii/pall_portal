@@ -7,9 +7,8 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.menu.menuManage.title}"></title>
-        <!--  link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/datatables.net-responsive/css/responsive.bootstrap.min.css(path=${contextPath})}" /-->
-        <!--script type="text/javascript" th:src="@{{path}/vendors/datatables.net-responsive/js/dataTables.responsive.min.js(path=${contextPath})}"></script-->
-      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/menuManage.js(path=${contextPath})}"></script>
+        
+        <script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/menuManage.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/addMenu.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/modifyMenu.js(path=${contextPath})}"></script>
     </head>
@@ -58,46 +57,44 @@
 		                    </div>
                 		</form>
     				</div-->
-    				<div class="row-fluid">
+    				<div id="toolbar" class="row-fluid">
     					<div class="pull-right">
 					        <div class="btn-group">
-					            <button type="button" class="btn btn-primary btn-sm" id="btn-add">
+					            <button type="button" class="btn btn-default" id="btn-add">
 					                <i class="fa fa-plus"></i>
 					                <span th:text="#{pages.menu.menuManage.table.button.add}" th:remove="tag"></span>
 					            </button>
-					            <!-- button type="button" class="btn btn-primary btn-sm" id="btn-delAll">
+					            <!--  button type="button" class="btn btn-default" id="btn-delAll">
 					                <i class="fa fa-remove"></i>
 					                <span th:text="#{pages.menu.menuManage.table.button.batchdel}" th:remove="tag"></span>
-					            </button -->
-					            <button id="btn_refresh" type="button" class="btn btn-primary btn-sm">
+					            </button >
+					            <button id="btn_refresh" type="button" class="btn btn-default">
 					                <i class="fa fa-refresh"></i>
 					                <span th:text="#{pages.menu.menuManage.table.button.refresh}" th:remove="tag"></span>
-					            </button>
+					            </button-->
 					        </div>
     					</div>
     				</div>
                  	<div class="row" id="div-table-container">
-                 		<table id="datatable" class="table jambo_table datatable-bordered collapsed dtr-inline dt-responsive nowrap">
+                 		<table id="tree" class="table table-hover" >
 							<thead>
 								<tr>
-									
 									<th>&nbsp;&nbsp;</th>
-									<!--  th>
-										<input class="iCheck" type="checkbox" name="cb-check-all"/>
-									</th-->
+									<th>&nbsp;&nbsp;</th>
 									<th th:text="#{pages.menu.menuManage.table.title.menuid}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.menuName}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.menuIcon}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.menuURL}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.leaf}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.disabled}"></th>
-									<!--  th th:text="#{pages.menu.menuManage.table.title.pMenuid}"></th-->
+									
 									<th th:text="#{pages.menu.menuManage.table.title.sort}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.description}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.operator}"></th>
 								</tr>
 							</thead>
 						</table>
+						
                  	</div>
         		</div>
             </div>
