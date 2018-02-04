@@ -18,6 +18,12 @@
 	    <if test="pMenuid != null and pMenuid != ''">  
 	       AND PMENUID=#{pMenuid, jdbcType=INTEGER}
 	    </if>
+	    <if test="pMenuids != null  and pMenuids.size>0 ">  
+	       AND PMENUID in
+	        <foreach collection="pMenuids" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach>   
+	    </if> 
 	     order by menuid desc 
  	</select> 
 	<select id="queryMenuTotalRecords" resultType="int"
@@ -29,9 +35,15 @@
 	    <if test="pMenuid != null and pMenuid != ''">  
 	       AND PMENUID=#{pMenuid, jdbcType=INTEGER}
 	    </if>
+	    <if test="pMenuids != null  and pMenuids.size>0 ">  
+	       AND PMENUID in
+	        <foreach collection="pMenuids" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach>   
+	    </if> 
  	</select>
  	<update id="modMenu" parameterType="com.pall.portal.repository.entity.menu.MenuInfoEntity">
-         update t_ums_menuinfo f set MENUNAME=#{menuName},DESCRIPTION=#{description},MENUURL=#{menuUrl},MENUICON=#{menuIcon},LEAF=#{leaf},DISABLED=#{disabled},PMENUID=#{pmenuid},SORT=#{sort} where f.roleid = #{roleid}
+         update t_ums_menuinfo f set MENUNAME=#{menuName},DESCRIPTION=#{description},MENUURL=#{menuUrl},MENUICON=#{menuIcon},LEAF=#{leaf},DISABLED=#{disabled},PMENUID=#{pmenuid},SORT=#{sort} where f.menuid = #{menuid}
     </update>
     <insert id="addMenu" parameterType="com.pall.portal.repository.entity.menu.MenuInfoEntity">
     	<selectKey keyProperty="menuid" order="AFTER" resultType="java.lang.Integer">
@@ -45,4 +57,11 @@
         	#{item}  
     	</foreach> 
 	</delete>
+	<select id="findMenuById" resultType="com.pall.portal.repository.entity.menu.MenuInfoEntity"
+	parameterType="com.pall.portal.repository.entity.menu.MenuInfoEntity"> 
+ 		select MENUID,MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION from t_ums_menuinfo where menuid=#{menuid} 
+ 	</select>
+ 	<select id="getTreeMenu" resultType="com.pall.portal.repository.entity.menu.MenuInfoEntity"> 
+ 		select MENUID,MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION from T_UMS_MENUINFO f where  FIND_IN_SET(pmenuid,queryChildMenuList(#{pmenuid}))>0
+ 	</select>
 </mapper> 

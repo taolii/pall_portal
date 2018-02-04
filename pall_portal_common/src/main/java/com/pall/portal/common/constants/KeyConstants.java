@@ -10,6 +10,10 @@ public class KeyConstants {
 	 */
 	public static final int PAGE_DEFAULT_START_NO=1;
 	/*
+	 * 分页默认菜单根节点id
+	 */
+	public static final String DEFAULT_ROOT_MENU_ID="default/root/menuid";
+	/*
 	 * 分页默认页大小
 	 */
 	public static final String PAGE_DEFAULT_PAGE_SIZE="paging/pagesize";

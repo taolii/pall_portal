@@ -1,66 +1,16 @@
-<!DOCTYPE html >
-<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
-
-<head th:fragment="head">
-<title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<link rel="icon" type="image/x-icon" th:href="@{{path}/favicon.png(path=${contextPath})}" />
-<!-- 默认360 兼容模式 -->
-<meta name="renderer" content="webkit|ie-comp|ie-stand" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap/css/bootstrap.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-table/css/bootstrap-table.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/datatables.net/css/dataTables.bootstrap.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrapvalidator/css/bootstrapValidator.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/font-awesome/css/font-awesome.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/lobibox/css/lobibox.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/jquery-ui/jquery-ui.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/select2/css/select2.min.css(path=${contextPath})}" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.css(path=${contextPath})}"/>
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.brighttheme.css(path=${contextPath})}"/>
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.history.css(path=${contextPath})}"/>
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.buttons.css(path=${contextPath})}"/>
-<link type="text/css" rel="stylesheet" th:href="@{{path}/dist/main/css/custom.min.css(path=${contextPath})}"/>
-<link type="text/css" rel="stylesheet" th:href="@{{path}/dist/common/css/common.css(path=${contextPath})}"/>
-
-<script type="text/javascript" th:src="@{{path}/vendors/jquery/jquery-1.12.3.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/bootstrap/js/bootstrap.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/bootstrap-table/js/bootstrap-table.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/bootstrapvalidator/js/bootstrapValidator.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/datatables.net/js/jquery.dataTables.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/datatables.net/js/dataTables.bootstrap.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/lobibox/js/lobibox.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/iCheck/icheck.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/moment/moment.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/jquery-ui/jquery-ui.min.js(path=${contextPath})}"></script><script type="text/javascript" th:src="@{{path}/vendors/select2/js/select2.min.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/spin-2.1.0/jquery.spin.merge.js(path=${contextPath})}"></script>
-
-<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.reference.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.history.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.buttons.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/dist/common/js/constant.js(path=${contextPath})}"></script>
-</head>
-<body class="nav-md">
-	<div class="container body">
-		<div class="main_container" style="background: #2A3F54;">
-			<div class="col-md-3 left_col">
-				<div th:replace="fragments/main_left :: content"></div>
-			</div>
-			<div class="top_nav">
-				<div th:replace="fragments/main_top :: content"></div>
-			</div>
-			<div class="right_col" role="main">
-				<div th:include="this :: content"></div>
-			</div>
-		</div>
-	</div>
-	<input type="hidden" id="contextPath" th:value="${#httpServletRequest.getContextPath()}"/>
-	<script type="text/javascript" th:src="@{{path}/dist/common/js/public.js(path=${contextPath})}"></script>
-	<script type="text/javascript" th:src="@{{path}/dist/main/js/custom.min.js(path=${contextPath})}"></script>
-</body>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title th:text="#{pages.system.name}+'-'+#{pages.index.main_left.title}"></title>
+        <link th:include="common/commonHeader:: commonHeader"></link>
+        <link type="text/css" rel="stylesheet" th:href="@{{path}/dist/main/css/custom.min.css(path=${contextPath})}"/>
+        <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/nprogress/css/nprogress.css(path=${contextPath})}"/>
+        <script type="text/javascript" th:src="@{{path}/vendors/nprogress/js/nprogress.js(path=${contextPath})}"></script>
+    </head>
+    <body style="background-color:#fff;">
+	 	<div th:include="this :: content"></div>
+		<div th:include="common/commonLoadJS:: commonLoadJS"></div>
+    </body>
 </html>

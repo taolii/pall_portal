@@ -87,24 +87,18 @@ public class UserManageServiceImpl implements UserManageService{
 		try{
 			int resultNum=userManageDao.modifyUser(userEntity);
 			if(resultNum>0){
+				if(userEntity.getOperatorType()==null){
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+					return baseResponse;
+				}
 				List<String> operatorids=new ArrayList<String>();
 				operatorids.add(String.valueOf(userEntity.getOperatorid()));
-				resultNum=userManageDao.delUserPermission(operatorids);
-				if(resultNum>0){
-					UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
-					userPermissionEntity.setOperatorid(userEntity.getOperatorid());
-					userPermissionEntity.setOperatorType(userEntity.getOperatorType());
-					resultNum=userManageDao.addUserPermission(userPermissionEntity);
-					if(resultNum>0){
-						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
-					}else{
-						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-						baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.failed"));
-					}
-				}else{
-					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-					baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.failed"));
-				}
+				userManageDao.delUserPermission(operatorids);
+				UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
+				userPermissionEntity.setOperatorid(userEntity.getOperatorid());
+				userPermissionEntity.setOperatorType(userEntity.getOperatorType());
+				userManageDao.addUserPermission(userPermissionEntity);
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 			}else{
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 				baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyUser.dao.update.account.nofound"));

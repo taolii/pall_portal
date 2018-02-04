@@ -157,14 +157,8 @@ $(document).ready(function() {
 			       $("#modPwdDataForm [name=account]").val(item.account);
 			    },
 			    addItemShow: function() {
-			    	$addUserModal=$("#addUserModal");
-			    	$addUserModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$addUserModal.css("overflow", "hidden");
-			    	$addUserModal.css("overflow-y", "auto");
-			    	$addUserModal.modal("show");
-			    	$('#addDataForm').data('bootstrapValidator').resetForm(true);
+			    	$("#indexFrame",parent.document).attr("src","/portal/user/addUser")
+			    	
 			    },
 			    editItemShow: function() {
 			    	$modUserModal=$("#modUserModal");

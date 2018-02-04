@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
-    $('#modPwdDataForm').bootstrapValidator({
+	var dataForm='#modPwdDataForm';
+    $(dataForm).bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -9,14 +10,16 @@ $(document).ready(function() {
         },
         fields: {
         	account: {
-                validators: {
+        		container: '.account',
+        		validators: {
                     notEmpty: {
                         message: '登录账号不能为空'
                     }
                 }
             },
             newPwd: {
-                validators: {
+            	container: '.newPwd',
+            	validators: {
                     notEmpty: {
                         message: '新密码不能为空'
                     },
@@ -32,7 +35,8 @@ $(document).ready(function() {
                 }
             },
             ensureNewPwd: {
-                validators: {
+            	container: '.ensureNewPwd',
+            	validators: {
                     notEmpty: {
                         message: '确认密码不能为空'
                     },
@@ -59,11 +63,9 @@ $(document).ready(function() {
     			$("#modUserPwdModal").modal("hide");
     			$("#btn_refresh").click();
     		}else{
+    			$(dataform).bootstrapValidator('disableSubmitButtons', false); 
     			showNotice('Error','<span style="padding-top:5px">密码更新失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
         },'json'); 
-    })
-    .on('error.form.bv', function(e, data) {
-    	showNotice('Error','参数非法，请检查参数','error',1000*10);
     });
 });

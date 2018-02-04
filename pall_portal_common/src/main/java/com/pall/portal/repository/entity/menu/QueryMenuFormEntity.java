@@ -1,4 +1,7 @@
 package com.pall.portal.repository.entity.menu;
+
+import java.util.List;
+
 /*
  * 菜单查询对象
  */
@@ -8,6 +11,7 @@ public class QueryMenuFormEntity {
 	 */
 	private String menuName;
 	private String pMenuid;
+	private List<String> pMenuids;
 	/*
 	 * 起始页
 	 */
@@ -46,6 +50,12 @@ public class QueryMenuFormEntity {
 	}
 	public void setpMenuid(String pMenuid) {
 		this.pMenuid = pMenuid;
+	}
+	public List<String> getpMenuids() {
+		return pMenuids;
+	}
+	public void setpMenuids(List<String> pMenuids) {
+		this.pMenuids = pMenuids;
 	}
 	
 }

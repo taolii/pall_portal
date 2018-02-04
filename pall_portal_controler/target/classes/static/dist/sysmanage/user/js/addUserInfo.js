@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
-    $('#addDataForm').bootstrapValidator({
+	var dataForm='#addDataForm';
+    $(dataForm).bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -9,7 +10,8 @@ $(document).ready(function() {
         },
         fields: {
         	account: {
-                validators: {
+        		container: '.account',
+        		validators: {
                     notEmpty: {
                         message: '登录账号不能为空'
                     },
@@ -21,14 +23,16 @@ $(document).ready(function() {
                 }
             },
             name: {
-                validators: {
+            	container: '.name',
+            	validators: {
                     notEmpty: {
                         message: '操作员名称不能为空'
                     }
                 }
             },
         	password: {
-                validators: {
+        		container: '.password',
+        		validators: {
                     notEmpty: {
                         message: '密码不能为空'
                     },
@@ -44,7 +48,8 @@ $(document).ready(function() {
                 }
             },
             "email": {
-                validators: {
+            	container: '.email',
+            	validators: {
                     notEmpty: {
                         message: 'email地址不能为空'
                     },
@@ -54,6 +59,7 @@ $(document).ready(function() {
                 }
             },
             "mobile": {
+            	container: '.mobile',
             	validators: {
             		notEmpty: {
                         message: '手机号不能为空'
@@ -76,11 +82,9 @@ $(document).ready(function() {
     			$("#addUserModal").modal("hide");
     			$("#btn_refresh").click();
     		}else{
+    			$(dataform).bootstrapValidator('disableSubmitButtons', false); 
     			showNotice('Error','<span style="padding-top:5px">添加用户失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
         },'json'); 
-    })
-    .on('error.form.bv', function(e, data) {
-    	showNotice('Error','参数非法，请检查参数','error',1000*10);
     });
 });

@@ -1,6 +1,10 @@
 package com.pall.portal.repository.entity.menu;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 /*
  * 菜单对象
@@ -13,7 +17,7 @@ public class MenuInfoEntity {
 	/*
 	 *  菜单名称
 	 */
-	@NotEmpty(message="{menumanage.form.valid.MenuInfoEntity.menuName.NotEmpty}")
+	@NotBlank(message="{menumanage.form.valid.MenuInfoEntity.menuName.NotEmpty}")
 	private String menuName;
 	/*
 	 * 菜单图标
@@ -26,22 +30,23 @@ public class MenuInfoEntity {
 	/*
 	 * 叶子节点与否 1 叶子节点 0 目录
 	 */
-	private int leaf;
+	private Integer leaf;
 	/*
 	 * 节点是否可用 0 可用 1 不可用
 	 */
-	private int disabled;
+	private Integer disabled;
 	/*
 	 * 父菜单编号
 	 */
-	private int pmenuid;
+	private Integer pmenuid;
 	/*
 	 * 同级菜单顺序
 	 */
-	private int sort;
+	private Integer sort;
 	/*
 	 * 描述信息
 	 */
+	@Length(min=0, max=100, message="{menuManage.form.valid.menuInfoEntity.description.stringlength}")  
 	private String description;
 	public int getMenuid() {
 		return menuid;
@@ -80,17 +85,24 @@ public class MenuInfoEntity {
 	public void setPmenuid(int pmenuid) {
 		this.pmenuid = pmenuid;
 	}
-	public int getLeaf() {
+	
+	public Integer getLeaf() {
 		return leaf;
 	}
-	public void setLeaf(int leaf) {
+	public void setLeaf(Integer leaf) {
 		this.leaf = leaf;
 	}
-	public int getDisabled() {
+	public Integer getDisabled() {
 		return disabled;
 	}
-	public void setDisabled(int disabled) {
+	public void setDisabled(Integer disabled) {
 		this.disabled = disabled;
+	}
+	public void setPmenuid(Integer pmenuid) {
+		this.pmenuid = pmenuid;
+	}
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 	public int getSort() {
 		return sort;

@@ -23,6 +23,12 @@ public interface MenuManageDao {
 	 */
 	public List<MenuInfoEntity> queryMenuList(QueryMenuFormEntity  queryMenuFormEntity);
 	/*
+	 * 根据条件查询菜单信息
+	 * @param pmenuid 父菜单id
+	 * @return 查询结果
+	 */
+	public List<MenuInfoEntity> getTreeMenu(@Param("pmenuid") String pmenuid);
+	/*
 	 * 根据条件查询菜单总记录数
 	 * @param queryMenuFormEntity 菜单列表查询对象
 	 * @return 查询结果
@@ -46,4 +52,10 @@ public interface MenuManageDao {
 	 * @return 结果
 	 */
 	public int modMenu(MenuInfoEntity menuEntity);
+	/*
+	 * 根据菜单id获取菜单信息
+	 * @param menuEntity 菜单对象
+	 * @return 查询结果
+	 */
+	public MenuInfoEntity findMenuById(MenuInfoEntity menuEntity);
 }

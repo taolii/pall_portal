@@ -9,6 +9,13 @@ function logout(contextPath){
         }
     });
 }
+ 
+function openURL(url){
+	$(".child_menu").find("li").each(function(){
+		$(this).removeClass("active");
+	});
+	$('#indexFrame').attr('src',url);
+}
 function showNotice(title, text, type, delay) {
 	if(!type)type='info';
 	if(!delay)delay=1000*10;

@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="commonHeader">
+<title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="icon" type="image/x-icon" th:href="@{{path}/favicon.png(path=${contextPath})}" />
+<!-- 默认360 兼容模式 -->
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/font/css/font.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap/css/bootstrap.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-table/css/bootstrap-table.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-treeview/css/bootstrap-treeview.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/iCheck/skins/flat/green.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/font-awesome/css/font-awesome.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/switchery/css/switchery.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/datatables.net/css/dataTables.bootstrap.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrapvalidator/css/bootstrapValidator.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/jquery-ui/css/jquery-ui.min.css(path=${contextPath})}" />
+
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/lobibox/css/lobibox.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/select2/css/select2.min.css(path=${contextPath})}" />
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.css(path=${contextPath})}"/>
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.brighttheme.css(path=${contextPath})}"/>
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.history.css(path=${contextPath})}"/>
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.buttons.css(path=${contextPath})}"/>
+<link type="text/css" rel="stylesheet" th:href="@{{path}/dist/common/css/common.css(path=${contextPath})}"/>
+
+<script type="text/javascript" th:src="@{{path}/vendors/jquery/jquery-1.12.3.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/bootstrap/js/bootstrap.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/bootstrap-table/js/bootstrap-table.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/bootstrap-treeview/js/bootstrap-treeview.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/bootstrapvalidator/js/bootstrapValidator.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/jquery-ui/js/jquery-ui.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/datatables.net/js/jquery.dataTables.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/datatables.net/js/dataTables.bootstrap.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/lobibox/js/lobibox.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/iCheck/js/icheck.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/switchery/js/switchery.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/moment/moment.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/select2/js/select2.min.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/spin-2.1.0/jquery.spin.merge.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.reference.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.history.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.buttons.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/dist/common/js/constant.js(path=${contextPath})}"></script>
+</head>
+<body>
+	
+</body>
+</html>

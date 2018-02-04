@@ -44,20 +44,20 @@
 		                                <div class="panel-body">
 		                                	<div class="col-md-3 ">
 			                                	<div class="input-group">
-			                                		<span class="input-group-addon"><a class="glyphicon glyphicon-user"></a></span>
-							                        <input type="text" name="account" class="form-control" th:placeholder="#{pages.user.userManage.form.account.input.tip}"/>
+			                                		<span class="input-group-addon default_border"><a class="glyphicon glyphicon-user"></a></span>
+							                        <input type="text" name="account" class="form-control default_border" th:placeholder="#{pages.user.userManage.form.account.input.tip}"/>
 			                                	</div>
 				                      		</div>
 											<div class="col-md-3">
 			                                	<div class="input-group">
-			                                		<span class="input-group-addon"><a class="glyphicon glyphicon-phone"></a></span>
-							                        <input type="text" name="mobile" class="form-control" th:placeholder="#{pages.user.userManage.form.mobile.input.tip}"/>
+			                                		<span class="input-group-addon default_border"><a class="glyphicon glyphicon-phone"></a></span>
+							                        <input type="text" name="mobile" class="form-control default_border" th:placeholder="#{pages.user.userManage.form.mobile.input.tip}"/>
 			                                	</div>
 						                    </div>
 		                                	<div class="col-md-3">
 			                                	<div class="input-group">
-			                                		<span class="input-group-addon"><a class="glyphicon glyphicon-wrench"></a></span>
-							                        <select name="operatorType" class="form-control select2">
+			                                		<span class="input-group-addon default_border"><a class="glyphicon glyphicon-wrench"></a></span>
+							                        <select name="operatorType" class="form-control select2 default_border">
 					                                     <option value="" th:text="#{pages.user.userManage.form.operatortype.select.all}"></option>
 					                                     <option value="1" th:text="#{pages.user.userManage.form.operatortype.select.admin}"></option>
 					                                     <option value="2" th:text="#{pages.user.userManage.form.operatortype.select.common}"></option>
@@ -96,7 +96,7 @@
     					</div>
     				</div>
                  	<div class="row" id="div-table-container">
-                 		<table id="datatable" class="table jambo_table datatable-bordered" >
+                 		<table id="datatable" class="table jambo_table table-bordered" >
 							<thead>
 								<tr>
 									<th>
@@ -120,9 +120,6 @@
         		</div>
             </div>
           	<div class="clearfix"></div>
-          	<div id="addUser">
-				<div th:replace="sysmanage/user/addUserInfoModal:: content"></div>
-			</div>
 			<div id="modUser">
 				<div th:replace="sysmanage/user/modUserInfoModal:: content"></div>
 			</div>

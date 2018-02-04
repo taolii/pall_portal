@@ -7,76 +7,49 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.menu.menuManage.title}"></title>
-        
         <script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/menuManage.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/addMenu.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/modifyMenu.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/treeMenu.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">
-        	<div class="x_panel ">
-                 <div class="x_title ">
-                    <h2><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label th:text="#{pages.menu.menuManage.title}" th:remove="tag"></label></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                 <div class="x_content">
-                 	 <!--  div class="row">
-			            <form id="queryForm" method="post" class="form-horizontal">
-		                    <div class="panel-group" id="steps">
-		                        <div class="panel panel-primary">
-		                            <div class="panel-heading">
-		                                <h4 class="panel-title">
-		                                	<i class="fa fa-search"></i><a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.menu.menuManage.form.title}"></a>
-		                              	</h4>
-		                            </div>
-		                            <div id="stepOne" class="panel-collapse collapse in  ">
-		                                <div class="panel-body">
-		                                	<div class="col-md-4">
-			                                	<div class="input-group">
-			                                		<span class="input-group-addon"><label th:text="#{pages.menu.menuManage.form.menuName}" th:remove="tag"></label></span>
-							                        <input type='text' name="menuName"   class="form-control" /> 
-			                                	</div>
-						                    </div>
-						                    
-						                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-						                        <button id="btn-query" class="btn btn-primary" type="button">
-						                        <i class="fa fa-search"></i>
-			                 						<span th:text="#{pages.menu.menuManage.form.query.button.tip}" th:remove="tag"></span>
-												</button> 
-						                    </div>
-						                    
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </div>
-                		</form>
-    				</div-->
-    				<div id="toolbar" class="row-fluid">
-    					<div class="pull-right">
-					        <div class="btn-group">
-					            <button type="button" class="btn btn-default" id="btn-add">
-					                <i class="fa fa-plus"></i>
-					                <span th:text="#{pages.menu.menuManage.table.button.add}" th:remove="tag"></span>
-					            </button>
-					            <!--  button type="button" class="btn btn-default" id="btn-delAll">
-					                <i class="fa fa-remove"></i>
-					                <span th:text="#{pages.menu.menuManage.table.button.batchdel}" th:remove="tag"></span>
-					            </button >
-					            <button id="btn_refresh" type="button" class="btn btn-default">
-					                <i class="fa fa-refresh"></i>
-					                <span th:text="#{pages.menu.menuManage.table.button.refresh}" th:remove="tag"></span>
-					            </button-->
-					        </div>
-    					</div>
+        	<div class="dashboard_graph x_panel">
+	        	<div class="row x_title">
+	                <div class="col-md-6">
+	                  <h3>
+	                  	<i class="fa fa-bars"></i>&nbsp;&nbsp;&nbsp;&nbsp; 
+	                  	<span th:text="#{pages.menu.menuManage.title}" th:remove="tag"></span>
+	                  </h3>
+	                </div>
+	                <div class="col-md-6">
+	                  	<ul class="nav navbar-right panel_toolbox">
+							<li>
+								<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+							</li>
+							<li>
+								<a class="close-link"><i class="fa fa-close"></i></a>
+							</li>
+						</ul>
+	               </div>
+	           </div>
+	           <div class="x_content">
+    				<div id="toolbar" class="btn-group pull-right">
+    					<button id="btn-add" type="button" class="btn btn-primary" >
+			                <i class="fa fa-plus"></i>
+			                <span th:text="#{pages.menu.menuManage.table.button.add}" th:remove="tag"></span>
+			            </button>
+			            <!--  button type="button" class="btn btn-default" id="btn-delAll">
+			                <i class="fa fa-remove"></i>
+			                <span th:text="#{pages.menu.menuManage.table.button.batchdel}" th:remove="tag"></span>
+			            </button >
+			            <button id="btn_refresh" type="button" class="btn btn-default">
+			                <i class="fa fa-refresh"></i>
+			                <span th:text="#{pages.menu.menuManage.table.button.refresh}" th:remove="tag"></span>
+			            </button-->
     				</div>
-                 	<div class="row" id="div-table-container">
-                 		<table id="tree" class="table table-hover" >
+                 	<div class="row">
+                 		<table id="tree" class="table jambo_table table-bordered" >
 							<thead>
 								<tr>
 									<th>&nbsp;&nbsp;</th>
@@ -87,25 +60,22 @@
 									<th th:text="#{pages.menu.menuManage.table.title.menuURL}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.leaf}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.disabled}"></th>
-									
 									<th th:text="#{pages.menu.menuManage.table.title.sort}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.description}"></th>
 									<th th:text="#{pages.menu.menuManage.table.title.operator}"></th>
 								</tr>
 							</thead>
 						</table>
-						
                  	</div>
+                 	<div id="addMenu">
+						<div th:replace="sysmanage/menu/addMenuModal:: content"></div>
+					</div>
+					<div id="modMenu">
+						<div th:replace="sysmanage/menu/modMenuModal:: content"></div>
+					</div>
         		</div>
             </div>
           	<div class="clearfix"></div>
-          	<div id="addMenu">
-				<div th:replace="sysmanage/menu/addMenuModal:: content"></div>
-			</div>
-			<div id="modMenu">
-				<div th:replace="sysmanage/menu/modMenuModal:: content"></div>
-			</div>
-			
         </div>		
     </body>
 </html>

@@ -28,6 +28,12 @@ public interface MenuManageService {
 	 */
 	public BaseTablesResponse queryMenuList(QueryMenuFormEntity  queryMenuFormEntity) throws Exception;
 	/*
+	 * 根据条件获取树形菜单
+	 * @param pmenuid 父菜单id
+	 * @return 查询结果
+	 */
+	public BaseResponse getTreeMenu(String pmenuid) throws Exception;
+	/*
 	 * 删除菜单信息
 	 * @param menuids 需要删除的菜单列表
 	 * @return 删除结果
@@ -45,4 +51,11 @@ public interface MenuManageService {
 	 * @return 结果
 	 */
 	public BaseResponse modMenu(MenuInfoEntity menuEntity) throws Exception;
+	/*
+	 * 根据菜单id获取菜单信息
+	 * @param menuEntity 菜单对象
+	 * @return 查询结果
+	 */
+	public BaseResponse findMenuById(MenuInfoEntity menuEntity) throws Exception;
+	
 }

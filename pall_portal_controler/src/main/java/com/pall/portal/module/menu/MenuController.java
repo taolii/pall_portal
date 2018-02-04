@@ -1,6 +1,10 @@
 package com.pall.portal.module.menu;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pall.portal.annotation.Token;
@@ -29,6 +34,7 @@ import com.pall.portal.context.HolderContext;
 import com.pall.portal.init.UmsConfigInitiator;
 import com.pall.portal.repository.entity.menu.MenuInfoEntity;
 import com.pall.portal.repository.entity.menu.QueryMenuFormEntity;
+import com.pall.portal.repository.entity.menu.TreeMenuInfo;
 import com.pall.portal.service.menu.MenuManageService;
 /*
  * 菜单管理控制器
@@ -48,7 +54,7 @@ public class MenuController {
 	@Autowired
 	private ResourceUtils resourceUtils;
 	/*
-	 * 角色管理
+	 * 菜单理
 	 */
 	@RequestMapping(value="menu/menuManage", method= RequestMethod.GET)
     public  String menuManage(Model model, HttpServletRequest request) {
@@ -69,18 +75,64 @@ public class MenuController {
 			baseResponse.setResultMsg(resourceUtils.getMessage("menuManage.controler.menuManage.exception")+e.toString());
 			
 		}
-		logger.info(JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue));
 	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
     }
 	/*
-	 * 删除角色信息
+	 * 获取菜单信息
+	 */
+	@RequestMapping(value="menu/findMenuById", method= RequestMethod.POST)
+    public @ResponseBody String findMenuById(Model model,@RequestBody MenuInfoEntity menuInfoEntity, HttpServletRequest request) {
+        BaseResponse baseResponse=new BaseResponse();
+		try {
+			baseResponse=menuManageService.findMenuById(menuInfoEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("menuManage.controler.findMenuById.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menuManage.controler.findMenuById.exception")+e.toString());
+			
+		}
+	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+    }
+	/*
+	 * 树形菜单
+	 */
+	@RequestMapping(value="menu/treeMenu", method= RequestMethod.POST)
+    public @ResponseBody String treeMenu(Model model,@RequestBody QueryMenuFormEntity  queryMenuFormEntity, HttpServletRequest request) {
+        if(queryMenuFormEntity.getPageSize()<=0){
+        	queryMenuFormEntity.setPageSize(Integer.MAX_VALUE);
+        }
+        BaseResponse baseResponse=new BaseResponse();
+		try {
+			if(StringUtils.isEmpty(queryMenuFormEntity.getpMenuid())){
+				queryMenuFormEntity.setpMenuid(UmsConfigInitiator.getDataConfig(KeyConstants.DEFAULT_ROOT_MENU_ID));
+			}
+			baseResponse=menuManageService.getTreeMenu(queryMenuFormEntity.getpMenuid());
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("menuManage.controler.menuManage.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menuManage.controler.menuManage.exception")+e.toString());
+			
+		}
+	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+    }
+	/*
+	 * 删除菜单信息
 	 */
 	@RequestMapping(value="menu/delMenu", method= RequestMethod.POST)
     public @ResponseBody String delMenu(@RequestParam("roleids") String menuids,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			String[] aMenuid=menuids.split(",");
-			baseResponse=menuManageService.delMenu(Arrays.asList(aMenuid));
+			List<String> tempMenuid=new ArrayList<String>();
+			//获取所有需要删除的菜单
+			for(String menuid:aMenuid){
+				if(tempMenuid.contains(menuid))continue;
+				baseResponse=menuManageService.getTreeMenu(menuid);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					tempMenuid.addAll(getTreeMenuid((List<TreeMenuInfo>)baseResponse.getReturnObjects()));
+				}
+			}
+			baseResponse=menuManageService.delMenu(tempMenuid);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("menumanage.controler.delMenu.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -89,6 +141,19 @@ public class MenuController {
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
     }
+	/*
+	 * 遍历所有菜单id
+	 */
+	private Set<String> getTreeMenuid(List<TreeMenuInfo> menus){
+		Set<String> tempMenuid=new HashSet<String>();
+		for(TreeMenuInfo treeMenuInfo:menus){
+			tempMenuid.add(String.valueOf(treeMenuInfo.getPmenuInfo().getMenuid()));
+			if(treeMenuInfo.getSubMenuInfos()!=null && treeMenuInfo.getSubMenuInfos().size()>0){
+				tempMenuid.addAll(getTreeMenuid(treeMenuInfo.getSubMenuInfos()));
+			}
+		}
+		return tempMenuid;
+	}
 	/*
 	 * 添加数据字典
 	 */
@@ -99,6 +164,12 @@ public class MenuController {
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+				if(menuInfoEntity.getLeaf()==null){
+					menuInfoEntity.setLeaf(0);
+				}
+				if(menuInfoEntity.getDisabled()==null){
+					menuInfoEntity.setDisabled(0);;
+				}
 				baseResponse=menuManageService.addMenu(menuInfoEntity);
 			}
 		} catch (Exception e) {
@@ -119,14 +190,23 @@ public class MenuController {
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+				if(menuInfoEntity.getLeaf()==null){
+					menuInfoEntity.setLeaf(0);
+				}
+				if(menuInfoEntity.getDisabled()==null){
+					menuInfoEntity.setDisabled(0);;
+				}
 				baseResponse=menuManageService.modMenu(menuInfoEntity);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					baseResponse=menuManageService.findMenuById(menuInfoEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("menumanage.controler.modMenu.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.controler.modMenu.exception")+e.toString());
 		}
-		baseResponse.setReturnObjects(null);
+		//baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
     }
 }

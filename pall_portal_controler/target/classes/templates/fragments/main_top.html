@@ -8,16 +8,50 @@
     </head>
     <body>
 	    <div th:fragment="content">
-	    	 <div class="nav_menu">
+	    	 <div class="nav_menu nav_menu_bg">
 	            <nav>
 		            <div class="nav toggle">
 		                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
 		            </div>
-		            <div class="model-head">
-			    		<label th:text="#{pages.index.main_left.loginip}"></label>：<span th:text="${session.LOGIN_USER.loginIP}"></span>
-		                &nbsp;&nbsp;&nbsp;&nbsp;<label th:text="#{pages.index.main_left.logintime}"></label>：
-		                <span th:text="${#dates.format(session.LOGIN_USER.loginTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-			    	</div>
+		            <ul class="nav navbar-nav navbar-right">
+		            	 <li role="presentation" class="dropdown">
+		                  	<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+		                        <span>
+			                        <span th:text="#{pages.index.main_left.loginip}"></span>
+			                        <span class="time" th:text="${session.LOGIN_USER.loginIP}"></span>
+	                        	</span>
+	                        	<span>
+			                        <span th:text="#{pages.index.main_left.logintime}"></span>
+			                        <span class="time" th:text="${#dates.format(session.LOGIN_USER.loginTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+	                        	</span>
+		                        <span class="message">
+		                          
+		                        </span>
+			                  </a>
+			                  <!--  ul class="dropdown-menu list-unstyled msg_list" role="menu">
+			                    <li>
+				                     <a>
+				                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+				                        <span>
+				                          <span>John Smith</span>
+				                          <span class="time">3 mins ago</span>
+				                        </span>
+				                        <span class="message">
+				                          Film festivals used to be do-or-die moments for movie makers. They were where...
+				                        </span>
+				                      </a>
+				                 </li>
+				                 <li>
+				                      <div class="text-center">
+				                        <a>
+				                          <strong>See All Alerts</strong>
+				                          <i class="fa fa-angle-right"></i>
+				                        </a>
+				                      </div>
+				                  </li>
+				               </ul-->
+			              </li>
+					 </ul>
 	            </nav>
           	</div>
 		</div>

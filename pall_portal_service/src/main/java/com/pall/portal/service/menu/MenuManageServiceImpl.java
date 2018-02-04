@@ -100,7 +100,15 @@ public class MenuManageServiceImpl implements MenuManageService{
 	public BaseResponse delMenu(List<String> menuids) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			//删除当前节点菜单信息
 			menuManageDao.delMenu(menuids);
+			QueryMenuFormEntity  queryMenuFormEntity=new QueryMenuFormEntity();
+			queryMenuFormEntity.setPageSize(Integer.MAX_VALUE);
+			List<String> pmenuids=delSubMenu(queryMenuFormEntity);
+			while(pmenuids!=null && pmenuids.size()>0){
+				queryMenuFormEntity.setpMenuids(pmenuids);
+				pmenuids=delSubMenu(queryMenuFormEntity);
+			}
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("menumanage.service.delMenu.exception"),e);
@@ -108,6 +116,21 @@ public class MenuManageServiceImpl implements MenuManageService{
 			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.delMenu.exception")+e.toString());
 		}
 		return baseResponse;
+	}
+	/*
+	 * 删除子菜单信息
+	 */
+	private List<String> delSubMenu(QueryMenuFormEntity  queryMenuFormEntity){
+		List<MenuInfoEntity> menuEntitys=menuManageDao.queryMenuList(queryMenuFormEntity);
+		List<String> menuids=null;
+		if(menuEntitys!=null){
+			menuids=new ArrayList<String>();
+			for(MenuInfoEntity menuInfoEntity:menuEntitys){
+				menuids.add(String.valueOf(menuInfoEntity.getMenuid()));
+			}
+			menuManageDao.delMenu(menuids);
+		}
+		return menuids;
 	}
 	@Override
 	public BaseResponse addMenu(MenuInfoEntity menuEntity) throws Exception {
@@ -142,6 +165,41 @@ public class MenuManageServiceImpl implements MenuManageService{
 			logger.error(resourceUtils.getMessage("menumanage.service.modMenu.service.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.modMenu.service.exception")+e.toString());
+		}
+		return baseResponse;
+	}
+	@Override
+	public BaseResponse getTreeMenu(String pmenuid) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			List<MenuInfoEntity> menuEntitys=menuManageDao.getTreeMenu(pmenuid);
+			if(menuEntitys!=null){
+				List<TreeMenuInfo> treeMenuInfos=getSubMenus(menuEntitys,Integer.parseInt(pmenuid));
+				baseResponse.setReturnObjects(treeMenuInfos);
+			}
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("menumanage.service.queryMenuList.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.queryMenuList.exception")+e.toString());
+		}
+		return baseResponse;
+	}
+	@Override
+	public BaseResponse findMenuById(MenuInfoEntity menuEntity) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			MenuInfoEntity tempMenuEntity=menuManageDao.findMenuById(menuEntity);
+			if(tempMenuEntity!=null){
+				List<MenuInfoEntity> menuInfoEntitys=new ArrayList<MenuInfoEntity>();
+				menuInfoEntitys.add(tempMenuEntity);
+				baseResponse.setReturnObjects(menuInfoEntitys);
+			}
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("menumanage.service.findMenuById.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.findMenuById.exception")+e.toString());
 		}
 		return baseResponse;
 	}

@@ -33,7 +33,7 @@ public class UserEntity {
 	/*
 	 * 性别0为男，1为女
 	 */
-	@NotBlank(message = "{usermanage.form.valid.UserEntity.sex.NotEmpty}",groups={ADD.class,SAVE.class})  
+	@NotBlank(message = "{usermanage.form.valid.UserEntity.sex.NotEmpty}",groups={ADD.class})  
 	private String sex;
 	/*
 	 * 职务
@@ -66,8 +66,8 @@ public class UserEntity {
 	/*
 	 * 1：系统管理员 2:普通用户
 	 */
-	@Range(min =1,max = 2, message ="{usermanage.form.valid.UserEntity.operatorType.Range}",groups={ADD.class,SAVE.class}) 
-	private int operatorType;
+	@Range(min =1,max = 2, message ="{usermanage.form.valid.UserEntity.operatorType.Range}",groups={ADD.class}) 
+	private Integer operatorType;
 	/*
 	 * 用户状态：1、暂停；2、正常；3、锁定；4、失效；5、删除
 	 */
@@ -84,6 +84,7 @@ public class UserEntity {
 	 * 修改时间
 	 */
 	private String updateTime;
+	
 	
 	public int getOperatorid() {
 		return operatorid;
@@ -103,14 +104,12 @@ public class UserEntity {
 	public void setAccount(String account) {
 		this.account = account;
 	}
-	
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	public String getSex() {
 		return sex;
 	}
@@ -153,10 +152,10 @@ public class UserEntity {
 	public void setProvinceid(String provinceid) {
 		this.provinceid = provinceid;
 	}
-	public int getOperatorType() {
+	public Integer getOperatorType() {
 		return operatorType;
 	}
-	public void setOperatorType(int operatorType) {
+	public void setOperatorType(Integer operatorType) {
 		this.operatorType = operatorType;
 	}
 	public int getStatus() {
@@ -171,17 +170,17 @@ public class UserEntity {
 	public void setUpdatePwdFlag(int updatePwdFlag) {
 		this.updatePwdFlag = updatePwdFlag;
 	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
 	public String getCreateTime() {
 		return createTime;
 	}
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
 	}
 	public interface ADD{};  
 	public interface SAVE{};

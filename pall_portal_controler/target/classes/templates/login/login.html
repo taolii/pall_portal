@@ -1,60 +1,40 @@
 <!DOCTYPE html>
-<html lang="zh-CN"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="#{pages.system.name}+'-'+#{pages.login.title}"></title>
-    <meta charset="utf-8"/>
-    <link rel="icon" type="image/x-icon" th:href="@{{path}/favicon.png(path=${contextPath})}"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap/css/bootstrap.min.css(path=${contextPath})}"/>
-    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/lobibox/css/lobibox.min.css(path=${contextPath})}" />
-    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.css(path=${contextPath})}"/>
-    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.brighttheme.css(path=${contextPath})}"/>
-    <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.history.css(path=${contextPath})}"/>
-	<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.buttons.css(path=${contextPath})}"/>
-	<link type="text/css" rel="stylesheet" th:href="@{{path}/dist/common/css/common.css(path=${contextPath})}"/>
-    <link type="text/css" rel="stylesheet" th:href="@{{path}/dist/login/css/login.css(path=${contextPath})}"/>
-
-    <script type="text/javascript" th:src="@{{path}/vendors/jquery/jquery-1.12.3.min.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/vendors/bootstrap/js/bootstrap.min.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/vendors/lobibox/js/lobibox.min.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.reference.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.history.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.buttons.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/dist/common/js/public.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/dist/login/js/login.js(path=${contextPath})}"></script>
-    <script type="text/javascript" th:src="@{{path}/dist/common/js/constant.js(path=${contextPath})}"></script>
-    
-</head>
-<body>
-    <div class="container text-center">
-        <div class="login-main">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+	    <title th:text="#{pages.system.name}+'-'+#{pages.login.title}"></title>
+	    <link th:include="common/commonHeader:: commonHeader"></link>
+	    <link rel="stylesheet" th:href="@{{path}/dist/login/css/login.css(path=${contextPath})}"/>
+	    <script type="text/javascript" th:src="@{{path}/dist/login/js/login.js(path=${contextPath})}"></script>
+	</head>
+	<body>
+		 <div class="login-main">
              <div class="row login-box">
              	<div class="col-md-6 ">
 	                <form method="post" id="loginForm">
 	                	 <div class="form-group form-group-lg text-left">
 	                        <input name="targetUrl" type="hidden" value="${targetUrl}"/>
 	                        <input name="token" type="hidden" value="${token}"/>
-	                        <div class="form-group form-group-lg" style="margin-top:20px;">
+	                        <div class="alert alert-danger fa fa-times" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
+	        				</div>
+	                        <div class="form-group form-group-lg">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-user"></a> </span>
-	                                <input name="username" id="uname" type="text" class="form-control input-group-sm" th:placeholder="#{pages.login.input.username.tip}" />
+	                                <input name="username" id="uname" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.username.tip}" />
 	                            </div>
 	                        </div>
 	                        <div class="form-group">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-lock"></a> </span>
-	                                <input type="password" name="password" id="pwd" class="form-control input-group-sm" th:placeholder="#{pages.login.input.password.tip}"/>
+	                                <input type="password" name="password" id="pwd" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.password.tip}"/>
 	                            </div>
 	                        </div>
-	                        <div class="form-group form-group-lg">
+	                        <div class="form-group">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-check"></a> </span>
-	                                <input name="validCode" type="text" class="form-control" th:placeholder="#{pages.login.input.validcode.tip}" />
-	                                <span class="input-group-addon" style="margin:0px;padding:1px;"> 
+	                                <input name="validCode" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.validcode.tip}" />
+	                                <span class="input-group-addon " style="margin:0px;padding:1px;"> 
 	                                	<img  th:onclick="'reloadcode(\''+${#httpServletRequest.getContextPath()}+'\');'" id="safeCode"  style="cursor:pointer" th:alt="#{pages.login.image.validcode.tip}"  th:src="@{{path}/getValidCode(path=${contextPath})}"/>  
 	                                </span>
 	                            </div>
@@ -73,13 +53,12 @@
 	               <img alt="" th:src="@{{path}/dist/login/images/login-box-bg.jpg(path=${contextPath})}"/>
 	               </div>
 	            </div>
-	            
         	</div>
-	        <div class="alert alert-danger fa fa-times" id="showErrors" style="margin-top:15px;" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}"></div>
-		         <div class="container text-center login-bottom">
-		            &copy;<span class="show-year">2017</span><span th:text="#{pages.system.name}"></span>
-		        </div>
-    		</div>
-        </div>
+	        <div id="showErrors" style="margin-top:15px;display:none" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
+	        </div>
+	         <div class="container text-center login-bottom">
+	            &copy;<span class="show-year">2017</span><span th:text="#{pages.system.name}"></span>
+	        </div>
+    	</div>
 	</body>
 </html>

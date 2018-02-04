@@ -36,7 +36,7 @@ public class LoginServiceImpl implements LoginService{
 				baseResponse.setResultMsg(messageSource.getMessage("user.login.error.islogin.nogetsession.validcode", null, LocaleContextHolder.getLocale()));
 				return baseResponse;
 			}
-			if(!loginEntity.getSessionValidCode().equals(loginEntity.getValidCode())){
+			if(!loginEntity.getSessionValidCode().equalsIgnoreCase(loginEntity.getValidCode())){
 				baseResponse=new BaseResponse();
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 				baseResponse.setResultMsg(messageSource.getMessage("user.login.error.islogin.check.validcode.nopass", null, LocaleContextHolder.getLocale()));

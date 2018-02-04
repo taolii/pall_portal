@@ -78,6 +78,11 @@
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi-ooxml</artifactId>
 	</dependency>
+	<dependency>  
+       <groupId>net.sourceforge.nekohtml</groupId>  
+       <artifactId>nekohtml</artifactId>  
+       <version>1.9.22</version>  
+	</dependency>
 	<dependency>
 		 <groupId>com.pall.portal</groupId>
 		 <artifactId>pall_portal_common</artifactId>

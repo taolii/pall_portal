@@ -3,12 +3,11 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{pages.system.name}+'-'+#{pages.role.addroleInfo.title}"></title>
+<title th:text="#{pages.system.name}+'-'+#{pages.menu.addMenu.title}"></title>
 </head>
 <body>
 	<div th:fragment="content">
-		<div id="addModal" class="modal fade" tabindex="-1" role="dialog"
-			aria-hidden="true" style="display: none;">
+		<div id="addModal" class="modal fade" style="display: none;">
 			<div class="modal-dialog" style="width:560px;">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -16,48 +15,134 @@
 							aria-label="Close">
 							<span aria-hidden="true">×</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel2">
+						<h4 class="modal-title">
 							<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label
-								th:text="#{pages.role.addroleInfo.title}" th:remove="tag"></label>
+								th:text="#{pages.menu.addMenu.title}" th:remove="tag"></label>
 						</h4>
 					</div>
-					<form method="POST" id="addDataForm" class="form-horizontal" >
-					<div class="modal-body" style="height: 300px;">
+					<form method="POST" id="addDataForm" class="form-horizontal ">
+						<div class="modal-body" style="height: 400px;">
 							<div class="form-group">
-								<div class="group">
-									<input type="hidden" name="token" />
-									<input type="hidden" name="dataType" />
-									<span class="col-sm-3 control-span col-md-offset-1">
-										&nbsp;&nbsp; <label
-										th:text="#{pages.role.modroleInfo.input.roleName}"
-										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<span class="col-sm-4 span">
+										<label th:text="#{pages.menu.addMenu.form.pmenuName}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
 									</span>
-									<div class="col-sm-7 control-input">
-										<input name="roleName" class="form-control" value=""/>
+									<div class="col-sm-8 div">
+										<input type="text" id="addPmenuName" name="pmenuName" class="form-control" data-bv-notempty th:attr='data-bv-notempty-message=#{menuManage.form.valid.menuInfoEntity.pmenuid.NotEmpty}' />
+										<input type="hidden" id="addPmenuid" name="pmenuid" class="form-control" value=""/>
 									</div>
-									
+								</div>
+								<div class="col-sm-10 col-md-offset-1">
+									<div class="pmenuName"></div>
+								</div>
+								<div class="col-sm-10 col-md-offset-1">
+									<div id="treeview" ></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="group">
-									<span class="col-sm-3 control-span col-md-offset-1" style="padding-bottom:39px">
-										&nbsp; <label th:text="#{pages.role.modroleInfo.textarea.description}"
-										th:remove="tag"></label>
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<input type="hidden" name="token" />
+									<span class="col-sm-4 span">
+										<label th:text="#{pages.menu.addMenu.form.menuName}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
 									</span>
-									<div class="col-sm-7 control-input">
-										<textarea name="rDetail" rows="3" class="form-control input-group-sm"></textarea>
+									<div class="col-sm-8 div">
+										<input name="menuName" class="form-control" data-bv-notempty th:attr='data-bv-notempty-message=#{menuManage.form.valid.menuInfoEntity.menuName.NotEmpty}' />
 									</div>
+								</div>
+								<div class="col-sm-10 col-md-offset-1">
+									<div class="menuName"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<span class="col-sm-4 span" th:text="#{pages.menu.addMenu.form.menuIcon}">
+									</span>
+									<div class="col-sm-8 div">
+										<input name="menuIcon" class="form-control" value=""/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<span class="col-sm-4 span" th:text="#{pages.menu.addMenu.form.menuUrl}">
+									</span>
+									<div class="col-sm-8 div">
+										<input name="menuUrl" class="form-control" value=""/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<span class="col-sm-4 span"  >
+										<label th:text="#{pages.menu.addMenu.form.leaf}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-sm-8 div">
+										<div class="form-control">
+											<label th:text="#{pages.menu.addMenu.form.leaf.swtich.false}" th:remove="tag"></label>&nbsp;&nbsp;
+											<input type="checkbox" name="leaf" class=" js-switch" value="1" checked="" data-switchery="true" style="display: none;"/>&nbsp;&nbsp;
+		                              		<label th:text="#{pages.menu.addMenu.form.leaf.swtich.true}" th:remove="tag"></label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<span class="col-sm-4 span" >
+										<label th:text="#{pages.menu.addMenu.form.disabled}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-sm-8 div">
+										<div class="form-control">
+											<label th:text="#{pages.menu.addMenu.form.disabled.swtich.false}" th:remove="tag"></label>&nbsp;&nbsp;
+											<input type="checkbox" name="disabled" class=" js-switch" value="1" checked="" data-switchery="true" style="display: none;"/>&nbsp;&nbsp;
+		                              		<label th:text="#{pages.menu.addMenu.form.disabled.swtich.true}" th:remove="tag"></label>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<span class="col-sm-4 span">
+										<label th:text="#{pages.menu.addMenu.form.sort}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-sm-8 div">
+										<input name="sort" class="form-control"  data-bv-notempty="true" data-bv-digits="true"
+										  th:attr='data-bv-notempty-message=#{menuManage.form.valid.menuInfoEntity.sort.NotEmpty},data-bv-digits-message=#{menuManage.form.valid.menuInfoEntity.sort.must.is.digit}'/>
+									</div>
+								</div>
+								<div class="col-sm-10 col-md-offset-1">
+									<div class="sort"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10 col-md-offset-1 from_components">
+									<span class="col-sm-4 span" style="padding-bottom:45px">
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<label th:text="#{pages.menu.addMenu.form.description}" th:remove="tag"></label><br>
+										<font style="color:#a94442"><label th:text="#{pages.menu.addMenu.form.description.stringlength}" th:remove="tag"></label></font>
+									</span>
+									<div class="col-sm-8 div">
+										<textarea name="description" rows="3" class="form-control input-group-sm" data-bv-stringlength="true" data-bv-stringlength-min="0" data-bv-stringlength-max="100" th:attr='data-bv-stringlength-message=#{menuManage.form.valid.menuInfoEntity.description.stringlength}'></textarea>
+									</div>
+								</div>
+								<div class="col-sm-10 col-md-offset-1">
+									<div class="description"></div>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer"> 
-							<button class="btn btn-primary submit-btn">
+							<button class="btn btn-primary submit-btn" type="submit">
 								<i class="fa fa-check"></i> 
-								<span th:text="#{pages.role.addroleInfo.button.add}" th:remove="tag"></span>
+								<span th:text="#{pages.menu.addMenu.button.add}" th:remove="tag"></span>
 							</button>
 							<button type="button" class="btn btn-primary" data-dismiss="modal">
 								<i class="fa fa-close"></i> 
-								<span th:text="#{pages.role.addroleInfo.button.shut}" th:remove="tag"></span>
+								<span th:text="#{pages.menu.addMenu.button.shut}" th:remove="tag"></span>
 							</button> 
 						</div>
 					</form>

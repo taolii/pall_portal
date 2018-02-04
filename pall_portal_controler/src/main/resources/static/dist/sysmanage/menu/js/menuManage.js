@@ -1,6 +1,6 @@
 $(function () {
 	//初始化事件操作
-	var operManage=new OperManage();
+	var operManage=new OperManage($("#contextPath").val(),"#tree");
 	//1.初始化Table
 	var ids={"table":"#tree","wrapper":"#div-table-container","toolbar":"#toolbar"};
     var oTable = new TableInit(operManage,$("#contextPath").val(),ids);
@@ -31,9 +31,20 @@ var TableInit = function (operManage,contextPath,ids) {
 	        clickToSelect: false,
 	        showColumns:true,
 	        showRefresh:true,
-	        //showToggle:true,
+	        striped: true,
 	        collapseIcon: "glyphicon glyphicon-triangle-right",//折叠样式
 	        expandIcon: "glyphicon glyphicon-triangle-bottom",
+	        buttonsClass:"btn btn-primary",
+	        //toolbarAlign:'right',
+	        //buttonsAlign:"left",
+	        /*rowStyle: function (row, index) {
+	             var style = "";             
+	                 style='success';             
+	             return { classes: style }
+	        	var style = {};             
+                style={css:{'color':'#ed5565'}};                
+                return style;
+	         },*/
 	        columns: [
 	        	{class: "ellipsis",align:"center",width:"10",formatter: function(data, row, index) {
 	            	return "<span pmenuid="+row.pmenuid+" menuid="+row.menuid+"></span>";
@@ -130,8 +141,8 @@ var TableInit = function (operManage,contextPath,ids) {
 	}
 	oTableInit.fnAddOperation=function(value,row,index){
 		return [
-            '<button id="editRow" class="btn btn-default btn-xs" type="button"><i class="fa fa-edit"></i></button>',
-            '<button id="delRow" class="btn btn-default btn-xs" type="button"><i class="fa fa-trash-o"></i></button>'
+            '<button id="editRow" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i></button>',
+            '<button id="delRow" class="btn btn-primary btn-xs" type="button"><i class="fa fa-trash-o"></i></button>'
             ].join("");
 	}
 	/*
@@ -140,10 +151,10 @@ var TableInit = function (operManage,contextPath,ids) {
 	window.operateEvents={
 		"click #editRow":function(e,value,row,index){
 			//编辑操作
-			oTableInit.operManage.showEditItemModal(true,row,"#modalModal");
+			oTableInit.operManage.showEditItemModal(true,"#modDataForm",row,"#modModal",index);
 		},"click #delRow":function(e,value,row,index){
 			//删除操作
-			oTableInit.operManage.delItem();
+			oTableInit.operManage.delItem(row,index);
 		}
 	}
 	return oTableInit;
@@ -203,7 +214,7 @@ var EventTrigger = function () {
     return oInit;
 };
 
-var OperManage = function () {
+var OperManage = function (contextPath,table) {
     var operManage = new Object();
     operManage.showModal=function(modal){
     	$modal=$(modal);
@@ -213,14 +224,52 @@ var OperManage = function () {
     	$modal.css("overflow", "hidden");
     	$modal.css("overflow-y", "auto");
     	$modal.modal("show");
+    	$modal=$(modal);
+    	$modal.modal("show");
     }
+    operManage.getMenuName = function(dataForm,pmenuid){
+		var param = {};
+		param.menuid=pmenuid;
+		$.ajax({
+			type:'post',
+            contentType:'application/json',
+            url:contextPath+"/menu/findMenuById",
+            data:JSON.stringify(param),
+            dataType:"json",
+            async:true,
+	        success:function (result){
+        	   	if (result.resultCode!=0) {
+        	   	   showNotice('Error','<span style="padding-top:5px">菜单查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+        	   	   return;
+        	   	}
+        	   	if(result.returnObjects!=null){
+        	   		$(dataForm+" [name=pmenuName]").val(result.returnObjects[0].menuName);
+        	   	}
+           },
+           error:function(XMLHttpRequest, textStatus, errorThrown) {
+           		var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
+           		showNotice('Error','<span style="padding-top:5px">菜单信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>','error',1000*10);
+           }
+		});
+	}
     /*
      * 表单对象公共初始化
      */
-    operManage.formInit=function(dataForm){
-        $(dataForm+" [name=roleid]").val(item.roleid);
-        $(dataForm+" [name=roleName]").val(item.roleName);
-        $(dataForm+" [name=rDetail]").val(item.rDetail);
+    operManage.formInit=function(dataForm,item){
+        $(dataForm+" [name=menuName]").val(item.menuName);
+        $(dataForm+" [name=menuIcon]").val(item.menuIcon);
+        $(dataForm+" [name=menuUrl]").val(item.menuUrl);
+        $(dataForm+" [name=leaf]").val(item.leaf);
+        $(dataForm+" [name=disabled]").val(item.disabled);
+        $(dataForm+" [name=pmenuid]").val(item.pmenuid);
+        $(dataForm+" [name=sort]").val(item.sort);
+        $(dataForm+" [name=description]").val(item.description);
+        if(item.pmenuid=='-1'){
+        	$(dataForm+" [name=pmenuName]").val("主菜单");
+        }else{
+        	//根据父菜单id获取菜单名称
+            operManage.getMenuName(dataForm,item.pmenuid);
+        }
     }
     /*
      * 表单对象公共重置
@@ -240,33 +289,35 @@ var OperManage = function () {
     operManage.showAddItemModal=function(isInit,dataForm,item,modal) {
     	operManage.formReset(dataForm);
     	if(isInit){
-    		operManageInit.addItemInit(dataForm,item);
+    		operManage.addItemInit(dataForm,item);
     	}
     	operManage.showModal(modal);
     }
     /*
      * 表单对象编辑初始化
      */
-    operManage.editItemInit = function (dataForm,item) {
+    operManage.editItemInit = function (dataForm,item,index) {
     	operManage.formInit(dataForm,item);
+    	 $(dataForm+" [name=menuid]").val(item.menuid);
+    	 $(dataForm+" [name=updateIndex").val(index);
     }
     /*
      * 表单对象编辑对话框展示
      */
-    operManage.showEditItemModal = function (isInit,dataForm,item,modal) {
+    operManage.showEditItemModal = function (isInit,dataForm,item,modal,index) {
     	operManage.formReset(dataForm);
     	if(isInit){
-    		operManageInit.editItemInit(dataForm,item);
+    		operManage.editItemInit(dataForm,item,index);
     	}
     	operManage.showModal(modal);
     }
     /*
      * 数据记录删除
      */
-    operManage.delItem= function (items) {
+    operManage.delItem= function (items,index) {
     	if (item&&item.length) {
             if (item.length == 1) {
-                message = "确定要删除 '"+items[0].roleName+"' 吗?";
+                message = "确定要删除 '"+items[0].menuName+"' 吗?";
  
             }else{
                 message = "确定要删除选中的"+items.length+"项记录吗?";
@@ -284,7 +335,7 @@ var OperManage = function () {
                     	$.post(contextPath+"/menu/delMenu",{"menuids":menuids}, function(result) {
                     		if(result.resultCode==0){
                     			showNotice('Success',"删除菜单成功",'success',1000*5);
-                    			$("#btn_refresh").click();
+                    			$(table).bootstrapTable('refresh',{silent: true});
                     		}else{
                     			showNotice('Error','<span style="padding-top:5px">删除菜单信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
 		                    }

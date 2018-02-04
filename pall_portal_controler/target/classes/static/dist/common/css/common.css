@@ -1,20 +1,9 @@
-body{
-	background:#fff;
-}
-.model-head {
-    height:80px; padding:0px; width:100%; background:#2A3F54;color:#FFF;text-align:right;padding-top:50px;padding-right:20px;
-}
-.wokflow{
-	width:1000px;
-	height:300px;
-	background:url("../images/bg.jpg");
-	margin-bottom:120px;
-}
 .wordwrap{
 	word-wrap: break-word;
 	word-break: break-all;
 	overflow: hidden; 
 }
+/* 超长文字单元格省略号显示 */
 .ellipsis{
 	white-space: nowrap;
 	overflow: hidden;
@@ -33,91 +22,40 @@ body{
 	filter: alpha(opacity = 60);
 	opacity: .6;
 }
+/*主界面*/
 .right_col {
     padding: 0px!important;
+    height:100%;
 }
-.nav_menu {
-    margin-bottom: 0px!important;
+.nav_menu_bg{
+	background: #2a3f54!important;
+    border-bottom: 1px solid #337ab7!important;
 }
-table.dataTable{border-collapse:collapse !important;}
-.datatable-bordered{border:1px solid #1d381e}
-.datatable-bordered>tbody>tr>td,
-.datatable-bordered>tbody>tr>th,
-.datatable-bordered>tfoot>tr>td,
-.datatable-bordered>tfoot>tr>th,
-.datatable-bordered>thead>tr>td,
-.datatable-bordered>thead>tr>th{border:1px solid rgba(51, 51, 51, 0.43);border-collapse:collapse !important;text-align:center;}
-.datatable-bordered>thead>tr>td,
-.datatable-bordered>thead>tr>th{border-bottom-width:1px}
-.datatable-bordered>thead>tr>th{background:#337ab7 !important;line-height:1;}
-table.jambo_table tbody tr:hover td {
-    background: rgba(38,185,154,.07);
-    border-top: 1px solid #3c763d;
-    border-bottom: 1px solid #3c763d;
+.nav.navbar-nav>li>a>span {
+    color: #f5f5f5!important;
 }
-.x_title {
-    border-bottom: 1px solid #337ab7;
+.p_business{
+	border:0px;
+	padding:0px;
+	background-color:red!important;
 }
-.x_title h2 {
-    color: #337ab7;
+/*工作流样式*/
+.wokflow{
+	width:980px;
+	height:300px;
+	margin-bottom:120px;
 }
-.input-group-addon {
-   border: 1px solid #917c59;
-}
-.form-control {
-    border: 1px solid #917c59;
-}
-.control-span{
-	padding: 9px 12px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
-    color: #555;
-    text-align: center;
-    background-color: #eee;
-	border: 1px solid #917c59;
-	border-right:0px;
-	border-radius: 4px;
-	border-top-right-radius:0px;
-	border-bottom-right-radius:0px;
-	border-collapse:collapse !important;
-}
-.control-span-right{
-	padding: 9px 12px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 0.7;
-    color: #555;
-    text-align: center;
-    background-color: #eee;
-	border: 1px solid #917c59;
-	border-left:0px;
-	border-radius: 3px;
-	border-top-left-radius:0px;
-	border-bottom-left-radius:0px;
-	border-collapse:collapse !important;
-}
-.control-input{
-	padding-right: 0px;
-    padding-left: 0px;
-}
-.form-control:focus {
-    border-color: #3d89d8;
-}
+/*功能页面模板样式*/
 
-.modal-footer {
-    text-align: center;
-    border-top: 1px solid #337ab7;
+.top_tiles{
+	margin:10px 0!important;
 }
-.modal-title {
-	color: #337ab7;
+.x_panel{
+	border: 1px solid #337ab7!important;
 }
-.modal-header{
-	 border-bottom: 1px solid #337ab7;
-}
-.modal-body { 
-    overflow-y: scroll; 
-    height:450px;
+.x_panel .x_title{
+	border-bottom: 2px solid #337ab7;
+    color:#337ab7;
 }
 
 .defect-panel {
@@ -127,11 +65,7 @@ table.jambo_table tbody tr:hover td {
 .defect-panel-heading {
     border-color: #917c59;
 }
-.radio-group{
-	border: 1px solid #917c59;
-	padding-left: 2px;
-	padding-bottom: 4px;
-}
+/*表格中树形结构图标样式*/
 .fixed-table-container tbody tr td:first-child span.parent:before{
     content: '-';
     background-color: #d33333;
@@ -153,4 +87,42 @@ table.jambo_table tbody tr:hover td {
     content: '+';
     background-color: #337ab7;
     cursor: pointer;
+}
+/*Modal样式*/
+.modal-footer {
+    text-align: center;
+    border-top: 1px solid #337ab7;
+}
+.modal-title {
+	color: #337ab7;
+}
+.modal-header{
+	 border-bottom: 1px solid #337ab7;
+}
+.modal-body { 
+    overflow-y: scroll; 
+    height:450px;
+}
+/*默认border样式*/
+.default_border{
+    border: 1px solid #917c59;
+}
+/*from 组件样式*/
+.from_components{
+    font-weight: 400;
+    color: #555;
+    background-color: #eee;
+	border: 1px solid #917c59;
+	border-radius: 3px;
+	border-collapse:collapse !important;
+}
+.from_components .span{
+	padding-left:20px;
+	padding-top:8px;
+    font-size: 14px;
+    font-weight: 400;
+}
+.from_components .div{
+	padding-top:1px;
+	padding-bottom:1px;
 }
