@@ -30,18 +30,18 @@ public class LoginServiceImpl implements LoginService{
 		BaseResponse baseResponse=null;
 		try {
 			//校验
-			if(StringUtils.isEmpty(loginEntity.getSessionValidCode())){
+			/*if(StringUtils.isEmpty(loginEntity.getSessionValidCode())){
 				baseResponse=new BaseResponse();
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 				baseResponse.setResultMsg(messageSource.getMessage("user.login.error.islogin.nogetsession.validcode", null, LocaleContextHolder.getLocale()));
 				return baseResponse;
-			}
-			if(!loginEntity.getSessionValidCode().equalsIgnoreCase(loginEntity.getValidCode())){
+			}*/
+			/*if(!loginEntity.getSessionValidCode().equalsIgnoreCase(loginEntity.getValidCode())){
 				baseResponse=new BaseResponse();
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 				baseResponse.setResultMsg(messageSource.getMessage("user.login.error.islogin.check.validcode.nopass", null, LocaleContextHolder.getLocale()));
 				return baseResponse;
-			}
+			}*/
 			baseResponse=userManageService.findUserByUserName(null,loginEntity.getLoginName());
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				UserEntity userEntity=(UserEntity)baseResponse.getReturnObjects().get(0);

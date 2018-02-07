@@ -8,7 +8,6 @@
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.user.userManage.title}"></title>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/userManage.js(path=${contextPath})}"></script>
-      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/addUserInfo.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/modifyUserInfo.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/adminModifyPwd.js(path=${contextPath})}"></script>
       	<style type="text/css">
@@ -96,7 +95,7 @@
     					</div>
     				</div>
                  	<div class="row" id="div-table-container">
-                 		<table id="datatable" class="table jambo_table table-bordered" >
+                 		<table id="datatable" class="table jambo_table table-bordered dt-responsive nowrap" >
 							<thead>
 								<tr>
 									<th>

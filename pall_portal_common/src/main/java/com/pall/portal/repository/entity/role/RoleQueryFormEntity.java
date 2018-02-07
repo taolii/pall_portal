@@ -12,10 +12,12 @@ public class RoleQueryFormEntity {
 	 * 每页记录数
 	 */
 	private int pageSize;
+	private String roleid;
 	/*
 	 * 角色名称
 	 */
 	private int roleName;
+	
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -39,6 +41,12 @@ public class RoleQueryFormEntity {
 	}
 	public void setRoleName(int roleName) {
 		this.roleName = roleName;
+	}
+	public String getRoleid() {
+		return roleid;
+	}
+	public void setRoleid(String roleid) {
+		this.roleid = roleid;
 	}
 	
 }

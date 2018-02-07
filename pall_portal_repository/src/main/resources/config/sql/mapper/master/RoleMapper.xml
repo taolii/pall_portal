@@ -3,11 +3,11 @@
 <mapper namespace="com.pall.portal.repository.mapper.role.RoleManageDao"> 
 	<select id="queryRoleList" resultType="com.pall.portal.repository.entity.role.RoleEntity"
 	parameterType="com.pall.portal.repository.entity.role.RoleQueryFormEntity"> 
- 		select roleid,roleName,DESCRIPTION rDetail from t_ums_role where 1=1
+ 		select a.roleid,a.roleName,ifnull(a.proleid,-1) pRoleid,ifnull(b.roleName,'') pRoleName,a.DESCRIPTION rDetail from t_ums_role a left join t_ums_role b on a.roleid=b.proleid where 1=1
  		 <if test="roleName != null and roleName != ''">  
-	       AND roleName like '%#{roleName}%'
+	       AND a.roleName like '%#{roleName}%'
 	    </if>
-	     order by roleid desc limit #{startPageNum},#{pageSize}
+	     order by a.roleid desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryRoleTotalRecords" resultType="int"
 	parameterType="com.pall.portal.repository.entity.role.RoleQueryFormEntity"> 
@@ -31,4 +31,7 @@
         	#{item}  
     	</foreach> 
 	</delete>
+	<select id="getTreeRole" resultType="com.pall.portal.repository.entity.role.RoleEntity"> 
+ 		select a.roleid,a.roleName,ifnull(a.proleid,-1) pRoleid,a.DESCRIPTION rDetail from t_ums_role a where  FIND_IN_SET(proleid,queryChildRoleList(#{proleid}))>0
+ 	</select>
 </mapper> 

@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
 	var dataForm='#addDataForm';
-    $(dataForm).bootstrapValidator({
+    var addForm=$(dataForm).bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -71,20 +71,25 @@ $(document).ready(function() {
             	}
             }
         }
-    }).on('success.form.bv', function(e) {
-    	e.preventDefault();
-    	var $form = $(e.target);
-    	var bv = $form.data('bootstrapValidator');
-    	$.post(contextPath+"/user/addUser",  $form.serialize(), function(result) {
-    		if(result.resultCode==0){
-    			showNotice('Success',"添加用户成功",'success',1000*5);
-    			$form.data('bootstrapValidator').resetForm(true);
-    			$("#addUserModal").modal("hide");
-    			$("#btn_refresh").click();
-    		}else{
-    			$(dataform).bootstrapValidator('disableSubmitButtons', false); 
-    			showNotice('Error','<span style="padding-top:5px">添加用户失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
-    		}
-        },'json'); 
+    });
+    $("#addButton").on("click",function(){
+    	$(addForm).on('success.form.bv', function(e) {
+        	e.preventDefault();
+        	var $form = $(e.target);
+        	var bv = $form.data('bootstrapValidator');
+        	$.post(contextPath+"/user/addUser",  $form.serialize(), function(result) {
+        		if(result.resultCode==0){
+        			showNotice('Success',"添加用户成功",'success',1000*5);
+        			$("#addUserModal").modal("hide");
+        			$("#btn_refresh").click();
+        		}else{
+        			$(addForm).bootstrapValidator('disableSubmitButtons', false); 
+        			showNotice('Error','<span style="padding-top:5px">添加用户失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+        		}
+            },'json'); 
+        });
+    });
+    $("#addBackButton").on("click",function(){
+    	window.location.href=contextPath+"/user/userManage"
     });
 });

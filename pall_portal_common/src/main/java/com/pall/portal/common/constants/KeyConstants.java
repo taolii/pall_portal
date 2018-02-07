@@ -14,6 +14,10 @@ public class KeyConstants {
 	 */
 	public static final String DEFAULT_ROOT_MENU_ID="default/root/menuid";
 	/*
+	 * 分页默认角色根节点id
+	 */
+	public static final String DEFAULT_ROOT_ROLE_ID="default/root/roleid";
+	/*
 	 * 分页默认页大小
 	 */
 	public static final String PAGE_DEFAULT_PAGE_SIZE="paging/pagesize";

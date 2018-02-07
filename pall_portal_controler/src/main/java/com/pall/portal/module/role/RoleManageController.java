@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pall.portal.annotation.Token;
@@ -26,6 +28,7 @@ import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.context.HolderContext;
 import com.pall.portal.init.UmsConfigInitiator;
+import com.pall.portal.repository.entity.menu.QueryMenuFormEntity;
 import com.pall.portal.repository.entity.role.RoleEntity;
 import com.pall.portal.repository.entity.role.RoleQueryFormEntity;
 import com.pall.portal.service.role.RoleManageService;
@@ -65,6 +68,28 @@ public class RoleManageController{
 			logger.error(resourceUtils.getMessage("roleManage.controler.roleManage.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 			baseResponse.setResultMsg(resourceUtils.getMessage("roleManage.controler.roleManage.exception")+e.toString());
+			
+		}
+	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+    }
+	/*
+	 * 树形菜单
+	 */
+	@RequestMapping(value="role/treeRole", method= RequestMethod.POST)
+    public @ResponseBody String treeRole(Model model,@RequestBody RoleQueryFormEntity  roleQueryFormEntity, HttpServletRequest request) {
+        if(roleQueryFormEntity.getPageSize()<=0){
+        	roleQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+        }
+        BaseResponse baseResponse=new BaseResponse();
+		try {
+			if(StringUtils.isEmpty(roleQueryFormEntity.getRoleid())){
+				roleQueryFormEntity.setRoleid(UmsConfigInitiator.getDataConfig(KeyConstants.DEFAULT_ROOT_MENU_ID));
+			}
+			baseResponse=roleManageService.getTreeRole(roleQueryFormEntity.getRoleid());
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("roleManage.controler.treeRole.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("roleManage.controler.treeRole.exception")+e.toString());
 			
 		}
 	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);

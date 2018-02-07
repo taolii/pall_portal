@@ -21,6 +21,12 @@ public interface RoleManageService {
 	 */
 	public BaseTablesResponse queryRoleList(RoleQueryFormEntity  roleQueryFormEntity) throws Exception;
 	/*
+	 * 根据条件获取树形角色
+	 * @param proleid 父角色id
+	 * @return 查询结果
+	 */
+	public BaseResponse getTreeRole(String proleid) throws Exception;
+	/*
 	 * 删除角色信息
 	 * @param roleids 需要删除的角色列表
 	 * @return 删除结果

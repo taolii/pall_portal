@@ -40,4 +40,10 @@ public interface RoleManageDao {
 	 * @return 结果
 	 */
 	public int modRole(RoleEntity roleEntity);
+	/*
+	 * 根据条件查询树形角色信息
+	 * @param proleid 父角色id
+	 * @return 查询结果
+	 */
+	public List<RoleEntity> getTreeRole(@Param("proleid") String proleid);
 }

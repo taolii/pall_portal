@@ -16,6 +16,14 @@ public class RoleEntity {
 	@NotEmpty(message="{roleManage.form.valid.RoleEntity.roleName.NotEmpty}")
 	private String roleName;
 	/*
+	 * 父角色id
+	 */
+	private int pRoleid;
+	/*
+	 * 父角色名称
+	 */
+	private String pRoleName;
+	/*
 	 * 角色描述
 	 */
 	private String rDetail;
@@ -36,6 +44,18 @@ public class RoleEntity {
 	}
 	public void setrDetail(String rDetail) {
 		this.rDetail = rDetail;
+	}
+	public int getpRoleid() {
+		return pRoleid;
+	}
+	public void setpRoleid(int pRoleid) {
+		this.pRoleid = pRoleid;
+	}
+	public String getpRoleName() {
+		return pRoleName;
+	}
+	public void setpRoleName(String pRoleName) {
+		this.pRoleName = pRoleName;
 	}
 	
 }

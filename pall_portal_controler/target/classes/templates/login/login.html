@@ -13,24 +13,27 @@
              <div class="row login-box">
              	<div class="col-md-6 ">
 	                <form method="post" id="loginForm">
+	                	<div class="form-group">
+	                            &nbsp;&nbsp;
+	                    </div>
 	                	 <div class="form-group form-group-lg text-left">
 	                        <input name="targetUrl" type="hidden" value="${targetUrl}"/>
 	                        <input name="token" type="hidden" value="${token}"/>
 	                        <div class="alert alert-danger fa fa-times" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
 	        				</div>
-	                        <div class="form-group form-group-lg">
+	                        <div class="form-group">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-user"></a> </span>
 	                                <input name="username" id="uname" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.username.tip}" />
 	                            </div>
 	                        </div>
-	                        <div class="form-group">
+	                        <div class="form-group form-group-lg">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-lock"></a> </span>
 	                                <input type="password" name="password" id="pwd" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.password.tip}"/>
 	                            </div>
 	                        </div>
-	                        <div class="form-group">
+	                        <!--  div class="form-group">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-check"></a> </span>
 	                                <input name="validCode" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.validcode.tip}" />
@@ -38,13 +41,16 @@
 	                                	<img  th:onclick="'reloadcode(\''+${#httpServletRequest.getContextPath()}+'\');'" id="safeCode"  style="cursor:pointer" th:alt="#{pages.login.image.validcode.tip}"  th:src="@{{path}/getValidCode(path=${contextPath})}"/>  
 	                                </span>
 	                            </div>
-	                        </div>
+	                        </div-->
 	                        <p class="text-left" style="margin-top:30px;">
 	                            <input id="email-id" type="hidden"/>
 	                            <button type="submit" class="btn btn-lg btn-danger"><i class="fa fa-unlock" th:text="#{pages.login.button.submit}"></i></button>
 	                            <span class="hidden" id="fpAltert" th:text="#{pages.login.forget.passwd.alert}"></span>
 	                            <a href="#" style="float:right;margin-top:12px;" th:title="#{pages.login.forget.passwd.tip}" th:text="#{pages.login.forget.passwd}" onclick="findPwd();"></a>
 	                        </p>
+	                    </div>
+	                    <div class="form-group">
+	                            &nbsp;&nbsp;
 	                    </div>
 	                </form>
 	            </div>

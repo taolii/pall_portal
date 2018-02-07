@@ -55,6 +55,8 @@ $(document).ready(function() {
         	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
         	{className : "ellipsis",data: "roleid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
             {className : "ellipsis",data: "roleName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"70px"},
+            {className : "ellipsis",data: "pRoleid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"70px"},
+            {className : "ellipsis",data: "pRoleName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"70px"},
             {className : "ellipsis",data: "rDetail",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
@@ -65,7 +67,7 @@ $(document).ready(function() {
         ],
         "columnDefs": [
             {
-              "targets": [1],
+              "targets": [1,3],
               "visible": false
             }
           ],

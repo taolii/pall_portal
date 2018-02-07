@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title th:text="#{pages.system.name}+'-'+#{pages.index.main_left.title}"></title>
+        <link th:include="common/commonHeader:: commonHeader"></link>
+        <link type="text/css" rel="stylesheet" th:href="@{{path}/dist/main/css/custom.min.css(path=${contextPath})}"/>
+        <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/nprogress/css/nprogress.css(path=${contextPath})}"/>
+        <script type="text/javascript" th:src="@{{path}/vendors/nprogress/js/nprogress.js(path=${contextPath})}"></script>
+    </head>
+    <body style="background-color:#fff;">
+	 	<div th:include="this :: content"></div>
+		<div th:include="common/commonLoadJS:: commonLoadJS"></div>
+    </body>
+</html>

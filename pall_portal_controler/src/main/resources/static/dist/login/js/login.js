@@ -12,12 +12,12 @@ function reloadcode(contextPath) {
 }
 function findPwd() {
 	var fpAltert=$("#fpAltert").html();
-	showNotice(Lobibox.base.OPTIONS.title.info,fpAltert,'info',1000*5);
-	/*
+	//showNotice(Lobibox.base.OPTIONS.title.info,fpAltert,'info',1000*5);
+	
 	Lobibox.alert('info', {
         msg: fpAltert,
         title:Lobibox.base.OPTIONS.title.info,
         width:Lobibox.base.OPTIONS.width,
         buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
-    });*/
+    });
 }  
