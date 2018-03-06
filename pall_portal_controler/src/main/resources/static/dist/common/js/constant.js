@@ -6,7 +6,7 @@ var TABLE_CONSTANT = {
                     "sProcessing":   "处理中...",
                     "sLengthMenu":   "",
                     "sZeroRecords":  "没有您要搜索的内容",
-                    "sInfo":         "显示 _START_ 到 _END_ 条数据 共 _TOTAL_ 条数据",
+                    "sInfo":         "&nbsp;&nbsp;&nbsp;&nbsp;显示 _START_ 到 _END_ 条数据 共 _TOTAL_ 条数据",
                     "sInfoEmpty":    "当前显示第 0 至 0 条数据，共 0条数据",
                     "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
                     "sInfoPostFix":  "",
@@ -36,12 +36,12 @@ var TABLE_CONSTANT = {
             },
             COLUMN: {
                 CHECKBOX: { //复选框单元格
-                	className: "td-checkbox",
+                	className: "",
                     orderable: false,
                     width: "20px",
                     data: null,
                     render: function (data, type, row, meta) {
-                        return '<input type="checkbox" class="iCheck">';
+                        return '<input type="checkbox" class="ace"><span class="lbl"></span>';
                     }
                 }
             },

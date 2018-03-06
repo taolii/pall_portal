@@ -12,46 +12,39 @@
 		 <div class="login-main">
              <div class="row login-box">
              	<div class="col-md-6 ">
+             		<h4 class="header blue lighter bigger">
+						<i class="ace-icon fa fa-coffee green"></i>
+						用户登录
+					</h4>
 	                <form method="post" id="loginForm">
-	                	<div class="form-group">
-	                            &nbsp;&nbsp;
-	                    </div>
-	                	 <div class="form-group form-group-lg text-left">
-	                        <input name="targetUrl" type="hidden" value="${targetUrl}"/>
-	                        <input name="token" type="hidden" value="${token}"/>
-	                        <div class="alert alert-danger fa fa-times" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
-	        				</div>
-	                        <div class="form-group">
+	                	  <fieldset>
+	                	 <div class="form-group">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-user"></a> </span>
 	                                <input name="username" id="uname" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.username.tip}" />
 	                            </div>
 	                        </div>
-	                        <div class="form-group form-group-lg">
+							<div class="form-group form-group-lg">
 	                            <div class="input-group">
 	                                <span class="input-group-addon"><a class="glyphicon glyphicon-lock"></a> </span>
 	                                <input type="password" name="password" id="pwd" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.password.tip}"/>
 	                            </div>
 	                        </div>
-	                        <!--  div class="form-group">
-	                            <div class="input-group">
-	                                <span class="input-group-addon"><a class="glyphicon glyphicon-check"></a> </span>
-	                                <input name="validCode" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.validcode.tip}" />
-	                                <span class="input-group-addon " style="margin:0px;padding:1px;"> 
-	                                	<img  th:onclick="'reloadcode(\''+${#httpServletRequest.getContextPath()}+'\');'" id="safeCode"  style="cursor:pointer" th:alt="#{pages.login.image.validcode.tip}"  th:src="@{{path}/getValidCode(path=${contextPath})}"/>  
-	                                </span>
-	                            </div>
-	                        </div-->
-	                        <p class="text-left" style="margin-top:30px;">
-	                            <input id="email-id" type="hidden"/>
-	                            <button type="submit" class="btn btn-lg btn-danger"><i class="fa fa-unlock" th:text="#{pages.login.button.submit}"></i></button>
-	                            <span class="hidden" id="fpAltert" th:text="#{pages.login.forget.passwd.alert}"></span>
-	                            <a href="#" style="float:right;margin-top:12px;" th:title="#{pages.login.forget.passwd.tip}" th:text="#{pages.login.forget.passwd}" onclick="findPwd();"></a>
-	                        </p>
-	                    </div>
-	                    <div class="form-group">
-	                            &nbsp;&nbsp;
-	                    </div>
+							<div class="space"></div>
+							<div class="text-left">
+								<div class="col-md-7">
+									<span class="hidden" id="fpAltert" th:text="#{pages.login.forget.passwd.alert}"></span>
+									<a href="#"  onclick="findPwd();">
+										<i class="ace-icon fa fa-arrow-left"></i>
+										<label th:title="#{pages.login.forget.passwd.tip}" th:text="#{pages.login.forget.passwd}" th:remove="tag"></label>
+									</a>
+								</div>
+								<div class="col-md-5">
+									 <button type="submit" class="btn btn-lg btn-danger"><i class="fa fa-unlock" th:text="#{pages.login.button.submit}"></i></button>
+								</div>
+							</div>
+							<div class="space-4"></div>
+						</fieldset>
 	                </form>
 	            </div>
 	            <div class="col-md-6 hidden-sm hidden-xs">
@@ -60,7 +53,7 @@
 	               </div>
 	            </div>
         	</div>
-	        <div id="showErrors" style="margin-top:15px;display:none" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
+	        <div  style="margin-top:15px;color: #a94442;font-size:14pt;text-align:left" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
 	        </div>
 	         <div class="container text-center login-bottom">
 	            &copy;<span class="show-year">2017</span><span th:text="#{pages.system.name}"></span>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+	    <title th:text="#{pages.system.name}+'-'+#{pages.login.title}"></title>
+	    <link th:include="common/commonHeader:: commonHeader"></link>
+	    <link rel="stylesheet" th:href="@{{path}/dist/login/css/login.css(path=${contextPath})}"/>
+	    <script type="text/javascript" th:src="@{{path}/dist/login/js/login.js(path=${contextPath})}"></script>
+	</head>
+	<body>
+		 <div class="login-main">
+             <div class="row login-box">
+             	<div class="col-md-6 ">
+             		<h4 class="header blue lighter bigger">
+						<i class="ace-icon fa fa-coffee green"></i>
+						用户登录
+					</h4>
+	                <form method="post" id="loginForm">
+	                	 <div class="form-group  text-left">
+	                        <input name="targetUrl" type="hidden" value="${targetUrl}"/>
+	                        <input name="token" type="hidden" value="${token}"/>
+	                        <div class="alert alert-danger fa fa-times" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
+	        				</div>
+	        				<div class="form-group">
+	                            <span class="block input-icon input-icon-right">
+															<input type="text" class="form-control" placeholder="用户名" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+	                        </div>
+	                        <div class="form-group">
+	                            <div class="input-group">
+	                                <span class="input-group-addon"><a class="glyphicon glyphicon-user"></a> </span>
+	                                <input name="username" id="uname" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.username.tip}" />
+	                            </div>
+	                        </div>
+	                        <div class="form-group form-group-lg">
+	                            <div class="input-group">
+	                                <span class="input-group-addon"><a class="glyphicon glyphicon-lock"></a> </span>
+	                                <input type="password" name="password" id="pwd" class="form-control input-lg" th:placeholder="#{pages.login.input.password.tip}"/>
+	                            </div>
+	                        </div>
+	                        <!--  div class="form-group">
+	                            <div class="input-group">
+	                                <span class="input-group-addon"><a class="glyphicon glyphicon-check"></a> </span>
+	                                <input name="validCode" type="text" class="form-control input-lg default_border" th:placeholder="#{pages.login.input.validcode.tip}" />
+	                                <span class="input-group-addon " style="margin:0px;padding:1px;"> 
+	                                	<img  th:onclick="'reloadcode(\''+${#httpServletRequest.getContextPath()}+'\');'" id="safeCode"  style="cursor:pointer" th:alt="#{pages.login.image.validcode.tip}"  th:src="@{{path}/getValidCode(path=${contextPath})}"/>  
+	                                </span>
+	                            </div>
+	                        </div-->
+	                        <p class="text-left" style="margin-top:30px;">
+	                            <input id="email-id" type="hidden"/>
+	                            <button type="submit" class="btn btn-lg btn-danger"><i class="fa fa-unlock" th:text="#{pages.login.button.submit}"></i></button>
+	                            <span class="hidden" id="fpAltert" th:text="#{pages.login.forget.passwd.alert}"></span>
+	                            <a href="#" style="float:right;margin-top:12px;" th:title="#{pages.login.forget.passwd.tip}" th:text="#{pages.login.forget.passwd}" onclick="findPwd();"></a>
+	                        </p>
+	                    </div>
+	                    <div class="form-group">
+	                            &nbsp;&nbsp;
+	                    </div>
+	                </form>
+	            </div>
+	            <div class="col-md-6 hidden-sm hidden-xs">
+	               <div class="form-group form-group-lg text-left">
+	               <img alt="" th:src="@{{path}/dist/login/images/login-box-bg.jpg(path=${contextPath})}"/>
+	               </div>
+	            </div>
+        	</div>
+	        <div id="showErrors" style="margin-top:15px;display:none" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
+	        </div>
+	         <div class="container text-center login-bottom">
+	            &copy;<span class="show-year">2017</span><span th:text="#{pages.system.name}"></span>
+	        </div>
+    	</div>
+	</body>
+</html>

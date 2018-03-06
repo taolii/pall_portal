@@ -2,201 +2,209 @@
 <html lang="zh-CN"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/indexModel">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
 <script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/addUserInfo.js(path=${contextPath})}"></script>
 </head>
 <body>
 	<div th:fragment="content">
-		<div class="x_panel">
-			<div class="x_title">
-				<h2>
-					<i class="fa fa-plus"></i>&nbsp;&nbsp;<label th:text="#{pages.user.addUserInfo.title}" th:remove="tag"></label>
-				</h2>
-				<ul class="nav navbar-right panel_toolbox">
-					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-				</ul>
-				<div class="clearfix"></div>
-			</div>
-			<div class="x_content">
-				<form method="POST" id="addDataForm" class="form-horizontal">
-					<div class="form-group">
-                        <div class="col-sm-12">
-                         	<div class="col-sm-5 from_components">
-                         		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.username}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<input name="account" class="form-control"/>
-								</div>
-                         	</div>
-							<div class="col-sm-5 col-md-offset-2 from_components">
-                         		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.name}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<input name="name" class="form-control input-group-sm" />
-								</div>
-                         	</div>
-                         </div>
-                       	 <div class="col-sm-12">
-                       		<div class="col-sm-5">
-                       			<div class="col-sm-10 col-md-offset-1">
-								<div class="account"></div>
-							</div>
-                       		</div>
-						 <div class="col-sm-5 col-md-offset-2">
-                       			<div class="col-sm-10 col-md-offset-1">
-								<div class="name"></div>
-							</div>
-                       		</div>
-                       	 </div>
-					</div>
-				    <div class="form-group">
-                       <div class="col-sm-12">
-                        	<div class="col-sm-5 from_components">
-                        		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.password}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<input type="password" name="password" class="form-control input-group-sm" />
-								</div>
-                        	</div>
-							<div class="col-sm-5 col-md-offset-2 from_components">
-                        		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.sex}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<select name="sex" class="form-control select2">
-						               <option th:value="#{pages.user.addUserInfo.input.sex.male}" th:text="#{pages.user.addUserInfo.input.sex.male}"></option>
-						               <option th:value="#{pages.user.addUserInfo.input.sex.female}" th:text="#{pages.user.addUserInfo.input.sex.female}"></option>
-		                            </select>
-								</div>
-                        	</div>
-                        </div>
-                        <div class="col-sm-12">
-                        	<div class="col-sm-5">
-                        		<div class="col-sm-10 col-md-offset-1">
-									<div class="password"></div>
-								</div>
-                        	</div>
-							<div class="col-sm-5 col-md-offset-2">
-                        		<div class="col-sm-10 col-md-offset-1">
-									<!--  div class="sex"></div-->
-								</div>
-                        	</div>
-                        </div>
-					</div>
-					<div class="form-group">
-                    	<div class="col-sm-12">
-                         	<div class="col-sm-5 from_components">
-                         		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.mobile}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<input name="mobile" class="form-control input-group-sm"/>
-								</div>
-                         	</div>
-							<div class="col-sm-5 col-md-offset-2 from_components">
-                         		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.email}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<input name="email" class="form-control"/>
-								</div>
-                         	</div>
-                    	</div>
-                        <div class="col-sm-12">
-                         	<div class="col-sm-5">
-                         		<div class="col-sm-10 col-md-offset-1">
-									<div class="mobile"></div>
-								</div>
-                         	</div>
-							<div class="col-sm-5 col-md-offset-2">
-                         		<div class="col-sm-10 col-md-offset-1">
-									<div class="email"></div>
-								</div>
-                         	</div>
-                        </div>
-					</div>
-					<div class="form-group">
-                    	<div class="col-sm-12">
-                         	<div class="col-sm-5 from_components">
-                         		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.position}" th:remove="tag"></label>
-								</span>
-								<div class="col-sm-8 div">
-									<input name="position" class="form-control input-group-sm" />
-								</div>
-                         	</div>
-							<div class="col-sm-5 col-md-offset-2 from_components">
-                         		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.opertype}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<select name="operatorType" class="form-control select2">
-							        	<option value="1" th:text="#{pages.user.addUserInfo.input.opertype.admin}"></option>
-							            <option value="2" th:text="#{pages.user.addUserInfo.input.opertype.user}"></option>
-			                        </select>
-								</div>
-                         	</div>
-                         </div>
-                         <div class="col-sm-12">
-                         	<div class="col-sm-5">
-                         		<div class="col-sm-10 col-md-offset-1">
-									<!--div class="position"></div-->
-								</div>
-                         	</div>
-							<div class="col-sm-5 col-md-offset-2">
-                         		<div class="col-sm-10 col-md-offset-1">
-										<!--  div class="operatorType"></div-->
-								</div>
-                         	</div>
-                         </div>
-					</div>
-					<div class="form-group">
-                    	<div class="col-sm-12">
-                         	<div class="col-sm-5 from_components">
-                         		<span class="col-sm-4 span">
-									<label th:text="#{pages.user.addUserInfo.input.right}" th:remove="tag"></label>
-									<font style="color:#a94442">*</font>
-								</span>
-								<div class="col-sm-8 div">
-									<input name="right" class="form-control input-group-sm"/>
-								</div>
-                         	</div>
-                         </div>
-                         <div class="col-sm-12">
-                         	<div class="col-sm-5">
-                         		<div class="col-sm-10 col-md-offset-1">
-									<!--div class="mobile"></div-->
-								</div>
-                         	</div>
-                         </div>
-					</div>
-					<div class="form-group">
-						<div class="text-center">
-							<button id="addButton" class="btn btn-primary" type="submit">
-								<i class="fa fa-check"></i> <span th:text="#{pages.user.addUserInfo.button.add}" th:remove="tag"></span>
-							</button>
-							<button id="addBackButton" type="button" class="btn btn-primary" data-dismiss="modal">
-								<i class="fa fa-close"></i> <span th:text="#{pages.user.addUserInfo.button.shut}" th:remove="tag"></span>
-							</button> 
-						</div>
-					</div>
-				</form>
-			</div>
+		 <div th:fragment="content">
+        	<div class="breadcrumbs" id="breadcrumbs">
+			<ul class="breadcrumb">
+				<li>
+					<i class="ace-icon fa fa-home home-icon"></i>
+					<a href="javascript:void(0)"  class="homemenu" ></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" class="submenumenu"></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/user/addUser\');'" th:text="#{pages.user.addUserInfo.title}"></a>
+				</li>
+			</ul>
 		</div>
+		<div class="page-content">
+			<div class="page-content-area">
+				<div class="row">
+					<div class="col-xs-12">
+						<form method="POST" id="addDataForm" class="form-horizontal">
+							<div class="form-group">
+		                        <div class="col-sm-12">
+		                         	<div class="col-sm-5 from_components">
+		                         		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.username}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input name="account" class="form-control"/>
+										</div>
+		                         	</div>
+									<div class="col-sm-5 col-md-offset-2 from_components">
+		                         		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.name}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input name="name" class="form-control input-group-sm" />
+										</div>
+		                         	</div>
+		                         </div>
+		                       	 <div class="col-sm-12">
+		                       		<div class="col-sm-5">
+		                       			<div class="col-sm-10 col-md-offset-1">
+										<div class="account"></div>
+									</div>
+		                       		</div>
+								 <div class="col-sm-5 col-md-offset-2">
+		                       			<div class="col-sm-10 col-md-offset-1">
+										<div class="name"></div>
+									</div>
+		                       		</div>
+		                       	 </div>
+							</div>
+						    <div class="form-group">
+		                       <div class="col-sm-12">
+		                        	<div class="col-sm-5 from_components">
+		                        		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.password}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input type="password" name="password" class="form-control input-group-sm" />
+										</div>
+		                        	</div>
+									<div class="col-sm-5 col-md-offset-2 from_components">
+		                        		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.sex}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<select name="sex" class="form-control">
+								               <option th:value="#{pages.user.addUserInfo.input.sex.male}" th:text="#{pages.user.addUserInfo.input.sex.male}"></option>
+								               <option th:value="#{pages.user.addUserInfo.input.sex.female}" th:text="#{pages.user.addUserInfo.input.sex.female}"></option>
+				                            </select>
+										</div>
+		                        	</div>
+		                        </div>
+		                        <div class="col-sm-12">
+		                        	<div class="col-sm-5">
+		                        		<div class="col-sm-10 col-md-offset-1">
+											<div class="password"></div>
+										</div>
+		                        	</div>
+									<div class="col-sm-5 col-md-offset-2">
+		                        		<div class="col-sm-10 col-md-offset-1">
+											<!--  div class="sex"></div-->
+										</div>
+		                        	</div>
+		                        </div>
+							</div>
+							<div class="form-group">
+		                    	<div class="col-sm-12">
+		                         	<div class="col-sm-5 from_components">
+		                         		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.mobile}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input name="mobile" class="form-control input-group-sm"/>
+										</div>
+		                         	</div>
+									<div class="col-sm-5 col-md-offset-2 from_components">
+		                         		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.email}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input name="email" class="form-control"/>
+										</div>
+		                         	</div>
+		                    	</div>
+		                        <div class="col-sm-12">
+		                         	<div class="col-sm-5">
+		                         		<div class="col-sm-10 col-md-offset-1">
+											<div class="mobile"></div>
+										</div>
+		                         	</div>
+									<div class="col-sm-5 col-md-offset-2">
+		                         		<div class="col-sm-10 col-md-offset-1">
+											<div class="email"></div>
+										</div>
+		                         	</div>
+		                        </div>
+							</div>
+							<div class="form-group">
+		                    	<div class="col-sm-12">
+		                         	<div class="col-sm-5 from_components">
+		                         		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.position}" th:remove="tag"></label>
+										</span>
+										<div class="col-sm-8 div">
+											<input name="position" class="form-control input-group-sm" />
+										</div>
+		                         	</div>
+									<div class="col-sm-5 col-md-offset-2 from_components">
+		                         		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.opertype}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<select name="operatorType" class="form-control">
+									        	<option value="1" th:text="#{pages.user.addUserInfo.input.opertype.admin}"></option>
+									            <option value="2" th:text="#{pages.user.addUserInfo.input.opertype.user}"></option>
+					                        </select>
+										</div>
+		                         	</div>
+		                         </div>
+		                         <div class="col-sm-12">
+		                         	<div class="col-sm-5">
+		                         		<div class="col-sm-10 col-md-offset-1">
+											<!--div class="position"></div-->
+										</div>
+		                         	</div>
+									<div class="col-sm-5 col-md-offset-2">
+		                         		<div class="col-sm-10 col-md-offset-1">
+												<!--  div class="operatorType"></div-->
+										</div>
+		                         	</div>
+		                         </div>
+							</div>
+							<div class="form-group">
+		                    	<div class="col-sm-12">
+		                         	<div class="col-sm-5 from_components">
+		                         		<span class="col-sm-4 span">
+											<label th:text="#{pages.user.addUserInfo.input.right}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input name="right" class="form-control input-group-sm"/>
+										</div>
+		                         	</div>
+		                         </div>
+		                         <div class="col-sm-12">
+		                         	<div class="col-sm-5">
+		                         		<div class="col-sm-10 col-md-offset-1">
+											<!--div class="mobile"></div-->
+										</div>
+		                         	</div>
+		                         </div>
+							</div>
+							<div class="form-group">
+								<div class="text-center">
+									<button id="addButton" class="btn btn-primary" type="submit">
+										<i class="fa fa-check"></i> <span th:text="#{pages.user.addUserInfo.button.add}" th:remove="tag"></span>
+									</button>
+									<button id="addBackButton" type="button" class="btn btn-primary" data-dismiss="modal">
+										<i class="fa fa-close"></i> <span th:text="#{pages.user.addUserInfo.button.shut}" th:remove="tag"></span>
+									</button> 
+								</div>
+							</div>
+						</form>
+                	</div>
+                </div>
+               </div>
+            </div>
+        </div>
 		<div class="clearfix"></div>
 	</div>
 </body>

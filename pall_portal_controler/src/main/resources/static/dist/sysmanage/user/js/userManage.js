@@ -65,9 +65,9 @@ $(document).ready(function() {
             {className : "ellipsis",data : "updateTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
-                "<button id='editRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-edit'></i></button>"+
-                "<button id='editPwdRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-key'></i></button>"+
-                "<button id='delRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
+                "<button id='editRow' class='btn btn-info btn-xs' type='button'><i class='ace-icon fa fa-pencil bigger-120'></i></button>"+
+                "<button id='editPwdRow' class='btn btn-success btn-xs' type='button'><i class='ace-icon fa fa-key bigger-120'></i></button>"+
+                "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
                 "</div>";
               }, width : "100px"}
         ],
@@ -79,7 +79,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -111,11 +111,8 @@ $(document).ready(function() {
         !$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click");
     }).on("click","#editRow",function() {
         //点击编辑按钮
-        var item = _table.row($(this).closest('tr')).data();
-        $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        userManage.currentItem = item;
-        userManage.editItemInit(item);
-        userManage.editItemShow();
+    	var item = _table.row($(this).closest('tr')).data();
+        userManage.editItemShow(item);
     }).on("click","#editPwdRow",function() {
             //点击编辑按钮
             var item = _table.row($(this).closest('tr')).data();
@@ -132,23 +129,6 @@ $(document).ready(function() {
 	 var userManage = {
 			    currentItem : null,
 			    fuzzySearch : true,
-			    editItemInit : function(item) {
-			        if (!item) {
-			            return;
-			        }
-			       $("#modDataForm [name=operatorid]").val(item.operatorid);
-			       $("#modDataForm [name=account]").val(item.account);
-			       $("#modDataForm [name=name]").val(item.name);
-			       $("#modDataForm [name=position]").val(item.position);
-			       $("#modDataForm [name=email]").val(item.email);
-			       $("#modDataForm [name=mobile]").val(item.mobile);
-			       $("#modDataForm [name=sex]").val(item.sex);
-			       $("#modDataForm [name=operatorType]").each(function(i){
-			    	   if($(this).val()==item.operatorType){
-			    		   $(this).prop("checked",true);
-			    	   }
-			       });
-			    },
 			    editPwdItemInit : function(item) {
 			        if (!item) {
 			            return;
@@ -157,17 +137,10 @@ $(document).ready(function() {
 			       $("#modPwdDataForm [name=account]").val(item.account);
 			    },
 			    addItemShow: function() {
-			    	$("#indexFrame",parent.document).attr("src","/portal/user/addUser")
-			    	
+			    	LoadPage(contextPath+"/user/addUser");
 			    },
-			    editItemShow: function() {
-			    	$modUserModal=$("#modUserModal");
-			        $modUserModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			        $modUserModal.css("overflow", "hidden");
-			        $modUserModal.css("overflow-y", "auto");
-			        $modUserModal.modal("show");
+			    editItemShow: function(item) {
+			    	LoadPage(contextPath+"/user/modUser?operatorid="+item.operatorid);
 			    },
 			    editPwdItemShow: function() {
 			    	$modUserPwdModal=$("#modUserPwdModal");

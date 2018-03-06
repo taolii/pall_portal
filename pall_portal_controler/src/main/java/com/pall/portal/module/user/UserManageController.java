@@ -108,13 +108,25 @@ public class UserManageController{
 	 * 显示用户修改页面
 	 */
 	@Token(flag=Token.READY)
-	@RequestMapping(value="user/modifyUser", method= RequestMethod.GET)
-    public  String modifyUser(@RequestParam("operatorid") String operatorid,Model model) throws Exception{
+	@RequestMapping(value="user/personalInfoSettings", method= RequestMethod.GET)
+    public  String personalInfoSettings(@RequestParam("operatorid") String operatorid,Model model) throws Exception{
 		BaseResponse baseResponse=userManageService.findUserByUserName(operatorid,null);
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 			UserEntity userEntity=(UserEntity)baseResponse.getReturnObjects().get(0);
 			model.addAttribute("userEntity", userEntity);
-			return "sysmanage/user/modifyUserInfo";
+			return "sysmanage/user/personalInfoSettings";
+		}else{
+			throw new SystemException(baseResponse.getResultMsg());
+		}
+    }
+	@Token(flag=Token.READY)
+	@RequestMapping(value="user/modUser", method= RequestMethod.GET)
+    public  String modUser(@RequestParam("operatorid") String operatorid,Model model) throws Exception{
+		BaseResponse baseResponse=userManageService.findUserByUserName(operatorid,null);
+		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+			UserEntity userEntity=(UserEntity)baseResponse.getReturnObjects().get(0);
+			model.addAttribute("userEntity", userEntity);
+			return "sysmanage/user/modUserInfo";
 		}else{
 			throw new SystemException(baseResponse.getResultMsg());
 		}
@@ -170,14 +182,14 @@ public class UserManageController{
 	 * 显示个人用户密码修改页面
 	 */
 	@Token(flag=Token.READY)
-	@RequestMapping(value="user/modifyPwd", method= RequestMethod.GET)
-    public  String modifyPwd(@RequestParam("operatorid") String operatorid,Model model) throws Exception{
+	@RequestMapping(value="user/personalPwdSettings", method= RequestMethod.GET)
+    public  String personalPwdSettings(@RequestParam("operatorid") String operatorid,Model model) throws Exception{
 		BaseResponse baseResponse=userManageService.findUserByUserName(operatorid,null);
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 			UserEntity userEntity=(UserEntity)baseResponse.getReturnObjects().get(0);
 			userEntity.setPassword("");
 			model.addAttribute("userEntity", userEntity);
-			return "sysmanage/user/modifyPwd";
+			return "sysmanage/user/personalPwdSettings";
 		}else{
 			throw new SystemException(baseResponse.getResultMsg());
 		}
@@ -204,8 +216,8 @@ public class UserManageController{
 		return JSON.toJSONString(baseResponse);
     }
 	@Token(flag=Token.CHECK)
-	@RequestMapping(value="user/adminModifyPwd",method= RequestMethod.POST)
-    public @ResponseBody String adminModifyPwd(@Validated(ADMIN.class) ModifyUPwdEntity modifyUPwdEntity, BindingResult result,Model model,HttpServletRequest request){
+	@RequestMapping(value="user/modPwd",method= RequestMethod.POST)
+    public @ResponseBody String modPwd(@Validated(ADMIN.class) ModifyUPwdEntity modifyUPwdEntity, BindingResult result,Model model,HttpServletRequest request){
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);

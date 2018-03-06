@@ -60,8 +60,8 @@ $(document).ready(function() {
             {className : "ellipsis",data: "rDetail",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
-                "<button id='editRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-edit'></i></button>"+
-                "<button id='delRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
+                "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+                "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
                 "</div>";
               }, width : "60px"}
         ],
@@ -79,7 +79,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -87,8 +87,8 @@ $(document).ready(function() {
 		_table.draw();
 	});
 	$("#btn-add").click(function(){
-		defectManage.addItemInit();
-		defectManage.addItemShow();
+		roleManage.addItemInit();
+		roleManage.addItemShow();
 	});
 	$("#btn-delAll").click(function(){
 		var arrItemId = [];
@@ -96,7 +96,7 @@ $(document).ready(function() {
             var item = _table.row($(this).closest('tr')).data();
             arrItemId.push(item);
         });
-        defectManage.deleteItem(arrItemId);
+        roleManage.deleteItem(arrItemId);
 	});
 	$table.on("change",":checkbox",function() {
         if ($(this).is("[name='cb-check-all']")) {
@@ -114,16 +114,16 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        defectManage.currentItem = item;
-        defectManage.editItemInit(item);
-        defectManage.editItemShow();
+        roleManage.currentItem = item;
+        roleManage.editItemInit(item);
+        roleManage.editItemShow();
     }).on("click","#delRow",function() {
         //点击删除按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        defectManage.deleteItem([item]);
+        roleManage.deleteItem([item]);
     });
-	 var defectManage = {
+	 var roleManage = {
 			    currentItem : null,
 			    fuzzySearch : true,
 			    editItemInit : function(item) {

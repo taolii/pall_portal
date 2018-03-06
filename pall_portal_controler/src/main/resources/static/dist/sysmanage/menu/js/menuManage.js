@@ -2,7 +2,7 @@ $(function () {
 	//初始化事件操作
 	var operManage=new OperManage($("#contextPath").val(),"#tree");
 	//1.初始化Table
-	var ids={"table":"#tree","wrapper":"#div-table-container","toolbar":"#toolbar"};
+	var ids={"table":"#tree","wrapper":"#div-table-container","toolbar":"#toolbar","expandIcon":"glyphicon glyphicon-minus",};
     var oTable = new TableInit(operManage,$("#contextPath").val(),ids);
     oTable.Init();
     //2.初始化事件触发器
@@ -19,6 +19,11 @@ var TableInit = function (operManage,contextPath,ids) {
 		$(oTableInit.ids.table).bootstrapTable({
 			toolbar: oTableInit.ids.toolbar,
 			url: oTableInit.pContext+"/menu/menuManage",
+			treeView: true,
+            treeId: "menuid",
+            treePId:"pmenuid",
+            treeField: "menuName",
+            treeLeafField:"leaf",
 			method: 'post',
 			contentType:'application/json',
 			dataType:'JSON',
@@ -29,36 +34,36 @@ var TableInit = function (operManage,contextPath,ids) {
 			idField: "menuid",
 			uniqueId:"menuid",
 	        clickToSelect: false,
-	        showColumns:true,
+	        showColumns:false,
 	        showRefresh:true,
-	        striped: true,
-	        collapseIcon: "glyphicon glyphicon-triangle-right",//折叠样式
-	        expandIcon: "glyphicon glyphicon-triangle-bottom",
+	        striped: false,
+	        collapseIcon: "glyphicon glyphicon-plus",//折叠样式
+	        expandIcon: oTableInit.ids.expandIcon,
 	        buttonsClass:"btn btn-primary",
-	        //toolbarAlign:'right',
-	        //buttonsAlign:"left",
-	        /*rowStyle: function (row, index) {
-	             var style = "";             
-	                 style='success';             
-	             return { classes: style }
-	        	var style = {};             
-                style={css:{'color':'#ed5565'}};                
-                return style;
-	         },*/
 	        columns: [
-	        	{class: "ellipsis",align:"center",width:"10",formatter: function(data, row, index) {
-	            	return "<span pmenuid="+row.pmenuid+" menuid="+row.menuid+"></span>";
+	        	{class: "ellipsis",field: "menuName",align:"center"},
+	        	{class: "ellipsis",field: "parentId",formatter: function(data, row, index) {
+	            	if(row.pmenuid==null || row.pmenuid==-1){
+	            		return null
+	            	} else{
+	            		return row.pmenuid
+	            	};
 	            }},
-	        	{class: "ellipsis",checkbox: true,align:"center"}, 
+	            {class: "ellipsis",field: "pmenuid",formatter: function(data, row, index) {
+	            	if(row.pmenuid==null || row.pmenuid==-1){
+	            		return null
+	            	} else{
+	            		return row.pmenuid
+	            	};
+	            }},
 	        	{class: "ellipsis",field: "menuid",align:"center",visible:false},
-	            {class: "ellipsis",field: "menuName",align:"center"},
 	            {class: "ellipsis",field: "menuIcon",align:"left"},
 	            {class: "ellipsis",field: "menuUrl",align:"left"},
 	            {class: "ellipsis",field: "leaf",align:"center",formatter: function(data, row, index) {
-	            	return data==1?'叶子节点':'目录';
+	            	return data==1?'<i class="fa fa-leaf"></i>':'<i class="fa fa-folder"></i>';
 	            }},
 	            {class: "ellipsis",field: "disabled",align:"center",formatter: function(data, row, index) {
-	            	return data==1?'否':'是';
+	            	return data==1?'<i class="fa fa-toggle-off"></i>':'<i class="fa fa-toggle-on"></i>';
 	            }},
 	            {class: "ellipsis",field: "sort",align:"center"},
 	            {class: "ellipsis",field: "description",align:"center"},
@@ -90,6 +95,7 @@ var TableInit = function (operManage,contextPath,ids) {
 				startPageNum: params.pageNumber,    
 				pageSize: params.pageSize };
 		temp["pMenuid"] = '-1';
+		temp["subMenu"] = '1';
 	    return temp;
 	};
 	oTableInit.fnGetSubMenu=function(nTr, pMenuid,pSpans) {
@@ -107,7 +113,7 @@ var TableInit = function (operManage,contextPath,ids) {
             	   $(oTableInit.ids.wrapper).spinModal(true);
                },
                success:function (result){
-            	   	if (result.resultCode!=0) {
+            	   	if (result.resultCode!=0){
             	   	   showNotice('Error','<span style="padding-top:5px">子菜单查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
             	   	   $(oTableInit.ids.wrapper).spinModal(false);
             	   	   return;
@@ -168,37 +174,14 @@ var EventTrigger = function () {
     $(oTable.ids.toolbar).on("click","#btn-add",function(e) {
     	oTable.operManage.showAddItemModal(false,"#addDataForm",null,"#addModal");
     });
-    $(oTable.ids.table).on("click",'tr td:nth-child(1)',function(e) {
-    	var nTr = $(this).parents('tr')[0];
-    	var menuid=$(this).find('span').attr("menuid");
-    	var row=$(oTable.ids.table).bootstrapTable('getRowByUniqueId', menuid);
-    	if($(this).find('span').hasClass("parent")){
-    		$(this).find('span').removeClass("parent");
-    		var pSpans=$(oTable.ids.table).find("tr td:nth-child(1) span.parent");
-    		var spans=$(oTable.ids.table).find("tr td:nth-child(1) span[pmenuid="+menuid+"]");
-    		$.each(spans,function(){
-    			$(oTable.ids.table).bootstrapTable('removeByUniqueId', $(this).attr("menuid"));
-    		});
-    		$.each(pSpans,function(){
-     		   var pSpan=$(oTable.ids.table).find("tr td:nth-child(1) span[menuid="+$(this).attr("menuid")+"]");
-     		   if(!pSpan){return;}
-     		   if(typeof($(pSpan).attr("class"))=="undefined"){
-     			   	$(pSpan).attr("class","parent");
-        		}else{
-        			$(pSpan).addClass("parent");
-        		}
-     	   });
-    	}else{
-    		if(typeof($(this).find('span').attr("class"))=="undefined"){
-    			$(this).find('span').attr("class","parent");
-    		}else{
-    			$(this).find('span').addClass("parent");
-    		}
-    		if(row.leaf!=1){
-    			var pSpans=$(oTable.ids.table).find("tr td:nth-child(1) span.parent");
-    			oTable.fnGetSubMenu(nTr,menuid,pSpans);
-        	}
-    	}
+    $(oTable.ids.table).on("click",'tr>td:nth-child(1) > .tree-icon',function(e) {
+    	alert('dfdf');
+    	alert($(this).find('.tree-icon').html());
+    	if($(this).find('.tree-icon').hasClass(oTable.ids.expandIcon)){
+    		alert(oTable.ids.expandIcon);
+        }else{
+        	alert("ddddddd");
+        }
      }).
      on('check.bs.table', function (e, row,ele) {
        $(oTable.ids.table).find("tr td:nth-child(1) span[pmenuid="+row.menuid+"]").each(function(){

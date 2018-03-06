@@ -6,11 +6,10 @@
 <title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<link rel="icon" type="image/x-icon" th:href="@{{path}/favicon.png(path=${contextPath})}" />
+<link rel="icon" type="image/x-icon" th:href="@{{path}/dist/common/images/favicon.png(path=${contextPath})}" />
 <!-- 默认360 兼容模式 -->
 <meta name="renderer" content="webkit|ie-comp|ie-stand" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/font/css/font.css(path=${contextPath})}" />
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap/css/bootstrap.min.css(path=${contextPath})}" />
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-table/css/bootstrap-table.min.css(path=${contextPath})}" />
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-treeview/css/bootstrap-treeview.min.css(path=${contextPath})}" />
@@ -22,6 +21,10 @@
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css(path=${contextPath})}" />
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/jquery-ui/css/jquery-ui.min.css(path=${contextPath})}" />
 
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/ace/css/ace-fonts.css(path=${contextPath})}"/>
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/ace/css/ace.min.css(path=${contextPath})}"/>
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/ace/css/ace-skins.min.css(path=${contextPath})}"/>
+<link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/ace/css/ace-rtl.min.css(path=${contextPath})}"/>
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/lobibox/css/lobibox.min.css(path=${contextPath})}" />
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/select2/css/select2.min.css(path=${contextPath})}" />
 <link type="text/css" rel="stylesheet" th:href="@{{path}/vendors/pnotify/css/pnotify.css(path=${contextPath})}"/>
@@ -50,6 +53,7 @@
 <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.history.js(path=${contextPath})}"></script>
 <script type="text/javascript" th:src="@{{path}/vendors/pnotify/js/pnotify.buttons.js(path=${contextPath})}"></script>
 <script type="text/javascript" th:src="@{{path}/dist/common/js/constant.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace-extra.min.js(path=${contextPath})}"></script>
 </head>
 <body>
 	

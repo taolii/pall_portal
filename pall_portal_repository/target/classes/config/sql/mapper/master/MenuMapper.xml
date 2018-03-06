@@ -15,15 +15,21 @@
  		 <if test="menuName != null and menuName != ''">  
 	       AND menuName like '%#{menuName}%'
 	    </if>
-	    <if test="pMenuid != null and pMenuid != ''">  
-	       AND PMENUID=#{pMenuid, jdbcType=INTEGER}
-	    </if>
+	    <choose>
+	        <when test="pMenuid != null and pMenuid != '' and subMenu!=null and subMenu=='1'">
+	            AND FIND_IN_SET(pmenuid,queryChildMenuList(#{pMenuid}))>0 
+	        </when>
+	        <otherwise>
+	            AND PMENUID=#{pMenuid, jdbcType=INTEGER}
+	        </otherwise>
+    	</choose>
 	    <if test="pMenuids != null  and pMenuids.size>0 ">  
 	       AND PMENUID in
 	        <foreach collection="pMenuids" item="item" index="index" open="(" close=")" separator=",">  
 	        	#{item}  
 	    	</foreach>   
 	    </if> 
+	    
 	     order by menuid desc 
  	</select> 
 	<select id="queryMenuTotalRecords" resultType="int"
@@ -32,9 +38,14 @@
  		<if test="menuName != null and menuName != ''">  
 	       AND menuName like '%#{menuName}%'
 	    </if>
-	    <if test="pMenuid != null and pMenuid != ''">  
-	       AND PMENUID=#{pMenuid, jdbcType=INTEGER}
-	    </if>
+	    <choose>
+	        <when test="pMenuid != null and pMenuid != '' and subMenu!=null and subMenu=='1'">
+	            AND FIND_IN_SET(pmenuid,queryChildMenuList(#{pMenuid}))>0 
+	        </when>
+	        <otherwise>
+	            AND PMENUID=#{pMenuid, jdbcType=INTEGER}
+	        </otherwise>
+    	</choose>
 	    <if test="pMenuids != null  and pMenuids.size>0 ">  
 	       AND PMENUID in
 	        <foreach collection="pMenuids" item="item" index="index" open="(" close=")" separator=",">  

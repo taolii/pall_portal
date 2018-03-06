@@ -9,12 +9,31 @@ function logout(contextPath){
         }
     });
 }
- 
-function openURL(url){
-	$(".child_menu").find("li").each(function(){
-		$(this).removeClass("active");
-	});
-	$('#indexFrame').attr('src',url);
+function currentTime(){ 
+    var d=new Date(),str=''; 
+    str+=d.getFullYear()+'年'; 
+    str+=d.getMonth() + 1+'月'; 
+    str+=d.getDate()+'日'; 
+    str+=d.getHours()+'时'; 
+    str+=d.getMinutes()+'分'; 
+    str+= d.getSeconds()+'秒'; 
+    return str; 
+};
+function LoadPage(url) {    
+	 $.get(url, function (data) {
+         $(".main-content").html(data);
+        var submenu=$("#menu_nav .submenu").find(".active");
+        if(submenu){
+        	if($("#breadcrumbs .homemenu")){
+    			$("#breadcrumbs .homemenu").html($(submenu).parents("ul").parent("li").find("span").html());
+    		}
+    		if($("#breadcrumbs .submenumenu")){
+    			$("#breadcrumbs .submenumenu").html($(submenu).find("span").html());
+    			$("#breadcrumbs .submenumenu").attr('href',$(submenu).find("a").attr("href"));
+    		}
+        }
+     });
+  return false;
 }
 function showNotice(title, text, type, delay) {
 	if(!type)type='info';

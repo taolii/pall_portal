@@ -13,6 +13,10 @@ public class QueryMenuFormEntity {
 	private String pMenuid;
 	private List<String> pMenuids;
 	/*
+	 * 是否取子菜单 1 取子菜单
+	 */
+	private String subMenu;
+	/*
 	 * 起始页
 	 */
 	private int startPageNum;
@@ -56,6 +60,12 @@ public class QueryMenuFormEntity {
 	}
 	public void setpMenuids(List<String> pMenuids) {
 		this.pMenuids = pMenuids;
+	}
+	public String getSubMenu() {
+		return subMenu;
+	}
+	public void setSubMenu(String subMenu) {
+		this.subMenu = subMenu;
 	}
 	
 }
