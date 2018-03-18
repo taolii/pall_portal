@@ -4,7 +4,7 @@ $(document).ready(function() {
 	var table="#tree";
 	var modal="#modModal";
 	$("#modPmenuName").click(function(){
-		var ids={"treeView":"#treeview","inPMenuid":"#modPmenuid","inPMenuName":"#modPmenuName","validFileName":"pmenuName","dataForm":dataForm};
+		var ids={"treeView":"#treeview","inPMenuid":"#modPmenuid","inPMenuName":"#modPmenuName","validFileName":"pmenuName","dataForm":dataForm,};
 	    var treeMenu = new TreeMenu(contextPath,ids);
 	    treeMenu.getAjaxTree();
 	});

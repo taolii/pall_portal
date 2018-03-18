@@ -15,7 +15,7 @@
 		<input type="hidden" id="contextPath" th:value="${#httpServletRequest.getContextPath()}"/>
 		
 		<script type="text/javascript" th:src="@{{path}/dist/common/js/public.js(path=${contextPath})}"></script>
-		
+		<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace-extra.min.js(path=${contextPath})}"></script>
 		<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace-elements.min.js(path=${contextPath})}"></script>
 		<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace.min.js(path=${contextPath})}"></script>
 		<script type="text/javascript">

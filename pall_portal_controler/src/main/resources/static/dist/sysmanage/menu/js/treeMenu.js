@@ -30,15 +30,21 @@ var TreeMenu = function (contextPath,ids) {
 	        data:treeMenu.buildDomTree(treeMenus),         // 数据源
 	        showCheckbox: false, //是否显示复选框
 	        highlightSelected: true,    //是否高亮选中
-	        nodeIcon: 'glyphicon glyphicon-globe',
+	        color: "#000000",
+	        backColor: "#FFFFFF",
+	        nodeIcon: 'glyphicon glyphicon-bookmark',
+	        showBorder:ids.showBorder,
 	        emptyIcon: '',    //没有子节点的节点图标
 	        multiSelect: false,    //多选
+	        showTags:true,
 	        onNodeSelected: function (event, data) {
-	        	$(ids.inPMenuid).val(data.id);  
-	        	$(ids.inPMenuName).val(data.text);
-	        	$(ids.treeView).treeview('remove');
-	        	$(ids.treeView).hide();
-	        	$(ids.dataForm).data('bootstrapValidator').updateStatus(ids.validFileName, 'NOT_VALIDATED', null).validateField(ids.validFileName);
+	        	if(ids.onNodeSelected){
+	        		$(ids.inPMenuid).val(data.id);  
+		        	$(ids.inPMenuName).val(data.text);
+		        	$(ids.treeView).treeview('remove');
+		        	$(ids.treeView).hide();
+		        	$(ids.dataForm).data('bootstrapValidator').updateStatus(ids.validFileName, 'NOT_VALIDATED', null).validateField(ids.validFileName);
+	        	}
 	        }
 	    });
 	}

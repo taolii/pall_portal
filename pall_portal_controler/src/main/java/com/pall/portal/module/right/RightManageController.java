@@ -1,6 +1,8 @@
 package com.pall.portal.module.right;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -77,7 +79,8 @@ public class RightManageController{
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			String[] aRightid=rightids.split(",");
-			baseResponse=rightManageService.delRight(Arrays.asList(aRightid));
+			List<String> rightTypes=new ArrayList<String>();
+			baseResponse=rightManageService.delRight(Arrays.asList(aRightid),rightTypes);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("rightManage.contrightr.delRight.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);

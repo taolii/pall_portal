@@ -1,8 +1,5 @@
 package com.pall.portal.repository.entity.menu;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -39,6 +36,10 @@ public class MenuInfoEntity {
 	 * 父菜单编号
 	 */
 	private Integer pmenuid;
+	/*
+	 * 父菜单编号
+	 */
+	private String pmenuName;
 	/*
 	 * 同级菜单顺序
 	 */
@@ -109,5 +110,11 @@ public class MenuInfoEntity {
 	}
 	public void setSort(int sort) {
 		this.sort = sort;
+	}
+	public String getPmenuName() {
+		return pmenuName;
+	}
+	public void setPmenuName(String pmenuName) {
+		this.pmenuName = pmenuName;
 	}
 }

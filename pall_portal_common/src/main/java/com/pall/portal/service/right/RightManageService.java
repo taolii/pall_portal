@@ -23,9 +23,10 @@ public interface RightManageService {
 	/*
 	 * 删除权限信息
 	 * @param rightids 需要删除的权限列表
+	 * @param rightTypes 权限类型集合
 	 * @return 删除结果
 	 */
-	public BaseResponse delRight(List<String> rightids) throws Exception;
+	public BaseResponse delRight(List<String> rightids,List<String> rightTypes) throws Exception;
 	/*
 	 * 新增权限信息
 	 * @param rightEntity 权限对象

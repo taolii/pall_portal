@@ -119,7 +119,7 @@ public class MenuController {
 	 * 删除菜单信息
 	 */
 	@RequestMapping(value="menu/delMenu", method= RequestMethod.POST)
-    public @ResponseBody String delMenu(@RequestParam("roleids") String menuids,Model model,HttpServletRequest request) {
+    public @ResponseBody String delMenu(@RequestParam("menuids") String menuids,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			String[] aMenuid=menuids.split(",");
@@ -127,6 +127,7 @@ public class MenuController {
 			//获取所有需要删除的菜单
 			for(String menuid:aMenuid){
 				if(tempMenuid.contains(menuid))continue;
+				tempMenuid.add(menuid);
 				baseResponse=menuManageService.getTreeMenu(menuid);
 				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 					tempMenuid.addAll(getTreeMenuid((List<TreeMenuInfo>)baseResponse.getReturnObjects()));

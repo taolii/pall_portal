@@ -24,10 +24,11 @@ public interface RightManageDao {
 	public int queryRightTotalRecords(RightQueryFormEntity  rightQueryFormEntity);
 	/*
 	 * 删除权限信息
-	 * @param rightids 删除权限信息
+	 * @param dataids 数据id集合
+	 * @param rightTypes 权限类型集合
 	 * @return 
 	 */
-	public int delRight(@Param("rightids") List<String> rightids);
+	public int delRight(@Param("dataids") List<String> dataids,@Param("rightTypes") List<String> rightTypes);
 	/*
 	 * 新增权限信息
 	 * @param rightEntity 权限对象

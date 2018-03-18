@@ -15,9 +15,11 @@ import com.pall.portal.common.datatables.Entity.DatatablesView;
 import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
+import com.pall.portal.repository.entity.menu.ButtonQueryFormEntity;
 import com.pall.portal.repository.entity.menu.MenuInfoEntity;
 import com.pall.portal.repository.entity.menu.QueryMenuFormEntity;
 import com.pall.portal.repository.entity.menu.TreeMenuInfo;
+import com.pall.portal.repository.mapper.menu.ButtonManageDao;
 import com.pall.portal.repository.mapper.menu.MenuManageDao;
 @Repository
 public class MenuManageServiceImpl implements MenuManageService{
@@ -27,6 +29,8 @@ public class MenuManageServiceImpl implements MenuManageService{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MenuManageDao menuManageDao;
+	@Autowired
+	private ButtonManageDao buttonManageDao;
 	@Autowired
 	private ResourceUtils resourceUtils;
 	@Override
@@ -100,15 +104,15 @@ public class MenuManageServiceImpl implements MenuManageService{
 	public BaseResponse delMenu(List<String> menuids) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			//查询所有菜单下按钮的唯一标示
+			ButtonQueryFormEntity  buttonQueryFormEntity=new ButtonQueryFormEntity();
+			buttonManageDao.queryButtonTotalRecords(buttonQueryFormEntity);
 			//删除当前节点菜单信息
 			menuManageDao.delMenu(menuids);
-			QueryMenuFormEntity  queryMenuFormEntity=new QueryMenuFormEntity();
-			queryMenuFormEntity.setPageSize(Integer.MAX_VALUE);
-			List<String> pmenuids=delSubMenu(queryMenuFormEntity);
-			while(pmenuids!=null && pmenuids.size()>0){
-				queryMenuFormEntity.setpMenuids(pmenuids);
-				pmenuids=delSubMenu(queryMenuFormEntity);
-			}
+			//删除菜单下的按钮信息
+			//buttonManageDao.delBtnByMenuId(menuids);
+			//删除权限信息
+			
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("menumanage.service.delMenu.exception"),e);
@@ -116,21 +120,6 @@ public class MenuManageServiceImpl implements MenuManageService{
 			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.delMenu.exception")+e.toString());
 		}
 		return baseResponse;
-	}
-	/*
-	 * 删除子菜单信息
-	 */
-	private List<String> delSubMenu(QueryMenuFormEntity  queryMenuFormEntity){
-		List<MenuInfoEntity> menuEntitys=menuManageDao.queryMenuList(queryMenuFormEntity);
-		List<String> menuids=null;
-		if(menuEntitys!=null){
-			menuids=new ArrayList<String>();
-			for(MenuInfoEntity menuInfoEntity:menuEntitys){
-				menuids.add(String.valueOf(menuInfoEntity.getMenuid()));
-			}
-			menuManageDao.delMenu(menuids);
-		}
-		return menuids;
 	}
 	@Override
 	public BaseResponse addMenu(MenuInfoEntity menuEntity) throws Exception {

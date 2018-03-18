@@ -70,7 +70,7 @@
 	</delete>
 	<select id="findMenuById" resultType="com.pall.portal.repository.entity.menu.MenuInfoEntity"
 	parameterType="com.pall.portal.repository.entity.menu.MenuInfoEntity"> 
- 		select MENUID,MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION from t_ums_menuinfo where menuid=#{menuid} 
+ 		select a.*,b.menuname pmenuName from(select MENUID,MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION from t_ums_menuinfo  where menuid=#{menuid}) a left join t_ums_menuinfo b on a.pmenuid=b.menuid;
  	</select>
  	<select id="getTreeMenu" resultType="com.pall.portal.repository.entity.menu.MenuInfoEntity"> 
  		select MENUID,MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION from T_UMS_MENUINFO f where  FIND_IN_SET(pmenuid,queryChildMenuList(#{pmenuid}))>0

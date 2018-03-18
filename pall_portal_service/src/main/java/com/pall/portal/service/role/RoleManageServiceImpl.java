@@ -15,8 +15,6 @@ import com.pall.portal.common.datatables.Entity.DatatablesView;
 import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
-import com.pall.portal.repository.entity.menu.MenuInfoEntity;
-import com.pall.portal.repository.entity.menu.TreeMenuInfo;
 import com.pall.portal.repository.entity.role.RoleEntity;
 import com.pall.portal.repository.entity.role.RoleQueryFormEntity;
 import com.pall.portal.repository.entity.role.TreeRole;

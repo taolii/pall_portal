@@ -2,6 +2,7 @@ package com.pall.portal.service.right;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +56,10 @@ public class RightManageServiceImpl implements RightManageService{
 		return baseResponse;
 	}
 	@Override
-	public BaseResponse delRight(List<String> rightids)  throws Exception {
+	public BaseResponse delRight(List<String> rightids,List<String> rightTypes)  throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			rightManageDao.delRight(rightids);
+			rightManageDao.delRight(rightids,rightTypes);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("rightManage.service.delRight.exception"),e);

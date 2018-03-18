@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.portal.repository.mapper.menu.ButtonManageDao"> 
+	<select id="queryButtonList" resultType="com.pall.portal.repository.entity.menu.ButtonEntity"
+	parameterType="com.pall.portal.repository.entity.menu.ButtonQueryFormEntity"> 
+ 		select f.btnid,f.menuid,g.menuname,f.btnename,f.btncname,f.btnclass,f.btniconclass,f.DESCRIPTION from t_ums_menu_button f left join T_UMS_MENUINFO g on f.menuid=g.menuid where 1=1
+ 		 <if test="btnEName != null and btnEName != ''">  
+	       AND btnename like '%#{btnEName}%'
+	     </if>
+	   	 <if test="btnCName != null and btnCName != ''">  
+	       AND btncname like '%#{btnCName}%'
+	     </if>
+	     <if test="menuid != null and menuid != ''">  
+	       AND menuid=#{menuid, jdbcType=INTEGER}
+	     </if>
+	     order by f.menuid desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryButtonTotalRecords" resultType="int"
+	parameterType="com.pall.portal.repository.entity.menu.ButtonQueryFormEntity"> 
+ 		select count(1) from t_ums_menu_button where 1=1
+ 		<if test="btnEName != null and btnEName != ''">  
+	       AND btnename like '%#{btnEName}%'
+	     </if>
+	   	 <if test="btnCName != null and btnCName != ''">  
+	       AND btncname like '%#{btnCName}%'
+	     </if>
+	     <if test="menuid != null and menuid != ''">  
+	       AND menuid=#{menuid, jdbcType=INTEGER}
+	     </if>
+ 	</select>
+    <delete id="delButton"  parameterType="java.util.List">  
+        DELETE FROM t_ums_menu_button WHERE 1=1
+		<if test="(btnids== null or btnids.size==0) and (menuids == null  or menuids.size==0) ">  
+	       AND 1=2   
+	    </if> 
+        <if test="btnids != null  and btnids.size>0 ">  
+	       AND btnid in
+	        <foreach collection="btnids" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach>    
+	    </if> 
+	     <if test="menuids != null  and menuids.size>0 ">  
+	       menuid in 
+	        <foreach collection="menuids" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach>
+	    </if>
+	</delete>
+	<update id="modButton" parameterType="com.pall.portal.repository.entity.menu.ButtonEntity">
+         update t_ums_menu_button f set menuid=#{menuid},btnename=#{btnEname},btncname=#{btnCname},btnclass=#{btnClass},btniconclass=#{btnIconClass},DESCRIPTION=#{description} where f.btnid = #{btnid}
+    </update>
+    <insert id="addButton" parameterType="com.pall.portal.repository.entity.menu.ButtonEntity">
+    	<selectKey keyProperty="btnid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+         insert into t_ums_menu_button(menuid,btnename,btncname,btnclass,btniconclass,DESCRIPTION)values(#{menuid},#{btnEname},#{btnCname},#{btnClass},#{btnIconClass},#{description})
+    </insert>
+</mapper> 

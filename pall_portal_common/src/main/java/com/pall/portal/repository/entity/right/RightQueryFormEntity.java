@@ -15,7 +15,7 @@ public class RightQueryFormEntity {
 	/*
 	 * 权限类型
 	 */
-	private int rightType;
+	private String rightType;
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -34,10 +34,11 @@ public class RightQueryFormEntity {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	public int getRightType() {
+	public String getRightType() {
 		return rightType;
 	}
-	public void setRightType(int rightType) {
+	public void setRightType(String rightType) {
 		this.rightType = rightType;
 	}
+	
 }

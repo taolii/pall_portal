@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
 <mapper namespace="com.pall.portal.repository.mapper.right.RightManageDao"> 
-	<select id="queryRoleList" resultType="com.pall.portal.repository.entity.right.RightEntity"
+	<select id="queryRightList" resultType="com.pall.portal.repository.entity.right.RightEntity"
 	parameterType="com.pall.portal.repository.entity.right.RightQueryFormEntity"> 
- 		select roleid,roleName,DESCRIPTION rDetail from t_ums_role where 1=1
- 		 <if test="roleName != null and roleName != ''">  
-	       AND roleName like '%#{roleName}%'
+ 		select rightid,righttype,dataid,mDESCRIPTION rDetail from t_ums_right where 1=1
+ 		<if test="rightType != null and rightType != ''">  
+	       AND AND f.righttype = #{rightType}
 	    </if>
-	     order by roleid desc limit #{startPageNum},#{pageSize}
+	     order by righttype desc limit #{startPageNum},#{pageSize}
  	</select> 
-	<select id="queryRoleTotalRecords" resultType="int"
+	<select id="queryRightTotalRecords" resultType="int"
 	parameterType="com.pall.portal.repository.entity.right.RightQueryFormEntity"> 
- 		select count(1) from t_ums_role where 1=1
- 		<if test="roleName != null and roleName != ''">  
-	       AND roleName like '%#{roleName}%'
+ 		select count(1) from t_ums_right where 1=1
+ 		<if test="rightType != null and rightType != ''">  
+	       AND AND f.righttype = #{rightType}
 	    </if>
  	</select>
  	<update id="modRole" parameterType="com.pall.portal.repository.entity.role.RoleEntity">
@@ -25,10 +25,14 @@
         </selectKey>
          insert into t_ums_role(ROLENAME,DESCRIPTION)values(#{roleName},#{rDetail})
     </insert>
-    <delete id="delRole"  parameterType="java.util.List">  
-        DELETE FROM t_ums_role WHERE roleid in 
-        <foreach collection="roleids" item="item" index="index" open="(" close=")" separator=",">  
+    <delete id="delRight"  parameterType="java.util.List">  
+        DELETE FROM t_ums_right WHERE dataid in 
+        <foreach collection="dataids" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
-    	</foreach> 
+    	</foreach>
+    	and righttype in 
+    	<foreach collection="rightTypes" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach>
 	</delete>
 </mapper> 
