@@ -2,6 +2,14 @@ package com.pall.portal.common.constants;
 
 public class KeyConstants {
 	/*
+	 * 权限表中button对应的righttype
+	 */
+	public static final String RIGHT_BUTTON_RIGHTTYPE="right/button/righttype";
+	/*
+	 * 权限表中menu对应的righttype
+	 */
+	public static final String RIGHT_MENU_RIGHTTYPE="right/menu/righttype";
+	/*
 	 * 菜单默认一级目录的父节点
 	 */
 	public static final int MENU_DEFAULT_ROOT_PARENTID=-1;
@@ -21,6 +29,26 @@ public class KeyConstants {
 	 * 分页默认页大小
 	 */
 	public static final String PAGE_DEFAULT_PAGE_SIZE="paging/pagesize";
+	/*
+	 * 数据配置表代表组装 defect的配置类型
+	 */
+	public static final String DATACONFIG_TYPE_ASSEMBLY_DEFECT="dataconfig/type/assemblyDefect";
+	/*
+	 * 数据配置表代表抛光模块polish Bom
+	 */
+	public static final String DATACONFIG_TYPE_POLISHBOM="dataconfig/type/polishBom";
+	/*
+	 * 数据配置表代表基础数据配置列表类型
+	 */
+	public static final String DATACONFIG_TYPE_LIST="dataconfig/type/list";
+	/*
+	 * 数据配置表代表工作流数据配置列表类型
+	 */
+	public static final String DATACONFIG_TYPE_WORKFLOW="dataconfig/type/workflow";
+	/*
+	 * 数据配置表代表化学试剂配置类型
+	 */
+	public static final String DATACONFIG_TYPE_CHEMICAL_REAGENT="dataconfig/type/chemicalReagent";
 	/*
 	 * 数据配置表代表part NO的配置类型 
 	 */
@@ -109,14 +137,7 @@ public class KeyConstants {
 	 * 光学镀膜管理页面excel下载子目录名称
 	 */
 	public static final String PLATEDFILM_DOWNLOAD_SUBDIRECTORY="platedFilm/download/subdirectory";
-	/*
-	 * 数据配置表代表组装 defect的配置类型
-	 */
-	public static final String DATACONFIG_TYPE_ASSEMBLY_DEFECT="dataconfig/type/assemblyDefect";
-	/*
-	 * 数据配置表代表化学试剂配置类型
-	 */
-	public static final String DATACONFIG_TYPE_CHEMICAL_REAGENT="dataconfig/type/chemicalReagent";
+	
 	/*
 	 * 组装流程配置表名
 	 */

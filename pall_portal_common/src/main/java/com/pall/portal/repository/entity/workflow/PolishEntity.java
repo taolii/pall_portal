@@ -82,6 +82,10 @@ public class PolishEntity {
 	@NotEmpty(message="{polshmanage.form.valid.PolishEntity.workOrderNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String workOrderNum;
 	/*
+	 * 抛磨Bom
+	 */
+	private String polishBom;
+	/*
 	 * 录入时间
 	 */
 	private String inputTime;
@@ -212,6 +216,13 @@ public class PolishEntity {
 	}
 	public void setMeasuredValues(String measuredValues) {
 		this.measuredValues = measuredValues;
+	}
+	
+	public String getPolishBom() {
+		return polishBom;
+	}
+	public void setPolishBom(String polishBom) {
+		this.polishBom = polishBom;
 	}
 
 	public interface ADD{};  

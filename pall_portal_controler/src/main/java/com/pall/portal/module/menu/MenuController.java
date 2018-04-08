@@ -1,7 +1,6 @@
 package com.pall.portal.module.menu;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -209,5 +208,28 @@ public class MenuController {
 		}
 		//baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
+    }
+	/*
+	 * 获取菜单按钮信息
+	 */
+	@RequestMapping(value="menu/getMenuButton", method= RequestMethod.POST)
+    public @ResponseBody String getMenuButton(Model model,QueryMenuFormEntity  queryMenuFormEntity, HttpServletRequest request) {
+		if(queryMenuFormEntity.getPageSize()<=0){
+        	queryMenuFormEntity.setPageSize(Integer.MAX_VALUE);
+        }
+        BaseResponse baseResponse=new BaseResponse();
+		try {
+			if(StringUtils.isEmpty(queryMenuFormEntity.getpMenuid())){
+				queryMenuFormEntity.setpMenuid(UmsConfigInitiator.getDataConfig(KeyConstants.DEFAULT_ROOT_MENU_ID));
+			}
+			baseResponse=menuManageService.getTreeMenuButton(queryMenuFormEntity.getpMenuid());
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("menuManage.controler.menuManage.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menuManage.controler.menuManage.exception")+e.toString());
+			
+		}
+		logger.error(JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue));
+	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
     }
 }

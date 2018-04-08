@@ -54,7 +54,7 @@ public class ButtonManageController{
     }
 	
 	@RequestMapping(value="button/buttonManage", method= RequestMethod.POST)
-    public @ResponseBody String rightManage(Model model,ButtonQueryFormEntity  buttonQueryFormEntity, HttpServletRequest request) {
+    public @ResponseBody String buttonManage(Model model,ButtonQueryFormEntity  buttonQueryFormEntity, HttpServletRequest request) {
         if(buttonQueryFormEntity.getPageSize()==0){
         	buttonQueryFormEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
         }

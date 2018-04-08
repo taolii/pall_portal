@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-center" style="padding-top:40px; color:#a72d2d">
                     <p>
-                    	<a href="/login" class="btn btn-lg btn-info" th:text="#{pages.error.errorModel.500.a.home}"><i class="fa fa-home"></i></a>
+                    	<a th:href="${#httpServletRequest.getContextPath()}+'/login'" class="btn btn-lg btn-info" th:text="#{pages.error.errorModel.500.a.home}"><i class="fa fa-home"></i></a>
                     	<a href="javascript:history.back(-1);" class="btn btn-lg btn-warning" th:text="#{pages.error.errorModel.500.a.back}"><i class="fa fa-level-up"></i></a>
                 	</p>
                 </div>

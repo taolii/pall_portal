@@ -16,9 +16,11 @@
 						<font style="color:#a94442">*</font>
 					</span>
 					<div class="col-sm-8 div">
+						<input type="hidden"  name="opertype" class="form-control" value="add"/>
 						<input type="hidden" name="data-nodeid" class="form-control" value="sss"/>
 						<input type="text" id="addPmenuName" name="pmenuName" class="form-control" data-bv-notempty th:attr='data-bv-notempty-message=#{menuManage.form.valid.menuInfoEntity.pmenuid.NotEmpty}' />
 						<input type="hidden" id="addPmenuid" name="pmenuid" class="form-control" value=""/>
+						<input type="hidden" name="menuid" class="form-control" value=""/>
 					</div>
 				</div>
 				<div class="col-sm-10 col-md-offset-1">

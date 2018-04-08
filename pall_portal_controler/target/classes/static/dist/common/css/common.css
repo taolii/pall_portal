@@ -9,6 +9,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
+	text-align:center;
 }
 /* spin’⁄’÷≤„ */
 .overlay{
@@ -98,19 +99,19 @@
 .from_components{
     font-weight: 400;
     color: #555;
-    background-color: #eee;
-	border: 1px solid #917c59;
-	border-radius: 3px;
-	border-collapse:collapse !important;
+    background-color: #fdfdfd;
+	
+	padding:0px 0px 0px 1px!important;
 }
 .from_components .span{
-	padding-left:20px;
-	padding-top:8px;
     font-size: 14px;
     font-weight: 400;
+    padding:8px 0px 0px 20px!important;
 }
 .from_components .div{
-	padding-top:1px;
-	padding-bottom:1px;
+	padding:0px 0px 0px 0px!important;
+	border-collapse:collapse !important;
 }
+    
+
 

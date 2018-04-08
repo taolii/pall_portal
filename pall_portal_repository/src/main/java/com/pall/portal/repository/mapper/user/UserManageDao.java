@@ -66,4 +66,10 @@ public interface UserManageDao {
 	 * @return 
 	 */
 	public int delUserPermission(@Param("operatorids") List<String> operatorids);
+	/*
+	 * 根据条件查询用户角色信息
+	 * @param operatorid操作员id
+	 * @return 查询结果
+	 */
+	public List<UserPermissionEntity> findUserPermission(@Param("operatorid") String operatorid);
 }

@@ -10,7 +10,8 @@
         <script type="text/javascript" th:src="@{{path}/vendors/bootstrap-table/js/bootstraptable-treeview.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/button/js/buttonManage.js(path=${contextPath})}"></script>
       	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/button/js/addButton.js(path=${contextPath})}"></script>
-      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/button/js/modifyButton.js(path=${contextPath})}"></script>  
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/button/js/modifyButton.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/treeMenu.js(path=${contextPath})}"></script>
     </head>
     <body>
     	<div th:fragment="content">
@@ -40,19 +41,29 @@
 				                            </div>
 				                            <div id="stepOne" class="panel-collapse collapse in  ">
 				                                <div class="panel-body">
-				                                	<div class="col-md-4">
+				                                	<div class="col-md-4 form-group">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon"><label th:text="#{pages.button.buttonManage.form.menuName}" th:remove="tag"></label></span>
+									                        <input id="queryButtonMenuid" type="hidden" name="menuid" class="form-control" />
+															<input id="queryButtonMenuName" name="menuName" class="form-control" />
+					                                	</div>
+					                                	<div class="col-sm-8 col-md-offset-2">
+															<div id="queryMenutree" ></div>
+														</div>
+								                    </div>
+				                                	<div class="col-md-4 form-group">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon"><label th:text="#{pages.button.buttonManage.form.btnEName}" th:remove="tag"></label></span>
 									                        <input type='text' name="btnEName"   class="form-control" /> 
 					                                	</div>
 								                    </div>
-								                    <div class="col-md-4">
+								                    <div class="col-md-4 form-group">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon"><label th:text="#{pages.button.buttonManage.form.btnCName}" th:remove="tag"></label></span>
 									                        <input type='text' name="btnCName"   class="form-control" /> 
 					                                	</div>
 								                    </div>
-								                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+								                    <div class="col-md-4 form-group">
 								                        <button id="btn-query" class="btn btn-primary" type="button">
 								                        <i class="fa fa-search"></i>
 					                 						<span th:text="#{pages.button.buttonManage.form.query.button.tip}" th:remove="tag"></span>
@@ -111,11 +122,11 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<div id="addRight">
-				<div th:replace="sysmanage/right/addRightModal:: content"></div>
+			<div id="addButton">
+				<div th:replace="sysmanage/button/addButtonModal:: content"></div>
 			</div>
-			<div id="modRight">
-				<div th:replace="sysmanage/right/modRightModal:: content"></div>
+			<div id="modButton">
+				<div th:replace="sysmanage/button/modButtonModal:: content"></div>
 			</div>
 		</div>
     </body>

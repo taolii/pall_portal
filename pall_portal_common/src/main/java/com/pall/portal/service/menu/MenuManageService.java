@@ -34,6 +34,12 @@ public interface MenuManageService {
 	 */
 	public BaseResponse getTreeMenu(String pmenuid) throws Exception;
 	/*
+	 * 根据条件获取树形菜单按钮
+	 * @param pmenuid 父菜单id
+	 * @return 查询结果
+	 */
+	public BaseResponse getTreeMenuButton(String pmenuid) throws Exception;
+	/*
 	 * 删除菜单信息
 	 * @param menuids 需要删除的菜单列表
 	 * @return 删除结果

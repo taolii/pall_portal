@@ -40,4 +40,10 @@ public interface ButtonManageService {
 	 * @return 结果
 	 */
 	public BaseResponse modButton(ButtonEntity buttonEntity) throws Exception;
+	/*
+	 * 根据条件查询按钮信息
+	 * @param  按钮列表查询对象
+	 * @return 查询结果
+	 */
+	public BaseResponse getRightButton(String operatorid) throws Exception;
 }

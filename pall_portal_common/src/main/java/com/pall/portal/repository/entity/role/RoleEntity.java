@@ -9,7 +9,7 @@ public class RoleEntity {
 	/*
 	 * 数据配置id
 	 */
-	private int roleid;
+	private Integer roleid;
 	/*
 	 * 描述名称
 	 */
@@ -27,10 +27,12 @@ public class RoleEntity {
 	 * 角色描述
 	 */
 	private String rDetail;
-	public int getRoleid() {
+	
+	
+	public Integer getRoleid() {
 		return roleid;
 	}
-	public void setRoleid(int roleid) {
+	public void setRoleid(Integer roleid) {
 		this.roleid = roleid;
 	}
 	public String getRoleName() {

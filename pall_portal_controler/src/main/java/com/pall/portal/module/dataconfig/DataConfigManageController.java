@@ -55,55 +55,38 @@ public class DataConfigManageController{
 	private TableDataConfigInitiator tableDataConfigInitiator;
 	@Autowired
 	private DataConfigInitiator initSysDataConfig;
+	
 	/*
 	 * 缺损管理
 	 */
 	@RequestMapping(value="defect/defectManage", method= RequestMethod.GET)
     public  String defectManage(Model model, HttpServletRequest request) {
+		List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_WORKFLOW));
 		List<DataConfigTypeEntity> dataConfigTypes=new ArrayList<DataConfigTypeEntity>();
-		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
-		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT));
-		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.defect.polish"));
-		dataConfigTypes.add(dataConfigTypeEntity1);
-		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
-		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT));
-		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.defect.clean"));
-		dataConfigTypes.add(dataConfigTypeEntity2);
-		DataConfigTypeEntity dataConfigTypeEntity3=new DataConfigTypeEntity();
-		dataConfigTypeEntity3.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT));
-		dataConfigTypeEntity3.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.defect.opticalFilming"));
-		dataConfigTypes.add(dataConfigTypeEntity3);
-		DataConfigTypeEntity dataConfigTypeEntity5=new DataConfigTypeEntity();
-		dataConfigTypeEntity5.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT));
-		dataConfigTypeEntity5.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.defect.assembly"));
-		dataConfigTypes.add(dataConfigTypeEntity5);
+		if(dataConfigEntitys!=null && dataConfigEntitys.size()>0){
+			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
+				DataConfigTypeEntity dataConfigTypeEntity=new DataConfigTypeEntity();
+				dataConfigTypeEntity.setDataType(String.valueOf(dataConfigEntity.getDataid()));
+				dataConfigTypeEntity.setDataTypeName(dataConfigEntity.getConfigName());
+				dataConfigTypes.add(dataConfigTypeEntity);
+			}
+		}
 		model.addAttribute("dataConfigTypes", dataConfigTypes);
 		model.addAttribute("sinfoDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SCRAP_INFO)));
 	   return "sysmanage/defect/defectManage";
     }
 	@RequestMapping(value="dataconfig/dataConfigManage", method= RequestMethod.GET)
     public  String dataConfigManage(Model model, HttpServletRequest request) {
+		List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_LIST));
 		List<DataConfigTypeEntity> dataConfigTypes=new ArrayList<DataConfigTypeEntity>();
-		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
-		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM));
-		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.partNo"));
-		dataConfigTypes.add(dataConfigTypeEntity1);
-		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
-		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_THROWMILLSTONEPOS));
-		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.throwmillstoneposition"));
-		dataConfigTypes.add(dataConfigTypeEntity2);
-		DataConfigTypeEntity dataConfigTypeEntity3=new DataConfigTypeEntity();
-		dataConfigTypeEntity3.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SCRAP_INFO));
-		dataConfigTypeEntity3.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.scrapinfo"));
-		dataConfigTypes.add(dataConfigTypeEntity3);
-		DataConfigTypeEntity dataConfigTypeEntity4=new DataConfigTypeEntity();
-		dataConfigTypeEntity4.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_REMARK));
-		dataConfigTypeEntity4.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.remark"));
-		dataConfigTypes.add(dataConfigTypeEntity4);
-		DataConfigTypeEntity dataConfigTypeEntity5=new DataConfigTypeEntity();
-		dataConfigTypeEntity5.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CHEMICAL_REAGENT));
-		dataConfigTypeEntity5.setDataTypeName(resourceUtils.getMessage("dataconfigmanage.form.workflow.select.chemical.reagent"));
-		dataConfigTypes.add(dataConfigTypeEntity5);
+		if(dataConfigEntitys!=null && dataConfigEntitys.size()>0){
+			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
+				DataConfigTypeEntity dataConfigTypeEntity=new DataConfigTypeEntity();
+				dataConfigTypeEntity.setDataType(String.valueOf(dataConfigEntity.getDataid()));
+				dataConfigTypeEntity.setDataTypeName(dataConfigEntity.getConfigName());
+				dataConfigTypes.add(dataConfigTypeEntity);
+			}
+		}
 		model.addAttribute("dataConfigTypes", dataConfigTypes);
 	   return "sysmanage/dataconfig/dataConfigManage";
     }

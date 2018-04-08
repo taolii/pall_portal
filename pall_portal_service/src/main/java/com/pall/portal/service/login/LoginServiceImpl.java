@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.alibaba.druid.util.StringUtils;
 import com.pall.portal.common.constants.IResponseConstants;
+import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.repository.entity.login.LoginEntity;
 import com.pall.portal.repository.entity.user.UserEntity;
@@ -24,7 +25,7 @@ public class LoginServiceImpl implements LoginService{
 	@Autowired
 	private UserManageService userManageService;
 	@Autowired
-	private MessageSource messageSource;
+	private ResourceUtils resourceUtils;
 	@Override
 	public BaseResponse isLogin(LoginEntity loginEntity) {
 		BaseResponse baseResponse=null;
@@ -49,15 +50,15 @@ public class LoginServiceImpl implements LoginService{
 					return baseResponse;
 				}else{
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-					baseResponse.setResultMsg(messageSource.getMessage("user.login.error.usernameorpassword", null, LocaleContextHolder.getLocale()));
+					baseResponse.setResultMsg(resourceUtils.getMessage("user.login.error.usernameorpassword", null, LocaleContextHolder.getLocale()));
 					return baseResponse;
 				}
 			}
 		} catch (Exception e) {
-			logger.error(messageSource.getMessage("user.login.error.islogin.exception", null, LocaleContextHolder.getLocale()),e);
+			logger.error(resourceUtils.getMessage("user.login.error.islogin.exception"),e);
 			baseResponse=new BaseResponse();
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(messageSource.getMessage("user.login.error.islogin.exception", null, LocaleContextHolder.getLocale()));
+			baseResponse.setResultMsg(resourceUtils.getMessage("user.login.error.islogin.exception", null, LocaleContextHolder.getLocale()));
 		}
 		return baseResponse;
 	}

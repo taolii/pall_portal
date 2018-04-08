@@ -1,18 +1,19 @@
 $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
 	$('#queryPickingTime').datetimepicker({  
-        format: 'YYYY-MM-DD',  
+        format: 'YYYY-MM-DD',
         locale: moment.locale('zh-cn')  
     }); 
 	$('#queryStartPolishTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
-        locale: moment.locale('zh-cn')  
+        locale: moment.locale('zh-cn')
     });
 	$('#queryEndPolishTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
-	
+	$('#queryStartPolishTime').val(currentDate(30));
+	$('#queryEndPolishTime').val(currentDate(0));
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
     ];
@@ -28,16 +29,15 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
             "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
-          }, width : "60px"}
+          }, width : "100px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
 	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
-	$addModal=$("#addModal");
-	$modModal=$("#modModal");
 	$queryForm=$("#queryForm");
 	var _table = $table.dataTable($.extend(true,
 		{pageLength: 10,scrollX: true,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
@@ -96,7 +96,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -104,7 +104,7 @@ $(document).ready(function() {
 		_table.draw();
 	});
 	$("#btn-add").click(function(){
-		polishManage.addItemShow();
+		polishManage.addItem();
 	});
 	$("#btn-export").click(function(){
 		polishManage.exportItem();
@@ -137,8 +137,13 @@ $(document).ready(function() {
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
         polishManage.currentItem = item;
-        polishManage.editItemInit(item);
-        polishManage.editItemShow();
+        polishManage.editItem(item);
+    }).on("click","#copyRow",function() {
+        //点击编辑按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        polishManage.currentItem = item;
+        polishManage.copyItem(item);
     }).on("click","#delRow",function() {
         //点击删除按钮
         var item = _table.row($(this).closest('tr')).data();
@@ -148,74 +153,14 @@ $(document).ready(function() {
 	 var polishManage = {
 			    currentItem : null,
 			    fuzzySearch : true,
-			    editItemInit : function(item) {
-			        if (!item) {
-			            return;
-			        }
-			       $("#modDataForm [name=polishID]").val(item.polishID);
-			       $("#modDataForm [name=pickingTime]").val(item.pickingTime);
-			       $("#modDataForm [name=polishTime]").val(item.polishTime);
-			       $("#modDataForm [name=fixtureNumber]").val(item.fixtureNumber);
-			       $("#modDataForm [name=throwMillstoneNum]").val(item.throwMillstoneNum);
-			       $("#modDataForm [name=throwMillstonePosition]").val(item.throwMillstonePosition);
-			       $("#modDataForm [name=inputLotNum]").val(item.inputLotNum);
-			       $("#modDataForm [name=casualInspectionNum]").val(item.casualInspectionNum);
-			       $("#modDataForm [name=polishLotNum]").val(item.inputLotNum);
-			       $("#modDataForm [name=measuredValues]").val(item.measuredValues);
-			       $("#modDataForm [name=inputQty]").val(item.inputQty);
-			       $("#modDataForm [name=partNum]").val(item.partNum);
-			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
-			       $polishTableName=$("#polishTableName");
-			       $modTemplate = $('#modTemplate');
-			       $modDefectPanel=$('#modDefectPanel');
-			       $modDefectPanel.find(".panel-body").each(function(){
-	    				$(this).empty();
-	    			});
-			       $.each(tableFieldBinds, function(index, tableField){
-				   		if(tableField.fieldName.indexOf($polishTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
-				   			$modDefectPanel.show();
-				            $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html(tableField.headline).end();
-				            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
-				        	on('click', '.removeButton', function() {
-				                $('#modDataForm').bootstrapValidator('removeField', tableField.fieldName);
-				                $newRow.remove();
-				                if($modDefectPanel.find(".removeButton").length<=0){
-				                	$modDefectPanel.hide();
-				                }
-				            });
-				            $("#modWorkingface"+tableField.defectType).find(".panel-body").each(function(){
-				            	$(this).append($newRow).show();
-							});
-				            $("#modDataForm [name="+tableField.fieldName+"]").val($(item).attr(tableField.fieldName));
-				            $('#modDataForm').bootstrapValidator('addField', tableField.fieldName, {
-					            message: '缺损值必须为数字类型',
-					            validators: {
-					                digits: {
-					                    message: '缺损值必须为数字类型'
-					                }
-					            }
-					        });
-				   		}
-				       });
-				       if($modDefectPanel.find(".removeButton").length<=0){
-		                	$modDefectPanel.hide();
-		                }
+			    addItem: function() {
+			    	LoadPage(contextPath+"/workflow/addPolish");
 			    },
-			    addItemShow: function() {
-			    	$addModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$addModal.css("overflow", "hidden");
-			    	$addModal.css("overflow-y", "auto");
-			    	$addModal.modal("show");
+			    editItem: function(item) {
+			    	LoadPage(contextPath+"/workflow/modPolish?polishid="+item.polishID+"&operator=");
 			    },
-			    editItemShow: function() {
-			    	$modModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$modModal.css("overflow", "hidden");
-			    	$modModal.css("overflow-y", "auto");
-			    	$modModal.modal("show");
+			    copyItem: function(item) {
+			    	LoadPage(contextPath+"/workflow/modPolish?polishid="+item.polishID+"&operator=copy");
 			    },
 			    exportItem:function(){
 			         $.post(contextPath+"/workflow/exportPolish",$queryForm.serializeArray(), function(result) {

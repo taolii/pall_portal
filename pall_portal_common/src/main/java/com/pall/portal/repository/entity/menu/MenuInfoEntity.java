@@ -10,7 +10,7 @@ public class MenuInfoEntity {
 	/*
 	 * 菜单编号
 	 */
-	private int menuid;
+	private Integer menuid;
 	/*
 	 *  菜单名称
 	 */
@@ -49,10 +49,11 @@ public class MenuInfoEntity {
 	 */
 	@Length(min=0, max=100, message="{menuManage.form.valid.menuInfoEntity.description.stringlength}")  
 	private String description;
-	public int getMenuid() {
+	
+	public Integer getMenuid() {
 		return menuid;
 	}
-	public void setMenuid(int menuid) {
+	public void setMenuid(Integer menuid) {
 		this.menuid = menuid;
 	}
 	public String getMenuName() {

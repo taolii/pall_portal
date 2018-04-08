@@ -1,7 +1,8 @@
 $(document).ready(function() {
-	var contextPath=$("#contextPath").val();
-	var $wrapper = $('#div-table-container');
-	var $table = $('#datatable');
+	var ids={"contextPath":"#contextPath","datatable":"#datatable","tableContainer":"#div-table-container","queryForm":"#queryForm"}
+	var contextPath=$(ids.contextPath).val();
+	var $wrapper = $(ids.tableContainer);
+	var $table = $(ids.datatable);
 	var _table = $table.dataTable($.extend(true,
 		{pageLength: 10,ordering: false,scrollX: true,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 		{
@@ -13,7 +14,7 @@ $(document).ready(function() {
             param.draw = data.draw;
             param.startPageNum = data.start;
             param.pageSize = data.length;
-            var formData = $("#queryForm").serializeArray();
+            var formData = $(ids.queryForm).serializeArray();
             formData.forEach(function (e) {
                 param[e.name] = e.value;
             });
@@ -51,23 +52,30 @@ $(document).ready(function() {
         },
         columns: [
         	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
-        	{className : "ellipsis",data: "operatorid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false},
+        	{className : "ellipsis",data: "operatorid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,width:"80px"},
             {className : "ellipsis",data: "account",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
             {className : "ellipsis",data: "name",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
-            {className : "ellipsis",data: "sex",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
-            {className : "ellipsis",data: "position",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
-            {className : "ellipsis",data: "mobile",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
-            {className : "ellipsis",data: "email",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "sex",render : function(data,type, row, meta) {
+            		if(data=='1'){
+	            		return '<span class="label label-xlg label-pink arrowed arrowed-right">女</span>';
+	            	}else{
+	            		return '<span class="label label-xlg label-primary arrowed arrowed-right">男</span>';
+	            	};
+            	},width:"80px"
+            },
+            {className : "ellipsis",data: "position",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
+            {className : "ellipsis",data: "mobile",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
+            {className : "ellipsis",data: "email",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"180px"},
             {data : "operatorType",render : function(data,type, row, meta) {
                 return data==1?'系统管理员':'普通用户';},width:"80px"
             },
-            {className : "ellipsis",data : "createTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
-            {className : "ellipsis",data : "updateTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data : "createTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"120px"},
+            {className : "ellipsis",data : "updateTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"120px"},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
-                "<button id='editRow' class='btn btn-info btn-xs' type='button'><i class='ace-icon fa fa-pencil bigger-120'></i></button>"+
-                "<button id='editPwdRow' class='btn btn-success btn-xs' type='button'><i class='ace-icon fa fa-key bigger-120'></i></button>"+
-                "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+                "<a id='editRow' class='btn btn-info btn-xs' type='button'><i class='ace-icon fa fa-pencil bigger-120'></i></a>"+
+                "<a id='editPwdRow' class='btn btn-success btn-xs' type='button'><i class='ace-icon fa fa-key bigger-120'></i></a>"+
+                "<a id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></a>"+
                 "</div>";
               }, width : "100px"}
         ],

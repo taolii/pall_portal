@@ -56,6 +56,7 @@ public class UmsConfigInitiator {
 	 * @return
 	 */
 	public static String getDataConfig(String configName){
+		if(umsConfigMap.get(configName)==null)return null;
 		return umsConfigMap.get(configName).getConfigValue();
 	}
 }

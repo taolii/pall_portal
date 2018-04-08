@@ -31,14 +31,33 @@ $(document).ready(function() {
 	    	e.preventDefault();
 	    	var $form = $(e.target);
 	    	var bv = $form.data('bootstrapValidator');
-	    	$.post(contextPath+"/menu/addMenu",  $form.serialize(), function(result) {
-	    		if(result.resultCode==0){
-	    			showNotice('Success',"添加菜单成功",'success',1000*5);
-	    			$form.data('bootstrapValidator').resetForm(true);
-	    		}else{
-	    			$form.bootstrapValidator('disableSubmitButtons', false); 
-	    			showNotice('Error','<span style="padding-top:5px">添加菜单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
-	            }
-	        },'json'); 
+	    	var opertype=$("#dataForm [name=opertype]").val();
+	    	if(opertype=='mod'){
+	    		$.post(contextPath+"/menu/modMenu",  $form.serialize(), function(result) {
+		    		if(result.resultCode==0){
+		    			showNotice('Success',"修改菜单成功",'success',1000*5);
+		    			$form.data('bootstrapValidator').resetForm(true);
+		    			var ids={"dataForm":'#dataForm',"treeView":"#menutree","context_menu":'#context-menu',"menuPanelID":'#menuinfo',"menuPanelTile":'#menuinfoTitle',"showBorder":false,"onNodeSelected":false};
+		    			var treeMenu = new TreeMenu(contextPath,ids);
+		    			treeMenu.getAjaxTree();
+		    		}else{
+		    			$(dataForm).bootstrapValidator('disableSubmitButtons', false); 
+		    			showNotice('Error','<span style="padding-top:5px">修改菜单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+		            }
+		        },'json');
+	    	}else{
+	    		$.post(contextPath+"/menu/addMenu",  $form.serialize(), function(result) {
+		    		if(result.resultCode==0){
+		    			showNotice('Success',"添加菜单成功",'success',1000*5);
+		    			$form.data('bootstrapValidator').resetForm(true);
+		    			var ids={"dataForm":'#dataForm',"treeView":"#menutree","context_menu":'#context-menu',"menuPanelID":'#menuinfo',"menuPanelTile":'#menuinfoTitle',"showBorder":false,"onNodeSelected":false};
+		    			var treeMenu = new TreeMenu(contextPath,ids);
+		    			treeMenu.getAjaxTree();
+		    		}else{
+		    			$form.bootstrapValidator('disableSubmitButtons', false); 
+		    			showNotice('Error','<span style="padding-top:5px">添加菜单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+		            }
+		        },'json'); 
+	    	}
 	    });
 });

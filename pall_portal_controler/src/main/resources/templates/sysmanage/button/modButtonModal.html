@@ -3,65 +3,129 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{pages.system.name}+'-'+#{pages.defect.modDefectInfo.title}"></title>
+<title th:text="#{pages.system.name}+'-'+#{pages.button.modButton.title}"></title>
 </head>
 <body>
 	<div th:fragment="content">
-		<div id="modModal" class="modal fade" tabindex="-1" role="dialog"
-			aria-hidden="true" style="display: none;">
-			<div class="modal-dialog" style="width:560px;">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel2">
-							<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label
-								th:text="#{pages.defect.modDefectInfo.title}" th:remove="tag"></label>
-						</h4>
-					</div>
-					<form method="POST" id="modDataForm" class="form-horizontal" >
-						<div class="modal-body" style="height: 300px;">
-							<div class="form-group">
-								<div class="group">
-								<input type="hidden" name="roleid" />
-								<input type="hidden" name="token" />
-									<span class="col-sm-3 control-span col-md-offset-1">
-										&nbsp;&nbsp; <label
-										th:text="#{pages.role.modroleInfo.input.roleName}"
-										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
-									</span>
-									<div class="col-sm-7 control-input">
-										<input type="text" name="roleName" class="form-control" 
-											th:placeholder="#{pages.role.modroleInfo.input.roleName.tip}" />
+		<form method="POST" id="modDataForm" class="form-horizontal">
+			<div id="modModal" class="modal fade" tabindex="-1">
+				<div class="modal-dialog modal-sm" style="width:560px;">
+					<div class="modal-content">
+						<div class="modal-header no-padding">
+							<div class="table-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+									<span class="white">&times;</span>
+								</button>
+								<i class="glyphicon glyphicon-book"></i>&nbsp;&nbsp;
+								<label th:text="#{pages.button.modButton.title}" th:remove="tag"></label>
+							</div>
+						</div>
+						<div class="modal-body no-padding" style="height:400px;">
+							<div class="modal-body">
+								<div class="form-group">
+									<div class="col-sm-10 col-md-offset-1 from_components">
+										<input type="hidden" name="operatorid" /> <span
+											class="col-sm-4 span">
+											 <label th:text="#{pages.button.modButton.input.menuName}" th:remove="tag"></label> 
+											 <font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input type="hidden" name="btnid" class="form-control" />
+											<input id="modButtonMenuid" type="hidden" name="menuid" class="form-control" />
+											<input id="modButtonMenuName" name="menuName" class="form-control" />
+										</div>
+										<div class="col-sm-8 col-md-offset-4">
+											<div id="menutree" ></div>
+										</div>
+									</div>
+									<div class="col-sm-10 col-md-offset-1">
+										<div class="menuName"></div>
 									</div>
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="group">
-									<span class="col-sm-3 control-span col-md-offset-1" style="padding-bottom:39px">
-										&nbsp; <label th:text="#{pages.role.modroleInfo.textarea.description}"
-										th:remove="tag"></label>
-									</span>
-									<div class="col-sm-7 control-input">
-										<textarea name="rDetail" rows="3"  class="form-control input-group-sm"></textarea>
+								<div class="form-group">
+									<div class="col-sm-10 col-md-offset-1 from_components">
+										<span class="col-sm-4 span">
+											<label th:text="#{pages.button.modButton.input.btnEName}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input type="text" name="btnEName" class="form-control"/>
+										</div>
+									</div>
+									<div class="col-sm-10 col-md-offset-1">
+										<div class="btnEName"></div>
 									</div>
 								</div>
+								<div class="form-group">
+									<div class="col-sm-10 col-md-offset-1 from_components">
+										<span class="col-sm-4 span">
+											<label th:text="#{pages.button.modButton.input.btnCName}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-sm-8 div">
+											<input type="text" name="btnCName" class="form-control"/>
+										</div>
+									</div>
+									<div class="col-sm-10 col-md-offset-1">
+										<div class="btnCName"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-10 col-md-offset-1 from_components">
+										<span class="col-sm-4 span">
+											<label th:text="#{pages.button.modButton.input.btnClass}" th:remove="tag"></label>
+										</span>
+										<div class="col-sm-8 div">
+											<input type="text" name="btnClass" class="form-control"/>
+										</div>
+									</div>
+									<div class="col-sm-10 col-md-offset-1">
+										<div class="btnClass"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-10 col-md-offset-1 from_components">
+										<span class="col-sm-4 span">
+											<label th:text="#{pages.button.modButton.input.btnIconClass}" th:remove="tag"></label>
+										</span>
+										<div class="col-sm-8 div">
+											<input type="text" name="btnIconClass" class="form-control"/>
+										</div>
+									</div>
+									<div class="col-sm-10 col-md-offset-1">
+										<div class="btnIconClass"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-10 col-md-offset-1 from_components">
+										<span class="col-sm-4 span">
+											<label th:text="#{pages.button.modButton.textarea.description}" th:remove="tag"></label>
+										</span>
+										<div class="col-sm-8 div">
+											<textarea name="description" rows="3" class="form-control input-group-sm"></textarea>
+										</div>
+									</div>
+									<div class="col-sm-10 col-md-offset-1">
+										<div class="description"></div>
+									</div>
+								</div>
+								
 							</div>
-					</div>
-					<div class="modal-footer"> 
-							<button class="btn btn-primary">
-								<i class="fa fa-check"></i> <span th:text="#{pages.role.modroleInfo.button.mod}" th:remove="tag"></span>
+						</div>
+						<div class="modal-footer no-margin-top">
+							<button class="btn btn-primary submit-btn" type="submit">
+								<i class="fa fa-check"></i> 
+								<span th:text="#{pages.button.modButton.button.mod}" th:remove="tag"></span>
 							</button>
 							<button type="button" class="btn btn-primary" data-dismiss="modal">
-									<i class="fa fa-close"></i> <span th:text="#{pages.role.modroleInfo.button.shut}" th:remove="tag"></span>
-							</button> 
+								<i class="fa fa-close"></i> 
+								<span th:text="#{pages.button.modButton.button.shut}" th:remove="tag"></span>
+							</button>
+						</div>
 					</div>
-					</form>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 </body>
 </html>

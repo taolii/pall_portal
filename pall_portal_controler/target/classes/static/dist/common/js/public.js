@@ -19,10 +19,26 @@ function currentTime(){
     str+= d.getSeconds()+'秒'; 
     return str; 
 };
-function LoadPage(url) {    
-	 $.get(url, function (data) {
-         $(".main-content").html(data);
-        var submenu=$("#menu_nav .submenu").find(".active");
+function currentDate(num){ 
+    var now =new Date();
+    var d =new Date(now.getTime() - num * 24 * 3600 * 1000);
+    str=''; 
+    str+=d.getFullYear()+'-';
+    if(Number(d.getMonth())<10){
+    	str+='0'+(d.getMonth()+1)+'-'; 
+    }else{
+    	str+=d.getMonth() +1+'-'; 
+    }
+    if(Number(d.getDate())<10){
+    	str+='0'+d.getDate(); 
+    }else{
+    	str+=d.getDate(); 
+    }
+    return str; 
+};
+function LoadPage(url) {
+	$(".main-content").load(url,function(){
+		var submenu=$("#menu_nav .submenu").find(".active");
         if(submenu){
         	if($("#breadcrumbs .homemenu")){
     			$("#breadcrumbs .homemenu").html($(submenu).parents("ul").parent("li").find("span").html());
@@ -32,8 +48,8 @@ function LoadPage(url) {
     			$("#breadcrumbs .submenumenu").attr('href',$(submenu).find("a").attr("href"));
     		}
         }
-     });
-  return false;
+	});
+  return true;
 }
 function showNotice(title, text, type, delay) {
 	if(!type)type='info';

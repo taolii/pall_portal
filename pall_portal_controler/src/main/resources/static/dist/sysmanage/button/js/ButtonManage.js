@@ -2,6 +2,11 @@ $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
 	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
+	$("#queryButtonMenuName").click(function(){
+		var ids={"treeView":"#queryMenutree","inPMenuid":"#queryButtonMenuid","inPMenuName":"#queryButtonMenuName","showBorder":true,"onNodeSelected":true,};
+	    var treeMenu = new TreeMenu(contextPath,ids);
+	    treeMenu.getAjaxTree();
+	});
 	var _table = $table.dataTable($.extend(true,
 		{pageLength: 10,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 		{
@@ -14,14 +19,12 @@ $(document).ready(function() {
             param.startPageNum = data.start;
             param.pageSize = data.length;
             var formData = $("#queryForm").serializeArray();
-            var dataType=""
             formData.forEach(function (e) {
-            	dataType = dataType+e.value;
+                param[e.name] = e.value;
             });
-            param["dataType"] = dataType;
             $.ajax({
                     type: "post",
-                    url: contextPath+"/role/roleManage",
+                    url: contextPath+"/button/buttonManage",
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -53,19 +56,24 @@ $(document).ready(function() {
         },
         columns: [
         	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
-        	{className : "ellipsis",data: "roleid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
-            {className : "ellipsis",data: "roleName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"70px"},
-            {className : "ellipsis",data: "rDetail",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
+        	{className : "ellipsis",data: "btnid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "menuid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "menuName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "btnEName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "btnCName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "btnClass",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "btnIconClass",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS},
+            {className : "ellipsis",data: "description",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
-                "<button id='editRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-edit'></i></button>"+
-                "<button id='delRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
+                "<button id='editRow' data-toggle='tooltip' data-placement='top' title='编辑按钮' class='btn btn-info btn-xs' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+                "<button id='delRow' data-toggle='tooltip' data-placement='top' title='删除按钮' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
                 "</div>";
-              }, width : "60px"}
+              }}
         ],
         "columnDefs": [
             {
-              "targets": [1],
+              "targets": [1,2],
               "visible": false
             }
           ],
@@ -77,7 +85,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -85,8 +93,8 @@ $(document).ready(function() {
 		_table.draw();
 	});
 	$("#btn-add").click(function(){
-		defectManage.addItemInit();
-		defectManage.addItemShow();
+		operManage.addItemInit();
+		operManage.addItemShow();
 	});
 	$("#btn-delAll").click(function(){
 		var arrItemId = [];
@@ -94,7 +102,7 @@ $(document).ready(function() {
             var item = _table.row($(this).closest('tr')).data();
             arrItemId.push(item);
         });
-        defectManage.deleteItem(arrItemId);
+        operManage.deleteItem(arrItemId);
 	});
 	$table.on("change",":checkbox",function() {
         if ($(this).is("[name='cb-check-all']")) {
@@ -112,16 +120,16 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        defectManage.currentItem = item;
-        defectManage.editItemInit(item);
-        defectManage.editItemShow();
+        operManage.currentItem = item;
+        operManage.editItemInit(item);
+        operManage.editItemShow();
     }).on("click","#delRow",function() {
         //点击删除按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        defectManage.deleteItem([item]);
+        operManage.deleteItem([item]);
     });
-	 var defectManage = {
+	 var operManage = {
 			    currentItem : null,
 			    fuzzySearch : true,
 			    editItemInit : function(item) {
@@ -129,9 +137,14 @@ $(document).ready(function() {
 			            return;
 			        }
 			       $("#modDataForm").data('bootstrapValidator').resetForm(true);
-			       $("#modDataForm [name=roleid]").val(item.roleid);
-			       $("#modDataForm [name=roleName]").val(item.roleName);
-			       $("#modDataForm [name=rDetail]").val(item.rDetail);
+			       $("#modDataForm [name=btnid]").val(item.btnid);
+			       $("#modDataForm [name=menuid]").val(item.menuid);
+			       $("#modDataForm [name=menuName]").val(item.menuName);
+			       $("#modDataForm [name=btnEName]").val(item.btnEName);
+			       $("#modDataForm [name=btnCName]").val(item.btnCName);
+			       $("#modDataForm [name=btnClass]").val(item.btnClass);
+			       $("#modDataForm [name=btnIconClass]").val(item.btnIconClass);
+			       $("#modDataForm [name=description]").val(item.description);
 			    },
 			    addItemInit : function() {
 			    	$("#addDataForm").data('bootstrapValidator').resetForm(true);
@@ -158,7 +171,7 @@ $(document).ready(function() {
 			        var message;
 			        if (selectedItems&&selectedItems.length) {
 			            if (selectedItems.length == 1) {
-			                message = "确定要删除 '"+selectedItems[0].roleName+"' 吗?";
+			                message = "确定要删除 '"+selectedItems[0].btnCName+"' 吗?";
 			 
 			            }else{
 			                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
@@ -168,17 +181,17 @@ $(document).ready(function() {
 			                title:Lobibox.base.OPTIONS.title.info,
 			                callback: function ($this, type) {
 			                    if (type === 'yes') {
-			                    	var roleids="";
+			                    	var btnids="";
 			                    	$(selectedItems).each(function(i) {
-			                    		roleids=roleids+selectedItems[i].roleid+",";
+			                    		btnids=btnids+selectedItems[i].btnid+",";
 			                        });
-			                    	roleids=roleids.substr(roleids,roleids.length-1);
-			                    	$.post(contextPath+"/role/delRole",{"roleids":roleids}, function(result) {
+			                    	btnids=btnids.substr(btnids,btnids.length-1);
+			                    	$.post(contextPath+"/button/delButton",{"btnids":btnids}, function(result) {
 			                    		if(result.resultCode==0){
-			                    			showNotice('Success',"删除角色成功",'success',1000*5);
+			                    			showNotice('Success',"删除按钮成功",'success',1000*5);
 			                    			$("#btn_refresh").click();
 			                    		}else{
-			                    			showNotice('Error','<span style="padding-top:5px">删除角色信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+			                    			showNotice('Error','<span style="padding-top:5px">删除按钮信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
 					                    }
 			                        },'json'); 
 			                    }

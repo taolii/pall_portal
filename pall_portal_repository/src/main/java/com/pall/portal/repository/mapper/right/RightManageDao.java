@@ -41,4 +41,11 @@ public interface RightManageDao {
 	 * @return 结果
 	 */
 	public int modRight(RightEntity rightEntity);
+	/*
+	 * 删除角色下的权限信息
+	 * @param dataids 数据id集合
+	 * @param rightids 权限类型集合
+	 * @return 
+	 */
+	public int delRoleRight(@Param("dataids") List<String> dataids,@Param("rightids") List<String> rightids);
 }

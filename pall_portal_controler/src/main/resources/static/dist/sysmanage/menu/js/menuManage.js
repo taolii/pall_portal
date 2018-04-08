@@ -29,10 +29,12 @@ var Menu= function (contextPath,ids) {
 				  if(stroperator=='add'){
 					  $(ids.menuPanelTile).html($(e.target).text());
 					  $(ids.menuPanelID).show();
+					  $(ids.dataForm+" [name=opertype]").val(stroperator);
 					  oMenu.operManage.getMenu(ids.dataForm,$(ids.dataForm+" [name=data-nodeid]").val(),true);
 				  }else if(stroperator=='mod'){
 					  $(ids.menuPanelTile).html($(e.target).text());
 					  $(ids.menuPanelID).show();
+					  $(ids.dataForm+" [name=opertype]").val(stroperator);
 					  oMenu.operManage.getMenu(ids.dataForm,$(ids.dataForm+" [name=data-nodeid]").val(),false);
 				  }else if(stroperator=='del'){
 					  oMenu.operManage.delItem($(ids.dataForm+" [name=data-nodeid]").val(),oMenu.treeMenu);
@@ -60,6 +62,11 @@ var OperManage= function (contextPath) {
     operManage.getMenu = function(dataForm,pmenuid,isAdd){
 		var param = {};
 		param.menuid=pmenuid;
+		if(pmenuid==-1){
+			$(dataForm+" [name=pmenuid]").val(-1);
+			$(dataForm+" [name=pmenuName]").val("主菜单");
+			return ;
+		}
 		$.ajax({
 			type:'post',
             contentType:'application/json',
@@ -80,13 +87,12 @@ var OperManage= function (contextPath) {
             	        	$(dataForm+" [name=pmenuName]").val(result.returnObjects[0].menuName);
             	        }
         	   			$(dataForm+" [name=pmenuid]").val(result.returnObjects[0].menuid);
-        	   			$(dataForm+" [name=menuid]").val("");
+        	   			$(dataForm+" [name=menuid]").val("0");
         	   			$(dataForm+" [name=menuName]").val("");
             	        $(dataForm+" [name=menuIcon]").val("");
             	        $(dataForm+" [name=menuUrl]").val("");
             	        $(dataForm+" [name=leaf]").removeAttr("checked");
             	        $(dataForm+" [name=disabled]").removeAttr("checked");
-            	        $(dataForm+" [name=pmenuid]").val("");
             	        //$(dataForm+" [name=sort]").val("");
             	        $(dataForm+" [name=description]").val("");
         	   		}else{

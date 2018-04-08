@@ -14,6 +14,10 @@ public class PolishQueryFormEntity {
 	 */
 	private int pageSize;
 	/*
+	 * 唯一标示
+	 */
+	private String polishID;
+	/*
 	 * 领料日期
 	 */
 	private String pickingTime;
@@ -33,6 +37,10 @@ public class PolishQueryFormEntity {
 	 * 供应商来料LOT#
 	 */
 	private String inputLotNum;
+	/*
+	 * polish 完成后产生的LOT#
+	 */
+	private String polishLotNum;
 	/*
 	 * 光纤的料号及批次号
 	 */
@@ -110,6 +118,18 @@ public class PolishQueryFormEntity {
 	}
 	public void setEndPolishTime(String endPolishTime) {
 		this.endPolishTime = endPolishTime;
+	}
+	public String getPolishID() {
+		return polishID;
+	}
+	public void setPolishID(String polishID) {
+		this.polishID = polishID;
+	}
+	public String getPolishLotNum() {
+		return polishLotNum;
+	}
+	public void setPolishLotNum(String polishLotNum) {
+		this.polishLotNum = polishLotNum;
 	}
 	
 }

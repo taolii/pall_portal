@@ -29,6 +29,12 @@ public interface MenuManageDao {
 	 */
 	public List<MenuInfoEntity> getTreeMenu(@Param("pmenuid") String pmenuid);
 	/*
+	 * 根据条件查询菜单按钮信息
+	 * @param pmenuid 父菜单id
+	 * @return 查询结果
+	 */
+	public List<MenuInfoEntity> getTreeMenuButton(@Param("pmenuid") String pmenuid);
+	/*
 	 * 根据条件查询菜单总记录数
 	 * @param queryMenuFormEntity 菜单列表查询对象
 	 * @return 查询结果

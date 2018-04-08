@@ -2,25 +2,33 @@ package com.pall.portal.service.menu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pall.portal.common.constants.IResponseConstants;
+import com.pall.portal.common.constants.KeyConstants;
 import com.pall.portal.common.datatables.Entity.DatatablesView;
 import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
+import com.pall.portal.init.UmsConfigInitiator;
+import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.menu.ButtonQueryFormEntity;
 import com.pall.portal.repository.entity.menu.MenuInfoEntity;
 import com.pall.portal.repository.entity.menu.QueryMenuFormEntity;
 import com.pall.portal.repository.entity.menu.TreeMenuInfo;
+import com.pall.portal.repository.entity.right.RightEntity;
 import com.pall.portal.repository.mapper.menu.ButtonManageDao;
 import com.pall.portal.repository.mapper.menu.MenuManageDao;
+import com.pall.portal.repository.mapper.right.RightManageDao;
 @Repository
 public class MenuManageServiceImpl implements MenuManageService{
 	/*
@@ -31,6 +39,8 @@ public class MenuManageServiceImpl implements MenuManageService{
 	private MenuManageDao menuManageDao;
 	@Autowired
 	private ButtonManageDao buttonManageDao;
+	@Autowired
+	private RightManageDao rightManageDao;
 	@Autowired
 	private ResourceUtils resourceUtils;
 	@Override
@@ -50,10 +60,11 @@ public class MenuManageServiceImpl implements MenuManageService{
 	 * 递归获取子菜单
 	 */
 	private List<TreeMenuInfo> getSubMenus(List<MenuInfoEntity> menus,int pmenuid){
+		if(menus==null) return null;
 		List<TreeMenuInfo> treeMenuInfos=new ArrayList<TreeMenuInfo>();
 		//同级菜单
 		Map<Integer,TreeMenuInfo> levelmenuMap=new HashMap<Integer,TreeMenuInfo>();
-		Map<Integer,List<MenuInfoEntity>> leftmenuMap=new HashMap<Integer,List<MenuInfoEntity>>();
+		List<MenuInfoEntity> leftMenus=new ArrayList<MenuInfoEntity>();
 		for(MenuInfoEntity menuInfo:menus){
 			if(menuInfo.getPmenuid()==pmenuid){
 				TreeMenuInfo treeMenuInfo=new TreeMenuInfo();
@@ -61,17 +72,12 @@ public class MenuManageServiceImpl implements MenuManageService{
 				treeMenuInfos.add(treeMenuInfo);
 				levelmenuMap.put(menuInfo.getMenuid(), treeMenuInfo);
 			}else{
-				if(leftmenuMap.get(menuInfo.getPmenuid())==null){
-					leftmenuMap.put(menuInfo.getPmenuid(), new ArrayList<MenuInfoEntity>());
-					leftmenuMap.get(menuInfo.getPmenuid()).add(menuInfo);
-				}else{
-					leftmenuMap.get(menuInfo.getPmenuid()).add(menuInfo);
-				}
+				leftMenus.add(menuInfo);
 			}
 		}
-		if(leftmenuMap.size()>0){
-			for(int key:leftmenuMap.keySet()){
-				levelmenuMap.get(key).setSubMenuInfos(getSubMenus(leftmenuMap.get(key),key));
+		if(null!=levelmenuMap && levelmenuMap.size()>0){
+			for(int key:levelmenuMap.keySet()){
+				levelmenuMap.get(key).setSubMenuInfos(getSubMenus(leftMenus,key));
 			}
 		}
 		return treeMenuInfos;
@@ -101,18 +107,26 @@ public class MenuManageServiceImpl implements MenuManageService{
 		return baseResponse;
 	}
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public BaseResponse delMenu(List<String> menuids) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			//查询所有菜单下按钮的唯一标示
-			ButtonQueryFormEntity  buttonQueryFormEntity=new ButtonQueryFormEntity();
-			buttonManageDao.queryButtonTotalRecords(buttonQueryFormEntity);
+			ButtonQueryFormEntity buttonQueryFormEntity=new ButtonQueryFormEntity();
+			buttonQueryFormEntity.setStartPageNum(0);
+			buttonQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			List<ButtonEntity> buttonEntitys=buttonManageDao.queryButtonList(buttonQueryFormEntity);
+			//删除权限信息
+			if(buttonEntitys!=null && buttonEntitys.size()>0){
+				List<String> dataids=new ArrayList<String>();
+				for(ButtonEntity buttonEntity:buttonEntitys){
+					dataids.add(String.valueOf(buttonEntity.getBtnid()));
+				}
+				rightManageDao.delRoleRight(dataids, null);
+				rightManageDao.delRight(dataids, null);
+			}
+			buttonManageDao.delButton(menuids, null);
 			//删除当前节点菜单信息
 			menuManageDao.delMenu(menuids);
-			//删除菜单下的按钮信息
-			//buttonManageDao.delBtnByMenuId(menuids);
-			//删除权限信息
-			
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("menumanage.service.delMenu.exception"),e);
@@ -122,12 +136,23 @@ public class MenuManageServiceImpl implements MenuManageService{
 		return baseResponse;
 	}
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public BaseResponse addMenu(MenuInfoEntity menuEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
 			int resultNum=menuManageDao.addMenu(menuEntity);
 			if(resultNum>0){
-				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				//添加数据权限
+				RightEntity rightEntity=new RightEntity();
+				rightEntity.setDataid(menuEntity.getMenuid());
+				rightEntity.setRightType(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.RIGHT_BUTTON_RIGHTTYPE)));
+				resultNum=rightManageDao.addRight(rightEntity);
+				if(resultNum>0){
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.dao.addMenu.failed"));
+				}
 			}else{
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 				baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.dao.addMenu.failed"));
@@ -189,6 +214,25 @@ public class MenuManageServiceImpl implements MenuManageService{
 			logger.error(resourceUtils.getMessage("menumanage.service.findMenuById.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.findMenuById.exception")+e.toString());
+		}
+		return baseResponse;
+	}
+	@Override
+	public BaseResponse getTreeMenuButton(String pmenuid) throws Exception {
+		BaseResponse baseResponse=new BaseResponse();
+		try{
+			List<MenuInfoEntity> menuInfoEntitys=menuManageDao.getTreeMenuButton(pmenuid);
+			if(menuInfoEntitys!=null){
+				if(menuInfoEntitys!=null){
+					List<TreeMenuInfo> treeMenuInfos=getSubMenus(menuInfoEntitys,Integer.parseInt(pmenuid));
+					baseResponse.setReturnObjects(treeMenuInfos);
+				}
+			}
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		}catch(Exception e){
+			logger.error(resourceUtils.getMessage("menumanage.service.queryMenuList.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.queryMenuList.exception")+e.toString());
 		}
 		return baseResponse;
 	}

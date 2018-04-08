@@ -1,5 +1,11 @@
 $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
+	var addModal=$("#addModal");
+	$("#addButtonMenuName").click(function(){
+		var ids={"treeView":"#menutree","inPMenuid":"#addButtonMenuid","inPMenuName":"#addButtonMenuName","validFileName":"menuName","dataForm":"addDataForm","showBorder":true,"onNodeSelected":true};
+	    var treeMenu = new TreeMenu(contextPath,ids);
+	    treeMenu.getAjaxTree();
+	});
     $('#addDataForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -8,10 +14,31 @@ $(document).ready(function() {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	roleName: {
+        	menuid: {
                 validators: {
                     notEmpty: {
-                        message: '角色名不能为空'
+                        message: '菜单名称不能为空'
+                    }
+                }
+            },
+            menuName: {
+                validators: {
+                    notEmpty: {
+                        message: '菜单名称不能为空'
+                    }
+                }
+            },
+            btnEName: {
+                validators: {
+                    notEmpty: {
+                        message: '按钮英文名称不能为空'
+                    }
+                }
+            },
+            btnCName: {
+                validators: {
+                    notEmpty: {
+                        message: '按钮中文名称不能为空'
                     }
                 }
             },
@@ -29,14 +56,14 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post(contextPath+"/role/addRole",  $form.serialize(), function(result) {
+    	$.post(contextPath+"/button/addButton",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			showNotice('Success',"添加角色成功",'success',1000*5);
+    			showNotice('Success',"添加按钮成功",'success',1000*5);
     			$form.data('bootstrapValidator').resetForm(true);
     			$("#addModal").modal("hide");
     			$("#btn_refresh").click();
     		}else{
-    			showNotice('Error','<span style="padding-top:5px">添加角色失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+    			showNotice('Error','<span style="padding-top:5px">添加按钮失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         	}
         },'json'); 
     }).on('error.form.bv', function(e, data) {

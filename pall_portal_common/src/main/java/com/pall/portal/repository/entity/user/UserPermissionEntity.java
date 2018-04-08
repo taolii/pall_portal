@@ -9,10 +9,6 @@ public class UserPermissionEntity {
 	 */
 	private int operatorid;
 	/*
-	 * 权限类型
-	 */
-	private int operatorType;
-	/*
 	 * 角色id
 	 */
 	private String roleid;
@@ -21,12 +17,6 @@ public class UserPermissionEntity {
 	}
 	public void setOperatorid(int operatorid) {
 		this.operatorid = operatorid;
-	}
-	public int getOperatorType() {
-		return operatorType;
-	}
-	public void setOperatorType(int operatorType) {
-		this.operatorType = operatorType;
 	}
 	public String getRoleid() {
 		return roleid;

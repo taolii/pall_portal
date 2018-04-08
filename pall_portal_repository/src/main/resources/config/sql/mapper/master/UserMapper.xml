@@ -46,15 +46,7 @@
          insert into t_ums_admininfo(NAME,ACCOUNT,PASSWORD,SEX,POSITION,MOBILE,EMAIL,OPERATORTYPE,CREATETIME,UPDATETIME)values(#{name},#{account},#{password},#{sex},#{position},#{mobile},#{email},#{operatorType},now(),now())
     </insert>
     <insert id="addUserPermission" parameterType="com.pall.portal.repository.entity.user.UserPermissionEntity">
-         insert into t_ums_userpermission(operatorid,roleid)values(
-         <choose>
-	        <when test="operatorType==1">
-	           #{operatorid},1)
-	        </when>
-	        <otherwise>
-	            #{operatorid},2)
-	        </otherwise>
-    	</choose>
+         insert into t_ums_userpermission(operatorid,roleid)values(#{operatorid},#{roleid})
     </insert>
     <delete id="delUser"  parameterType="java.util.List">  
         DELETE FROM t_ums_admininfo WHERE OPERATORID in 
@@ -68,6 +60,9 @@
         	#{item}  
     	</foreach> 
 	</delete>
+	<select id="findUserPermission" resultType="com.pall.portal.repository.entity.user.UserPermissionEntity" parameterType="java.lang.String"> 
+ 		select operatorid,roleid from t_ums_userpermission f where operatorid=#{operatorid} 
+ 	</select> 
 	<update id="modifyPwd"  parameterType="com.pall.portal.repository.entity.user.ModifyUPwdEntity">
          update t_ums_admininfo f set PASSWORD=#{password},UPDATETIME=now()  where f.OPERATORID = #{operatorid}
     </update>

@@ -10,12 +10,16 @@ public class ButtonEntity {
 	/*
 	 * 按钮id
 	 */
-	private String btnid;
+	private Integer btnid;
 	/*
 	 * 菜单编号
 	 */
 	@NotBlank(message="{buttonManage.form.valid.buttonEntity.menuid.NotEmpty}")
 	private String menuid;
+	/*
+	 * 菜单名称
+	 */
+	private String menuName;
 	
 	/*
 	 * 按钮英文名称
@@ -77,11 +81,18 @@ public class ButtonEntity {
 	public void setBtnCName(String btnCName) {
 		this.btnCName = btnCName;
 	}
-	public String getBtnid() {
+	
+	public Integer getBtnid() {
 		return btnid;
 	}
-	public void setBtnid(String btnid) {
+	public void setBtnid(Integer btnid) {
 		this.btnid = btnid;
+	}
+	public String getMenuName() {
+		return menuName;
+	}
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
 	}
 	
 }

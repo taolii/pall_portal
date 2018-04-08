@@ -55,6 +55,13 @@ public class DataConfigInitiator {
 	 * @return
 	 */
 	public static List<DataConfigEntity> getDataConfig(String dataConfigType){
-		return dataConfigMap.get(dataConfigType);
+		List<DataConfigEntity> dataConfigEntitys=null;
+		if(dataConfigEntitys==null || dataConfigType==null){
+			dataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
+		if(dataConfigType!=null && dataConfigMap.get(dataConfigType)!=null){
+			dataConfigEntitys.addAll(dataConfigMap.get(dataConfigType));
+		}
+		return dataConfigEntitys;
 	}
 }

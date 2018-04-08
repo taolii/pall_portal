@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.druid.util.StringUtils;
 import com.pall.portal.common.constants.IResponseConstants;
@@ -19,7 +20,6 @@ import com.pall.portal.repository.entity.user.UserEntity;
 import com.pall.portal.repository.entity.user.UserPermissionEntity;
 import com.pall.portal.repository.entity.user.UserQueryFormEntity;
 import com.pall.portal.repository.mapper.user.UserManageDao;
-import com.pall.portal.service.user.UserManageService;
 
 @Repository
 public class UserManageServiceImpl implements UserManageService{
@@ -36,6 +36,18 @@ public class UserManageServiceImpl implements UserManageService{
 		BaseResponse baseResponse=new BaseResponse();
 		UserEntity userEntity=userManageDao.findUserByUserName(operatorid,userName);
 		if(userEntity!=null){
+			//查询用户角色信息
+			List<UserPermissionEntity> userPermissionEntitys=userManageDao.findUserPermission(operatorid);
+			if(null!=userPermissionEntitys && userPermissionEntitys.size()>0){
+				List<String> roleList=new ArrayList<String>();
+				for(UserPermissionEntity userPermissionEntity:userPermissionEntitys){
+					if(StringUtils.isEmpty(userPermissionEntity.getRoleid()))continue;
+					roleList.add(userPermissionEntity.getRoleid());
+				}
+				if(roleList.size()>0){
+					userEntity.setRoleList(roleList.toArray(new String[roleList.size()]));
+				}
+			}
 			List<UserEntity> returnObjects=new ArrayList<UserEntity>();
 			returnObjects.add(userEntity);
 			baseResponse.setReturnObjects(returnObjects);
@@ -47,6 +59,7 @@ public class UserManageServiceImpl implements UserManageService{
 		return baseResponse;
 	}
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public BaseResponse addUser(UserEntity userEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
@@ -58,15 +71,14 @@ public class UserManageServiceImpl implements UserManageService{
 			}else{
 				int resultNum=userManageDao.addUser(userEntity);
 				if(resultNum>0){
-					UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
-					userPermissionEntity.setOperatorid(userEntity.getOperatorid());
-					userPermissionEntity.setOperatorType(userEntity.getOperatorType());
-					resultNum=userManageDao.addUserPermission(userPermissionEntity);
-					if(resultNum>0){
-						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
-					}else{
-						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-						baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.addUser.service.dao.failed"));
+					if(null!=userEntity.getRoleList()&& userEntity.getRoleList().length>0){
+						for(String roleid:userEntity.getRoleList()){
+							if(StringUtils.isEmpty(roleid))continue;
+							UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
+							userPermissionEntity.setOperatorid(userEntity.getOperatorid());
+							userPermissionEntity.setRoleid(roleid);
+							userManageDao.addUserPermission(userPermissionEntity);
+						}
 					}
 				}else{
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -82,6 +94,7 @@ public class UserManageServiceImpl implements UserManageService{
 	}
 
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public BaseResponse modifyUser(UserEntity userEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
@@ -94,10 +107,15 @@ public class UserManageServiceImpl implements UserManageService{
 				List<String> operatorids=new ArrayList<String>();
 				operatorids.add(String.valueOf(userEntity.getOperatorid()));
 				userManageDao.delUserPermission(operatorids);
-				UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
-				userPermissionEntity.setOperatorid(userEntity.getOperatorid());
-				userPermissionEntity.setOperatorType(userEntity.getOperatorType());
-				userManageDao.addUserPermission(userPermissionEntity);
+				if(userEntity.getRoleList()!=null && userEntity.getRoleList().length>0){
+					for(String roleid:userEntity.getRoleList()){
+						if(StringUtils.isEmpty(roleid))continue;
+						UserPermissionEntity userPermissionEntity=new UserPermissionEntity();
+						userPermissionEntity.setOperatorid(userEntity.getOperatorid());
+						userPermissionEntity.setRoleid(roleid);
+						userManageDao.addUserPermission(userPermissionEntity);
+					}
+				}
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 			}else{
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -112,12 +130,12 @@ public class UserManageServiceImpl implements UserManageService{
 	}
 
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public BaseResponse delUser(List<String> operatorids) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			
-			userManageDao.delUser(operatorids);
 			userManageDao.delUserPermission(operatorids);
+			userManageDao.delUser(operatorids);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("usermanage.delUser.service.exception"),e);

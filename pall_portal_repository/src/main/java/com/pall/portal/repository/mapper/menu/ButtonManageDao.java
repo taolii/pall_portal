@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.menu.ButtonQueryFormEntity;
 @Repository("buttonManageDao")
@@ -39,6 +38,11 @@ public interface ButtonManageDao {
 	 * @param menuids 菜单列表
 	 * @return 删除结果
 	 */
-	public BaseResponse delButton(@Param("menuids") List<String> menuids,@Param("btnids") List<String> btnids);
-	
+	public int delButton(@Param("menuids") List<String> menuids,@Param("btnids") List<String> btnids);
+	/*
+	 * 根据条件查询按钮信息
+	 * @param  按钮列表查询对象
+	 * @return 查询结果
+	 */
+	public List<ButtonEntity> getRightButton(@Param("operatorid") String operatorid);
 }

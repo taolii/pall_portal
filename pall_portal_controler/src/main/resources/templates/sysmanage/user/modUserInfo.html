@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-
+<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/modifyUserInfo.js(path=${contextPath})}"></script>
 </head>
 <body>
 	<div th:fragment="content">
@@ -18,7 +19,7 @@
 					<a href="javascript:void(0)" class="submenumenu"></a>
 				</li>
 				<li>
-					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/user/modUser?operatorid='+${session.LOGIN_USER.userEntity.operatorid}+'\');'" th:text="#{pages.user.modifyUserInfo.title}"></a>
+					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/user/modUser?operatorid='+${operatorid}+'\');'" th:text="#{pages.user.modifyUserInfo.title}"></a>
 				</li>
 			</ul>
 		</div>
@@ -28,152 +29,105 @@
 					<div class="col-xs-12">
 						<form method="POST" id="modDataForm" class="form-horizontal">
 							<div class="form-group">
-		                        <div class="col-sm-12">
-		                         	<div class="col-sm-5 from_components">
-		                         		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.username}" th:remove="tag"></label>
-											<font style="color:#a94442">*</font>
-										</span>
-										<div class="col-sm-8 div">
-											<input name="account" class="form-control"/>
-										</div>
-		                         	</div>
-									<div class="col-sm-5 col-md-offset-2 from_components">
-		                         		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.name}" th:remove="tag"></label>
-											<font style="color:#a94442">*</font>
-										</span>
-										<div class="col-sm-8 div">
-											<input name="name" class="form-control input-group-sm" />
-										</div>
-		                         	</div>
-		                         </div>
-		                       	 <div class="col-sm-12">
-		                       		<div class="col-sm-5">
-		                       			<div class="col-sm-10 col-md-offset-1">
-										<div class="account"></div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.username}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input name="operatorid" type="hidden" th:value="${userEntity.operatorid}"/>
+										<input name="account" class="form-control" th:value="${userEntity.account}"/>
 									</div>
-		                       		</div>
-								 <div class="col-sm-5 col-md-offset-2">
-		                       			<div class="col-sm-10 col-md-offset-1">
-										<div class="name"></div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.name}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input name="name" class="form-control" th:value="${userEntity.name}"/>
 									</div>
-		                       		</div>
-		                       	 </div>
+								</div>
+							</div>
+						    <div class="form-group">
+						    	<div class="rowGroup">
+						    		<span class="col-md-2 control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.sex}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<div class="form-control">
+											<input name="sex" class="ace ace-switch ace-switch-4 btn-empty" type="checkbox" th:value="1" th:checked="${userEntity.sex=='1'}">
+											<span class="lbl" data-lbl="女&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;男"></span>
+										</div>
+									</div>
+						    	</div>
+						    	<div class="rowGroup">
+						    		<span class="col-md-2 control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.mobile}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4 ">
+										<input name="mobile" class="form-control input-group-sm" th:value="${userEntity.mobile}"/>
+									</div>
+						    	</div>
 							</div>
 							<div class="form-group">
-		                    	<div class="col-sm-12">
-		                         	<div class="col-sm-5 from_components">
-		                         		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.mobile}" th:remove="tag"></label>
-											<font style="color:#a94442">*</font>
-										</span>
-										<div class="col-sm-8 div">
-											<input name="mobile" class="form-control input-group-sm"/>
-										</div>
-		                         	</div>
-									<div class="col-sm-5 col-md-offset-2 from_components">
-		                         		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.email}" th:remove="tag"></label>
-											<font style="color:#a94442">*</font>
-										</span>
-										<div class="col-sm-8 div">
-											<input name="email" class="form-control"/>
-										</div>
-		                         	</div>
-		                    	</div>
-		                        <div class="col-sm-12">
-		                         	<div class="col-sm-5">
-		                         		<div class="col-sm-10 col-md-offset-1">
-											<div class="mobile"></div>
-										</div>
-		                         	</div>
-									<div class="col-sm-5 col-md-offset-2">
-		                         		<div class="col-sm-10 col-md-offset-1">
-											<div class="email"></div>
-										</div>
-		                         	</div>
-		                        </div>
+								<div class="rowGroup">
+						    		<span class="col-md-2 control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.email}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input name="email" class="form-control" th:value="${userEntity.email}"/>
+									</div>
+						    	</div>
+						    	<div class="rowGroup">
+						    		<span class="col-md-2 control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.position}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input name="position" class="form-control input-group-sm" th:value="${userEntity.position}"/>
+									</div>
+						    	</div>
 							</div>
 							<div class="form-group">
-		                    	<div class="col-sm-12">
-		                    		<div class="col-sm-5  from_components">
-		                        		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.sex}" th:remove="tag"></label>
-											<font style="color:#a94442">*</font>
-										</span>
-										<div class="col-sm-8 div">
-											<select name="sex" class="form-control select2">
-								               <option th:value="#{pages.user.modifyUserInfo.input.sex.male}" th:text="#{pages.user.modifyUserInfo.input.sex.male}"></option>
-								               <option th:value="#{pages.user.modifyUserInfo.input.sex.female}" th:text="#{pages.user.modifyUserInfo.input.sex.female}"></option>
-				                            </select>
-										</div>
-		                        	</div>
-		                         	<div class="col-sm-5 col-md-offset-2 from_components">
-		                         		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.position}" th:remove="tag"></label>
-										</span>
-										<div class="col-sm-8 div">
-											<input name="position" class="form-control input-group-sm" />
-										</div>
-		                         	</div>
-		                         </div>
-		                         <div class="col-sm-12">
-		                         	<div class="col-sm-5">
-		                         		<div class="col-sm-10 col-md-offset-1">
-											<!--div class="sex"></div-->
-										</div>
-		                         	</div>
-									<div class="col-sm-5 col-md-offset-2">
-		                         		<div class="col-sm-10 col-md-offset-1">
-												<!--  div class="position"></div-->
-										</div>
-		                         	</div>
-		                         </div>
+								<div class="rowGroup">
+						    		<span class="col-md-2 control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.opertype}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<select name="operatorType" class="form-control">
+								        	<option value="1" th:selected="${userEntity.operatorType==1}" th:text="#{pages.user.modifyUserInfo.input.opertype.admin}"></option>
+								            <option value="2" th:selected="${userEntity.operatorType==2}" th:text="#{pages.user.modifyUserInfo.input.opertype.user}"></option>
+				                        </select>
+									</div>
+						    	</div>
+						    	<div class="rowGroup">
+						    		
+						    	</div>
 							</div>
 							<div class="form-group">
-		                    	<div class="col-sm-12">
-		                         	<div class="col-sm-5 from_components">
-		                         		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.right}" th:remove="tag"></label>
-											<font style="color:#a94442">*</font>
-										</span>
-										<div class="col-sm-8 div">
-											<input name="right" class="form-control input-group-sm"/>
+								<div class="rowGroup">
+						    		<span class="col-md-2 control-label">
+										<label th:text="#{pages.user.modifyUserInfo.input.right}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-10">
+										<div class="col-md-3" style="padding-top:10px;padding-bottom:10px" th:each="role,iterStat:${roles}">
+											<input name="roleList" class="ace" type="checkbox" th:checked="${role.checked==true}" th:value="${role.roleEntity.roleid}">
+											<span class="lbl" th:text="${role.roleEntity.roleName}"></span>
 										</div>
-		                         	</div>
-		                         </div>
-		                         <div class="col-sm-5 col-md-offset-2 from_components">
-		                         		<span class="col-sm-4 span">
-											<label th:text="#{pages.user.modifyUserInfo.input.opertype}" th:remove="tag"></label>
-											<font style="color:#a94442">*</font>
-										</span>
-										<div class="col-sm-8 div">
-											<select name="operatorType" class="form-control select2">
-									        	<option value="1" th:text="#{pages.user.modifyUserInfo.input.opertype.admin}"></option>
-									            <option value="2" th:text="#{pages.user.modifyUserInfo.input.opertype.user}"></option>
-					                        </select>
-										</div>
-		                         	</div>
-		                         <div class="col-sm-12">
-		                         	<div class="col-sm-5">
-		                         		<div class="col-sm-10 col-md-offset-1">
-											<!--div class="right"></div-->
-										</div>
-		                         	</div>
-									<div class="col-sm-5 col-md-offset-2">
-		                         		<div class="col-sm-10 col-md-offset-1">
-												<!--  div class="operatorType"></div-->
-										</div>
-		                         	</div>
-		                         </div>
+									</div>
+						    	</div>
 							</div>
 							<div class="form-group">
 								<div class="text-center">
-									<button id="addButton" class="btn btn-primary" type="submit">
+									<button  class="btn btn-white btn-primary" type="submit">
 										<i class="fa fa-check"></i> <span th:text="#{pages.user.modifyUserInfo.button.mod}" th:remove="tag"></span>
 									</button>
-									<button id="addBackButton" type="button" class="btn btn-primary" data-dismiss="modal">
+									<button id="modBackButton" type="button" class="btn btn-white btn-primary" data-dismiss="modal">
 										<i class="fa fa-close"></i> <span th:text="#{pages.user.modifyUserInfo.button.shut}" th:remove="tag"></span>
 									</button> 
 								</div>

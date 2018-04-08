@@ -1,9 +1,10 @@
 $(document).ready(function() {
-	var contextPath=$("#contextPath").val();
+	var ids={"contextPath":"#contextPath","dataForm":"#addDataForm","modal":"#addDefectModal"};
+	var contextPath=$(ids.contextPath).val();
 	$("#configName").change(function(){
 		_table.draw();
 	});
-    $('#addDataForm').bootstrapValidator({
+    $(ids.dataForm).bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',

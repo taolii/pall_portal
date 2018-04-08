@@ -2,7 +2,6 @@ package com.pall.portal.module.workflow;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,16 +89,13 @@ public class PolishManageController{
 	@Value("${system.default.file.download.path}")
 	private String downloadFilePath;
 	/*
-	 * 抛光管理
+	 * 初始化配置数据
 	 */
-	@RequestMapping(value="workflow/polishManage", method= RequestMethod.GET)
-    public  String polishManage(Model model, HttpServletRequest request) {	
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
-		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
-		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
-		model.addAttribute("tmpDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_THROWMILLSTONEPOS)));
-		model.addAttribute("polishDefectConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT)));
+	private Model initConfigData(Model model){
 		model.addAttribute("polishTableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
+		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
+		model.addAttribute("polishBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISHBOM)));
+		model.addAttribute("tmpDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_THROWMILLSTONEPOS)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
@@ -125,6 +120,17 @@ public class PolishManageController{
 		dataConfigEntitys.addAll(nwdataConfigEntitys);
 		dataConfigEntitys.addAll(wdataConfigEntitys);
 		model.addAttribute("defectConfigs",dataConfigEntitys);
+		return model;
+	}
+	/*
+	 * 抛光管理
+	 */
+	@RequestMapping(value="workflow/polishManage", method= RequestMethod.GET)
+    public  String polishManage(Model model, HttpServletRequest request) {	
+		model=initConfigData(model);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		model.addAttribute("polishDefectConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT)));
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
 		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
 		if(tableFieldBindMap!=null){
@@ -176,9 +182,9 @@ public class PolishManageController{
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME);
+			String polishTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
-					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
+					requestValue=request.getParameter(polishTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
 						DefectEntity defectEntity=new DefectEntity();
 						defectEntity.setDataid(dataConfigEntity.getDataid());
@@ -197,6 +203,15 @@ public class PolishManageController{
 		polishEntity.getDefects().addAll(defects);
 		return sumDefectValue;
 	}
+	/*
+	 * 添加抛光信息
+	 */
+	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/addPolish", method= RequestMethod.GET)
+    public   String addPolish(Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		return "workflow/polish/addPolish";
+    }
 	/*
 	 * 添加抛光信息
 	 */
@@ -235,6 +250,43 @@ public class PolishManageController{
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
+    }
+	/*
+	 * 修改抛光信息
+	 */
+	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/modPolish", method= RequestMethod.GET)
+    public   String modPolish(@RequestParam("polishid") String polishid,@RequestParam("operator") String operator,Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		BaseResponse baseResponse=new BaseResponse();
+		try {
+			PolishQueryFormEntity polishQueryFormEntity=new PolishQueryFormEntity();
+			polishQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			polishQueryFormEntity.setPolishID(polishid);
+			baseResponse=polishService.exportPolish(polishQueryFormEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("polishmanage.controler.exportPolish.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("polishmanage.controler.exportPolish.exception"));
+		}
+		//数据查询成功，将文件写入下载目录以便下载
+		PolishEntity polishEntity=null;
+		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+	        List<PolishEntity> polishEntitys=(List<PolishEntity>)baseResponse.getReturnObjects();
+	        if (polishEntitys!=null &&  polishEntitys.size()>0){
+	        	polishEntity=polishEntitys.get(0);
+	        }
+		}
+		if(polishEntity==null){
+			polishEntity=new PolishEntity();
+		}
+		model.addAttribute("polishEntity", polishEntity);
+		if("copy".equals(operator)){
+			model.addAttribute("operator", "copy");
+			return "workflow/polish/copyPolish";
+		}else{
+			return "workflow/polish/modPolish";
+		}
     }
 	/*
 	 * 修改抛光信息
@@ -304,6 +356,7 @@ public class PolishManageController{
     public @ResponseBody String exportPolish(Model model,PolishQueryFormEntity  polishQueryFormEntity, HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
+			polishQueryFormEntity.setPageSize(Integer.MAX_VALUE);
 			baseResponse=polishService.exportPolish(polishQueryFormEntity);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("polishmanage.controler.exportPolish.exception"),e);

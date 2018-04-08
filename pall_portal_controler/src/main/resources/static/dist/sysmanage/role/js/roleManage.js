@@ -60,8 +60,9 @@ $(document).ready(function() {
             {className : "ellipsis",data: "rDetail",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
-                "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
-                "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+                "<button id='editRow' data-toggle='tooltip' data-placement='top' title='编辑角色' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+                "<button id='delRow' data-toggle='tooltip' data-placement='top' title='删除角色' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+                "<button id='addRightRow' data-toggle='tooltip' data-placement='top' title='添加权限' class='btn btn-success btn-xs' type='button' ><i  class='ace-icon fa fa-plus bigger-120'></i></button>"+
                 "</div>";
               }, width : "60px"}
         ],
@@ -122,6 +123,11 @@ $(document).ready(function() {
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
         roleManage.deleteItem([item]);
+    }).on("click","#addRightRow",function() {
+    	 var item = _table.row($(this).closest('tr')).data();
+         $(this).closest('tr').addClass("active").siblings().removeClass("active");
+         roleManage.currentItem = item;
+         roleManage.addRightItemShow(item);
     });
 	 var roleManage = {
 			    currentItem : null,
@@ -155,6 +161,18 @@ $(document).ready(function() {
 			        $modModal.css("overflow", "hidden");
 			        $modModal.css("overflow-y", "auto");
 			        $modModal.modal("show");
+			    },
+			    addRightItemShow: function(item) {
+			    	var ids={"treeView":"#buttonTreeView"};
+				    var buttonTreeMenu = new ButtonTreeMenu(contextPath,ids);
+				    buttonTreeMenu.getAjaxTree();
+			        $addRightModal=$("#addRightModal");
+			        $addRightModal.draggable({ 
+			    		scroll: true, scrollSensitivity: 100,
+			    		cursor: "move"});
+			        $addRightModal.css("overflow", "hidden");
+			        $addRightModal.css("overflow-y", "auto");
+			        $addRightModal.modal("show");
 			    },
 			    deleteItem : function(selectedItems) {
 			        var message;

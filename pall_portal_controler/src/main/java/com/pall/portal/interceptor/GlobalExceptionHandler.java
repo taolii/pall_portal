@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.util.IOUtils;
@@ -25,38 +26,46 @@ public class GlobalExceptionHandler {
 	 * 系统日志
 	 */
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());  
-	
-    @ExceptionHandler(value = SystemException.class)
-    public String  systemExceptionHandler(Model model, HttpServletRequest req, SystemException e,HttpServletResponse response) {
+	@ExceptionHandler(value = SystemException.class)
+    public ModelAndView   systemExceptionHandler(Model model, HttpServletRequest req, SystemException e,HttpServletResponse response) {
     	if(isAjax(req)){
     		dealAjaxException(e,response);
             return null;
     	}else{
+    		ModelAndView mav = new ModelAndView();
+            mav.addObject("exception", e);
+            mav.addObject("url", "errors/system");
     		ErrorInfo<String> er = new ErrorInfo<String>();
             er.setCode(ErrorInfo.ERROR);
-            er.setMessage(e.getMessage());
+            er.setMessage(e.toString());
             er.setUrl(req.getRequestURL().toString());
             er.setParams(req.getQueryString());
-            er.setDatas("发生系统异常，无法继续进行！");
+            er.setDatas("发生异常，无法继续进行！");
             model.addAttribute("errorInfo", er);
-            return "errors/system";
+            mav.setViewName("errors/system");
+            return mav;
     	}
     }
    
     @ExceptionHandler(value = Exception.class)
-    public String defaultExceptionHandler(Model model, HttpServletRequest req, Exception e,HttpServletResponse response) {
+    public ModelAndView  defaultExceptionHandler(Model model, HttpServletRequest req, Exception e,HttpServletResponse response) {
     	if(isAjax(req)){
             dealAjaxException(e,response);
             return null;
     	}else{
     		ErrorInfo<String> er = new ErrorInfo<String>();
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("exception", e);
+            mav.addObject("url", req.getRequestURL());
             er.setCode(ErrorInfo.ERROR);
-            er.setMessage(e.getMessage());
+            er.setMessage(e.toString());
             er.setUrl(req.getRequestURL().toString());
             er.setParams(req.getQueryString());
             er.setDatas("发生异常，无法继续进行！");
+            er.setUrl(req.getRequestURL().toString());
             model.addAttribute("errorInfo", er);
-            return "errors/default";
+            mav.setViewName("errors/default");
+            return mav;
     	}
     }
     /*

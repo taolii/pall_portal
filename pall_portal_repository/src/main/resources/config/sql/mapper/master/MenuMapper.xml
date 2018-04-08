@@ -75,4 +75,9 @@
  	<select id="getTreeMenu" resultType="com.pall.portal.repository.entity.menu.MenuInfoEntity"> 
  		select MENUID,MENUNAME,MENUICON,MENUURL,LEAF,DISABLED,PMENUID,SORT,DESCRIPTION from T_UMS_MENUINFO f where  FIND_IN_SET(pmenuid,queryChildMenuList(#{pmenuid}))>0
  	</select>
+ 	<select id="getTreeMenuButton" resultType="com.pall.portal.repository.entity.menu.MenuInfoEntity"> 
+ 		select menuid,menuname,0 leaf,0 DISABLED,pmenuid,0 SORT from t_ums_menuinfo  where FIND_IN_SET(pmenuid,queryChildMenuList(#{pmenuid}))>0
+ 			union all
+		select  btnid,btncname,1 leaf,0 DISABLED,menuid,0 SORT from t_ums_menu_button f where FIND_IN_SET(menuid,queryChildMenuList(#{pmenuid}))>0
+ 	</select>
 </mapper> 

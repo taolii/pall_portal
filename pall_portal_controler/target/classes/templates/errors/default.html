@@ -8,33 +8,34 @@
         <title th:text="#{pages.system.name}+'-'+#{pages.error.errorModel.default.title}"></title>
     </head>
 <body>
-	<div class="row login-box">
-        <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
-            <div class="container-fluid" style="">
-                <div class="text-center" style="font-size:100px; color:#a72d2d"><i class="glyphicon glyphicon-remove"></i>
-                    <p style="font-size:30px;" th:text="${errorInfo.datas}"></p>
-                </div>
-               <div class="col-md-2">
-               
-               </div>
-               <div class="col-md-8 alert alert-danger" style="text-align:left;width:800px">
-			            <p th:text="#{pages.error.errorModel.default.p1.error.desc}+${errorInfo.message}"></p>
-			            <p th:text="#{pages.error.errorModel.default.p2.error.desc}+${errorInfo.url}"></p>
-			            <p th:text="#{pages.error.errorModel.default.p3.error.desc}+${errorInfo.params}"></p>
-        		</div>
-               <div class="col-md-2">
-               
-               </div>
-               <div class="clearfix"></div>
-                <div class="text-center" style="padding-top:40px; color:#a72d2d">
-                    <p>
-                    	<a href="/login" class="btn btn-lg btn-info"><i class="fa fa-home" th:text="#{pages.error.errorModel.default.a.home}"></i></a>
-                    	<a href="javascript:history.back(-1);" class="btn btn-lg btn-warning" th:text="#{pages.error.errorModel.default.a.back}"><i class="fa fa-level-up"></i></a>
-                	</p>
-                </div>
-            </div>
-        </div>
+	<div th:fragment="content" th:remove="tag">
+		<div class="row login-box">
+	        <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+	            <div class="container-fluid" style="">
+	                <div class="text-center" style="font-size:100px; color:#a72d2d"><i class="glyphicon glyphicon-remove"></i>
+	                    <p style="font-size:30px;" th:text="${errorInfo.datas}"></p>
+	                </div>
+	               <div class="col-md-2">
+	               
+	               </div>
+	               <div class="col-md-8 alert alert-danger" style="text-align:left;width:800px">
+				            <p th:text="#{pages.error.errorModel.default.p1.error.desc}+${errorInfo.message}"></p>
+				            <p th:text="#{pages.error.errorModel.default.p2.error.desc}+${errorInfo.url}"></p>
+				            <p th:text="#{pages.error.errorModel.default.p3.error.desc}+${errorInfo.params}"></p>
+	        		</div>
+	               <div class="col-md-2">
+	               
+	               </div>
+	               <div class="clearfix"></div>
+	                <div class="text-center" style="padding-top:40px; color:#a72d2d">
+	                    <p>
+	                    	<a th:href="${#httpServletRequest.getContextPath()}+'/login'" class="btn btn-lg btn-info"><i class="fa fa-home" th:text="#{pages.error.errorModel.default.a.home}"></i></a>
+	                    	<a href="javascript:history.back(-1);" class="btn btn-lg btn-warning" th:text="#{pages.error.errorModel.default.a.back}"><i class="fa fa-level-up"></i></a>
+	                	</p>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
     </div>
-    
 </body>
 </html>

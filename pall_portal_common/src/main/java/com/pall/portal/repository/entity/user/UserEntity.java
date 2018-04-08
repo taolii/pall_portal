@@ -33,7 +33,7 @@ public class UserEntity {
 	/*
 	 * 性别0为男，1为女
 	 */
-	@NotBlank(message = "{usermanage.form.valid.UserEntity.sex.NotEmpty}",groups={ADD.class})  
+	//@NotBlank(message = "{usermanage.form.valid.UserEntity.sex.NotEmpty}",groups={ADD.class})  
 	private String sex;
 	/*
 	 * 职务
@@ -56,9 +56,9 @@ public class UserEntity {
 	@Email(message="{usermanage.form.valid.UserEntity.email.Pattern}",groups={ADD.class,SAVE.class}) 
 	private String email;
 	/*
-	 * 角色组列表，以角色组ID以|并起
+	 * 角色组列表
 	 */
-	private String groupList;
+	private String[] roleList;
 	/*
 	 * 省份代码
 	 */
@@ -140,11 +140,12 @@ public class UserEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getGroupList() {
-		return groupList;
+	
+	public String[] getRoleList() {
+		return roleList;
 	}
-	public void setGroupList(String groupList) {
-		this.groupList = groupList;
+	public void setRoleList(String[] roleList) {
+		this.roleList = roleList;
 	}
 	public String getProvinceid() {
 		return provinceid;
