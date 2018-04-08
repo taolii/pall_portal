@@ -1,23 +1,13 @@
-/*
-Navicat MySQL Data Transfer
+﻿# Host: localhost  (Version 5.7.17)
+# Date: 2018-04-08 23:07:51
+# Generator: MySQL-Front 5.4  (Build 4.153) - http://www.mysqlfront.de/
 
-Source Server         : localhost_3306
-Source Server Version : 50717
-Source Host           : localhost:3306
-Source Database       : mcompetence
+/*!40101 SET NAMES utf8 */;
 
-Target Server Type    : MYSQL
-Target Server Version : 50717
-File Encoding         : 65001
+#
+# Structure for table "t_ums_accountloginlog"
+#
 
-Date: 2018-03-06 21:06:01
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for t_ums_accountloginlog
--- ----------------------------
 DROP TABLE IF EXISTS `t_ums_accountloginlog`;
 CREATE TABLE `t_ums_accountloginlog` (
   `ACCLOGINID` bigint(22) NOT NULL COMMENT 'id',
@@ -30,13 +20,15 @@ CREATE TABLE `t_ums_accountloginlog` (
   `OPERATORID` bigint(22) NOT NULL COMMENT '操作员id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='登录日志表';
 
--- ----------------------------
--- Records of t_ums_accountloginlog
--- ----------------------------
+#
+# Data for table "t_ums_accountloginlog"
+#
 
--- ----------------------------
--- Table structure for t_ums_acctivesessions
--- ----------------------------
+
+#
+# Structure for table "t_ums_acctivesessions"
+#
+
 DROP TABLE IF EXISTS `t_ums_acctivesessions`;
 CREATE TABLE `t_ums_acctivesessions` (
   `activesessionid` bigint(22) NOT NULL AUTO_INCREMENT COMMENT '主键ＩＤ',
@@ -47,13 +39,15 @@ CREATE TABLE `t_ums_acctivesessions` (
   PRIMARY KEY (`activesessionid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会话表';
 
--- ----------------------------
--- Records of t_ums_acctivesessions
--- ----------------------------
+#
+# Data for table "t_ums_acctivesessions"
+#
 
--- ----------------------------
--- Table structure for t_ums_admininfo
--- ----------------------------
+
+#
+# Structure for table "t_ums_admininfo"
+#
+
 DROP TABLE IF EXISTS `t_ums_admininfo`;
 CREATE TABLE `t_ums_admininfo` (
   `OPERATORID` bigint(22) NOT NULL AUTO_INCREMENT COMMENT '操作员编号',
@@ -73,17 +67,18 @@ CREATE TABLE `t_ums_admininfo` (
   `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
   `UPDATETIME` datetime DEFAULT NULL COMMENT '状态变更时间',
   PRIMARY KEY (`OPERATORID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
--- ----------------------------
--- Records of t_ums_admininfo
--- ----------------------------
-INSERT INTO `t_ums_admininfo` VALUES ('9', '超级管理员', 'admin', 'admin', '男', '', null, '13816763234', '13434@1632', null, null, '1', '2', '1', '2017-07-08 00:55:55', '2018-01-07 09:29:00');
-INSERT INTO `t_ums_admininfo` VALUES ('13', 'test', 'test', '', '女', '', null, '13816763233', '13816763233@163.com', '', '', '2', '2', '1', '2017-11-21 23:14:53', '2017-12-13 21:43:32');
+#
+# Data for table "t_ums_admininfo"
+#
 
--- ----------------------------
--- Table structure for t_ums_config
--- ----------------------------
+INSERT INTO `t_ums_admininfo` VALUES (9,'超级管理员','admin','admin','1','',NULL,'13816763234','13434@1632',NULL,NULL,1,2,1,'2017-07-08 00:55:55','2018-04-03 16:10:27'),(13,'test','test','','女','',NULL,'13816763233','13816763233@163.com','','',2,2,1,'2017-11-21 23:14:53','2017-12-13 21:43:32'),(15,'admin111','admin3','admin','0','',NULL,'13816763233','13@163.com','','',2,2,1,'2018-03-29 17:48:08','2018-04-03 16:17:43'),(16,'adminsds','adminsdssds','admin','1','',NULL,'13816763233','13@163.com','','',1,2,1,'2018-04-03 16:00:27','2018-04-04 03:59:47'),(17,'sdfs','admin334','sdsff','0','',NULL,'13816763233','sfs@163.com','','',1,2,1,'2018-04-04 04:01:18','2018-04-04 04:17:26');
+
+#
+# Structure for table "t_ums_config"
+#
+
 DROP TABLE IF EXISTS `t_ums_config`;
 CREATE TABLE `t_ums_config` (
   `CONFIGID` int(11) NOT NULL COMMENT '配置项编号',
@@ -95,46 +90,16 @@ CREATE TABLE `t_ums_config` (
   `DESCRIPTION` text COMMENT '配置项描述'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置信息表';
 
--- ----------------------------
--- Records of t_ums_config
--- ----------------------------
-INSERT INTO `t_ums_config` VALUES ('1', 'workflow/polish/tablename', '1', 'polishtable201', null, '2', 'configvalue为t_ums_th_config中的tablename与menuid');
-INSERT INTO `t_ums_config` VALUES ('2', 'paging/pagesize', '1', '10', null, '2', '系统默认分页大小');
-INSERT INTO `t_ums_config` VALUES ('3', 'excel/export/records/limits', '1', '100000', null, '2', 'excel结果集导出最大限制数');
-INSERT INTO `t_ums_config` VALUES ('4', 'dataconfig/type/throwMillstonePosition', '1', '91', null, '2', '抛光盘位置在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('5', 'dataconfig/type/partNum', '1', '90', null, '2', '零件号在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('6', 'dataconfig/type/polishdefect', '1', '1', null, '2', '抛光表中的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('7', 'dataconfig/type/cleandefect', '1', '2', null, '2', '清洗表中的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('8', 'workflow/clean/tablename', '1', 'cleantable202', null, '2', 'configvalue为t_ums_th_config中的tablename与menuid');
-INSERT INTO `t_ums_config` VALUES ('9', 'polish/download/subdirectory', '1', 'polish', null, '2', '抛光管理页面excel下载子目录名称');
-INSERT INTO `t_ums_config` VALUES ('10', 'clean/download/subdirectory', '1', 'clean', null, '2', '清洗管理页面excel下载子目录名称');
-INSERT INTO `t_ums_config` VALUES ('11', 'dataconfig/type/cleandefect/workingface', '1', '21', null, '2', '清洗表工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('12', 'dataconfig/type/cleandefect/noworkingface', '1', '22', null, '2', '清洗表非工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('13', 'dataconfig/type/opticalFilmingDefect/workingface', '1', '31', null, '2', '光学镀膜表工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('14', 'dataconfig/type/opticalFilmingDefect/noworkingface', '1', '32', null, '2', '光学镀膜表非工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('15', 'workflow/opticalFilming/tablename', '1', 'opticalfilmingtable203', null, '2', '光学镀膜流程配置表名');
-INSERT INTO `t_ums_config` VALUES ('16', 'opticalFilming/download/subdirectory', '1', 'opticalFilming', null, '2', '光学镀膜管理页面excel下载子目录名称');
-INSERT INTO `t_ums_config` VALUES ('17', 'dataconfig/type/opticalFilmingDefect', '1', '3', null, '2', '数据配置表代表光学镀膜 defect的配置类型');
-INSERT INTO `t_ums_config` VALUES ('18', 'workflow/PlatedFilm/tablename', '1', 'platedfilmtable204', null, '2', '化学镀膜流程配置表名');
-INSERT INTO `t_ums_config` VALUES ('19', 'platedFilm/download/subdirectory', '1', 'platedFilm', null, '2', '化学镀膜管理页面excel下载子目录名称');
-INSERT INTO `t_ums_config` VALUES ('20', 'dataconfig/type/polishdefect/workingface', '1', '11', null, '2', '抛光表工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('21', 'dataconfig/type/polishdefect/noworkingface', '1', '12', null, '2', '抛光表非工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('22', 'dataconfig/type/scrapinfo', '1', '92', null, '2', '数据配置表代表scrap info的配置类型');
-INSERT INTO `t_ums_config` VALUES ('23', 'dataconfig/type/assemblyDefect', '1', '5', null, '2', '数据配置表代表组装 defect的配置类型');
-INSERT INTO `t_ums_config` VALUES ('24', 'workflow/assembly/tablename', '1', 'assemblytable206', null, '2', '组装流程配置表名');
-INSERT INTO `t_ums_config` VALUES ('25', 'dataconfig/type/assemblyDefect/workingface', '1', '51', null, '2', '组装表工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('26', 'dataconfig/type/assemblyDefect/noworkingface', '1', '52', null, '2', ' 组装表非工作面的缺损信息在数据配置表中的类型');
-INSERT INTO `t_ums_config` VALUES ('27', 'assembly/download/subdirectory', '1', 'assembly', null, '2', '组装管理页面excel下载子目录名称');
-INSERT INTO `t_ums_config` VALUES ('28', 'dataconfig/type/remark', '1', '93', null, '2', '数据配置表代表remark的配置类型');
-INSERT INTO `t_ums_config` VALUES ('29', 'dataconfig/type/chemicalReagent', '1', '94', null, '2', '数据配置表代表化学试剂配置类型');
-INSERT INTO `t_ums_config` VALUES ('30', 'workflow/chemicalReagent/tablename', '1', 'chemicalreagenttable207', null, '2', '化学试剂流程配置表名');
-INSERT INTO `t_ums_config` VALUES ('31', 'chemicalReagent/download/subdirectory', '1', 'chemicalReagent', null, '2', '化学试剂管理页面excel下载子目录名称');
-INSERT INTO `t_ums_config` VALUES ('32', 'default/root/menuid', '1', '-1', null, '2', '默认根节点菜单id');
-INSERT INTO `t_ums_config` VALUES ('33', 'default/root/roleid', '1', '-1', null, '2', '分页默认角色根节点id');
+#
+# Data for table "t_ums_config"
+#
 
--- ----------------------------
--- Table structure for t_ums_customers_consuming
--- ----------------------------
+INSERT INTO `t_ums_config` VALUES (1,'workflow/polish/tablename',1,'polishtable201',NULL,2,'configvalue为t_ums_th_config中的tablename与menuid'),(2,'paging/pagesize',1,'10',NULL,2,'系统默认分页大小'),(3,'excel/export/records/limits',1,'100000',NULL,2,'excel结果集导出最大限制数'),(4,'dataconfig/type/throwMillstonePosition',1,'11',NULL,2,'抛光盘位置在数据配置表中的类型'),(5,'dataconfig/type/partNum',1,'12',NULL,2,'零件号在数据配置表中的类型'),(6,'dataconfig/type/polishdefect',1,'17',NULL,2,'抛光表中的缺损信息在数据配置表中的类型'),(7,'dataconfig/type/cleandefect',1,'2',NULL,2,'清洗表中的缺损信息在数据配置表中的类型'),(8,'workflow/clean/tablename',1,'cleantable202',NULL,2,'configvalue为t_ums_th_config中的tablename与menuid'),(9,'polish/download/subdirectory',1,'polish',NULL,2,'抛光管理页面excel下载子目录名称'),(10,'clean/download/subdirectory',1,'clean',NULL,2,'清洗管理页面excel下载子目录名称'),(11,'dataconfig/type/cleandefect/workingface',1,'21',NULL,2,'清洗表工作面的缺损信息在数据配置表中的类型'),(12,'dataconfig/type/cleandefect/noworkingface',1,'22',NULL,2,'清洗表非工作面的缺损信息在数据配置表中的类型'),(13,'dataconfig/type/opticalFilmingDefect/workingface',1,'31',NULL,2,'光学镀膜表工作面的缺损信息在数据配置表中的类型'),(14,'dataconfig/type/opticalFilmingDefect/noworkingface',1,'32',NULL,2,'光学镀膜表非工作面的缺损信息在数据配置表中的类型'),(15,'workflow/opticalFilming/tablename',1,'opticalfilmingtable203',NULL,2,'光学镀膜流程配置表名'),(16,'opticalFilming/download/subdirectory',1,'opticalFilming',NULL,2,'光学镀膜管理页面excel下载子目录名称'),(17,'dataconfig/type/opticalFilmingDefect',1,'3',NULL,2,'数据配置表代表光学镀膜 defect的配置类型'),(18,'workflow/PlatedFilm/tablename',1,'platedfilmtable204',NULL,2,'化学镀膜流程配置表名'),(19,'platedFilm/download/subdirectory',1,'platedFilm',NULL,2,'化学镀膜管理页面excel下载子目录名称'),(20,'dataconfig/type/polishdefect/workingface',1,'171',NULL,2,'抛光表工作面的缺损信息在数据配置表中的类型'),(21,'dataconfig/type/polishdefect/noworkingface',1,'172',NULL,2,'抛光表非工作面的缺损信息在数据配置表中的类型'),(22,'dataconfig/type/scrapinfo',1,'92',NULL,2,'数据配置表代表scrap info的配置类型'),(23,'dataconfig/type/assemblyDefect',1,'5',NULL,2,'数据配置表代表组装 defect的配置类型'),(24,'workflow/assembly/tablename',1,'assemblytable206',NULL,2,'组装流程配置表名'),(25,'dataconfig/type/assemblyDefect/workingface',1,'51',NULL,2,'组装表工作面的缺损信息在数据配置表中的类型'),(26,'dataconfig/type/assemblyDefect/noworkingface',1,'52',NULL,2,' 组装表非工作面的缺损信息在数据配置表中的类型'),(27,'assembly/download/subdirectory',1,'assembly',NULL,2,'组装管理页面excel下载子目录名称'),(28,'dataconfig/type/remark',1,'93',NULL,2,'数据配置表代表remark的配置类型'),(29,'dataconfig/type/chemicalReagent',1,'94',NULL,2,'数据配置表代表化学试剂配置类型'),(30,'workflow/chemicalReagent/tablename',1,'chemicalreagenttable207',NULL,2,'化学试剂流程配置表名'),(31,'chemicalReagent/download/subdirectory',1,'chemicalReagent',NULL,2,'化学试剂管理页面excel下载子目录名称'),(32,'default/root/menuid',1,'-1',NULL,2,'默认根节点菜单id'),(33,'default/root/roleid',1,'-1',NULL,2,'分页默认角色根节点id'),(34,'dataconfig/type/polishBom',1,'14',NULL,2,'数据配置表代表抛光模块polish Bom'),(33,'dataconfig/type/list',1,'1',NULL,2,'数据配置表代表基础数据配置列表类型'),(33,'dataconfig/type/workflow',1,'2',NULL,2,'数据配置表代表工作流数据配置列表类型');
+
+#
+# Structure for table "t_ums_customers_consuming"
+#
+
 DROP TABLE IF EXISTS `t_ums_customers_consuming`;
 CREATE TABLE `t_ums_customers_consuming` (
   `cid` bigint(22) NOT NULL COMMENT '客户消费记录唯一标识',
@@ -179,236 +144,37 @@ CREATE TABLE `t_ums_customers_consuming` (
  PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
  PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB) */;
 
--- ----------------------------
--- Records of t_ums_customers_consuming
--- ----------------------------
+#
+# Data for table "t_ums_customers_consuming"
+#
 
--- ----------------------------
--- Table structure for t_ums_data_button
--- ----------------------------
-DROP TABLE IF EXISTS `t_ums_data_button`;
-CREATE TABLE `t_ums_data_button` (
-  `btnID` int(4) NOT NULL COMMENT '按钮编号',
-  `Menuid` int(4) NOT NULL COMMENT '菜单编号',
-  `BTNNAME` varchar(100) DEFAULT NULL COMMENT '按钮名称',
-  `BTNCNAME` varchar(100) DEFAULT NULL COMMENT '中文名称',
-  `BTNCLASS` varchar(50) DEFAULT NULL COMMENT '按钮样式',
-  `iconclass` varchar(50) DEFAULT NULL,
-  `BTNTYPE` int(1) NOT NULL COMMENT '按钮类型 1 普通 2 table  3 table row',
-  `SORT` int(4) NOT NULL COMMENT '同级菜单顺序',
-  `DESCRIPTION` text COMMENT '描述信息',
-  PRIMARY KEY (`btnID`,`Menuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='按钮权限表';
 
--- ----------------------------
--- Records of t_ums_data_button
--- ----------------------------
-INSERT INTO `t_ums_data_button` VALUES ('1', '105', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('2', '105', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('4', '105', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('5', '105', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('6', '105', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('7', '105', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('8', '106', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('9', '106', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('10', '106', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('11', '106', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('12', '106', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('13', '106', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('14', '201', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('15', '201', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('16', '201', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('17', '201', 'btn-export', '导出', 'btn btn-primary btn-sm', 'fa fa-download', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('18', '201', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '4', null);
-INSERT INTO `t_ums_data_button` VALUES ('19', '201', 'copyRow', '复制', 'btn btn-primary btn-xs', 'fa fa-copy', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('20', '201', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('21', '201', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('22', '202', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('23', '202', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('24', '202', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('25', '202', 'btn-export', '导出', 'btn btn-primary btn-sm', 'fa fa-download', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('26', '202', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '4', null);
-INSERT INTO `t_ums_data_button` VALUES ('27', '202', 'copyRow', '复制', 'btn btn-primary btn-xs', 'fa fa-copy', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('28', '202', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('29', '202', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('30', '203', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('31', '203', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('32', '203', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('33', '203', 'btn-export', '导出', 'btn btn-primary btn-sm', 'fa fa-download', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('34', '203', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '4', null);
-INSERT INTO `t_ums_data_button` VALUES ('35', '203', 'copyRow', '复制', 'btn btn-primary btn-xs', 'fa fa-copy', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('36', '203', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('37', '203', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('38', '204', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('39', '204', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('40', '204', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('41', '204', 'btn-export', '导出', 'btn btn-primary btn-sm', 'fa fa-download', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('42', '204', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '4', null);
-INSERT INTO `t_ums_data_button` VALUES ('43', '204', 'copyRow', '复制', 'btn btn-primary btn-xs', 'fa fa-copy', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('44', '204', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('45', '204', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('46', '205', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('47', '205', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('48', '205', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('49', '205', 'btn-export', '导出', 'btn btn-primary btn-sm', 'fa fa-download', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('50', '205', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '4', null);
-INSERT INTO `t_ums_data_button` VALUES ('51', '205', 'copyRow', '复制', 'btn btn-primary btn-xs', 'fa fa-copy', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('52', '205', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('53', '205', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('54', '206', 'btn-query', '查询', 'btn btn-primary', 'fa fa-search', '1', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('55', '206', 'btn-add', '添加', 'btn btn-primary btn-sm', 'fa fa-plus', '2', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('56', '206', 'btn-delAll', '批量删除', 'btn btn-primary btn-sm', 'fa fa-remove', '2', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('57', '206', 'btn-export', '导出', 'btn btn-primary btn-sm', 'fa fa-download', '2', '3', null);
-INSERT INTO `t_ums_data_button` VALUES ('58', '206', 'btn_refresh', '刷新', 'btn btn-primary btn-sm', 'fa fa-refresh', '2', '4', null);
-INSERT INTO `t_ums_data_button` VALUES ('59', '206', 'copyRow', '复制', 'btn btn-primary btn-xs', 'fa fa-copy', '3', '1', null);
-INSERT INTO `t_ums_data_button` VALUES ('60', '206', 'editRow', '修改', 'btn btn-primary btn-xs', 'fa fa-edit', '3', '2', null);
-INSERT INTO `t_ums_data_button` VALUES ('61', '206', 'delRow', '删除', 'btn btn-primary btn-xs', 'fa fa-trash-o', '3', '3', null);
+#
+# Structure for table "t_ums_data_config"
+#
 
--- ----------------------------
--- Table structure for t_ums_data_config
--- ----------------------------
 DROP TABLE IF EXISTS `t_ums_data_config`;
 CREATE TABLE `t_ums_data_config` (
   `DATAID` int(11) NOT NULL AUTO_INCREMENT COMMENT '数据id',
   `DATATYPE` int(3) NOT NULL COMMENT '数据类型',
-  `configname` varchar(20) DEFAULT NULL COMMENT '标题',
-  `DESCRIPTION` text COMMENT '描述信息',
+  `configname` varchar(50) DEFAULT NULL COMMENT '标题',
+  `DESCRIPTION` varchar(255) DEFAULT '' COMMENT '描述信息',
   `operatorid` int(11) DEFAULT NULL,
   `CREATETIME` datetime DEFAULT NULL,
   `UPDATETIME` datetime DEFAULT NULL,
   PRIMARY KEY (`DATAID`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=272 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
 
--- ----------------------------
--- Records of t_ums_data_config
--- ----------------------------
-INSERT INTO `t_ums_data_config` VALUES ('1', '11', '崩边', 'Polishing', '9', null, '2017-08-30 10:08:32');
-INSERT INTO `t_ums_data_config` VALUES ('2', '11', '划痕', 'Polishing', '9', null, '2017-08-30 10:08:57');
-INSERT INTO `t_ums_data_config` VALUES ('3', '11', '异物', 'Polishing', '9', null, '2017-08-30 10:09:07');
-INSERT INTO `t_ums_data_config` VALUES ('5', '11', '印迹', 'Polishing', '9', null, '2017-08-30 10:14:48');
-INSERT INTO `t_ums_data_config` VALUES ('9', '11', '其它', 'Polishing', '9', null, '2017-08-30 10:15:15');
-INSERT INTO `t_ums_data_config` VALUES ('10', '11', '麻点', 'Polishing', '9', null, '2017-08-30 10:14:10');
-INSERT INTO `t_ums_data_config` VALUES ('11', '11', '水印', 'Polishing', '9', null, '2017-08-30 10:14:32');
-INSERT INTO `t_ums_data_config` VALUES ('12', '11', '缝隙', 'Polishing', '9', null, '2017-08-30 10:15:11');
-INSERT INTO `t_ums_data_config` VALUES ('26', '90', '09-0080', '', '9', '2017-08-20 16:38:45', '2017-08-20 16:38:45');
-INSERT INTO `t_ums_data_config` VALUES ('27', '90', '09-0071', '', '9', '2017-08-20 16:39:31', '2017-08-20 16:39:31');
-INSERT INTO `t_ums_data_config` VALUES ('29', '90', '12-0003', '', '9', '2017-08-20 16:40:15', '2017-08-20 16:40:15');
-INSERT INTO `t_ums_data_config` VALUES ('30', '90', '13-0003', '', '9', '2017-08-20 16:40:40', '2017-08-20 16:40:40');
-INSERT INTO `t_ums_data_config` VALUES ('31', '90', '15-9008', '', '9', '2017-08-20 16:41:00', '2017-08-20 16:41:00');
-INSERT INTO `t_ums_data_config` VALUES ('32', '90', '14-0014', '', '9', '2017-08-20 16:41:19', '2017-08-20 16:41:19');
-INSERT INTO `t_ums_data_config` VALUES ('33', '91', 'A', '', '9', '2017-08-20 16:41:48', '2017-08-20 16:41:48');
-INSERT INTO `t_ums_data_config` VALUES ('34', '91', 'B', '', '9', '2017-08-20 16:41:54', '2017-08-20 16:41:54');
-INSERT INTO `t_ums_data_config` VALUES ('35', '91', 'C', '', '9', '2017-08-20 16:42:00', '2017-08-20 16:42:00');
-INSERT INTO `t_ums_data_config` VALUES ('37', '31', '崩边', '', '9', '2017-08-27 18:05:02', '2017-08-27 18:05:02');
-INSERT INTO `t_ums_data_config` VALUES ('38', '31', '划痕', '', '9', '2017-08-27 18:05:16', '2017-08-27 18:05:16');
-INSERT INTO `t_ums_data_config` VALUES ('42', '32', '崩边', '', '9', '2017-08-27 18:06:36', '2017-08-27 18:06:36');
-INSERT INTO `t_ums_data_config` VALUES ('43', '32', '划痕', '', '9', '2017-08-27 18:06:44', '2017-08-27 18:06:44');
-INSERT INTO `t_ums_data_config` VALUES ('44', '32', '异物', '', '9', '2017-08-27 18:06:52', '2017-08-27 18:06:52');
-INSERT INTO `t_ums_data_config` VALUES ('47', '11', '胶', 'polishing', '9', '2017-08-30 10:10:06', '2017-08-30 10:14:59');
-INSERT INTO `t_ums_data_config` VALUES ('48', '12', '崩边', '', '9', '2017-11-05 13:47:20', '2017-11-05 13:47:20');
-INSERT INTO `t_ums_data_config` VALUES ('49', '12', '划痕', '', '9', '2017-11-05 13:47:38', '2017-11-05 13:47:38');
-INSERT INTO `t_ums_data_config` VALUES ('50', '12', '异物', '', '9', '2017-11-05 13:47:56', '2017-11-05 13:47:56');
-INSERT INTO `t_ums_data_config` VALUES ('51', '12', '印迹', '', '9', '2017-11-05 13:48:24', '2017-11-05 13:48:24');
-INSERT INTO `t_ums_data_config` VALUES ('52', '12', '其它', '', '9', '2017-11-05 13:48:46', '2017-11-05 13:48:46');
-INSERT INTO `t_ums_data_config` VALUES ('53', '12', '麻点', '', '9', '2017-11-05 13:49:03', '2017-11-05 13:49:03');
-INSERT INTO `t_ums_data_config` VALUES ('54', '12', '水印', '', '9', '2017-11-05 13:49:20', '2017-11-05 13:49:20');
-INSERT INTO `t_ums_data_config` VALUES ('55', '12', '缝隙', '', '9', '2017-11-05 13:49:38', '2017-11-05 13:49:38');
-INSERT INTO `t_ums_data_config` VALUES ('56', '12', '胶', '', '9', '2017-11-05 13:49:51', '2017-11-05 13:49:51');
-INSERT INTO `t_ums_data_config` VALUES ('57', '22', '崩边', '', '9', '2017-11-08 22:04:25', '2017-11-08 22:04:25');
-INSERT INTO `t_ums_data_config` VALUES ('58', '22', '划痕', '', '9', '2017-11-08 22:04:43', '2017-11-08 22:04:43');
-INSERT INTO `t_ums_data_config` VALUES ('59', '22', '异物', '', '9', '2017-11-08 22:04:50', '2017-11-08 22:04:50');
-INSERT INTO `t_ums_data_config` VALUES ('60', '22', '棉纱', '', '9', '2017-11-08 22:06:22', '2017-11-08 22:06:22');
-INSERT INTO `t_ums_data_config` VALUES ('61', '22', '麻点', '', '9', '2017-11-08 22:06:42', '2017-11-08 22:06:42');
-INSERT INTO `t_ums_data_config` VALUES ('62', '22', '水印', '', '9', '2017-11-08 22:06:50', '2017-11-08 22:06:50');
-INSERT INTO `t_ums_data_config` VALUES ('63', '22', '印痕', '', '9', '2017-11-08 22:07:10', '2017-11-08 22:07:10');
-INSERT INTO `t_ums_data_config` VALUES ('64', '22', '胶', '', '9', '2017-11-08 22:07:17', '2017-11-08 22:07:17');
-INSERT INTO `t_ums_data_config` VALUES ('65', '22', '缝隙', '', '9', '2017-11-08 22:07:34', '2017-11-08 22:07:34');
-INSERT INTO `t_ums_data_config` VALUES ('66', '22', '其它', '', '9', '2017-11-08 22:07:44', '2017-11-08 22:07:44');
-INSERT INTO `t_ums_data_config` VALUES ('67', '21', '崩边', '', '9', '2017-11-08 22:08:10', '2017-11-08 22:08:10');
-INSERT INTO `t_ums_data_config` VALUES ('68', '21', '划痕', '', '9', '2017-11-08 22:08:19', '2017-11-08 22:08:19');
-INSERT INTO `t_ums_data_config` VALUES ('69', '21', '异物', '', '9', '2017-11-08 22:08:34', '2017-11-08 22:08:34');
-INSERT INTO `t_ums_data_config` VALUES ('70', '21', '棉纱', '', '9', '2017-11-08 22:08:56', '2017-11-08 22:08:56');
-INSERT INTO `t_ums_data_config` VALUES ('71', '21', '麻点', '', '9', '2017-11-08 22:09:04', '2017-11-08 22:09:04');
-INSERT INTO `t_ums_data_config` VALUES ('72', '21', '水印', '', '9', '2017-11-08 22:09:11', '2017-11-08 22:09:11');
-INSERT INTO `t_ums_data_config` VALUES ('73', '21', '印迹', '', '9', '2017-11-08 22:09:35', '2017-11-08 22:09:35');
-INSERT INTO `t_ums_data_config` VALUES ('74', '21', '胶', '', '9', '2017-11-08 22:09:43', '2017-11-08 22:09:43');
-INSERT INTO `t_ums_data_config` VALUES ('75', '21', '缝隙', '', '9', '2017-11-08 22:09:54', '2017-11-08 22:09:54');
-INSERT INTO `t_ums_data_config` VALUES ('76', '21', '其它', '', '9', '2017-11-08 22:10:18', '2017-11-08 22:10:18');
-INSERT INTO `t_ums_data_config` VALUES ('77', '32', '胶', '', '9', '2017-11-08 22:18:21', '2017-11-08 22:18:21');
-INSERT INTO `t_ums_data_config` VALUES ('78', '32', '印迹', '', '9', '2017-11-08 22:18:30', '2017-11-08 22:18:30');
-INSERT INTO `t_ums_data_config` VALUES ('79', '32', '其它', '', '9', '2017-11-08 22:18:44', '2017-11-08 22:18:44');
-INSERT INTO `t_ums_data_config` VALUES ('80', '31', '异物', '', '9', '2017-11-08 22:19:16', '2017-11-08 22:19:16');
-INSERT INTO `t_ums_data_config` VALUES ('81', '31', '胶', '', '9', '2017-11-08 22:20:06', '2017-11-08 22:20:06');
-INSERT INTO `t_ums_data_config` VALUES ('82', '31', '印迹', '', '9', '2017-11-08 22:20:13', '2017-11-08 22:20:13');
-INSERT INTO `t_ums_data_config` VALUES ('83', '31', '绿膜', '', '9', '2017-11-08 22:21:13', '2017-11-08 22:21:13');
-INSERT INTO `t_ums_data_config` VALUES ('84', '31', '彩虹到芯', '', '9', '2017-11-08 22:21:35', '2017-11-08 22:21:35');
-INSERT INTO `t_ums_data_config` VALUES ('85', '31', '膜层脱落', '', '9', '2017-11-08 22:22:09', '2017-11-08 22:22:09');
-INSERT INTO `t_ums_data_config` VALUES ('86', '31', '膜下异物', '', '9', '2017-11-08 22:22:32', '2017-11-08 22:22:32');
-INSERT INTO `t_ums_data_config` VALUES ('87', '31', '缝隙', '', '9', '2017-11-08 22:22:42', '2017-11-08 22:22:42');
-INSERT INTO `t_ums_data_config` VALUES ('88', '31', '其它', '', '9', '2017-11-08 22:22:51', '2017-11-08 22:22:51');
-INSERT INTO `t_ums_data_config` VALUES ('89', '92', '崩边', '', '9', '2017-11-08 23:12:38', '2017-11-08 23:12:38');
-INSERT INTO `t_ums_data_config` VALUES ('90', '92', '划痕', '', '9', '2017-11-08 23:12:50', '2017-11-08 23:12:50');
-INSERT INTO `t_ums_data_config` VALUES ('91', '92', '异物', '', '9', '2017-11-08 23:12:57', '2017-11-08 23:12:57');
-INSERT INTO `t_ums_data_config` VALUES ('92', '92', '胶', '', '9', '2017-11-08 23:13:04', '2017-11-08 23:13:04');
-INSERT INTO `t_ums_data_config` VALUES ('93', '92', '印迹', '', '9', '2017-11-08 23:13:12', '2017-11-08 23:13:12');
-INSERT INTO `t_ums_data_config` VALUES ('94', '92', '高低', '', '9', '2017-11-08 23:13:23', '2017-11-08 23:13:23');
-INSERT INTO `t_ums_data_config` VALUES ('95', '92', '装反', '', '9', '2017-11-08 23:13:36', '2017-11-08 23:13:36');
-INSERT INTO `t_ums_data_config` VALUES ('96', '92', '破点', '', '9', '2017-11-08 23:13:45', '2017-11-08 23:13:45');
-INSERT INTO `t_ums_data_config` VALUES ('97', '92', '其它', '', '9', '2017-11-08 23:13:51', '2017-11-08 23:13:51');
-INSERT INTO `t_ums_data_config` VALUES ('98', '92', '绿膜', '', '9', '2017-11-08 23:14:25', '2017-11-08 23:14:25');
-INSERT INTO `t_ums_data_config` VALUES ('99', '92', '彩虹到芯', '', '9', '2017-11-08 23:14:38', '2017-11-08 23:14:38');
-INSERT INTO `t_ums_data_config` VALUES ('100', '92', '膜层脱落', '', '9', '2017-11-08 23:14:54', '2017-11-08 23:14:54');
-INSERT INTO `t_ums_data_config` VALUES ('101', '92', '膜下异物', '', '9', '2017-11-08 23:15:06', '2017-11-08 23:15:06');
-INSERT INTO `t_ums_data_config` VALUES ('102', '92', '缝隙', '', '9', '2017-11-08 23:15:14', '2017-11-08 23:15:14');
-INSERT INTO `t_ums_data_config` VALUES ('103', '92', '棉纱', '', '9', '2017-11-08 23:15:31', '2017-11-08 23:15:31');
-INSERT INTO `t_ums_data_config` VALUES ('104', '52', '崩边', '', '9', '2017-11-12 15:36:37', '2017-11-12 15:36:37');
-INSERT INTO `t_ums_data_config` VALUES ('105', '52', '划痕', '', '9', '2017-11-12 15:36:48', '2017-11-12 15:36:48');
-INSERT INTO `t_ums_data_config` VALUES ('106', '52', '异物', '', '9', '2017-11-12 15:37:02', '2017-11-12 15:37:02');
-INSERT INTO `t_ums_data_config` VALUES ('107', '52', '胶', '', '9', '2017-11-12 15:37:08', '2017-11-12 15:37:08');
-INSERT INTO `t_ums_data_config` VALUES ('108', '52', '印迹', '', '9', '2017-11-12 15:37:20', '2017-11-12 15:37:20');
-INSERT INTO `t_ums_data_config` VALUES ('109', '52', '高低', '', '9', '2017-11-12 15:37:25', '2017-11-12 15:37:25');
-INSERT INTO `t_ums_data_config` VALUES ('110', '52', '装反', '', '9', '2017-11-12 15:37:37', '2017-11-12 15:37:37');
-INSERT INTO `t_ums_data_config` VALUES ('111', '52', '破点', '', '9', '2017-11-12 15:37:45', '2017-11-12 15:37:45');
-INSERT INTO `t_ums_data_config` VALUES ('112', '52', '其它', '', '9', '2017-11-12 15:37:58', '2017-11-12 15:37:58');
-INSERT INTO `t_ums_data_config` VALUES ('113', '51', '崩边', '', '9', '2017-11-12 15:38:18', '2017-11-12 15:38:18');
-INSERT INTO `t_ums_data_config` VALUES ('114', '51', '划痕', '', '9', '2017-11-12 15:38:29', '2017-11-12 15:38:29');
-INSERT INTO `t_ums_data_config` VALUES ('115', '51', '异物', '', '9', '2017-11-12 15:38:42', '2017-11-12 15:38:42');
-INSERT INTO `t_ums_data_config` VALUES ('116', '51', '异物', '', '9', '2017-11-12 15:38:48', '2017-11-12 15:38:48');
-INSERT INTO `t_ums_data_config` VALUES ('117', '51', '胶', '', '9', '2017-11-12 15:38:53', '2017-11-12 15:38:53');
-INSERT INTO `t_ums_data_config` VALUES ('118', '51', '印迹', '', '9', '2017-11-12 15:38:58', '2017-11-12 15:38:58');
-INSERT INTO `t_ums_data_config` VALUES ('119', '51', '绿膜', '', '9', '2017-11-12 15:39:08', '2017-11-12 15:39:08');
-INSERT INTO `t_ums_data_config` VALUES ('120', '51', '彩虹到芯', '', '9', '2017-11-12 15:39:13', '2017-11-12 15:39:13');
-INSERT INTO `t_ums_data_config` VALUES ('121', '51', '膜层脱落', '', '9', '2017-11-12 15:39:25', '2017-11-12 15:39:25');
-INSERT INTO `t_ums_data_config` VALUES ('122', '51', '膜下异物', '', '9', '2017-11-12 15:39:30', '2017-11-12 15:39:30');
-INSERT INTO `t_ums_data_config` VALUES ('123', '51', '缝隙', '', '9', '2017-11-12 15:39:49', '2017-11-12 15:39:49');
-INSERT INTO `t_ums_data_config` VALUES ('124', '51', '其它', '', '9', '2017-11-12 15:39:56', '2017-11-12 15:39:56');
-INSERT INTO `t_ums_data_config` VALUES ('125', '93', 'T01', '', '9', '2017-11-12 17:27:44', '2017-11-12 17:27:44');
-INSERT INTO `t_ums_data_config` VALUES ('126', '93', 'T02', '', '9', '2017-11-12 17:27:50', '2017-11-12 17:27:50');
-INSERT INTO `t_ums_data_config` VALUES ('127', '93', 'T03', '', '9', '2017-11-12 17:27:56', '2017-11-12 17:27:56');
-INSERT INTO `t_ums_data_config` VALUES ('128', '93', 'T04', '', '9', '2017-11-12 17:28:02', '2017-11-12 17:28:02');
-INSERT INTO `t_ums_data_config` VALUES ('129', '93', 'T05', '', '9', '2017-11-12 17:28:08', '2017-11-12 17:28:08');
-INSERT INTO `t_ums_data_config` VALUES ('130', '93', 'T06', '', '9', '2017-11-12 17:28:14', '2017-11-12 17:28:14');
-INSERT INTO `t_ums_data_config` VALUES ('131', '93', 'T07', '', '9', '2017-11-12 17:28:21', '2017-11-12 17:28:21');
-INSERT INTO `t_ums_data_config` VALUES ('132', '93', 'T08', '', '9', '2017-11-12 17:28:26', '2017-11-12 17:28:26');
-INSERT INTO `t_ums_data_config` VALUES ('133', '93', 'T09', '', '9', '2017-11-12 17:28:32', '2017-11-12 17:28:32');
-INSERT INTO `t_ums_data_config` VALUES ('134', '93', 'T10', '', '9', '2017-11-12 17:28:43', '2017-11-12 17:28:43');
-INSERT INTO `t_ums_data_config` VALUES ('135', '93', 'T11', '', '9', '2017-11-12 17:28:48', '2017-11-12 17:28:48');
-INSERT INTO `t_ums_data_config` VALUES ('136', '93', 'T12', '', '9', '2017-11-12 17:28:53', '2017-11-12 17:28:53');
-INSERT INTO `t_ums_data_config` VALUES ('137', '93', 'T13', '', '9', '2017-11-12 17:28:58', '2017-11-12 17:28:58');
-INSERT INTO `t_ums_data_config` VALUES ('138', '93', 'T14', '', '9', '2017-11-12 17:29:05', '2017-11-12 17:29:05');
-INSERT INTO `t_ums_data_config` VALUES ('139', '93', 'T15', '', '9', '2017-11-12 17:29:11', '2017-11-12 17:29:11');
-INSERT INTO `t_ums_data_config` VALUES ('140', '93', 'T16', '', '9', '2017-11-12 17:29:16', '2017-11-12 17:29:16');
-INSERT INTO `t_ums_data_config` VALUES ('141', '93', 'T17', '', '9', '2017-11-12 17:29:22', '2017-11-12 17:29:22');
-INSERT INTO `t_ums_data_config` VALUES ('142', '94', '05-0001|04-0001', '', '9', '2017-11-16 21:49:05', '2017-11-16 21:49:05');
-INSERT INTO `t_ums_data_config` VALUES ('143', '94', '05-0003|03-0001', '', '9', '2017-11-16 21:49:59', '2017-11-16 21:49:59');
-INSERT INTO `t_ums_data_config` VALUES ('144', '94', '05-0002|05-0067', '', '9', '2017-11-16 21:51:05', '2017-11-16 21:51:05');
-INSERT INTO `t_ums_data_config` VALUES ('145', '94', '05-0002|04-0002', '', '9', '2017-11-16 21:59:15', '2017-11-16 21:59:15');
-INSERT INTO `t_ums_data_config` VALUES ('146', '94', '05-0004|03-0002', '', '9', '2017-11-16 22:00:07', '2017-11-16 22:00:07');
-INSERT INTO `t_ums_data_config` VALUES ('152', '94', '334', '', '9', '2017-12-06 14:14:00', '2017-12-06 14:14:00');
+#
+# Data for table "t_ums_data_config"
+#
 
--- ----------------------------
--- Table structure for t_ums_deptinfo
--- ----------------------------
+INSERT INTO `t_ums_data_config` VALUES (2,1,'破损信息','',9,NULL,NULL),(11,1,'throw millstone Position','',9,NULL,NULL),(12,1,'Part Num','',9,NULL,NULL),(13,1,'Remark','',9,NULL,NULL),(14,1,'Polish Bom','',9,NULL,NULL),(16,1,'化学试剂','',9,NULL,NULL),(17,2,'Polishing','',9,NULL,NULL),(18,2,'Cleaning','',9,NULL,NULL),(19,2,'光学镀膜','',9,NULL,NULL),(20,2,'组装','',9,NULL,NULL),(163,12,'13-0003','',9,NULL,NULL),(164,12,'15-9008','',9,NULL,NULL),(165,12,'14-0014','',9,NULL,NULL),(166,11,'A','',9,NULL,NULL),(167,11,'B','',9,NULL,NULL),(168,11,'C','',9,NULL,NULL),(169,16,'05-0001|04-0001','',9,NULL,NULL),(170,16,'05-0003|03-0001','',9,NULL,NULL),(171,16,'05-0002|04-0002','',9,NULL,NULL),(172,16,'05-0002|05-0067','',9,NULL,NULL),(173,16,'334','',9,NULL,NULL),(174,16,'05-0004|03-0002','',9,NULL,NULL),(175,13,'T08','',9,NULL,NULL),(176,13,'T07','',9,NULL,NULL),(177,13,'T11','',9,NULL,NULL),(178,13,'T13','',9,NULL,NULL),(179,13,'T12','',9,NULL,NULL),(180,13,'T10','',9,NULL,NULL),(181,13,'T09','',9,NULL,NULL),(182,13,'T17','',9,NULL,NULL),(183,13,'T16','',9,NULL,NULL),(184,13,'T15','',9,NULL,NULL),(185,13,'T14','',9,NULL,NULL),(186,13,'T01','',9,NULL,NULL),(187,13,'T03','',9,NULL,NULL),(188,13,'T02','',9,NULL,NULL),(189,13,'T06','',9,NULL,NULL),(190,13,'T05','',9,NULL,NULL),(191,13,'T04','',9,NULL,NULL),(192,201,'膜层脱落','',9,NULL,NULL),(193,201,'绿膜','',9,NULL,NULL),(194,201,'彩虹到芯','',9,NULL,NULL),(195,201,'印迹','',9,NULL,NULL),(196,201,'胶','',9,NULL,NULL),(197,201,'异物','',9,NULL,NULL),(198,201,'缝隙','',9,NULL,NULL),(199,201,'膜下异物','',9,NULL,NULL),(200,201,'其它','',9,NULL,NULL),(201,201,'崩边','',9,NULL,NULL),(202,201,'划痕','',9,NULL,NULL),(203,201,'异物','',9,NULL,NULL),(204,202,'崩边','',9,NULL,NULL),(205,202,'划痕','',9,NULL,NULL),(206,202,'异物','',9,NULL,NULL),(207,202,'胶','',9,NULL,NULL),(208,202,'印迹','',9,NULL,NULL),(209,202,'高低','',9,NULL,NULL),(210,202,'装反','',9,NULL,NULL),(211,202,'破点','',9,NULL,NULL),(212,202,'其它','',9,NULL,NULL),(213,171,'麻点','Polishing',9,NULL,NULL),(214,171,'崩边','Polishing',9,NULL,NULL),(215,171,'划痕','Polishing',9,NULL,NULL),(216,171,'异物','Polishing',9,NULL,NULL),(217,171,'印迹','Polishing',9,NULL,NULL),(218,171,'其它','Polishing',9,NULL,NULL),(219,171,'12-0003','',9,NULL,NULL),(220,171,'水印','Polishing',9,NULL,NULL),(221,171,'缝隙','Polishing',9,NULL,NULL),(222,171,'胶','polishing',9,NULL,NULL),(223,172,'崩边','',9,NULL,NULL),(224,172,'划痕','',9,NULL,NULL),(225,172,'异物','',9,NULL,NULL),(226,172,'印迹','',9,NULL,NULL),(227,172,'其它','',9,NULL,NULL),(228,172,'麻点','',9,NULL,NULL),(229,172,'水印','',9,NULL,NULL),(230,172,'缝隙','',9,NULL,NULL),(231,172,'胶','',9,NULL,NULL),(232,181,'麻点','',9,NULL,NULL),(233,181,'水印','',9,NULL,NULL),(234,181,'胶','',9,NULL,NULL),(235,181,'缝隙','',9,NULL,NULL),(236,181,'麻点','',9,NULL,NULL),(237,181,'水印','',9,NULL,NULL),(238,181,'印迹','',9,NULL,NULL),(239,181,'胶','',9,NULL,NULL),(240,181,'缝隙','',9,NULL,NULL),(241,181,'其它','',9,NULL,NULL),(242,182,'崩边','',9,NULL,NULL),(243,182,'划痕','',9,NULL,NULL),(244,182,'异物','',9,NULL,NULL),(245,182,'棉纱','',9,NULL,NULL),(246,182,'麻点','',9,NULL,NULL),(247,182,'水印','',9,NULL,NULL),(248,182,'印痕','',9,NULL,NULL),(249,182,'胶','',9,NULL,NULL),(250,182,'缝隙','',9,NULL,NULL),(251,182,'其它','',9,NULL,NULL),(252,191,'崩边','',9,NULL,NULL),(253,191,'划痕','',9,NULL,NULL),(254,191,'异物','',9,NULL,NULL),(255,191,'胶','',9,NULL,NULL),(256,191,'印迹','',9,NULL,NULL),(257,191,'绿膜','',9,NULL,NULL),(258,191,'彩虹到芯','',9,NULL,NULL),(259,191,'膜层脱落','',9,NULL,NULL),(260,191,'膜下异物','',9,NULL,NULL),(261,191,'缝隙','',9,NULL,NULL),(262,191,'其它','',9,NULL,NULL),(263,192,'崩边','',9,NULL,NULL),(264,192,'划痕','',9,NULL,NULL),(265,192,'异物','',9,NULL,NULL),(266,192,'胶','',9,NULL,NULL),(267,192,'印迹','',9,NULL,NULL),(268,192,'其它','',9,NULL,NULL),(269,14,'ddd','',9,'2018-04-07 01:44:20','2018-04-07 01:44:20'),(270,14,'ddddsss','',9,'2018-04-07 01:44:28','2018-04-07 01:44:28'),(271,14,'fggff','',9,'2018-04-07 01:44:35','2018-04-07 01:44:35');
+
+#
+# Structure for table "t_ums_deptinfo"
+#
+
 DROP TABLE IF EXISTS `t_ums_deptinfo`;
 CREATE TABLE `t_ums_deptinfo` (
   `DEPTID` int(11) NOT NULL COMMENT '部门编号',
@@ -421,13 +187,15 @@ CREATE TABLE `t_ums_deptinfo` (
   `DESCRIPTION` text COMMENT '描述信息'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='部门信息表';
 
--- ----------------------------
--- Records of t_ums_deptinfo
--- ----------------------------
+#
+# Data for table "t_ums_deptinfo"
+#
 
--- ----------------------------
--- Table structure for t_ums_loginlimitinfo
--- ----------------------------
+
+#
+# Structure for table "t_ums_loginlimitinfo"
+#
+
 DROP TABLE IF EXISTS `t_ums_loginlimitinfo`;
 CREATE TABLE `t_ums_loginlimitinfo` (
   `LIMITID` bigint(22) NOT NULL COMMENT 'id',
@@ -438,13 +206,37 @@ CREATE TABLE `t_ums_loginlimitinfo` (
   `OPERATORID` bigint(22) NOT NULL COMMENT '操作员编号'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='帐号受限信息表';
 
--- ----------------------------
--- Records of t_ums_loginlimitinfo
--- ----------------------------
+#
+# Data for table "t_ums_loginlimitinfo"
+#
 
--- ----------------------------
--- Table structure for t_ums_menuinfo
--- ----------------------------
+
+#
+# Structure for table "t_ums_menu_button"
+#
+
+DROP TABLE IF EXISTS `t_ums_menu_button`;
+CREATE TABLE `t_ums_menu_button` (
+  `btnid` int(4) NOT NULL AUTO_INCREMENT COMMENT '按钮编号',
+  `menuid` int(4) NOT NULL COMMENT '菜单编号',
+  `btnename` varchar(100) DEFAULT '' COMMENT '按钮名称',
+  `btncname` varchar(100) DEFAULT '' COMMENT '中文名称',
+  `btnclass` varchar(50) DEFAULT '' COMMENT '按钮样式',
+  `btniconclass` varchar(50) DEFAULT '',
+  `DESCRIPTION` text COMMENT '描述信息',
+  PRIMARY KEY (`btnid`,`menuid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1070 DEFAULT CHARSET=utf8 COMMENT='按钮权限表';
+
+#
+# Data for table "t_ums_menu_button"
+#
+
+INSERT INTO `t_ums_menu_button` VALUES (1001,105,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1002,105,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1004,105,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1005,105,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1006,105,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1007,105,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1008,106,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1009,106,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1010,106,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1011,106,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1012,106,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1013,106,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1014,201,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1015,201,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1016,201,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1017,201,'btn-export','导出','btn btn-primary btn-sm','fa fa-download',NULL),(1018,201,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1019,201,'copyRow','复制','btn btn-primary btn-xs','fa fa-copy',NULL),(1020,201,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1021,201,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1022,202,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1023,202,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1024,202,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1025,202,'btn-export','导出','btn btn-primary btn-sm','fa fa-download',NULL),(1026,202,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1027,202,'copyRow','复制','btn btn-primary btn-xs','fa fa-copy',NULL),(1028,202,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1029,202,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1030,203,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1031,203,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1032,203,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1033,203,'btn-export','导出','btn btn-primary btn-sm','fa fa-download',NULL),(1034,203,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1035,203,'copyRow','复制','btn btn-primary btn-xs','fa fa-copy',NULL),(1036,203,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1037,203,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1038,204,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1039,204,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1040,204,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1041,204,'btn-export','导出','btn btn-primary btn-sm','fa fa-download',NULL),(1042,204,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1043,204,'copyRow','复制','btn btn-primary btn-xs','fa fa-copy',NULL),(1044,204,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1045,204,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1046,205,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1047,205,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1048,205,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1049,205,'btn-export','导出','btn btn-primary btn-sm','fa fa-download',NULL),(1050,205,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1051,205,'copyRow','复制','btn btn-primary btn-xs','fa fa-copy',NULL),(1052,205,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1053,205,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1054,206,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1055,206,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1056,206,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1057,206,'btn-export','导出','btn btn-primary btn-sm','fa fa-download',NULL),(1058,206,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1059,206,'copyRow','复制','btn btn-primary btn-xs','fa fa-copy',NULL),(1060,206,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1061,206,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL),(1062,207,'btn-query','查询','btn btn-primary','fa fa-search',NULL),(1063,207,'btn-add','添加','btn btn-primary btn-sm','fa fa-plus',NULL),(1064,207,'btn-delAll','批量删除','btn btn-primary btn-sm','fa fa-remove',NULL),(1065,207,'btn-export','导出','btn btn-primary btn-sm','fa fa-download',NULL),(1066,207,'btn_refresh','刷新','btn btn-primary btn-sm','fa fa-refresh',NULL),(1067,207,'copyRow','复制','btn btn-primary btn-xs','fa fa-copy',NULL),(1068,207,'editRow','修改','btn btn-primary btn-xs','fa fa-edit',NULL),(1069,207,'delRow','删除','btn btn-primary btn-xs','fa fa-trash-o',NULL);
+
+#
+# Structure for table "t_ums_menuinfo"
+#
+
 DROP TABLE IF EXISTS `t_ums_menuinfo`;
 CREATE TABLE `t_ums_menuinfo` (
   `MENUID` int(4) NOT NULL AUTO_INCREMENT COMMENT '菜单编号',
@@ -457,143 +249,52 @@ CREATE TABLE `t_ums_menuinfo` (
   `SORT` int(4) NOT NULL COMMENT '同级菜单顺序',
   `DESCRIPTION` varchar(300) DEFAULT '' COMMENT '描述信息',
   PRIMARY KEY (`MENUID`)
-) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8 COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=utf8 COMMENT='菜单表';
 
--- ----------------------------
--- Records of t_ums_menuinfo
--- ----------------------------
-INSERT INTO `t_ums_menuinfo` VALUES ('1', '基础管理', 'menu-icon glyphicon glyphicon-cog', null, '0', '0', '-1', '1', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('2', '工作流管理', 'menu-icon glyphicon glyphicon-globe', '', '0', '0', '-1', '3', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('3', '权限管理', '胜多负少', null, '1', '1', '1', '1', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('100', '配置管理', 'menu-icon glyphicons\r\n glyphicons-settings', null, '0', '0', '1', '1', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('101', '用户管理', '\r\nmenu-icon glyphicon glyphicon-user', '/user/userManage', '1', '0', '1', '2', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('102', '角色管理', 'menu-icon glyphicon glyphicon-asterisk', '/role/roleManage', '1', '0', '1', '3', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('103', '权限配置管理', 'menu-icon glyphicons \r\nglyphicons-user', '/right/rightManage', '1', '0', '1', '4', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('104', '菜单管理', 'menu-icon glyphicon glyphicon-eye-open', '/menu/menuManage', '1', '0', '1', '5', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('105', '缺损管理', 'menu-icon glyphicon glyphicon-book', '/defect/defectManage', '1', '0', '1', '6', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('106', '数据配置管理', 'menu-icon glyphicon glyphicons-settings', '/dataconfig/dataConfigManage', '1', '0', '1', '7', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('201', '抛磨', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/workflow/polishManage', '1', '0', '2', '1', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('202', '清洗', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/workflow/cleanManage', '1', '0', '2', '2', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('203', '光学镀膜', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/workflow/opticalFilmingManage', '1', '0', '2', '3', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('204', '化学镀膜APS', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/workflow/platedFilmManage', '1', '0', '2', '4', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('205', '组装', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/workflow/assemblyManage', '1', '0', '2', '6', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('206', '生化镀膜', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/workflow/chemicalReagentManage', '1', '0', '2', '7', null);
-INSERT INTO `t_ums_menuinfo` VALUES ('207', 'sdfsrrrrrrrrrrrr', 'rrrrrrrrrrrr', 'rrrrrrrrrr', '0', '1', '1', '3', 'rrrrrrrrrrr');
-INSERT INTO `t_ums_menuinfo` VALUES ('208', '权限管理', 'menu-icon glyphicon glyphicon-cog', '', '0', '0', '-1', '2', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('209', '按钮管理', 'menu-icon glyphicon glyphicon-eye-open', '', '1', '0', '1', '8', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('210', 'erte', 'sfs', 'sdfs', '1', '1', '209', '5', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('211', '343', 'sfs', 'sdfs', '1', '1', '209', '4', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('212', '菜单管理', 'menu-icon glyphicon glyphicon-eye-open', '', '1', '1', '208', '2', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('213', '权限配置管理', 'menu-icon glyphicon glyphicon-eye-open', '', '1', '1', '208', '3', '');
-INSERT INTO `t_ums_menuinfo` VALUES ('214', '角色管理', 'menu-icon glyphicon glyphicon-eye-open', '', '1', '1', '208', '4', '');
+#
+# Data for table "t_ums_menuinfo"
+#
 
--- ----------------------------
--- Table structure for t_ums_provinceinfo
--- ----------------------------
+INSERT INTO `t_ums_menuinfo` VALUES (1,'基础管理','menu-icon glyphicon glyphicon-cog',NULL,0,0,-1,1,NULL),(2,'工作流管理','menu-icon glyphicon glyphicon-globe','',0,0,-1,3,''),(101,'权限管理','胜多负少',NULL,1,1,1,1,''),(102,'用户管理','\r\nmenu-icon glyphicon glyphicon-user','/user/userManage',1,0,1,2,NULL),(103,'角色管理','menu-icon glyphicon glyphicon-asterisk','/role/roleManage',1,0,1,3,NULL),(104,'权限配置管理','menu-icon glyphicons \r\nglyphicons-user','/right/rightManage',1,1,1,4,NULL),(105,'菜单管理','menu-icon glyphicon glyphicon-eye-open','/menu/menuManage',1,1,1,5,NULL),(106,'缺损管理','menu-icon glyphicon glyphicon-book','/defect/defectManage',1,0,1,6,NULL),(107,'数据配置管理','menu-icon glyphicon glyphicons-settings','/dataconfig/dataConfigManage',1,0,1,7,NULL),(108,'按钮管理','menu-icon glyphicon glyphicon-eye-open','/button/buttonManage',1,0,1,8,''),(201,'抛磨','menu-icon glyphicons\r\nglyphicons-hand-right','/workflow/polishManage',1,0,2,1,NULL),(202,'清洗','menu-icon glyphicons\r\nglyphicons-hand-right','/workflow/cleanManage',1,0,2,2,NULL),(203,'光学镀膜','menu-icon glyphicons\r\nglyphicons-hand-right','/workflow/opticalFilmingManage',1,0,2,3,NULL),(204,'化学镀膜APS','menu-icon glyphicons\r\nglyphicons-hand-right','/workflow/platedFilmManage',1,0,2,4,NULL),(205,'组装','menu-icon glyphicons\r\nglyphicons-hand-right','/workflow/assemblyManage',1,0,2,6,NULL),(206,'生化镀膜','menu-icon glyphicons\r\nglyphicons-hand-right','/workflow/chemicalReagentManage',1,0,2,7,NULL),(207,'二次生化镀膜','glyphicons-hand-right','/workflow/chemicalReagentManage',1,0,2,8,'');
+
+#
+# Structure for table "t_ums_provinceinfo"
+#
+
 DROP TABLE IF EXISTS `t_ums_provinceinfo`;
 CREATE TABLE `t_ums_provinceinfo` (
   `PROVINCEID` varchar(50) NOT NULL COMMENT '省份编码',
   `PROVINCENAME` varchar(50) NOT NULL COMMENT '省名称'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='省份信息表';
 
--- ----------------------------
--- Records of t_ums_provinceinfo
--- ----------------------------
+#
+# Data for table "t_ums_provinceinfo"
+#
 
--- ----------------------------
--- Table structure for t_ums_right
--- ----------------------------
+
+#
+# Structure for table "t_ums_right"
+#
+
 DROP TABLE IF EXISTS `t_ums_right`;
 CREATE TABLE `t_ums_right` (
-  `RIGHTID` int(10) NOT NULL COMMENT '权限编码',
+  `RIGHTID` int(10) NOT NULL AUTO_INCREMENT COMMENT '权限编码',
   `RIGHTTYPE` int(2) NOT NULL COMMENT '权限类型  1 菜单权限',
   `DATAID` int(4) NOT NULL COMMENT '数据权限id,如权限类型为菜单，则dataid则为菜单id，依次类推',
-  `DESCRIPTION` text COMMENT '浏览按钮权限描述'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限信息表';
+  `DESCRIPTION` text COMMENT '浏览按钮权限描述',
+  PRIMARY KEY (`RIGHTID`)
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8 COMMENT='权限信息表';
 
--- ----------------------------
--- Records of t_ums_right
--- ----------------------------
-INSERT INTO `t_ums_right` VALUES ('1', '1', '1', '');
-INSERT INTO `t_ums_right` VALUES ('2', '1', '101', null);
-INSERT INTO `t_ums_right` VALUES ('3', '1', '102', null);
-INSERT INTO `t_ums_right` VALUES ('4', '1', '103', null);
-INSERT INTO `t_ums_right` VALUES ('5', '1', '2', null);
-INSERT INTO `t_ums_right` VALUES ('6', '1', '201', null);
-INSERT INTO `t_ums_right` VALUES ('7', '1', '202', null);
-INSERT INTO `t_ums_right` VALUES ('8', '1', '203', null);
-INSERT INTO `t_ums_right` VALUES ('9', '1', '204', null);
-INSERT INTO `t_ums_right` VALUES ('10', '1', '205', null);
-INSERT INTO `t_ums_right` VALUES ('11', '1', '206', null);
-INSERT INTO `t_ums_right` VALUES ('12', '1', '104', null);
-INSERT INTO `t_ums_right` VALUES ('13', '1', '105', null);
-INSERT INTO `t_ums_right` VALUES ('14', '1', '106', null);
-INSERT INTO `t_ums_right` VALUES ('15', '2', '1', null);
-INSERT INTO `t_ums_right` VALUES ('16', '2', '2', null);
-INSERT INTO `t_ums_right` VALUES ('17', '2', '3', null);
-INSERT INTO `t_ums_right` VALUES ('18', '2', '4', null);
-INSERT INTO `t_ums_right` VALUES ('19', '2', '5', null);
-INSERT INTO `t_ums_right` VALUES ('20', '2', '6', null);
-INSERT INTO `t_ums_right` VALUES ('21', '2', '7', null);
-INSERT INTO `t_ums_right` VALUES ('22', '2', '8', null);
-INSERT INTO `t_ums_right` VALUES ('23', '2', '9', null);
-INSERT INTO `t_ums_right` VALUES ('24', '2', '10', null);
-INSERT INTO `t_ums_right` VALUES ('25', '2', '11', null);
-INSERT INTO `t_ums_right` VALUES ('26', '2', '12', null);
-INSERT INTO `t_ums_right` VALUES ('27', '2', '13', null);
-INSERT INTO `t_ums_right` VALUES ('28', '2', '14', null);
-INSERT INTO `t_ums_right` VALUES ('29', '2', '15', null);
-INSERT INTO `t_ums_right` VALUES ('30', '2', '16', null);
-INSERT INTO `t_ums_right` VALUES ('31', '2', '17', null);
-INSERT INTO `t_ums_right` VALUES ('32', '2', '18', null);
-INSERT INTO `t_ums_right` VALUES ('33', '2', '19', null);
-INSERT INTO `t_ums_right` VALUES ('34', '2', '20', null);
-INSERT INTO `t_ums_right` VALUES ('35', '2', '21', null);
-INSERT INTO `t_ums_right` VALUES ('36', '2', '22', null);
-INSERT INTO `t_ums_right` VALUES ('37', '2', '23', null);
-INSERT INTO `t_ums_right` VALUES ('38', '2', '24', null);
-INSERT INTO `t_ums_right` VALUES ('39', '2', '25', null);
-INSERT INTO `t_ums_right` VALUES ('40', '2', '26', null);
-INSERT INTO `t_ums_right` VALUES ('41', '2', '27', null);
-INSERT INTO `t_ums_right` VALUES ('42', '2', '28', null);
-INSERT INTO `t_ums_right` VALUES ('43', '2', '29', null);
-INSERT INTO `t_ums_right` VALUES ('44', '2', '30', null);
-INSERT INTO `t_ums_right` VALUES ('45', '2', '31', null);
-INSERT INTO `t_ums_right` VALUES ('46', '2', '32', null);
-INSERT INTO `t_ums_right` VALUES ('47', '2', '33', null);
-INSERT INTO `t_ums_right` VALUES ('48', '2', '34', null);
-INSERT INTO `t_ums_right` VALUES ('49', '2', '35', null);
-INSERT INTO `t_ums_right` VALUES ('50', '2', '36', null);
-INSERT INTO `t_ums_right` VALUES ('51', '2', '37', null);
-INSERT INTO `t_ums_right` VALUES ('52', '2', '38', null);
-INSERT INTO `t_ums_right` VALUES ('53', '2', '39', null);
-INSERT INTO `t_ums_right` VALUES ('54', '2', '40', null);
-INSERT INTO `t_ums_right` VALUES ('55', '2', '41', null);
-INSERT INTO `t_ums_right` VALUES ('56', '2', '42', null);
-INSERT INTO `t_ums_right` VALUES ('57', '2', '43', null);
-INSERT INTO `t_ums_right` VALUES ('58', '2', '44', null);
-INSERT INTO `t_ums_right` VALUES ('59', '2', '45', null);
-INSERT INTO `t_ums_right` VALUES ('60', '2', '46', null);
-INSERT INTO `t_ums_right` VALUES ('61', '2', '47', null);
-INSERT INTO `t_ums_right` VALUES ('62', '2', '48', null);
-INSERT INTO `t_ums_right` VALUES ('63', '2', '49', null);
-INSERT INTO `t_ums_right` VALUES ('64', '2', '50', null);
-INSERT INTO `t_ums_right` VALUES ('65', '2', '51', null);
-INSERT INTO `t_ums_right` VALUES ('66', '2', '52', null);
-INSERT INTO `t_ums_right` VALUES ('67', '2', '53', null);
-INSERT INTO `t_ums_right` VALUES ('68', '2', '54', null);
-INSERT INTO `t_ums_right` VALUES ('69', '2', '55', null);
-INSERT INTO `t_ums_right` VALUES ('70', '2', '56', null);
-INSERT INTO `t_ums_right` VALUES ('71', '2', '57', null);
-INSERT INTO `t_ums_right` VALUES ('72', '2', '58', null);
-INSERT INTO `t_ums_right` VALUES ('73', '2', '59', null);
-INSERT INTO `t_ums_right` VALUES ('74', '2', '60', null);
-INSERT INTO `t_ums_right` VALUES ('75', '2', '61', null);
-INSERT INTO `t_ums_right` VALUES ('76', '1', '209', null);
+#
+# Data for table "t_ums_right"
+#
 
--- ----------------------------
--- Table structure for t_ums_role
--- ----------------------------
+INSERT INTO `t_ums_right` VALUES (1,1,1,NULL),(2,1,2,NULL),(3,1,101,NULL),(4,1,102,NULL),(5,1,103,NULL),(6,1,104,NULL),(7,1,105,NULL),(8,1,106,NULL),(9,1,107,NULL),(10,1,108,NULL),(11,1,201,NULL),(12,1,202,NULL),(13,1,203,NULL),(14,1,204,NULL),(15,1,205,NULL),(16,1,206,NULL),(17,1,207,NULL),(25,2,1001,NULL),(26,2,1002,NULL),(27,2,1003,NULL),(28,2,1004,NULL),(29,2,1005,NULL),(30,2,1006,NULL),(31,2,1007,NULL),(32,2,1008,NULL),(33,2,1009,NULL),(34,2,1010,NULL),(35,2,1011,NULL),(36,2,1012,NULL),(37,2,1013,NULL),(38,2,1014,NULL),(39,2,1015,NULL),(40,2,1016,NULL),(41,2,1017,NULL),(42,2,1018,NULL),(43,2,1019,NULL),(44,2,1020,NULL),(45,2,1021,NULL),(46,2,1022,NULL),(47,2,1023,NULL),(48,2,1024,NULL),(49,2,1025,NULL),(50,2,1026,NULL),(51,2,1027,NULL),(52,2,1028,NULL),(53,2,1029,NULL),(54,2,1030,NULL),(55,2,1031,NULL),(56,2,1032,NULL),(57,2,1033,NULL),(58,2,1034,NULL),(59,2,1035,NULL),(60,2,1036,NULL),(61,2,1037,NULL),(62,2,1038,NULL),(63,2,1039,NULL),(64,2,1040,NULL),(65,2,1041,NULL),(66,2,1042,NULL),(67,2,1043,NULL),(68,2,1044,NULL),(69,2,1045,NULL),(70,2,1046,NULL),(71,2,1047,NULL),(72,2,1048,NULL),(73,2,1049,NULL),(74,2,1050,NULL),(75,2,1051,NULL),(76,2,1052,NULL),(77,2,1053,NULL),(78,2,1054,NULL),(79,2,1055,NULL),(80,2,1056,NULL),(81,2,1057,NULL),(82,2,1058,NULL),(83,2,1059,NULL),(84,2,1060,NULL),(85,2,1061,NULL),(86,2,1062,NULL),(87,2,1063,NULL),(88,2,1064,NULL),(89,2,1065,NULL),(90,2,1066,NULL),(91,2,1067,NULL),(92,2,1068,NULL),(93,2,1069,NULL);
+
+#
+# Structure for table "t_ums_role"
+#
+
 DROP TABLE IF EXISTS `t_ums_role`;
 CREATE TABLE `t_ums_role` (
   `ROLEID` int(10) NOT NULL AUTO_INCREMENT COMMENT '角色id',
@@ -601,57 +302,34 @@ CREATE TABLE `t_ums_role` (
   `PROLEID` int(10) DEFAULT NULL,
   `DESCRIPTION` varchar(400) DEFAULT '' COMMENT '角色描述语言值',
   PRIMARY KEY (`ROLEID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='角色信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='角色信息表';
 
--- ----------------------------
--- Records of t_ums_role
--- ----------------------------
-INSERT INTO `t_ums_role` VALUES ('1', '超级角色', '-1', '');
-INSERT INTO `t_ums_role` VALUES ('2', '流程管理', '-1', '');
-INSERT INTO `t_ums_role` VALUES ('3', '抛磨_查看', null, '');
-INSERT INTO `t_ums_role` VALUES ('4', '抛磨_删除', null, '');
-INSERT INTO `t_ums_role` VALUES ('5', '抛磨_更新', null, '');
-INSERT INTO `t_ums_role` VALUES ('6', '抛磨_导出', null, '');
+#
+# Data for table "t_ums_role"
+#
 
--- ----------------------------
--- Table structure for t_ums_rolepermission
--- ----------------------------
+INSERT INTO `t_ums_role` VALUES (1,'超级角色',-1,''),(2,'流程管理',-1,''),(17,'抛磨_查看',NULL,''),(18,'抛磨_新增',NULL,''),(19,'抛磨_删除',NULL,''),(20,'抛磨_修改',NULL,''),(21,'抛磨_批量删除',NULL,''),(22,'抛磨_导出',NULL,''),(23,'清洗_查看',NULL,''),(24,'清洗_新增',NULL,''),(25,'清洗_删除',NULL,''),(26,'清洗_修改',NULL,''),(27,'清洗_批量删除',NULL,''),(28,'清洗_导出',NULL,''),(29,'光学镀膜_查看',NULL,''),(30,'光学镀膜_新增',NULL,''),(31,'光学镀膜_删除',NULL,''),(32,'光学镀膜_修改',NULL,''),(33,'光学镀膜_导出',NULL,''),(34,'光学镀膜_批量删除',NULL,''),(35,'化学镀膜_查看',NULL,''),(36,'化学镀膜_修改',NULL,''),(37,'化学镀膜_删除',NULL,''),(38,'化学镀膜_新增',NULL,''),(39,'化学镀膜_批量删除',NULL,''),(40,'化学镀膜_导出',NULL,''),(41,'组装_查看',NULL,''),(42,'组装_修改',NULL,''),(43,'组装_删除',NULL,''),(44,'组装_新增',NULL,''),(45,'组装_批量删除',NULL,''),(46,'组装_导出',NULL,''),(47,'生化镀膜_查看',NULL,''),(48,'生化镀膜_修改',NULL,''),(49,'生化镀膜_删除',NULL,''),(50,'生化镀膜_新增',NULL,''),(51,'生化镀膜_批量删除',NULL,''),(52,'生化镀膜_导出',NULL,''),(53,'二次生化镀膜_查看',NULL,''),(54,'二次生化镀膜_修改',NULL,''),(55,'二次生化镀膜_删除',NULL,''),(56,'二次生化镀膜_新增',NULL,''),(57,'二次生化镀膜_批量删除',NULL,''),(58,'二次生化镀膜_导出',NULL,'');
+
+#
+# Structure for table "t_ums_rolepermission"
+#
+
 DROP TABLE IF EXISTS `t_ums_rolepermission`;
 CREATE TABLE `t_ums_rolepermission` (
   `RIGHTID` int(10) NOT NULL COMMENT '权限编码',
   `ROLEID` int(10) NOT NULL COMMENT '角色编码'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色与权限对应表';
 
--- ----------------------------
--- Records of t_ums_rolepermission
--- ----------------------------
-INSERT INTO `t_ums_rolepermission` VALUES ('1', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('2', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('3', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('4', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('5', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('6', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('7', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('8', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('9', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('10', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('11', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('12', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('5', '2');
-INSERT INTO `t_ums_rolepermission` VALUES ('6', '2');
-INSERT INTO `t_ums_rolepermission` VALUES ('7', '2');
-INSERT INTO `t_ums_rolepermission` VALUES ('8', '2');
-INSERT INTO `t_ums_rolepermission` VALUES ('9', '2');
-INSERT INTO `t_ums_rolepermission` VALUES ('10', '2');
-INSERT INTO `t_ums_rolepermission` VALUES ('11', '2');
-INSERT INTO `t_ums_rolepermission` VALUES ('13', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('14', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('15', '1');
-INSERT INTO `t_ums_rolepermission` VALUES ('209', '1');
+#
+# Data for table "t_ums_rolepermission"
+#
 
--- ----------------------------
--- Table structure for t_ums_th_config
--- ----------------------------
+INSERT INTO `t_ums_rolepermission` VALUES (1,2),(2,1),(3,1),(4,1),(5,1),(8,1),(9,1),(17,1),(11,2),(12,1),(13,2),(14,2),(15,1),(10,1),(11,1),(13,1),(14,1),(16,1),(1,1),(7,1);
+
+#
+# Structure for table "t_ums_th_config"
+#
+
 DROP TABLE IF EXISTS `t_ums_th_config`;
 CREATE TABLE `t_ums_th_config` (
   `MENUID` int(11) NOT NULL COMMENT '菜单编号',
@@ -668,153 +346,32 @@ CREATE TABLE `t_ums_th_config` (
   `DESCRIPTION` text COMMENT '描述信息'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统表格标题配置表';
 
--- ----------------------------
--- Records of t_ums_th_config
--- ----------------------------
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '1', null, '3', '1', null, '', '2', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '2', null, '3', '1', null, 'cleanID', '1', 'cleanid', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '3', null, '3', '1', null, 'cleanTime', '0', 'Clean Date', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '4', null, '3', '1', null, 'cleanLotNum', '0', 'Clean LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '5', null, '3', '1', null, 'scrapQty', '0', 'Scrap Qty', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '6', null, '3', '1', null, 'outputQty', '0', 'Output Qty', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '7', null, '1', '3', null, '', '0', '估计值统计', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '2', '7', null, '1', '1', null, '', '0', '工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '2', '8', null, '1', '1', null, '', '0', '非工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '2', '9', null, '1', '1', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '3', '7', null, '1', '1', '21', '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '3', '8', null, '1', '1', '22', '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '3', '9', null, '1', '1', null, 'yield', '0', '合格率', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '10', null, '3', '1', null, 'toOCQty', '0', 'to Optical Coating Qty', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '11', null, '3', '1', null, 'partNum', '0', 'Part Num', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '12', null, '3', '1', null, 'workOrderNum', '0', 'work order number', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '13', null, '3', '1', null, 'operatorName', '0', '操作员', null);
-INSERT INTO `t_ums_th_config` VALUES ('202', 'cleantable', '1', '14', null, '3', '1', null, '', '2', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '1', null, '2', '1', null, null, '2', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '2', null, '2', '1', null, 'opfID', '1', 'opfID', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '3', null, '2', '1', null, 'optTime', '0', 'Date', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '4', null, '2', '1', null, 'inputLotNum', '0', 'Input LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '5', null, '2', '1', null, 'inputQty', '0', 'Input Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '6', null, '2', '1', null, 'fixtureNum', '0', 'Fixture#', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '7', null, '2', '1', null, 'outputLotNum', '0', 'Output LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '8', null, '2', '1', null, 'outputQty', '0', 'output Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '9', null, '2', '1', null, 'scrapQty', '0', 'Scrap Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '10', null, '1', '1', null, null, '0', '工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '2', '10', '1', '1', '1', '31', null, '0', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '11', null, '1', '1', null, null, '0', '非工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '2', '11', null, '1', '1', '32', null, '0', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '12', null, '2', '1', null, 'qcUseQty', '0', 'QC Use Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '13', null, '2', '1', null, 'toAPSQty', '0', 'To APS coating Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '14', null, '2', '1', null, 'partNum', '0', 'Part Num', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '15', null, '2', '1', null, 'workOrderNum', '0', 'work order number', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '16', null, '2', '1', null, 'operatorName', '0', '操作员', null);
-INSERT INTO `t_ums_th_config` VALUES ('203', 'opticalfilmingtable', '1', '17', null, '2', '1', null, null, '2', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '1', null, '1', '1', null, '', '2', '', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '2', null, '1', '1', null, 'pfID', '1', 'pfID', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '3', null, '1', '1', null, 'coatingTime', '0', 'Coating Date', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '4', null, '1', '1', null, 'pfTime', '0', 'Date', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '5', null, '1', '1', null, 'inputLotNum', '0', 'Input LOT#', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '6', null, '1', '1', null, 'inputQty', '0', 'Input Qty(pcs)', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '7', null, '1', '1', null, 'fixtureNum', '0', 'Fixture#', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '8', null, '1', '1', null, 'apsBottle', '0', 'APS Bottle', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '9', null, '1', '1', null, 'outputLotNum', '0', 'Output LOT#', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '10', null, '1', '1', null, 'outputQty', '0', 'Output Qty(pcs)', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '11', null, '1', '1', null, 'scrapQty', '0', 'Scrap Qty(pcs)', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '12', null, '1', '1', null, 'underIQCQty', '0', 'Under IQC Qty(pcs)', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '13', null, '1', '1', null, 'qNum', '0', 'Q-NUM', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '14', null, '1', '1', null, 'kNum', '0', 'K-NUM', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '15', null, '1', '1', null, 'qcUseQty', '0', 'QC Use Qty(pcs)', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '16', null, '1', '1', null, 'functionalTestQty', '0', 'Functional Test Qty(pcs)', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '17', null, '1', '1', null, 'toHUBQty', '0', 'To HUB Qty(pcs)', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '18', null, '1', '1', null, 'remainQty', '0', 'REMAIN QTY', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '19', null, '1', '1', null, 'apsCondition', '0', 'APS condition', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '20', null, '1', '1', null, 'partNum', '0', 'Part Num', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '21', null, '1', '1', null, 'workOrderNum', '0', 'work order number', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '22', null, '1', '1', null, 'operatorName', '0', '操作员', '');
-INSERT INTO `t_ums_th_config` VALUES ('204', 'platedfilmtable', '1', '23', null, '1', '1', null, '', '2', '操作', '');
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '1', null, '4', '1', null, null, '2', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '2', null, '4', '1', null, 'polishID', '1', 'polishid', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '3', null, '4', '1', null, 'pickingTime', '0', '领料日期', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '4', null, '4', '1', null, 'polishTime', '0', 'Polish Date', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '5', null, '4', '1', null, 'inputLotNum', '0', 'Input LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '6', null, '4', '1', null, 'inputQty', '0', 'Input Qty.(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '7', null, '4', '1', null, 'fixtureNumber', '0', 'Fixture#', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '8', null, '4', '1', null, 'throwMillstoneNum', '0', 'millstone#', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '9', null, '4', '1', null, 'throwMillstonePosition', '0', 'Loading Fixture Position', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '10', null, '1', '4', null, null, '0', '估计值统计', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '2', '10', null, '1', '4', null, null, '0', '抛磨后检验', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '3', '10', null, '1', '1', null, null, '0', '工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '3', '11', null, '1', '1', null, null, '0', '非工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '4', '10', null, '1', '1', '12', null, '0', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '4', '11', null, '1', '1', '11', null, '0', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '3', '12', null, '2', '1', null, 'casualInspectionNum', '0', '抽检总数', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '3', '13', null, '2', '1', null, 'yield', '0', '合格率', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '14', null, '4', '1', null, 'polishLotNum', '0', 'Polish LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '16', null, '4', '1', null, 'partNum', '0', 'Part NO', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '17', null, '4', '1', null, 'workOrderNum', '0', 'work order number', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '18', null, '4', '1', null, 'operatorName', '0', '操作员', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '19', null, '4', '1', null, null, '2', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('201', 'polishtable', '1', '15', null, '4', '1', null, 'measuredValues', '0', '测量值', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '1', null, '2', '1', null, null, '2', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '2', null, '2', '1', null, 'assemblyID', '1', 'assemblyID', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '3', null, '2', '1', null, 'deliveryTime', '0', 'delivery Date', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '4', null, '2', '1', null, 'trayLotNum', '0', 'TRAY#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '5', null, '2', '1', null, 'inputLotNum', '0', 'Input LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '6', null, '2', '1', null, 'inputQty', '0', 'Input Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '7', null, '2', '1', null, 'fixtureNum', '0', 'Fixture#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '8', null, '2', '1', null, 'hubLotNum', '0', 'HUB Lot#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '9', null, '2', '1', null, 'outputLotNum', '0', 'Output LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '10', null, '2', '1', null, 'outputQty', '0', 'output Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '11', null, '2', '1', null, 'scrapQty', '0', 'Scrap Qty(pcs)', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '12', null, '1', '1', null, null, '3', '工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '13', null, '1', '1', null, null, '3', '非工作面', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '14', null, '2', '1', null, 'partNum', '0', 'Part Num', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '15', null, '2', '1', null, 'workOrderNum', '0', 'work order number', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '16', null, '2', '1', null, 'remark', '0', 'Remark', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '17', null, '2', '1', null, 'operatorName', '3', '操作员', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '1', '18', null, '2', '1', null, null, '2', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '2', '12', '1', '1', '1', '51', null, '3', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'assemblytable', '2', '13', null, '1', '1', '52', null, '3', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '1', null, '2', '1', null, null, '2', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '2', null, '2', '1', null, 'crID', '1', 'crID', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '3', null, '2', '1', null, 'lot', '0', 'Lot', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '4', null, '1', '1', null, null, '0', '混合试剂', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '5', null, '2', '1', null, 'assemblyOutputLotNums', '0', '14-####Lot', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '6', null, '2', '1', null, 'pfOutputLotNums', '0', 'APS Lot', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '7', null, '2', '1', null, 'ocOutputLotNums', '0', 'OP.Lot', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '8', null, '1', '2', null, null, '0', 'Fiber', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '10', null, '2', '1', null, 'coatingStation', '0', 'Coating Station', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '11', null, '2', '1', null, 'docRev', '0', 'Doc.Rev', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '12', null, '2', '1', null, 'goodsQty', '0', 'Goods', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '13', null, '2', '1', null, 'inputQty', '0', 'Input', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '14', null, '2', '1', null, 'theoryYield', '0', 'theoretical Yield', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '15', null, '2', '1', null, 'actualYield', '0', 'actual Yield', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '16', null, '2', '1', null, 'theoryActualYield', '0', 'theoretical VS actual', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '17', null, '2', '1', null, 'operatorName', '0', '操作员', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '1', '18', null, '2', '1', null, null, '2', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '2', '8', null, '1', '1', null, 'rawMaterial', '0', 'Raw Material', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '2', '9', null, '1', '1', null, 'inPutDate', '0', 'In Put Date', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'chemicalreagenttable', '2', '4', null, '1', '1', '94', null, '0', null, null);
+#
+# Data for table "t_ums_th_config"
+#
 
--- ----------------------------
--- Table structure for t_ums_userpermission
--- ----------------------------
+INSERT INTO `t_ums_th_config` VALUES (202,'cleantable',1,1,NULL,3,1,NULL,'',2,'',NULL),(202,'cleantable',1,2,NULL,3,1,NULL,'cleanID',1,'cleanid',NULL),(202,'cleantable',1,3,NULL,3,1,NULL,'cleanTime',0,'Clean Date',NULL),(202,'cleantable',1,4,NULL,3,1,NULL,'cleanLotNum',0,'Clean LOT#',NULL),(202,'cleantable',1,5,NULL,3,1,NULL,'scrapQty',0,'Scrap Qty',NULL),(202,'cleantable',1,6,NULL,3,1,NULL,'outputQty',0,'Output Qty',NULL),(202,'cleantable',1,7,NULL,1,3,NULL,'',0,'估计值统计',NULL),(202,'cleantable',2,7,NULL,1,1,NULL,'',0,'工作面',NULL),(202,'cleantable',2,8,NULL,1,1,NULL,'',0,'非工作面',NULL),(202,'cleantable',2,9,NULL,1,1,NULL,'',0,'',NULL),(202,'cleantable',3,7,NULL,1,1,181,'',0,'',NULL),(202,'cleantable',3,8,NULL,1,1,182,'',0,'',NULL),(202,'cleantable',3,9,NULL,1,1,NULL,'yield',0,'合格率',NULL),(202,'cleantable',1,10,NULL,3,1,NULL,'toOCQty',0,'to Optical Coating Qty',NULL),(202,'cleantable',1,11,NULL,3,1,NULL,'partNum',0,'Part Num',NULL),(202,'cleantable',1,12,NULL,3,1,NULL,'workOrderNum',0,'work order number',NULL),(202,'cleantable',1,13,NULL,3,1,NULL,'operatorName',0,'操作员',NULL),(202,'cleantable',1,14,NULL,3,1,NULL,'',2,'操作',NULL),(203,'opticalfilmingtable',1,1,NULL,2,1,NULL,NULL,2,NULL,NULL),(203,'opticalfilmingtable',1,2,NULL,2,1,NULL,'opfID',1,'opfID',NULL),(203,'opticalfilmingtable',1,3,NULL,2,1,NULL,'optTime',0,'Date',NULL),(203,'opticalfilmingtable',1,4,NULL,2,1,NULL,'inputLotNum',0,'Input LOT#',NULL),(203,'opticalfilmingtable',1,5,NULL,2,1,NULL,'inputQty',0,'Input Qty(pcs)',NULL),(203,'opticalfilmingtable',1,6,NULL,2,1,NULL,'fixtureNum',0,'Fixture#',NULL),(203,'opticalfilmingtable',1,7,NULL,2,1,NULL,'outputLotNum',0,'Output LOT#',NULL),(203,'opticalfilmingtable',1,8,NULL,2,1,NULL,'outputQty',0,'output Qty(pcs)',NULL),(203,'opticalfilmingtable',1,9,NULL,2,1,NULL,'scrapQty',0,'Scrap Qty(pcs)',NULL),(203,'opticalfilmingtable',1,10,NULL,1,1,NULL,NULL,0,'工作面',NULL),(203,'opticalfilmingtable',2,10,1,1,1,191,NULL,0,NULL,NULL),(203,'opticalfilmingtable',1,11,NULL,1,1,NULL,NULL,0,'非工作面',NULL),(203,'opticalfilmingtable',2,11,NULL,1,1,192,NULL,0,NULL,NULL),(203,'opticalfilmingtable',1,12,NULL,2,1,NULL,'qcUseQty',0,'QC Use Qty(pcs)',NULL),(203,'opticalfilmingtable',1,13,NULL,2,1,NULL,'toAPSQty',0,'To APS coating Qty(pcs)',NULL),(203,'opticalfilmingtable',1,14,NULL,2,1,NULL,'partNum',0,'Part Num',NULL),(203,'opticalfilmingtable',1,15,NULL,2,1,NULL,'workOrderNum',0,'work order number',NULL),(203,'opticalfilmingtable',1,16,NULL,2,1,NULL,'operatorName',0,'操作员',NULL),(203,'opticalfilmingtable',1,17,NULL,2,1,NULL,NULL,2,'操作',NULL),(204,'platedfilmtable',1,1,NULL,1,1,NULL,'',2,'',''),(204,'platedfilmtable',1,2,NULL,1,1,NULL,'pfID',1,'pfID',''),(204,'platedfilmtable',1,3,NULL,1,1,NULL,'coatingTime',0,'Coating Date',''),(204,'platedfilmtable',1,4,NULL,1,1,NULL,'pfTime',0,'Date',''),(204,'platedfilmtable',1,5,NULL,1,1,NULL,'inputLotNum',0,'Input LOT#',''),(204,'platedfilmtable',1,6,NULL,1,1,NULL,'inputQty',0,'Input Qty(pcs)',''),(204,'platedfilmtable',1,7,NULL,1,1,NULL,'fixtureNum',0,'Fixture#',''),(204,'platedfilmtable',1,8,NULL,1,1,NULL,'apsBottle',0,'APS Bottle',''),(204,'platedfilmtable',1,9,NULL,1,1,NULL,'outputLotNum',0,'Output LOT#',''),(204,'platedfilmtable',1,10,NULL,1,1,NULL,'outputQty',0,'Output Qty(pcs)',''),(204,'platedfilmtable',1,11,NULL,1,1,NULL,'scrapQty',0,'Scrap Qty(pcs)',''),(204,'platedfilmtable',1,12,NULL,1,1,NULL,'underIQCQty',0,'Under IQC Qty(pcs)',''),(204,'platedfilmtable',1,13,NULL,1,1,NULL,'qNum',0,'Q-NUM',''),(204,'platedfilmtable',1,14,NULL,1,1,NULL,'kNum',0,'K-NUM',''),(204,'platedfilmtable',1,15,NULL,1,1,NULL,'qcUseQty',0,'QC Use Qty(pcs)',''),(204,'platedfilmtable',1,16,NULL,1,1,NULL,'functionalTestQty',0,'Functional Test Qty(pcs)',''),(204,'platedfilmtable',1,17,NULL,1,1,NULL,'toHUBQty',0,'To HUB Qty(pcs)',''),(204,'platedfilmtable',1,18,NULL,1,1,NULL,'remainQty',0,'REMAIN QTY',''),(204,'platedfilmtable',1,19,NULL,1,1,NULL,'apsCondition',0,'APS condition',''),(204,'platedfilmtable',1,20,NULL,1,1,NULL,'partNum',0,'Part Num',''),(204,'platedfilmtable',1,21,NULL,1,1,NULL,'workOrderNum',0,'work order number',''),(204,'platedfilmtable',1,22,NULL,1,1,NULL,'operatorName',0,'操作员',''),(204,'platedfilmtable',1,23,NULL,1,1,NULL,'',2,'操作',''),(201,'polishtable',1,1,NULL,4,1,NULL,NULL,2,NULL,NULL),(201,'polishtable',1,2,NULL,4,1,NULL,'polishID',1,'polishid',NULL),(201,'polishtable',1,3,NULL,4,1,NULL,'pickingTime',0,'领料日期',NULL),(201,'polishtable',1,4,NULL,4,1,NULL,'polishTime',0,'Polish Date',NULL),(201,'polishtable',1,5,NULL,4,1,NULL,'inputLotNum',0,'Input LOT#',NULL),(201,'polishtable',1,6,NULL,4,1,NULL,'inputQty',0,'Input Qty.(pcs)',NULL),(201,'polishtable',1,7,NULL,4,1,NULL,'fixtureNumber',0,'Fixture#',NULL),(201,'polishtable',1,8,NULL,4,1,NULL,'throwMillstoneNum',0,'millstone#',NULL),(201,'polishtable',1,9,NULL,4,1,NULL,'throwMillstonePosition',0,'Loading Fixture Position',NULL),(201,'polishtable',1,10,NULL,1,4,NULL,NULL,0,'估计值统计',NULL),(201,'polishtable',2,10,NULL,1,4,NULL,NULL,0,'抛磨后检验',NULL),(201,'polishtable',3,10,NULL,1,1,NULL,NULL,0,'工作面',NULL),(201,'polishtable',3,11,NULL,1,1,NULL,NULL,0,'非工作面',NULL),(201,'polishtable',4,10,NULL,1,1,172,NULL,0,NULL,NULL),(201,'polishtable',4,11,NULL,1,1,171,NULL,0,NULL,NULL),(201,'polishtable',3,12,NULL,2,1,NULL,'casualInspectionNum',0,'抽检总数',NULL),(201,'polishtable',3,13,NULL,2,1,NULL,'yield',0,'合格率',NULL),(201,'polishtable',1,14,NULL,4,1,NULL,'polishLotNum',0,'Polish LOT#',NULL),(201,'polishtable',1,16,NULL,4,1,NULL,'partNum',0,'Part NO',NULL),(201,'polishtable',1,17,NULL,4,1,NULL,'workOrderNum',0,'work order number',NULL),(201,'polishtable',1,19,NULL,4,1,NULL,'operatorName',0,'操作员',NULL),(201,'polishtable',1,20,NULL,4,1,NULL,NULL,2,'操作',NULL),(201,'polishtable',1,15,NULL,4,1,NULL,'measuredValues',0,'测量值',NULL),(206,'assemblytable',1,1,NULL,2,1,NULL,NULL,2,NULL,NULL),(206,'assemblytable',1,2,NULL,2,1,NULL,'assemblyID',1,'assemblyID',NULL),(206,'assemblytable',1,3,NULL,2,1,NULL,'deliveryTime',0,'delivery Date',NULL),(206,'assemblytable',1,4,NULL,2,1,NULL,'trayLotNum',0,'TRAY#',NULL),(206,'assemblytable',1,5,NULL,2,1,NULL,'inputLotNum',0,'Input LOT#',NULL),(206,'assemblytable',1,6,NULL,2,1,NULL,'inputQty',0,'Input Qty(pcs)',NULL),(206,'assemblytable',1,7,NULL,2,1,NULL,'fixtureNum',0,'Fixture#',NULL),(206,'assemblytable',1,8,NULL,2,1,NULL,'hubLotNum',0,'HUB Lot#',NULL),(206,'assemblytable',1,9,NULL,2,1,NULL,'outputLotNum',0,'Output LOT#',NULL),(206,'assemblytable',1,10,NULL,2,1,NULL,'outputQty',0,'output Qty(pcs)',NULL),(206,'assemblytable',1,11,NULL,2,1,NULL,'scrapQty',0,'Scrap Qty(pcs)',NULL),(206,'assemblytable',1,12,NULL,1,1,NULL,NULL,3,'工作面',NULL),(206,'assemblytable',1,13,NULL,1,1,NULL,NULL,3,'非工作面',NULL),(206,'assemblytable',1,14,NULL,2,1,NULL,'partNum',0,'Part Num',NULL),(206,'assemblytable',1,15,NULL,2,1,NULL,'workOrderNum',0,'work order number',NULL),(206,'assemblytable',1,16,NULL,2,1,NULL,'remark',0,'Remark',NULL),(206,'assemblytable',1,17,NULL,2,1,NULL,'operatorName',3,'操作员',NULL),(206,'assemblytable',1,18,NULL,2,1,NULL,NULL,2,'操作',NULL),(206,'assemblytable',2,12,1,1,1,201,NULL,3,NULL,NULL),(206,'assemblytable',2,13,NULL,1,1,202,NULL,3,NULL,NULL),(207,'chemicalreagenttable',1,1,NULL,2,1,NULL,NULL,2,NULL,NULL),(207,'chemicalreagenttable',1,2,NULL,2,1,NULL,'crID',1,'crID',NULL),(207,'chemicalreagenttable',1,3,NULL,2,1,NULL,'lot',0,'Lot',NULL),(207,'chemicalreagenttable',1,4,NULL,1,1,NULL,NULL,0,'混合试剂',NULL),(207,'chemicalreagenttable',1,5,NULL,2,1,NULL,'assemblyOutputLotNums',0,'14-####Lot',NULL),(207,'chemicalreagenttable',1,6,NULL,2,1,NULL,'pfOutputLotNums',0,'APS Lot',NULL),(207,'chemicalreagenttable',1,7,NULL,2,1,NULL,'ocOutputLotNums',0,'OP.Lot',NULL),(207,'chemicalreagenttable',1,8,NULL,1,2,NULL,NULL,0,'Fiber',NULL),(207,'chemicalreagenttable',1,10,NULL,2,1,NULL,'coatingStation',0,'Coating Station',NULL),(207,'chemicalreagenttable',1,11,NULL,2,1,NULL,'docRev',0,'Doc.Rev',NULL),(207,'chemicalreagenttable',1,12,NULL,2,1,NULL,'goodsQty',0,'Goods',NULL),(207,'chemicalreagenttable',1,13,NULL,2,1,NULL,'inputQty',0,'Input',NULL),(207,'chemicalreagenttable',1,14,NULL,2,1,NULL,'theoryYield',0,'theoretical Yield',NULL),(207,'chemicalreagenttable',1,15,NULL,2,1,NULL,'actualYield',0,'actual Yield',NULL),(207,'chemicalreagenttable',1,16,NULL,2,1,NULL,'theoryActualYield',0,'theoretical VS actual',NULL),(207,'chemicalreagenttable',1,17,NULL,2,1,NULL,'operatorName',0,'操作员',NULL),(207,'chemicalreagenttable',1,18,NULL,2,1,NULL,NULL,2,'操作',NULL),(207,'chemicalreagenttable',2,8,NULL,1,1,NULL,'rawMaterial',0,'Raw Material',NULL),(207,'chemicalreagenttable',2,9,NULL,1,1,NULL,'inPutDate',0,'In Put Date',NULL),(207,'chemicalreagenttable',2,4,NULL,1,1,94,NULL,0,NULL,NULL),(201,'polishtable',1,18,NULL,4,1,NULL,'polishBom',0,'Polish Bom',NULL);
+
+#
+# Structure for table "t_ums_userpermission"
+#
+
 DROP TABLE IF EXISTS `t_ums_userpermission`;
 CREATE TABLE `t_ums_userpermission` (
   `OPERATORID` int(8) NOT NULL COMMENT '操作员编号',
   `ROLEID` int(10) NOT NULL COMMENT '角色编码'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与角色对应表';
 
--- ----------------------------
--- Records of t_ums_userpermission
--- ----------------------------
-INSERT INTO `t_ums_userpermission` VALUES ('3', '2');
-INSERT INTO `t_ums_userpermission` VALUES ('4', '2');
-INSERT INTO `t_ums_userpermission` VALUES ('13', '2');
-INSERT INTO `t_ums_userpermission` VALUES ('9', '1');
+#
+# Data for table "t_ums_userpermission"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_assembly
--- ----------------------------
+INSERT INTO `t_ums_userpermission` VALUES (3,2),(4,2),(13,2),(9,1),(15,13),(15,12),(15,9),(15,8),(15,6),(15,5),(15,4),(15,2),(15,1),(16,58),(16,57),(16,54),(16,53),(16,50),(16,49),(16,46),(16,45),(16,41),(16,37),(17,58),(17,56),(17,54),(17,52),(17,50),(17,49),(17,48),(17,46),(17,45),(17,44),(17,40),(17,38);
+
+#
+# Structure for table "t_ums_workflow_assembly"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_assembly`;
 CREATE TABLE `t_ums_workflow_assembly` (
   `assembly_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
@@ -863,15 +420,16 @@ CREATE TABLE `t_ums_workflow_assembly` (
  PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
  PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB) */;
 
--- ----------------------------
--- Records of t_ums_workflow_assembly
--- ----------------------------
-INSERT INTO `t_ums_workflow_assembly` VALUES ('25', '2017-11-12', 'k94605', 'A1702031', '96', 'Q723', 'JS170120B', 'K170302XX', '3', '3', '15-9008', 'sdfs', 'T05', '9', '2017-11-12 16:24:48', '2017-11-22 00:12:26');
-INSERT INTO `t_ums_workflow_assembly` VALUES ('27', '2017-11-25', 'dfd', 'sdfs', '3', 'sdcs', 'sds', 'sds', '3', '3', '14-0014', 'we', 'T17', '9', '2017-11-25 19:07:23', '2017-11-25 19:07:23');
+#
+# Data for table "t_ums_workflow_assembly"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_chemical_reagent
--- ----------------------------
+INSERT INTO `t_ums_workflow_assembly` VALUES (25,'2017-11-12','k94605','A1702031',96,'Q723','JS170120B','K170302XX',3,3,'15-9008','sdfs','T05',9,'2017-11-12 16:24:48','2017-11-22 00:12:26'),(27,'2017-11-25','dfd','sdfs',3,'sdcs','sds','sds',3,3,'14-0014','we','T17',9,'2017-11-25 19:07:23','2017-11-25 19:07:23');
+
+#
+# Structure for table "t_ums_workflow_chemical_reagent"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_chemical_reagent`;
 CREATE TABLE `t_ums_workflow_chemical_reagent` (
   `cr_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
@@ -918,37 +476,32 @@ CREATE TABLE `t_ums_workflow_chemical_reagent` (
  PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
  PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB) */;
 
--- ----------------------------
--- Records of t_ums_workflow_chemical_reagent
--- ----------------------------
-INSERT INTO `t_ums_workflow_chemical_reagent` VALUES ('8', '1610312', 'XC160708', '2017-11-08', 'B0135', '5H-18', '9024', '9600', '94.00', '94.00', '100.00', '9', '2017-11-20 10:53:09', '2017-11-22 00:15:00');
-INSERT INTO `t_ums_workflow_chemical_reagent` VALUES ('9', 'sdf', 'sdfs', '2017-11-25', 'sdfsd', 'sdg', '56', '55', '67.00', '101.82', '151.97', '9', '2017-11-25 15:03:26', '2017-11-25 15:03:32');
+#
+# Data for table "t_ums_workflow_chemical_reagent"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_chemical_reagent_relation
--- ----------------------------
+INSERT INTO `t_ums_workflow_chemical_reagent` VALUES (8,'1610312','XC160708','2017-11-08','B0135','5H-18',9024,9600,94.00,94.00,100.00,9,'2017-11-20 10:53:09','2017-11-22 00:15:00'),(9,'sdf','sdfs','2017-11-25','sdfsd','sdg',56,55,67.00,101.82,151.97,9,'2017-11-25 15:03:26','2017-11-25 15:03:32');
+
+#
+# Structure for table "t_ums_workflow_chemical_reagent_relation"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_chemical_reagent_relation`;
 CREATE TABLE `t_ums_workflow_chemical_reagent_relation` (
   `cr_id` int(11) NOT NULL COMMENT '化学试剂唯一标示',
   `out_lot_num` varchar(20) DEFAULT NULL COMMENT '组装站位的OUTPUT LOT#'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='化学试剂与组装关系表';
 
--- ----------------------------
--- Records of t_ums_workflow_chemical_reagent_relation
--- ----------------------------
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('3', '666666');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('3', '4444444');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('6', '666666');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('6', '4444444');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('6', '3333333');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('7', '666666');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('7', '3333333');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('8', 'K170302XX');
-INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES ('9', 'K170302XX');
+#
+# Data for table "t_ums_workflow_chemical_reagent_relation"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_clean
--- ----------------------------
+INSERT INTO `t_ums_workflow_chemical_reagent_relation` VALUES (3,'666666'),(3,'4444444'),(6,'666666'),(6,'4444444'),(6,'3333333'),(7,'666666'),(7,'3333333'),(8,'K170302XX'),(9,'K170302XX');
+
+#
+# Structure for table "t_ums_workflow_clean"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_clean`;
 CREATE TABLE `t_ums_workflow_clean` (
   `clean_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
@@ -993,15 +546,16 @@ CREATE TABLE `t_ums_workflow_clean` (
  PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
  PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB) */;
 
--- ----------------------------
--- Records of t_ums_workflow_clean
--- ----------------------------
-INSERT INTO `t_ums_workflow_clean` VALUES ('8', '2017-03-01', 'DX1702021', null, '1534', '99.80', '1534', '09-0071', '102379092', '9', '2017-11-11 11:26:04', '2017-11-22 00:03:52');
-INSERT INTO `t_ums_workflow_clean` VALUES ('9', '2017-03-16', 'CX170214', null, '1534', '99.54', '1534', '09-0071', '102379092', '9', '2017-11-22 00:03:03', '2017-11-22 13:08:35');
+#
+# Data for table "t_ums_workflow_clean"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_compound_reagents
--- ----------------------------
+INSERT INTO `t_ums_workflow_clean` VALUES (8,'2017-03-01','DX1702021',NULL,1534,99.80,1534,'09-0071','102379092',9,'2017-11-11 11:26:04','2017-11-22 00:03:52'),(9,'2017-03-16','CX170214',NULL,1534,99.54,1534,'09-0071','102379092',9,'2017-11-22 00:03:03','2017-11-22 13:08:35');
+
+#
+# Structure for table "t_ums_workflow_compound_reagents"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_compound_reagents`;
 CREATE TABLE `t_ums_workflow_compound_reagents` (
   `cr_id` int(11) NOT NULL COMMENT '化学试剂唯一标示',
@@ -1009,19 +563,16 @@ CREATE TABLE `t_ums_workflow_compound_reagents` (
   `compound_reagents_sn` varchar(100) DEFAULT NULL COMMENT '混合试剂编号'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='化学混合试剂表';
 
--- ----------------------------
--- Records of t_ums_workflow_compound_reagents
--- ----------------------------
-INSERT INTO `t_ums_workflow_compound_reagents` VALUES ('6', 'chemicalreagenttable207146', 'dfdfg');
-INSERT INTO `t_ums_workflow_compound_reagents` VALUES ('6', 'chemicalreagenttable207144', 'dfgdg');
-INSERT INTO `t_ums_workflow_compound_reagents` VALUES ('7', 'chemicalreagenttable207146', 'sdfsd');
-INSERT INTO `t_ums_workflow_compound_reagents` VALUES ('7', 'chemicalreagenttable207142', 'sdfsdf');
-INSERT INTO `t_ums_workflow_compound_reagents` VALUES ('8', 'chemicalreagenttable207146', 'CM16052701');
-INSERT INTO `t_ums_workflow_compound_reagents` VALUES ('9', 'chemicalreagenttable207146', '454');
+#
+# Data for table "t_ums_workflow_compound_reagents"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_defect
--- ----------------------------
+INSERT INTO `t_ums_workflow_compound_reagents` VALUES (6,'chemicalreagenttable207146','dfdfg'),(6,'chemicalreagenttable207144','dfgdg'),(7,'chemicalreagenttable207146','sdfsd'),(7,'chemicalreagenttable207142','sdfsdf'),(8,'chemicalreagenttable207146','CM16052701'),(9,'chemicalreagenttable207146','454');
+
+#
+# Structure for table "t_ums_workflow_defect"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_defect`;
 CREATE TABLE `t_ums_workflow_defect` (
   `defect_id` int(11) DEFAULT NULL COMMENT '缺损关联id(如 defect_type为1 则defectid代表polish表唯一标示)',
@@ -1030,102 +581,16 @@ CREATE TABLE `t_ums_workflow_defect` (
   `defect_value` int(6) DEFAULT NULL COMMENT '缺损值'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='缺损记录表';
 
--- ----------------------------
--- Records of t_ums_workflow_defect
--- ----------------------------
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '56', '37');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '56', '37');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '9', '8');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '56', '37');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '9', '8');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('23', '11', '9', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('23', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '9', '8');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('22', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('24', '11', '9', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('24', '11', '11', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('24', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '11', '9', '32');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '11', '47', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '56', '37');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '11', '9', '32');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '11', '47', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '9', '34');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '11', '5', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '56', '37');
-INSERT INTO `t_ums_workflow_defect` VALUES ('21', '12', '52', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('24', '11', '9', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('24', '11', '11', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('24', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('23', '11', '9', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('23', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('23', '11', '9', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('23', '12', '56', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('26', '11', '9', '4');
-INSERT INTO `t_ums_workflow_defect` VALUES ('26', '11', '1', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('28', '11', '1', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('26', '11', '9', '4');
-INSERT INTO `t_ums_workflow_defect` VALUES ('26', '11', '1', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('28', '11', '1', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '51', '124', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '52', '112', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '51', '124', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '52', '112', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('8', '21', '67', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('8', '22', '57', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('5', '31', '88', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('5', '32', '44', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '51', '124', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('25', '52', '112', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('29', '11', '9', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('9', '21', '76', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('9', '22', '66', '4');
-INSERT INTO `t_ums_workflow_defect` VALUES ('33', '11', '9', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('29', '11', '9', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('29', '11', '9', '3');
-INSERT INTO `t_ums_workflow_defect` VALUES ('27', '51', '124', '4');
+#
+# Data for table "t_ums_workflow_defect"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_opticalfilming
--- ----------------------------
+INSERT INTO `t_ums_workflow_defect` VALUES (22,11,9,34),(22,11,5,3),(22,12,56,3),(22,12,52,3),(22,11,9,34),(22,11,5,3),(22,12,56,3),(22,12,52,3),(21,11,9,34),(21,11,5,3),(21,12,56,3),(21,12,52,3),(21,11,9,34),(21,11,5,3),(21,12,56,37),(21,12,52,3),(22,11,9,34),(22,11,5,3),(22,12,56,3),(22,12,52,3),(21,11,9,34),(21,11,5,3),(21,12,56,37),(21,12,52,3),(22,11,9,8),(22,11,5,3),(22,12,56,3),(22,12,52,3),(21,11,9,34),(21,11,5,3),(21,12,56,37),(21,12,52,3),(22,11,9,8),(22,11,5,3),(22,12,56,3),(22,12,52,3),(23,11,9,3),(23,12,56,3),(22,11,9,8),(22,11,5,3),(22,12,56,3),(22,12,52,3),(24,11,9,2),(24,11,11,3),(24,12,56,3),(25,11,9,32),(25,11,47,3),(25,12,56,3),(21,11,9,34),(21,11,5,3),(21,12,56,37),(21,12,52,3),(25,11,9,32),(25,11,47,3),(25,12,56,3),(21,11,9,34),(21,11,5,3),(21,12,56,37),(21,12,52,3),(24,11,9,2),(24,11,11,3),(24,12,56,3),(23,11,9,3),(23,12,56,3),(23,11,9,3),(23,12,56,3),(26,11,9,4),(26,11,1,1),(28,11,1,2),(26,11,9,4),(26,11,1,1),(28,11,1,2),(25,51,124,3),(25,52,112,3),(25,51,124,3),(25,52,112,3),(8,21,67,2),(8,22,57,1),(5,31,88,2),(5,32,44,3),(25,51,124,3),(25,52,112,3),(29,11,9,2),(9,21,76,3),(9,22,66,4),(33,11,9,3),(29,11,9,3),(29,11,9,3),(27,51,124,4),(32,171,213,8),(33,171,213,8),(34,171,213,8),(35,171,213,8),(36,171,213,8),(37,171,213,8),(38,171,213,8),(39,171,213,9),(39,171,216,5),(39,172,224,4),(39,172,227,5),(46,171,213,9),(46,171,216,5),(46,172,224,4),(46,172,227,5),(47,171,213,9),(47,171,216,5),(47,172,224,4),(47,172,227,5),(48,171,213,9),(48,171,216,5),(48,172,224,4),(48,172,227,5),(49,171,213,9),(49,171,216,5),(49,172,224,4),(49,172,227,5),(50,171,213,9),(50,171,216,5),(50,172,224,4),(50,172,227,5),(51,171,213,9),(51,171,216,5),(51,172,224,4),(51,172,227,5),(52,171,213,9),(52,171,216,5),(52,172,224,4),(52,172,227,5),(53,171,213,9),(53,171,216,5),(53,172,224,4),(53,172,227,5),(54,171,213,9),(54,171,216,5),(54,172,224,4),(54,172,227,5),(55,171,213,9),(55,171,216,5),(55,172,224,4),(55,172,227,5),(56,171,213,9),(56,171,216,5),(56,172,224,4),(56,172,227,5),(57,171,213,9),(57,171,216,5),(57,172,224,4),(57,172,227,5),(58,171,213,9),(58,171,216,5),(58,172,224,4),(58,172,227,5),(59,171,213,9),(59,171,216,5),(59,172,224,4),(59,172,227,5),(60,171,213,9),(60,171,216,5),(60,172,224,4),(60,172,227,5),(61,171,213,9),(61,171,216,5),(61,172,224,4),(61,172,227,5),(62,171,213,9),(62,171,216,5),(62,172,224,4),(62,172,227,5),(63,171,213,9),(63,171,216,5),(63,172,224,4),(63,172,227,5),(64,171,213,9),(64,171,216,5),(64,172,224,4),(64,172,227,5),(65,171,213,9),(65,171,216,5),(65,172,224,4),(65,172,227,5),(66,171,213,9),(66,171,216,5),(66,172,224,4),(66,172,227,5),(67,171,213,9),(67,171,216,5),(67,172,224,4),(67,172,227,5),(68,171,213,9),(68,171,216,5),(68,172,224,4),(68,172,227,5),(69,171,213,9),(69,171,216,5),(69,172,224,4),(69,172,227,5),(70,171,213,9),(70,171,216,5),(70,172,224,4),(70,172,227,5),(71,171,213,9),(71,171,216,5),(71,172,224,4),(71,172,227,5),(72,171,213,9),(72,171,216,5),(72,172,224,4),(72,172,227,5),(73,171,213,9),(73,171,216,5),(73,172,224,4),(73,172,227,5),(74,171,213,9),(74,171,216,5),(74,172,224,4),(74,172,227,5),(75,171,213,9),(75,171,216,5),(75,172,224,4),(75,172,227,5),(76,171,213,9),(76,171,216,5),(76,172,224,4),(76,172,227,5),(77,171,213,9),(77,171,216,5),(77,172,224,4),(77,172,227,5),(78,171,213,9),(78,171,216,5),(78,172,224,4),(78,172,227,5),(79,171,213,9),(79,171,216,5),(79,172,224,4),(79,172,227,5),(80,171,213,9),(80,171,216,5),(80,172,224,4),(80,172,227,5),(81,171,213,9),(81,171,216,5),(81,172,224,4),(81,172,227,5),(82,171,213,9),(82,171,216,5),(82,172,224,4),(82,172,227,5),(83,171,213,9),(83,171,216,5),(83,172,224,4),(83,172,227,5),(84,171,213,9),(84,171,216,5),(84,172,224,4),(84,172,227,5),(85,171,213,9),(85,171,216,5),(85,172,224,4),(85,172,227,5),(86,171,213,9),(86,171,216,5),(86,172,224,4),(86,172,227,5),(87,171,213,9),(87,171,216,5),(87,172,224,4),(87,172,227,5),(88,171,213,9),(88,171,216,5),(88,172,224,4),(88,172,227,5),(89,171,213,9),(89,171,216,5),(89,172,224,4),(89,172,227,5),(90,171,213,9),(90,171,216,5),(90,172,224,4),(90,172,227,5),(91,171,213,9),(91,171,216,5),(91,172,224,4),(91,172,227,5),(92,171,213,9),(92,171,216,5),(92,172,224,4),(92,172,227,5),(93,171,213,9),(93,171,216,5),(93,172,224,4),(93,172,227,5),(94,171,213,9),(94,171,216,5),(94,172,224,4),(94,172,227,5),(95,171,213,9),(95,171,216,5),(95,172,224,4),(95,172,227,5),(96,171,213,9),(96,171,216,5),(96,172,224,4),(96,172,227,5),(97,171,213,9),(97,171,216,5),(97,172,224,4),(97,172,227,5),(98,171,213,9),(98,171,216,5),(98,172,224,4),(98,172,227,5),(99,171,213,9),(99,171,216,5),(99,172,224,4),(99,172,227,5),(100,171,213,9),(100,171,216,5),(100,172,224,4),(100,172,227,5),(101,171,213,9),(101,171,216,5),(101,172,224,4),(101,172,227,5),(102,171,213,9),(102,171,216,5),(102,172,224,4),(102,172,227,5),(103,171,213,9),(103,171,216,5),(103,172,224,4),(103,172,227,5),(104,171,213,9),(104,171,216,5),(104,172,224,4),(104,172,227,5),(105,171,213,9),(105,171,216,5),(105,172,224,4),(105,172,227,5),(106,171,213,9),(106,171,216,5),(106,172,224,4),(106,172,227,5),(107,171,213,9),(107,171,216,5),(107,172,224,4),(107,172,227,5),(108,171,213,9),(108,171,216,5),(108,172,224,4),(108,172,227,5),(109,171,213,9),(109,171,216,5),(109,172,224,4),(109,172,227,5),(110,171,213,9),(110,171,216,5),(110,172,224,4),(110,172,227,5),(111,171,213,9),(111,171,216,5),(111,172,224,4),(111,172,227,5),(112,171,213,9),(112,171,216,5),(112,172,224,4),(112,172,227,5),(113,171,213,9),(113,171,216,5),(113,172,224,4),(113,172,227,5),(114,171,213,9),(114,171,216,5),(114,172,224,4),(114,172,227,5),(115,171,213,9),(115,171,216,5),(115,172,224,4),(115,172,227,5),(116,171,213,9),(116,171,216,5),(116,172,224,4),(116,172,227,5),(117,171,213,9),(117,171,216,5),(117,172,224,4),(117,172,227,5),(118,171,213,9),(118,171,216,5),(118,172,224,4),(118,172,227,5),(119,171,213,9),(119,171,216,5),(119,172,224,4),(119,172,227,5),(120,171,213,9),(120,171,216,5),(120,172,224,4),(120,172,227,5),(121,171,213,9),(121,171,216,5),(121,172,224,4),(121,172,227,5),(122,171,213,9),(122,171,216,5),(122,172,224,4),(122,172,227,5),(123,171,213,9),(123,171,216,5),(123,172,224,4),(123,172,227,5),(124,171,213,9),(124,171,216,5),(124,172,224,4),(124,172,227,5),(125,171,213,9),(125,171,216,5),(125,172,224,4),(125,172,227,5),(126,171,213,9),(126,171,216,5),(126,172,224,4),(126,172,227,5),(127,171,213,9),(127,171,216,5),(127,172,224,4),(127,172,227,5),(128,171,213,9),(128,171,216,5),(128,172,224,4),(128,172,227,5),(129,171,213,9),(129,171,216,5),(129,172,224,4),(129,172,227,5),(130,171,213,9),(130,171,216,5),(130,172,224,4),(130,172,227,5),(131,171,213,9),(131,171,216,5),(131,172,224,4),(131,172,227,5),(132,171,213,9),(132,171,216,5),(132,172,224,4),(132,172,227,5),(133,171,213,9),(133,171,216,5),(133,172,224,4),(133,172,227,5),(134,171,213,9),(134,171,216,5),(134,172,224,4),(134,172,227,5),(135,171,213,9),(135,171,216,5),(135,172,224,4),(135,172,227,5),(136,171,213,9),(136,171,216,5),(136,172,224,4),(136,172,227,5),(137,171,213,9),(137,171,216,5),(137,172,224,4),(137,172,227,5),(138,171,213,9),(138,171,216,5),(138,172,224,4),(138,172,227,5);
+
+#
+# Structure for table "t_ums_workflow_opticalfilming"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_opticalfilming`;
 CREATE TABLE `t_ums_workflow_opticalfilming` (
   `opf_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
@@ -1173,14 +638,16 @@ CREATE TABLE `t_ums_workflow_opticalfilming` (
  PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
  PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB) */;
 
--- ----------------------------
--- Records of t_ums_workflow_opticalfilming
--- ----------------------------
-INSERT INTO `t_ums_workflow_opticalfilming` VALUES ('5', '2017-02-10', 'CX170106', '1534', 'Q1981', 'O1701191XH', '1534', null, '36', '1498', '12-0003', '102367592', '9', '2017-11-22 00:06:42', '2017-11-22 00:06:42');
+#
+# Data for table "t_ums_workflow_opticalfilming"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_platedfilm
--- ----------------------------
+INSERT INTO `t_ums_workflow_opticalfilming` VALUES (5,'2017-02-10','CX170106',1534,'Q1981','O1701191XH',1534,NULL,36,1498,'12-0003','102367592',9,'2017-11-22 00:06:42','2017-11-22 00:06:42');
+
+#
+# Structure for table "t_ums_workflow_platedfilm"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_platedfilm`;
 CREATE TABLE `t_ums_workflow_platedfilm` (
   `pf_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
@@ -1236,15 +703,16 @@ CREATE TABLE `t_ums_workflow_platedfilm` (
  PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
  PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB) */;
 
--- ----------------------------
--- Records of t_ums_workflow_platedfilm
--- ----------------------------
-INSERT INTO `t_ums_workflow_platedfilm` VALUES ('4', '2017-02-17', '2017-02-21', 'O1701191XH', '1534', 'Q1453', 'SI170207', 'A1702154XH', '1534', null, '1526', null, null, null, '8', null, null, '', '14-0014', '1111111', '9', '2017-11-22 00:10:25', '2017-11-22 00:10:25');
-INSERT INTO `t_ums_workflow_platedfilm` VALUES ('5', '2017-11-25', '2017-11-25', 'sdfs', '4', 'sdfs', 'sdfsd', 'sdfds', '45', '45', '43', null, null, null, null, null, null, '', '14-0014', 'sdfs', '9', '2017-11-25 14:59:13', '2017-11-25 14:59:18');
+#
+# Data for table "t_ums_workflow_platedfilm"
+#
 
--- ----------------------------
--- Table structure for t_ums_workflow_polish
--- ----------------------------
+INSERT INTO `t_ums_workflow_platedfilm` VALUES (4,'2017-02-17','2017-02-21','O1701191XH',1534,'Q1453','SI170207','A1702154XH',1534,NULL,1526,NULL,NULL,NULL,8,NULL,NULL,'','14-0014','1111111',9,'2017-11-22 00:10:25','2017-11-22 00:10:25'),(5,'2017-11-25','2017-11-25','sdfs',4,'sdfs','sdfsd','sdfds',45,45,43,NULL,NULL,NULL,NULL,NULL,NULL,'','14-0014','sdfs',9,'2017-11-25 14:59:13','2017-11-25 14:59:18');
+
+#
+# Structure for table "t_ums_workflow_polish"
+#
+
 DROP TABLE IF EXISTS `t_ums_workflow_polish`;
 CREATE TABLE `t_ums_workflow_polish` (
   `polish_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
@@ -1261,11 +729,12 @@ CREATE TABLE `t_ums_workflow_polish` (
   `polish_lot_num` varchar(20) DEFAULT NULL COMMENT 'polish 完成后产生的LOT#',
   `part_num` varchar(20) DEFAULT NULL COMMENT '零件号',
   `work_order_num` varchar(20) DEFAULT NULL COMMENT '工单号',
+  `polishbom` varchar(255) DEFAULT NULL,
   `operatorid` int(11) DEFAULT NULL,
   `input_time` datetime NOT NULL COMMENT '录入时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`polish_id`,`input_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='抛光表'
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8 COMMENT='抛光表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201711 VALUES LESS THAN (736999) ENGINE = InnoDB,
  PARTITION p201712 VALUES LESS THAN (737029) ENGINE = InnoDB,
@@ -1294,19 +763,18 @@ CREATE TABLE `t_ums_workflow_polish` (
  PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
  PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB) */;
 
--- ----------------------------
--- Records of t_ums_workflow_polish
--- ----------------------------
-INSERT INTO `t_ums_workflow_polish` VALUES ('26', '2017-02-13', '2017-03-01', 'XC161216', '0000001534', 'Q1111', '10000', 'C', '13,24,55', '1534', '99.67', 'XC161216', '09-0080', '102418121', '9', '2017-11-11 10:40:03', '2017-11-11 11:10:47');
-INSERT INTO `t_ums_workflow_polish` VALUES ('27', '2017-01-31', '2017-03-01', 'XC161216', '0000001534', 'Q1230', '10001', 'B', '13,14,25', '1534', '100.00', 'XC161216', '09-0080', '102418021', '9', '2017-11-11 11:00:54', '2017-11-22 10:48:21');
-INSERT INTO `t_ums_workflow_polish` VALUES ('28', '2017-02-13', '2017-03-01', 'XC161216', '0000001534', 'Q1047', '10003', 'B', '13,14,25', '1534', '99.87', 'XC161216', '09-0080', '102418121', '9', '2017-11-11 11:10:31', '2017-11-11 11:11:05');
+#
+# Data for table "t_ums_workflow_polish"
+#
 
--- ----------------------------
--- Function structure for queryChildMenuList
--- ----------------------------
+INSERT INTO `t_ums_workflow_polish` VALUES (26,'2017-02-13','2017-03-01','XC161216',0000001534,'Q1111','10000','C','13,24,55',1534,99.67,'XC161216','09-0080','102418121',NULL,9,'2017-11-11 10:40:03','2017-11-11 11:10:47'),(27,'2017-01-31','2017-03-01','XC161216',0000001534,'Q1230','10001','B','13,14,25',1534,100.00,'XC161216','09-0080','102418021',NULL,9,'2017-11-11 11:00:54','2017-11-22 10:48:21'),(28,'2017-02-13','2017-03-01','XC161216',0000001534,'Q1047','10003','B','13,14,25',1534,99.87,'XC161216','09-0080','102418121',NULL,9,'2017-11-11 11:10:31','2017-11-11 11:11:05'),(30,'2018-04-10','2018-04-11','998887',0000000076,'9998888','','A','',70,100.00,'9887','13-0003','8776','fggff',9,'2018-04-07 20:50:20','2018-04-07 20:50:20'),(31,'2018-04-10','2018-04-11','998887',0000000076,'9998888','','A','',70,100.00,'9887','13-0003','8776','fggff',9,'2018-04-07 20:53:34','2018-04-07 20:53:34'),(32,'2018-04-11','2018-04-11','9887',0000000076,'8877','','A','',10,20.00,'877','13-0003','iuuuyy','fggff',9,'2018-04-07 21:00:46','2018-04-07 21:00:46'),(33,'2018-04-11','2018-04-11','9887',0000000076,'8877','','A','',10,20.00,'877','13-0003','iuuuyy','fggff',9,'2018-04-07 21:00:50','2018-04-07 21:00:50'),(34,'2018-04-11','2018-04-11','9887',0000000076,'8877','','A','',10,20.00,'877','13-0003','iuuuyy','fggff',9,'2018-04-07 21:00:51','2018-04-07 21:00:51'),(35,'2018-04-11','2018-04-11','9887',0000000076,'8877','','A','',10,20.00,'877','13-0003','iuuuyy','fggff',9,'2018-04-07 21:00:52','2018-04-07 21:00:52'),(36,'2018-04-11','2018-04-11','9887',0000000076,'8877','','A','',10,20.00,'877','13-0003','iuuuyy','fggff',9,'2018-04-07 21:00:53','2018-04-07 21:00:53'),(37,'2018-04-11','2018-04-11','9887',0000000076,'8877','','A','',10,20.00,'877','13-0003','iuuuyy','fggff',9,'2018-04-07 21:00:53','2018-04-07 21:00:53'),(38,'2018-04-11','2018-04-11','9887',0000000076,'8877','','A','',10,20.00,'877','13-0003','iuuuyy','fggff',9,'2018-04-07 21:00:54','2018-04-07 21:00:54'),(39,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,100.00,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-07 22:33:47','2018-04-08 22:28:51'),(45,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,100.00,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 22:46:05','2018-04-08 22:46:05'),(46,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 22:57:23','2018-04-08 22:57:23'),(47,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 22:57:25','2018-04-08 22:57:25'),(48,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 22:57:25','2018-04-08 22:57:25'),(49,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:14','2018-04-08 23:01:14'),(50,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:14','2018-04-08 23:01:14'),(51,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:15','2018-04-08 23:01:15'),(52,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:15','2018-04-08 23:01:15'),(53,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:16','2018-04-08 23:01:16'),(54,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:16','2018-04-08 23:01:16'),(55,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:16','2018-04-08 23:01:16'),(56,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:16','2018-04-08 23:01:16'),(57,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:17','2018-04-08 23:01:17'),(58,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:17','2018-04-08 23:01:17'),(59,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:17','2018-04-08 23:01:17'),(60,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:18','2018-04-08 23:01:18'),(61,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:18','2018-04-08 23:01:18'),(62,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:18','2018-04-08 23:01:18'),(63,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:20','2018-04-08 23:01:20'),(64,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:21','2018-04-08 23:01:21'),(65,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:21','2018-04-08 23:01:21'),(66,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:21','2018-04-08 23:01:21'),(67,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:22','2018-04-08 23:01:22'),(68,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:22','2018-04-08 23:01:22'),(69,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:23','2018-04-08 23:01:23'),(70,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:23','2018-04-08 23:01:23'),(71,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:23','2018-04-08 23:01:23'),(72,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:24','2018-04-08 23:01:24'),(73,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:24','2018-04-08 23:01:24'),(74,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:24','2018-04-08 23:01:24'),(75,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:25','2018-04-08 23:01:25'),(76,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:26','2018-04-08 23:01:26'),(77,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:27','2018-04-08 23:01:27'),(78,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:27','2018-04-08 23:01:27'),(79,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:27','2018-04-08 23:01:27'),(80,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:28','2018-04-08 23:01:28'),(81,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:28','2018-04-08 23:01:28'),(82,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:28','2018-04-08 23:01:28'),(83,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:29','2018-04-08 23:01:29'),(84,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:29','2018-04-08 23:01:29'),(85,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:30','2018-04-08 23:01:30'),(86,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:30','2018-04-08 23:01:30'),(87,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:30','2018-04-08 23:01:30'),(88,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:50','2018-04-08 23:01:50'),(89,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:50','2018-04-08 23:01:50'),(90,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:51','2018-04-08 23:01:51'),(91,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:51','2018-04-08 23:01:51'),(92,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:52','2018-04-08 23:01:52'),(93,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:52','2018-04-08 23:01:52'),(94,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:52','2018-04-08 23:01:52'),(95,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:53','2018-04-08 23:01:53'),(96,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:53','2018-04-08 23:01:53'),(97,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:53','2018-04-08 23:01:53'),(98,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:54','2018-04-08 23:01:54'),(99,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:54','2018-04-08 23:01:54'),(100,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:54','2018-04-08 23:01:54'),(101,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:54','2018-04-08 23:01:54'),(102,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:55','2018-04-08 23:01:55'),(103,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:55','2018-04-08 23:01:55'),(104,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:55','2018-04-08 23:01:55'),(105,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:56','2018-04-08 23:01:56'),(106,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:56','2018-04-08 23:01:56'),(107,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:57','2018-04-08 23:01:57'),(108,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:57','2018-04-08 23:01:57'),(109,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:58','2018-04-08 23:01:58'),(110,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:58','2018-04-08 23:01:58'),(111,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:58','2018-04-08 23:01:58'),(112,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:59','2018-04-08 23:01:59'),(113,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:59','2018-04-08 23:01:59'),(114,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:01:59','2018-04-08 23:01:59'),(115,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:00','2018-04-08 23:02:00'),(116,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:00','2018-04-08 23:02:00'),(117,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:00','2018-04-08 23:02:00'),(118,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:01','2018-04-08 23:02:01'),(119,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:01','2018-04-08 23:02:01'),(120,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:01','2018-04-08 23:02:01'),(121,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:02','2018-04-08 23:02:02'),(122,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:02','2018-04-08 23:02:02'),(123,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:03','2018-04-08 23:02:03'),(124,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:03','2018-04-08 23:02:03'),(125,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:04','2018-04-08 23:02:04'),(126,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:04','2018-04-08 23:02:04'),(127,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:05','2018-04-08 23:02:05'),(128,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:05','2018-04-08 23:02:05'),(129,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:05','2018-04-08 23:02:05'),(130,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:06','2018-04-08 23:02:06'),(131,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:06','2018-04-08 23:02:06'),(132,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:07','2018-04-08 23:02:07'),(133,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:07','2018-04-08 23:02:07'),(134,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:07','2018-04-08 23:02:07'),(135,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:07','2018-04-08 23:02:07'),(136,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:08','2018-04-08 23:02:08'),(137,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:08','2018-04-08 23:02:08'),(138,'2018-04-07','2018-04-02','jjkhh',0000000675,'hhh','','C','',75,69.33,'iiuyuy','15-9008','lkjj','ddddsss',9,'2018-04-08 23:02:09','2018-04-08 23:02:09');
+
+#
+# Function "queryChildMenuList"
+#
+
 DROP FUNCTION IF EXISTS `queryChildMenuList`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `queryChildMenuList`(v_pmenuid INT) RETURNS text CHARSET utf8
+CREATE FUNCTION `queryChildMenuList`(v_pmenuid INT) RETURNS text CHARSET utf8
 BEGIN
 	 declare v_p_collections TEXT(4000);
 	 declare v_sub_collections TEXT(4000);
@@ -1317,16 +785,14 @@ BEGIN
 	 	SELECT group_concat(f.menuid) into v_sub_collections  FROM T_UMS_MENUINFO f WHERE DISABLED=0 and FIND_IN_SET(f.pmenuid,v_sub_collections)>0;
 	 end while;
  	return v_p_collections;
-END
-;;
-DELIMITER ;
+END;
 
--- ----------------------------
--- Function structure for queryChildRoleList
--- ----------------------------
+#
+# Function "queryChildRoleList"
+#
+
 DROP FUNCTION IF EXISTS `queryChildRoleList`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `queryChildRoleList`(v_proleid INT) RETURNS text CHARSET utf8
+CREATE FUNCTION `queryChildRoleList`(v_proleid INT) RETURNS text CHARSET utf8
 BEGIN
 	 declare v_p_collections TEXT(4000);
 	 declare v_sub_collections TEXT(4000);
@@ -1337,6 +803,43 @@ BEGIN
 	 	SELECT group_concat(f.roleid) into v_sub_collections  FROM t_ums_role f WHERE  FIND_IN_SET(f.proleid,v_sub_collections)>0;
 	 end while;
  	return v_p_collections;
-END
-;;
-DELIMITER ;
+END;
+
+#
+# View "menubuttonview"
+#
+
+DROP VIEW IF EXISTS `menubuttonview`;
+CREATE
+  ALGORITHM = UNDEFINED
+  VIEW `menubuttonview`
+  AS
+SELECT
+  `t_ums_menuinfo`.`MENUID` AS 'menuid', `t_ums_menuinfo`.`MENUNAME` AS 'menuname', 1 AS 'menutype', `t_ums_menuinfo`.`PMENUID` AS 'pmenuid'
+FROM
+  `t_ums_menuinfo`
+UNION ALL
+SELECT
+  f.`btnid`, f.`btncname`, 2 AS 'menutype', f.`menuid`
+FROM
+  `t_ums_menu_button` f
+WHERE
+  EXISTS (SELECT 1 FROM `t_ums_menuinfo` d WHERE (d.`MENUID` = f.`menuid`));
+
+#
+# Function "queryChildMenuButtonList"
+#
+
+DROP FUNCTION IF EXISTS `queryChildMenuButtonList`;
+CREATE FUNCTION `queryChildMenuButtonList`(v_pmenuid INT) RETURNS text CHARSET utf8
+BEGIN
+	 declare v_p_collections TEXT(4000);
+	 declare v_sub_collections TEXT(4000);
+	 SET v_p_collections = '$';
+	 set v_sub_collections= cast(v_pmenuid as char);
+	 while v_sub_collections is not null do
+	    set v_p_collections=CONCAT(v_p_collections,',',v_sub_collections);
+	 	SELECT group_concat(f.menuid) into v_sub_collections  FROM menuButtonview f WHERE FIND_IN_SET(f.pmenuid,v_sub_collections)>0;
+	 end while;
+ 	return v_p_collections;
+END;
