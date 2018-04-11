@@ -8,6 +8,8 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
+	$('#queryStartCleanTime').val(currentDate(30));
+	$('#queryEndCleanTime').val(currentDate(0));
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
     ];
@@ -23,10 +25,11 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
             "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
-          }, width : "60px"}
+          }, width : "100px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
 	var $wrapper = $('#div-table-container');
@@ -91,7 +94,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -99,7 +102,7 @@ $(document).ready(function() {
 		_table.draw();
 	});
 	$("#btn-add").click(function(){
-		polishManage.addItemShow();
+		polishManage.addItem();
 	});
 	$("#btn-export").click(function(){
 		polishManage.exportItem();
@@ -132,8 +135,13 @@ $(document).ready(function() {
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
         polishManage.currentItem = item;
-        polishManage.editItemInit(item);
-        polishManage.editItemShow();
+        polishManage.editItem(item);
+    }).on("click","#copyRow",function() {
+        //点击编辑按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        polishManage.currentItem = item;
+        polishManage.copyItem(item);
     }).on("click","#delRow",function() {
         //点击删除按钮
         var item = _table.row($(this).closest('tr')).data();
@@ -141,135 +149,81 @@ $(document).ready(function() {
         polishManage.deleteItem([item]);
     });
 	 var polishManage = {
-			    currentItem : null,
-			    fuzzySearch : true,
-			    editItemInit : function(item) {
-			        if (!item) {
-			            return;
-			        }
-			       $modDefectPanel=$('#modDefectPanel'),
-			       $modTemplate = $('#modTemplate'),
-			       $cleanTableName=$("#cleanTableName"),
-			       $modDefect=$('#modDefect');
-			       $("#modDataForm [name=cleanID]").val(item.cleanID);
-			       $("#modDataForm [name=cleanTime]").val(item.cleanTime);
-			       $("#modDataForm [name=cleanLotNum]").val(item.cleanLotNum);
-			       $("#modDataForm [name=scrapQty]").val(item.scrapQty);
-			       $("#modDataForm [name=outputQty]").val(item.outputQty);
-			       $("#modDataForm [name=toOCQty]").val(item.toOCQty);
-			       $("#modDataForm [name=partNum]").val(item.partNum);
-			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
-			       $('#modDefectPanel').find('.panel-body').each(function(){$(this).empty()});
-			       $.each(tableFieldBinds, function(index, tableField){
-			   		if(tableField.fieldName.indexOf($cleanTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
-			   			$modDefectPanel.show();
-			            $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html(tableField.headline).end();
-			            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
-			        	on('click', '.removeButton', function() {
-			                $('#modDataForm').bootstrapValidator('removeField', tableField.fieldName);
-			                $newRow.remove();
-			                if($modDefectPanel.find(".removeButton").length<=0){
-			                	$modDefectPanel.hide();
-			                }
-			            });
-			            $("#modWorkingface"+tableField.defectType).find(".panel-body").each(function(){
-			            	$(this).append($newRow).show();
-						});
-			            $("#modDataForm [name="+tableField.fieldName+"]").val($(item).attr(tableField.fieldName));
-			            $('#modDataForm').bootstrapValidator('addField', tableField.fieldName, {
-				            message: '缺损值必须为数字类型',
-				            validators: {
-				                digits: {
-				                    message: '缺损值必须为数字类型'
-				                }
-				            }
-				        });
-			   		}
-			       });
-			       if($modDefectPanel.find(".removeButton").length<=0){
-	                	$modDefectPanel.hide();
+	    currentItem : null,
+	    fuzzySearch : true,
+	    addItem: function() {
+	    	LoadPage(contextPath+"/workflow/addClean");
+	    },
+	    editItem: function(item) {
+	    	LoadPage(contextPath+"/workflow/modClean?cleanid="+item.cleanID+"&operator=");
+	    },
+	    copyItem: function(item) {
+	    	LoadPage(contextPath+"/workflow/modClean?cleanid="+item.cleanID+"&operator=copy");
+	    },
+	    exportItem:function(){
+	         $.post(contextPath+"/workflow/exportClean",$queryForm.serializeArray(), function(result) {
+	        	 if(result.resultCode==0){
+	        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
+    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+    	    		 window.location.href = downUrl;
+            		}else{
+            			Lobibox.alert('error', {
+                            msg: '<span class="red">导出数据失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+                            title:Lobibox.base.OPTIONS.title.error,
+                            width:Lobibox.base.OPTIONS.width,
+                            buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+                        });
+            		}
+             },'json'); 
+	    },
+	    deleteItem : function(selectedItems) {
+	        var message;
+	        if (selectedItems&&selectedItems.length) {
+	            if (selectedItems.length == 1) {
+	                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
+	 
+	            }else{
+	                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
+	            }
+	            Lobibox.confirm({
+	                msg: message,
+	                title:Lobibox.base.OPTIONS.title.info,
+	                callback: function ($this, type) {
+	                    if (type === 'yes') {
+	                    	var cleanIDs="";
+	                    	$(selectedItems).each(function(i) {
+	                    		cleanIDs=cleanIDs+selectedItems[i].cleanID+",";
+	                        });
+	                    	cleanIDs=cleanIDs.substr(cleanIDs,cleanIDs.length-1);
+	                    	$.post(contextPath+"/workflow/delClean",{"cleanIDs":cleanIDs}, function(result) {
+	                    		if(result.resultCode==0){
+	                    			Lobibox.alert('success', {
+	                                    msg: "<h3><span class='green'>清洗信息删除成功</span>",
+	                                    title:Lobibox.base.OPTIONS.title.success,
+	                                    width:Lobibox.base.OPTIONS.width,
+	                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
+	                                });
+	                    			$("#btn_refresh").click();
+	                    		}else{
+	                    			Lobibox.alert('error', {
+	                                    msg: '<span class="red">清洗信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+	                                    title:Lobibox.base.OPTIONS.title.error,
+	                                    width:Lobibox.base.OPTIONS.width,
+	                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+	                                });
+	                    		}
+	                        },'json'); 
+	                    }
 	                }
-			    },
-			    addItemShow: function() {
-			    	$addModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$addModal.css("overflow", "hidden");
-			    	$addModal.css("overflow-y", "auto");
-			    	$addModal.modal("show");
-			    },
-			    editItemShow: function() {
-			    	$modModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$modModal.css("overflow", "hidden");
-			    	$modModal.css("overflow-y", "auto");
-			    	$modModal.modal("show");
-			    },
-			    exportItem:function(){
-			         $.post(contextPath+"/workflow/exportClean",$queryForm.serializeArray(), function(result) {
-			        	 if(result.resultCode==0){
-			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
-		    	    		 window.location.href = downUrl;
-                    		}else{
-                    			Lobibox.alert('error', {
-                                    msg: '<span class="red">导出数据失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                                    title:Lobibox.base.OPTIONS.title.error,
-                                    width:Lobibox.base.OPTIONS.width,
-                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                                });
-                    		}
-                     },'json'); 
-			    },
-			    deleteItem : function(selectedItems) {
-			        var message;
-			        if (selectedItems&&selectedItems.length) {
-			            if (selectedItems.length == 1) {
-			                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
-			 
-			            }else{
-			                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
-			            }
-			            Lobibox.confirm({
-			                msg: message,
-			                title:Lobibox.base.OPTIONS.title.info,
-			                callback: function ($this, type) {
-			                    if (type === 'yes') {
-			                    	var cleanIDs="";
-			                    	$(selectedItems).each(function(i) {
-			                    		cleanIDs=cleanIDs+selectedItems[i].cleanID+",";
-			                        });
-			                    	cleanIDs=cleanIDs.substr(cleanIDs,cleanIDs.length-1);
-			                    	$.post(contextPath+"/workflow/delClean",{"cleanIDs":cleanIDs}, function(result) {
-			                    		if(result.resultCode==0){
-			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>清洗信息删除成功</span>",
-			                                    title:Lobibox.base.OPTIONS.title.success,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-			                                });
-			                    			$("#btn_refresh").click();
-			                    		}else{
-			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">清洗信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-			                                    title:Lobibox.base.OPTIONS.title.error,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-			                                });
-			                    		}
-			                        },'json'); 
-			                    }
-			                }
-			            });
-			        }else{
-			        	Lobibox.alert('info', {
-			    	        msg: "请先选中要删除的记录",
-			    	        title:Lobibox.base.OPTIONS.title.info,
-			    	        width:Lobibox.base.OPTIONS.width,
-			    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
-			    	    });
-			        }
-			    }
-			};
+	            });
+	        }else{
+	        	Lobibox.alert('info', {
+	    	        msg: "请先选中要删除的记录",
+	    	        title:Lobibox.base.OPTIONS.title.info,
+	    	        width:Lobibox.base.OPTIONS.width,
+	    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
+	    	    });
+	        }
+	    }
+	};
 });

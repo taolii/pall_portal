@@ -50,6 +50,7 @@
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
+										<input type='hidden'  name="outputQty" class="form-control" th:value="${polishEntity.outputQty}"/> 
 										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
 										<input type='hidden' name="polishID" th:value="${polishEntity.polishID}"/>
 										<input type='text' name="pickingTime" id='modFormPickingTime' class="form-control form_datetime" th:value="${polishEntity.pickingTime}"/>

@@ -58,6 +58,7 @@ $(document).ready(function() {
 
 	$addDataForm.bootstrapValidator({
         message: 'This value is not valid',
+        group:'.rowGroup',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -71,6 +72,30 @@ $(document).ready(function() {
                     }
                 }
             },
+            fixtureNumber: {
+                validators: {
+                    notEmpty: {
+                        message: 'Fixture#不能为空'
+                    }
+                }
+            },
+            inputLotNum: {
+                validators: {
+                    notEmpty: {
+                        message: 'Input LOT#不能为空'
+                    }
+                }
+            },
+            inputQty: {
+                validators: {
+                    notEmpty: {
+                        message: 'Input Qty不能为空'
+                    },
+                    digits: {
+	                    message: 'Input Qty值必须为数字'
+	                }
+                }
+            },
             cleanLotNum: {
                 validators: {
                     notEmpty: {
@@ -78,30 +103,10 @@ $(document).ready(function() {
                     }
                 }
             },
-            scrapQty: {
+            toOtherQty: {
                 validators: {
                     digits: {
-	                    message: 'Scrap Qty值必须为数字'
-	                }
-                }
-            },
-            outputQty: {
-                validators: {
-                    notEmpty: {
-                        message: 'Output Qty不能为空'
-                    },
-                    digits: {
-	                    message: 'Output Qty值必须为数字'
-	                }
-                }
-            },
-            toOCQty: {
-                validators: {
-                    notEmpty: {
-                        message: 'to Optical Coating Qty不能为空'
-                    },
-                    digits: {
-	                    message: 'to Optical Coating Qty值必须为数字'
+	                    message: 'to other Qty值必须为数字'
 	                }
                 }
             },
@@ -121,34 +126,29 @@ $(document).ready(function() {
             }
         }
     }).on('success.form.bv', function(e) {
+    	var defectNum=0;
+    	$(".defect-panel input").each(function(){
+    		if($(this).val()!=null){
+    			defectNum=defectNum+Number($(this).val());
+    		}
+    	});
+    	$('#addDataForm [name=scrapQty]').val(defectNum);
+    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-defectNum-Number($('#addDataForm [name=toOtherQty]').val());
+    	alert(outputQty);
+    	$('#addDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/workflow/addClean",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			Lobibox.alert('success', {
-                    msg: "<h3><span class='green'>添加清洗信息成功</span>",
-                    title:Lobibox.base.OPTIONS.title.success,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-                });
-    			$addDefectPanel.find(".panel-body").each(function(){
-    				$(this).empty();
-    			});
-    			$addDefectPanel.hide();
-    			$form.data('bootstrapValidator').resetForm(true);
-    			$("#addModal").modal("hide");
-    			$("#btn_refresh").click();
+    			showNotice('Success',"添加清洗信息成功",'success',1000*5);
     		}else{
-    			Lobibox.alert('error', {
-                    msg: '<span class="red">添加清洗信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                    title:Lobibox.base.OPTIONS.title.error,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                });
+    			showNotice('Error','<span style="padding-top:5px">添加清洗信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
+    		$form.bootstrapValidator('disableSubmitButtons', false);
         },'json'); 
-    }).on('error.form.bv', function(e, data) {
-    	showNotice('Error','参数非法，请检查参数','error',1000*10);
+    });
+	$("#addBackButton").on("click",function(){
+    	window.location.href=contextPath+"/workflow/cleanManage";
     });
 });

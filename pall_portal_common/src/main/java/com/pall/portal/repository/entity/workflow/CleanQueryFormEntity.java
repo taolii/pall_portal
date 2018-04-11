@@ -14,6 +14,10 @@ public class CleanQueryFormEntity {
 	 */
 	private int pageSize;
 	/*
+	 * 唯一标示
+	 */
+	private String cleanID;
+	/*
 	 * 清洗日期
 	 */
 	private String cleanTime;
@@ -34,6 +38,10 @@ public class CleanQueryFormEntity {
 	 * 零件号
 	 */
 	private String partNum;
+	/*
+	 * 光纤的料号及批次号
+	 */
+	private String fixtureNumber;
 	/*
 	 * 工单号
 	 */
@@ -91,6 +99,18 @@ public class CleanQueryFormEntity {
 	}
 	public void setEndCleanTime(String endCleanTime) {
 		this.endCleanTime = endCleanTime;
+	}
+	public String getCleanID() {
+		return cleanID;
+	}
+	public void setCleanID(String cleanID) {
+		this.cleanID = cleanID;
+	}
+	public String getFixtureNumber() {
+		return fixtureNumber;
+	}
+	public void setFixtureNumber(String fixtureNumber) {
+		this.fixtureNumber = fixtureNumber;
 	}
 	
 }

@@ -43,6 +43,15 @@ var TABLE_CONSTANT = {
                     render: function (data, type, row, meta) {
                         return '<input type="checkbox" class="ace"><span class="lbl"></span>';
                     }
+                },
+                RADIO: { //复选框单元格
+                	className: "",
+                    orderable: false,
+                    width: "20px",
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return '<input name="radio" type="radio" class="ace"><span class="lbl"></span>';
+                    }
                 }
             },
             RENDER: {   //常用render可以抽取出来，如日期时间、头像等

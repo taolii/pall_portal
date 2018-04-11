@@ -6,6 +6,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.pall.portal.repository.entity.workflow.PolishEntity.ADD;
+import com.pall.portal.repository.entity.workflow.PolishEntity.SAVE;
+
 /*
  * 清洗信息
  */
@@ -20,7 +23,25 @@ public class CleanEntity {
 	 */
 	@NotEmpty(message="{cleanmanage.form.valid.CleanEntity.cleanTime.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String cleanTime;
-	
+	/*
+	 * 光纤的料号及批次号
+	 */
+	@NotEmpty(message="{cleanmanage.form.valid.CleanEntity.fixtureNumber.NotEmpty}",groups={SAVE.class,ADD.class})
+	private String fixtureNumber;
+	/*
+	 * polish 完成后产生的LOT#
+	 */
+	@NotEmpty(message="{cleanmanage.form.valid.CleanEntity.inputLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
+	private String inputLotNum;
+	/*
+	 * 抛光数量
+	 */
+	@NotNull(message="{cleanmanage.form.valid.CleanEntity.inputQty.NotEmpty}",groups={SAVE.class,ADD.class})
+	private Integer inputQty;
+	/*
+	 * clean Bom
+	 */
+	private String cleanBom;
 	/*
 	 * Clean LOT#
 	 */
@@ -30,21 +51,19 @@ public class CleanEntity {
 	 * 碎片数量
 	 */
 	private Integer scrapQty;
-	@NotNull(message="{cleanmanage.form.valid.CleanEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
 	/*
 	 * 输出数量
 	 */
+	@NotNull(message="{cleanmanage.form.valid.CleanEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
 	private Integer outputQty;
-	/*
-	 * 到光学镀膜数量
-	 */
-	@NotNull(message="{cleanmanage.form.valid.CleanEntity.toOCQty.NotEmpty}",groups={SAVE.class,ADD.class})
-	private Integer toOCQty;
 	/*
 	 * 缺损信息
 	 */
 	private List<DefectEntity> defects;
-	
+	/*
+	 * to other qty
+	 */
+	private Integer toOtherQty;
 	/*
 	 * 合格率
 	 */
@@ -108,11 +127,12 @@ public class CleanEntity {
 	public void setOutputQty(Integer outputQty) {
 		this.outputQty = outputQty;
 	}
-	public Integer getToOCQty() {
-		return toOCQty;
+	
+	public Integer getToOtherQty() {
+		return toOtherQty;
 	}
-	public void setToOCQty(Integer toOCQty) {
-		this.toOCQty = toOCQty;
+	public void setToOtherQty(Integer toOtherQty) {
+		this.toOtherQty = toOtherQty;
 	}
 	public List<DefectEntity> getDefects() {
 		return defects;
@@ -162,6 +182,32 @@ public class CleanEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	
+	public String getFixtureNumber() {
+		return fixtureNumber;
+	}
+	public void setFixtureNumber(String fixtureNumber) {
+		this.fixtureNumber = fixtureNumber;
+	}
+	public String getInputLotNum() {
+		return inputLotNum;
+	}
+	public void setInputLotNum(String inputLotNum) {
+		this.inputLotNum = inputLotNum;
+	}
+	public Integer getInputQty() {
+		return inputQty;
+	}
+	public void setInputQty(Integer inputQty) {
+		this.inputQty = inputQty;
+	}
+	public String getCleanBom() {
+		return cleanBom;
+	}
+	public void setCleanBom(String cleanBom) {
+		this.cleanBom = cleanBom;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

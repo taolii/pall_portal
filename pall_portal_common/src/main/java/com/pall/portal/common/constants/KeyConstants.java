@@ -38,6 +38,10 @@ public class KeyConstants {
 	 */
 	public static final String DATACONFIG_TYPE_POLISHBOM="dataconfig/type/polishBom";
 	/*
+	 * 数据配置表代表抛光模块Clean Bom
+	 */
+	public static final String DATACONFIG_TYPE_CLEANBOM="dataconfig/type/cleanBom";
+	/*
 	 * 数据配置表代表基础数据配置列表类型
 	 */
 	public static final String DATACONFIG_TYPE_LIST="dataconfig/type/list";
@@ -93,6 +97,10 @@ public class KeyConstants {
 	 * 清洗流程配置表名
 	 */
 	public static final String WORKFLOW_CLEAN_TABLENAME="workflow/clean/tablename";
+	/*
+	 * 选择抛磨配置表名
+	 */
+	public static final String WORKFLOW_POLISHSEL_TABLENAME="workflow/polishSel/tablename";
 	/*
 	 * 清洗表工作面的缺损信息在数据配置表中的类型
 	 */

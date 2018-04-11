@@ -59,6 +59,8 @@ import com.pall.portal.repository.entity.workflow.CleanEntity.SAVE;
 import com.pall.portal.repository.entity.workflow.CleanQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
+import com.pall.portal.repository.entity.workflow.PolishEntity;
+import com.pall.portal.repository.entity.workflow.PolishQueryFormEntity;
 import com.pall.portal.service.excel.IExcelHandler;
 import com.pall.portal.service.workflow.CleanService;
 /*
@@ -89,13 +91,11 @@ public class CleanManageController{
 	@Value("${system.default.file.download.path}")
 	private String downloadFilePath;
 	/*
-	 * 清洗管理
+	 * 初始化配置数据
 	 */
-	@RequestMapping(value="workflow/cleanManage", method= RequestMethod.GET)
-    public  String cleanManage(Model model, HttpServletRequest request) {	
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
-		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
+		model.addAttribute("cleanBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEANBOM)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
@@ -121,6 +121,16 @@ public class CleanManageController{
 		dataConfigEntitys.addAll(wdataConfigEntitys);
 		model.addAttribute("defectConfigs",dataConfigEntitys);
 		model.addAttribute("cleanTableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
+		return model;
+	}
+	/*
+	 * 清洗管理
+	 */
+	@RequestMapping(value="workflow/cleanManage", method= RequestMethod.GET)
+    public  String cleanManage(Model model, HttpServletRequest request) {	
+		model=initConfigData(model);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
 		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
 		if(tableFieldBindMap!=null){
@@ -198,6 +208,35 @@ public class CleanManageController{
 	 * 添加清洗信息
 	 */
 	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/addClean", method= RequestMethod.GET)
+    public  String addClean(Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISHSEL_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISHSEL_TABLENAME));
+		if(tableFieldBindMap!=null){
+			tableFieldBinds.addAll(tableFieldBindMap.values());
+		}
+		Collections.sort(tableFieldBinds,new Comparator<ExcelHeaderNode>() {
+			@Override
+	        public int compare(ExcelHeaderNode o1, ExcelHeaderNode o2) {
+				if(o1.getColNum()>o2.getColNum()){
+					return 1;
+				}else if(o1.getColNum()<o2.getColNum()){
+					return -1;
+				}else{
+					return 0;
+				}
+	        }
+		});
+		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
+		return "workflow/clean/addClean";
+    }
+	/*
+	 * 添加清洗信息
+	 */
+	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addClean", method= RequestMethod.POST)
     public  @ResponseBody String addClean(@Validated(ADD.class) CleanEntity cleanEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
@@ -233,6 +272,61 @@ public class CleanManageController{
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
+    }
+	/*
+	 * 修改抛光信息
+	 */
+	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/modClean", method= RequestMethod.GET)
+    public   String modPolish(@RequestParam("cleanid") String cleanid,@RequestParam("operator") String operator,Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		BaseResponse baseResponse=new BaseResponse();
+		try {
+			CleanQueryFormEntity cleanQueryFormEntity=new CleanQueryFormEntity();
+			cleanQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			cleanQueryFormEntity.setCleanID(cleanid);
+			baseResponse=cleanService.exportClean(cleanQueryFormEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("cleanmanage.controler.queryClean.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("cleanmanage.controler.queryClean.exception"));
+		}
+		//数据查询成功，将文件写入下载目录以便下载
+		CleanEntity cleanEntity=null;
+		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+	        List<CleanEntity> cleanEntitys=(List<CleanEntity>)baseResponse.getReturnObjects();
+	        if (cleanEntitys!=null &&  cleanEntitys.size()>0){
+	        	cleanEntity=cleanEntitys.get(0);
+	        }
+		}
+		if(cleanEntity==null){
+			cleanEntity=new CleanEntity();
+		}
+		model.addAttribute("cleanEntity", cleanEntity);
+		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISHSEL_TABLENAME));
+		if(tableFieldBindMap!=null){
+			tableFieldBinds.addAll(tableFieldBindMap.values());
+		}
+		Collections.sort(tableFieldBinds,new Comparator<ExcelHeaderNode>() {
+			@Override
+	        public int compare(ExcelHeaderNode o1, ExcelHeaderNode o2) {
+				if(o1.getColNum()>o2.getColNum()){
+					return 1;
+				}else if(o1.getColNum()<o2.getColNum()){
+					return -1;
+				}else{
+					return 0;
+				}
+	        }
+		});
+		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
+		if("copy".equals(operator)){
+			model.addAttribute("operator", "copy");
+			return "workflow/clean/copyClean";
+		}else{
+			return "workflow/clean/modClean";
+		}
     }
 	/*
 	 * 修改清洗信息

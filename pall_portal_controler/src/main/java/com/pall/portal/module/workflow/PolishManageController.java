@@ -265,9 +265,9 @@ public class PolishManageController{
 			polishQueryFormEntity.setPolishID(polishid);
 			baseResponse=polishService.exportPolish(polishQueryFormEntity);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("polishmanage.controler.exportPolish.exception"),e);
+			logger.error(resourceUtils.getMessage("polishmanage.controler.queryPolish.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("polishmanage.controler.exportPolish.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("polishmanage.controler.queryPolish.exception"));
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		PolishEntity polishEntity=null;

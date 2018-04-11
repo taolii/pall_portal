@@ -165,6 +165,16 @@ $(document).ready(function() {
             }
         }
     }).on('success.form.bv', function(e) {
+    	/*var defectNum=0;
+    	$(".panel-body input").each(function(){
+    		if($(this).val()!=null){
+    			defectNum=defectNum+Number($(this).val());
+    		}
+    	});
+    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-defectNum;
+    	$('#addDataForm [name=outputQty]').val(outputQty);*/
+    	var outputQty=$('#addDataForm [name=inputQty]').val();
+    	$('#addDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');

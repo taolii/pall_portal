@@ -63,6 +63,11 @@ public class PolishEntity {
 	@NotNull(message="{polshmanage.form.valid.PolishEntity.casualInspectionNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private Integer casualInspectionNum;
 	/*
+	 * 输出数量
+	 */
+	@NotNull(message="{polshmanage.form.valid.PolishEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
+	private Integer outputQty;
+	/*
 	 * 合格率
 	 */
 	private double yield;
@@ -223,6 +228,13 @@ public class PolishEntity {
 	}
 	public void setPolishBom(String polishBom) {
 		this.polishBom = polishBom;
+	}
+	
+	public Integer getOutputQty() {
+		return outputQty;
+	}
+	public void setOutputQty(Integer outputQty) {
+		this.outputQty = outputQty;
 	}
 
 	public interface ADD{};  
