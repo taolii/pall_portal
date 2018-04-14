@@ -60,8 +60,8 @@ $(document).ready(function() {
             {className : "ellipsis",data: "description",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
-                "<button id='editRow' class='btn btn-info btn-xs' type='button'><i class='fa fa-edit'></i></button>"+
-                "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
+                "<button id='editRow' class='btn btn-info btn-xs' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+                "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
                 "</div>";
               }, width : "60px"}
         ],

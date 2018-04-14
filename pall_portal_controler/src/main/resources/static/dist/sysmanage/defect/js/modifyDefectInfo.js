@@ -49,7 +49,5 @@ $(document).ready(function() {
                 });
     		}
         },'json'); 
-    }).on('error.form.bv', function(e, data) {
-    	showNotice('Error','参数非法，请检查参数','error',1000*10);
     });
 });

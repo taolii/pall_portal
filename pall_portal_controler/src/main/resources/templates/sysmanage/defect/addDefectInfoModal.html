@@ -7,43 +7,38 @@
 </head>
 <body>
 	<div th:fragment="content">
-		<div id="addDefectModal" class="modal fade" tabindex="-1" role="dialog"
-			aria-hidden="true" style="display: none;">
-			<div class="modal-dialog" style="width:560px;">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel2">
-							<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;<label
-								th:text="#{pages.defect.addDefectInfo.title}" th:remove="tag"></label>
-						</h4>
-					</div>
-					<form method="POST" id="addDataForm" class="form-horizontal" >
-					<div class="modal-body" style="height: 300px;">
-							<div class="form-group">
-								<div class="group">
-									<span class="col-sm-3 control-span col-md-offset-1">
-										&nbsp; <label th:text="#{pages.defect.defectManage.form.workflow.titile}"
-										th:remove="tag"></label>
+		<form method="POST" id="addDataForm" class="form-horizontal" >
+			<div id="addDefectModal" class="modal fade" tabindex="-1" role="dialog"
+				aria-hidden="true" style="display: none;">
+				<div class="modal-dialog modal-sm" style="width:560px;">
+					<div class="modal-content">
+						<div class="modal-header no-padding">
+							<div class="table-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+									<span class="white">&times;</span>
+								</button>
+								<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;
+								<label th:text="#{pages.defect.addDefectInfo.title}" th:remove="tag"></label>
+							</div>
+						</div>
+						<div class="modal-body no-padding" style="overflow-y:hidden;height:300px;">
+							<div class="modal-body">
+								<div class="form-group">
+									<span class="col-sm-3 control-label">
+										<label th:text="#{pages.defect.defectManage.form.workflow.titile}" th:remove="tag"></label>
 									</span>
-									<div class="col-sm-7 control-input">
+									<div class="col-sm-8">
 										<select name="workflow" class="form-control" disabled="disabled">
 					                        <option  th:each="dataConfigType:${dataConfigTypes}" th:text="${dataConfigType.dataTypeName}" th:value="${dataConfigType.dataType}">
 							              	</option>				                                   
 	                                    </select>
 									</div>
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="group">
-									<span class="col-sm-3 control-span col-md-offset-1">
-										&nbsp; <label th:text="#{pages.defect.defectManage.form.defecttype.titile}"
-										th:remove="tag"></label>
+								<div class="form-group">
+									<span class="col-sm-3 control-label">
+										<label th:text="#{pages.defect.defectManage.form.defecttype.titile}" th:remove="tag"></label>
 									</span>
-									<div class="col-sm-7 control-input">
+									<div class="col-sm-8">
 										<select name="defectType" class="form-control" disabled="disabled">
 					                        <!--  option value="" th:text="#{pages.defect.defectManage.form.defecttype.select.uninvolved}"></option-->
 					                        <option value="2" th:text="#{pages.defect.defectManage.form.defecttype.select.work}"></option>
@@ -51,51 +46,42 @@
 	                                    </select>
 									</div>
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="group">
-									<input type="hidden" name="token" />
+								<div class="form-group">
 									<input type="hidden" name="dataType" />
-									<span class="col-sm-3 control-span col-md-offset-1">
-										&nbsp;&nbsp; <label
-										th:text="#{pages.defect.addDefectInfo.input.configname}"
-										th:remove="tag"></label> &nbsp;&nbsp;&nbsp;&nbsp;
+									<span class="col-sm-3 control-label">
+										<label th:text="#{pages.defect.addDefectInfo.input.configname}" th:remove="tag"></label>
 									</span>
-									<div class="col-sm-7 control-input">
+									<div class="col-sm-8">
 										<select id="configName" name="configName" class="form-control">
 							              <option  th:each="dataConfig:${sinfoDataConfigs}"  th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
 							              </option>
 	                                	</select>
 									</div>
-									
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="group">
-									<span class="col-sm-3 control-span col-md-offset-1" style="padding-bottom:39px">
-										&nbsp; <label th:text="#{pages.defect.addDefectInfo.textarea.description}"
-										th:remove="tag"></label>
+								<div class="form-group">
+									<span class="col-sm-3 control-label" style="padding-bottom:39px">
+										<label th:text="#{pages.defect.addDefectInfo.textarea.description}" th:remove="tag"></label>
 									</span>
-									<div class="col-sm-7 control-input">
+									<div class="col-sm-8">
 										<textarea name="description" rows="3" class="form-control input-group-sm"></textarea>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="modal-footer"> 
-							<button class="btn btn-primary submit-btn">
+						<div class="modal-footer no-margin-top">
+							<button class="btn btn-white btn-primary" type="submit">
 								<i class="fa fa-check"></i> 
 								<span th:text="#{pages.defect.addDefectInfo.button.add}" th:remove="tag"></span>
 							</button>
-							<button type="button" class="btn btn-primary" data-dismiss="modal">
+							<button type="button" class="btn btn-white btn-primary" data-dismiss="modal">
 								<i class="fa fa-close"></i> 
 								<span th:text="#{pages.defect.addDefectInfo.button.shut}" th:remove="tag"></span>
-							</button> 
+							</button>
 						</div>
-					</form>
+					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 </body>
 </html>

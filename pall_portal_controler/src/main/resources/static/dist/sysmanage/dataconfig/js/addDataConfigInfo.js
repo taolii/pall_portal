@@ -44,7 +44,5 @@ $(document).ready(function() {
     			showNotice('Error','<span style="padding-top:5px">添加数据配置信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
         },'json'); 
-    }).on('error.form.bv', function(e, data) {
-    	showNotice('Error','参数非法，请检查参数','error',1000*10);
     });
 });

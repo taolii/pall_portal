@@ -91,7 +91,7 @@
 										<span th:text="#{pages.user.personalInfoSettings.title}" th:remove="tag"></span>
 									</a>
 								</li>
-
+								<li class="divider"></li>
 								<li>
 									<a th:href="${#httpServletRequest.getContextPath()}+'/user/personalPwdSettings?operatorid='+${session.LOGIN_USER.userEntity.operatorid}">
 										<i class="ace-icon fa fa-key"></i>

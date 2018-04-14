@@ -10,7 +10,6 @@ $(document).ready(function() {
         },
         fields: {
         	account: {
-        		container: '.account',
         		validators: {
                     notEmpty: {
                         message: '登录账号不能为空'
@@ -18,7 +17,6 @@ $(document).ready(function() {
                 }
             },
             newPwd: {
-            	container: '.newPwd',
             	validators: {
                     notEmpty: {
                         message: '新密码不能为空'
@@ -35,7 +33,6 @@ $(document).ready(function() {
                 }
             },
             ensureNewPwd: {
-            	container: '.ensureNewPwd',
             	validators: {
                     notEmpty: {
                         message: '确认密码不能为空'

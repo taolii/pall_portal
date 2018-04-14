@@ -57,9 +57,9 @@ $(document).ready(function() {
             {className : "ellipsis",data: "name",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"80px"},
             {className : "ellipsis",data: "sex",render : function(data,type, row, meta) {
             		if(data=='1'){
-	            		return '<span class="label label-xlg label-pink arrowed arrowed-right">女</span>';
+	            		return '<span class="label label-sm label-pink arrowed arrowed-right">女</span>';
 	            	}else{
-	            		return '<span class="label label-xlg label-primary arrowed arrowed-right">男</span>';
+	            		return '<span class="label label-sm label-primary arrowed arrowed-right">男</span>';
 	            	};
             	},width:"80px"
             },

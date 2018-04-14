@@ -120,9 +120,11 @@
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-10">
-										<div class="col-md-3" style="padding-top:10px;padding-bottom:10px" th:each="role,iterStat:${roles}">
-											<input name="roleList" class="ace" type="checkbox" th:value="${role.roleid}">
-											<span class="lbl" th:text="${role.roleName}"></span>
+										<div class="col-md-4 checkbox" style="padding-top:10px;padding-bottom:10px" th:each="role,iterStat:${roles}">
+											<label>
+												<input name="roleList" class="ace" type="checkbox" th:value="${role.roleid}">
+												<span class="lbl" th:text="${role.roleName}"></span>
+											</label>
 										</div>
 									</div>
 						    	</div>
