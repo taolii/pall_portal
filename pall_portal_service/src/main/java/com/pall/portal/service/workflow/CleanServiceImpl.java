@@ -75,8 +75,8 @@ public class CleanServiceImpl implements CleanService{
 		}
 		if(defectids.size()>0){
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF)));
 			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
 			if(null!=defectEntitys){
 				for(DefectEntity defectEntity:defectEntitys){
@@ -134,8 +134,8 @@ public class CleanServiceImpl implements CleanService{
 					List<Integer> defectIDs=new ArrayList<Integer>();
 					defectIDs.add(cleanEntity.getCleanID());
 					List<Integer> defectTypes=new ArrayList<Integer>();
-					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF)));
-					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF)));
+					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF)));
+					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF)));
 					defectDao.delDefectResult(defectIDs,defectTypes);
 					for(DefectEntity defectEntity:defects){
 						defectEntity.setDefectID(cleanEntity.getCleanID());
@@ -167,8 +167,8 @@ public class CleanServiceImpl implements CleanService{
 		try{
 			cleanDao.delClean(cleanIDs);
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF)));
 			defectDao.delDefectResult(cleanIDs,defectTypes);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){

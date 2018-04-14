@@ -13,6 +13,15 @@ public class OpticalFilmingQueryFormEntity {
 	 * 每页记录数
 	 */
 	private int pageSize;
+	private String opfID;
+	/*
+	 * 镀膜日期
+	 */
+	private String startOptTime;
+	/*
+	 * 镀膜日期
+	 */
+	private String endOptTime;
 	/*
 	 * 镀膜日期
 	 */
@@ -33,6 +42,10 @@ public class OpticalFilmingQueryFormEntity {
 	 * 零件号
 	 */
 	private String partNum;
+	/*
+	 * 供应商信息
+	 */
+	private String supplier;
 	/*
 	 * 工单号
 	 */
@@ -90,6 +103,30 @@ public class OpticalFilmingQueryFormEntity {
 	}
 	public void setWorkOrderNum(String workOrderNum) {
 		this.workOrderNum = workOrderNum;
+	}
+	public String getSupplier() {
+		return supplier;
+	}
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+	public String getStartOptTime() {
+		return startOptTime;
+	}
+	public void setStartOptTime(String startOptTime) {
+		this.startOptTime = startOptTime;
+	}
+	public String getEndOptTime() {
+		return endOptTime;
+	}
+	public void setEndOptTime(String endOptTime) {
+		this.endOptTime = endOptTime;
+	}
+	public String getOpfID() {
+		return opfID;
+	}
+	public void setOpfID(String opfID) {
+		this.opfID = opfID;
 	}
 	
 }

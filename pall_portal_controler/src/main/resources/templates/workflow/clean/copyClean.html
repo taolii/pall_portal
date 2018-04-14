@@ -29,7 +29,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<form method="POST" id="modDataForm" class="form-horizontal">
-							<input type="text" id="defectFieldNameSuffix" name="defectFieldNameSuffix" style="display:none" th:value="${defectFieldNameSuffix}"/>
+							<input type='hidden' id="updateForm" name="updateForm" value="#modDataForm" />
 							<div class="form-group"  style="display: none;">
                     			<div class="col-md-4" style="margin-bottom:20px" id="modTemplate">
                     				<div class="rowGroup">
@@ -52,7 +52,6 @@
 									</span>
 									<div class="col-md-4">
 										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
-										<input type='hidden' name="cleanID" th:value="${cleanEntity.cleanID}"/>
 										<input type='text' name="cleanTime" id='modFormCleanTime' class="form-control form_datetime" th:value="${cleanEntity.cleanTime}"/>
 									</div>
 								</div>

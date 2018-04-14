@@ -133,8 +133,8 @@ public class AssemblyServiceImpl implements AssemblyService{
 					List<Integer> defectIDs=new ArrayList<Integer>();
 					defectIDs.add(assemblyEntity.getAssemblyID());
 					List<Integer> defectTypes=new ArrayList<Integer>();
-					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF)));
-					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF)));
+					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_WF)));
+					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_NWF)));
 					defectDao.delDefectResult(defectIDs,defectTypes);
 					for(DefectEntity defectEntity:defects){
 						defectEntity.setDefectID(assemblyEntity.getAssemblyID());

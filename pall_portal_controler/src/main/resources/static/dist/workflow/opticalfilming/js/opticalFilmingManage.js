@@ -1,9 +1,15 @@
 $(document).ready(function() {
-	var contextPath=$("#contextPath").val();
-	$('#queryOptTime').datetimepicker({  
+	var contextPath=$("#contextPath").val(); 
+	$('#queryStartOptTime').datetimepicker({  
+        format: 'YYYY-MM-DD',  
+        locale: moment.locale('zh-cn')
+    });
+	$('#queryEndOptTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
-    }); 
+    });
+	$('#queryStartOptTime').val(currentDate(30));
+	$('#queryEndOptTime').val(currentDate(0));
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
     ];
@@ -19,10 +25,11 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
             "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
-          }, width : "60px"}
+          }, width : "100px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
 	var $wrapper = $('#div-table-container');
@@ -87,7 +94,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -95,10 +102,10 @@ $(document).ready(function() {
 		_table.draw();
 	});
 	$("#btn-add").click(function(){
-		polishManage.addItemShow();
+		ofManage.addItem();
 	});
 	$("#btn-export").click(function(){
-		polishManage.exportItem();
+		ofManage.exportItem();
 	});
 	$("#btn-delAll").click(function(){
 		var arrItemId = [];
@@ -106,7 +113,7 @@ $(document).ready(function() {
             var item = _table.row($(this).closest('tr')).data();
             arrItemId.push(item);
         });
-        polishManage.deleteItem(arrItemId);
+        ofManage.deleteItem(arrItemId);
 	});
 	$("[name='cb-check-all']").click(function(){
 		$(":checkbox",$table).prop("checked",$(this).prop("checked"));
@@ -127,86 +134,34 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        polishManage.currentItem = item;
-        polishManage.editItemInit(item);
-        polishManage.editItemShow();
+        ofManage.currentItem = item;
+        ofManage.editItem(item);
+    }).on("click","#copyRow",function() {
+        //点击编辑按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        ofManage.currentItem = item;
+        ofManage.copyItem(item);
     }).on("click","#delRow",function() {
         //点击删除按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        polishManage.deleteItem([item]);
+        ofManage.deleteItem([item]);
     });
-	 var polishManage = {
+	 var ofManage = {
 			    currentItem : null,
 			    fuzzySearch : true,
-			    editItemInit : function(item) {
-			        if (!item) {
-			            return;
-			        }
-			       $modDefectPanel=$('#modDefectPanel'),
-			       $modTemplate = $('#modTemplate'),
-			       $opticalFilmingTableName=$("#opticalFilmingTableName"),
-			       $modDefect=$('#modDefect');
-			       $("#modDataForm [name=opfID]").val(item.opfID);
-			       $("#modDataForm [name=optTime]").val(item.optTime);
-			       $("#modDataForm [name=inputLotNum]").val(item.inputLotNum);
-			       $("#modDataForm [name=inputQty]").val(item.inputQty);
-			       $("#modDataForm [name=fixtureNum]").val(item.fixtureNum);
-			       $("#modDataForm [name=outputLotNum]").val(item.outputLotNum);
-			       $("#modDataForm [name=outputQty]").val(item.outputQty);
-			       $("#modDataForm [name=scrapQty]").val(item.scrapQty);
-			       $("#modDataForm [name=qcUseQty]").val(item.qcUseQty);
-			       $("#modDataForm [name=toAPSQty]").val(item.toAPSQty);
-			       $("#modDataForm [name=partNum]").val(item.partNum);
-			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
-			       $('#modDefectPanel').find('.panel-body').each(function(){$(this).empty()});
-			       $.each(tableFieldBinds, function(index, tableField){
-			   		if(tableField.fieldName.indexOf($opticalFilmingTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
-			   			$modDefectPanel.show();
-			            $newRow   =$modTemplate.clone().removeAttr('id').find('.defect').html(tableField.headline).end();
-			            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
-			        	on('click', '.removeButton', function() {
-			                $('#modDataForm').bootstrapValidator('removeField', defectName);
-			                $newRow.remove();
-			                if($modDefectPanel.find(".removeButton").length<=0){
-			                	$modDefectPanel.hide();
-			                }
-			            });
-			            $("#modWorkingface"+tableField.defectType).find(".panel-body").each(function(){
-			            	$(this).append($newRow).show();
-						});
-			            $("#modDataForm [name="+tableField.fieldName+"]").val($(item).attr(tableField.fieldName));
-			            $('#modDataForm').bootstrapValidator('addField', tableField.fieldName, {
-				            message: '缺损值必须为数字类型',
-				            validators: {
-				                digits: {
-				                    message: '缺损值必须为数字类型'
-				                }
-				            }
-				        });
-			   		}
-			       });
-			       if($modDefectPanel.find(".removeButton").length<=0){
-	                	$modDefectPanel.hide();
-	                }
+			    addItem: function() {
+			    	LoadPage(contextPath+"/workflow/addOpticalFilming");
 			    },
-			    addItemShow: function() {
-			    	$addModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$addModal.css("overflow", "hidden");
-			    	$addModal.css("overflow-y", "auto");
-			    	$addModal.modal("show");
+			    editItem: function(item) {
+			    	LoadPage(contextPath+"/workflow/modOpticalFilming?opfID="+item.opfID+"&operator=");
 			    },
-			    editItemShow: function() {
-			    	$modModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$modModal.css("overflow", "hidden");
-			    	$modModal.css("overflow-y", "auto");
-			    	$modModal.modal("show");
+			    copyItem: function(item) {
+			    	LoadPage(contextPath+"/workflow/modOpticalFilming?opfID="+item.opfID+"&operator=copy");
 			    },
 			    exportItem:function(){
+			    	$wrapper.spinModal();
 			         $.post(contextPath+"/workflow/exportOpticalFilming",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
@@ -220,6 +175,7 @@ $(document).ready(function() {
                                     buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
                                 });
                     		}
+			        	 $wrapper.spinModal(false);
                      },'json'); 
 			    },
 			    deleteItem : function(selectedItems) {

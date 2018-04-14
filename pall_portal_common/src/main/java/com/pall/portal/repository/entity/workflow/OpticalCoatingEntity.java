@@ -58,8 +58,8 @@ public class OpticalCoatingEntity {
 	/*
 	 * To APS coating Qty(pcs)
 	 */
-	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.toAPSQty.NotEmpty}",groups={SAVE.class,ADD.class})
-	private Integer toAPSQty;
+	@NotNull(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.toOtherQty.NotEmpty}",groups={SAVE.class,ADD.class})
+	private Integer toOtherQty;
 	/*
 	 * 缺损信息
 	 */
@@ -75,6 +75,14 @@ public class OpticalCoatingEntity {
 	 */
 	@NotEmpty(message="{opticalfilmingManage.form.valid.OpticalCoatingEntity.workOrderNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String workOrderNum;
+	/*
+	 * 供应商信息
+	 */
+	private String supplier;
+	/*
+	 * Optical Coating bom
+	 */
+	private String ocBom;
 	/*
 	 * 录入时间
 	 */
@@ -146,11 +154,12 @@ public class OpticalCoatingEntity {
 	public void setQcUseQty(Integer qcUseQty) {
 		this.qcUseQty = qcUseQty;
 	}
-	public Integer getToAPSQty() {
-		return toAPSQty;
+	
+	public Integer getToOtherQty() {
+		return toOtherQty;
 	}
-	public void setToAPSQty(Integer toAPSQty) {
-		this.toAPSQty = toAPSQty;
+	public void setToOtherQty(Integer toOtherQty) {
+		this.toOtherQty = toOtherQty;
 	}
 	public List<DefectEntity> getDefects() {
 		return defects;
@@ -194,6 +203,21 @@ public class OpticalCoatingEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	
+	public String getSupplier() {
+		return supplier;
+	}
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getOcBom() {
+		return ocBom;
+	}
+	public void setOcBom(String ocBom) {
+		this.ocBom = ocBom;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

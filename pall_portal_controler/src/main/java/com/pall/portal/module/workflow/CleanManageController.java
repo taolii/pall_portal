@@ -59,8 +59,6 @@ import com.pall.portal.repository.entity.workflow.CleanEntity.SAVE;
 import com.pall.portal.repository.entity.workflow.CleanQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
-import com.pall.portal.repository.entity.workflow.PolishEntity;
-import com.pall.portal.repository.entity.workflow.PolishQueryFormEntity;
 import com.pall.portal.service.excel.IExcelHandler;
 import com.pall.portal.service.workflow.CleanService;
 /*
@@ -95,22 +93,22 @@ public class CleanManageController{
 	 */
 	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
-		model.addAttribute("cleanBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEANBOM)));
+		model.addAttribute("cleanBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_CLEANBOM)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
-		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF));
+		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF));
 		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.work"));
 		workingfaceTypes.add(dataConfigTypeEntity1);
 		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
-		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF));
+		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF));
 		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.nowork"));
 		workingfaceTypes.add(dataConfigTypeEntity2);
 		model.addAttribute("workingfaceTypes", workingfaceTypes);
-		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF));
+		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF));
 		model.addAttribute("workingfaceDefectConfigs", wdataConfigEntitys);
 		List<DataConfigEntity> dataConfigEntitys=new ArrayList<DataConfigEntity>();
-		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF));
+		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF));
 		if(nwdataConfigEntitys==null){
 			nwdataConfigEntitys=new ArrayList<DataConfigEntity>();
 		}
@@ -120,7 +118,7 @@ public class CleanManageController{
 		dataConfigEntitys.addAll(nwdataConfigEntitys);
 		dataConfigEntitys.addAll(wdataConfigEntitys);
 		model.addAttribute("defectConfigs",dataConfigEntitys);
-		model.addAttribute("cleanTableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
+		model.addAttribute("cleanTableName", UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME));
 		return model;
 	}
 	/*
@@ -129,10 +127,10 @@ public class CleanManageController{
 	@RequestMapping(value="workflow/cleanManage", method= RequestMethod.GET)
     public  String cleanManage(Model model, HttpServletRequest request) {	
 		model=initConfigData(model);
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -163,7 +161,7 @@ public class CleanManageController{
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
-				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
+				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME));
 				jsonData= JSONTools.defectsOverturnFiled(jsonData,defectTypes);
 			}
 		} catch (Exception e) {
@@ -183,7 +181,7 @@ public class CleanManageController{
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME);
+			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
 					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
@@ -211,10 +209,10 @@ public class CleanManageController{
 	@RequestMapping(value="workflow/addClean", method= RequestMethod.GET)
     public  String addClean(Model model,HttpServletRequest request) {
 		model=initConfigData(model);
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISHSEL_TABLENAME));
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISHSEL_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISHSEL_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISHSEL_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -243,8 +241,8 @@ public class CleanManageController{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,cleanEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,cleanEntity,ndataConfigEntitys);
 				if(sumDefectValue>cleanEntity.getOutputQty()){
@@ -304,7 +302,7 @@ public class CleanManageController{
 		}
 		model.addAttribute("cleanEntity", cleanEntity);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISHSEL_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISHSEL_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -338,8 +336,8 @@ public class CleanManageController{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_CLEAN_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,cleanEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,cleanEntity,ndataConfigEntitys);
 				if(sumDefectValue>cleanEntity.getOutputQty()){
@@ -404,7 +402,7 @@ public class CleanManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME));
+	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME));
 	        List<CleanEntity> cleanEntitys=(List<CleanEntity>)baseResponse.getReturnObjects();
 	        
 	        int currentRowNum=excelheadlinesMap.size();
@@ -418,7 +416,7 @@ public class CleanManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_CLEAN_TABLENAME), cleanEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME), cleanEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

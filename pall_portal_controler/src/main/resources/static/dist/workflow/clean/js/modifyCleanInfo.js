@@ -148,7 +148,7 @@ $(document).ready(function() {
 	    		}
 	    	});
 	    	$('#modDataForm [name=scrapQty]').val(defectNum);
-	    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-defectNum-Number($('#modDataForm [name=toOtherQty]').val());
+	    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-defectNum-Number($('#modDataForm [name=toOtherQty]').val()-Number($('#modDataForm [name=qcUseQty]').val());
 	    	$('#modDataForm [name=outputQty]').val(outputQty);
 	    	e.preventDefault();
 	    	var $form = $(e.target);

@@ -91,9 +91,13 @@ $(document).ready(function() {
 		}else{
 			$(radios).each(function(i) {
 				var item = _table.row($(this).closest('tr')).data();
-	            $('#inputLotNum').val(item.inputLotNum);
-	            $('#fixtureNumber').val(item.fixtureNumber);
-	            $('#inputQty').val(item.outputQty);
+				var form=$('#updateForm').val();
+	            $(form+' [name=inputLotNum]').val(item.polishLotNum);
+	            $(form+' [name=fixtureNum]').val(item.fixtureNumber);
+	            $(form+' [name=inputQty]').val(item.outputQty);
+	            $(form).data('bootstrapValidator').validateField('inputLotNum');
+	            $(form).data('bootstrapValidator').validateField('fixtureNum');
+	            $(form).data('bootstrapValidator').validateField('inputQty');
 	            $("#polishModal").modal("hide");
 	        });
 		}

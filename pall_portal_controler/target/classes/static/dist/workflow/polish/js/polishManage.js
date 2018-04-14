@@ -163,6 +163,7 @@ $(document).ready(function() {
 			    	LoadPage(contextPath+"/workflow/modPolish?polishid="+item.polishID+"&operator=copy");
 			    },
 			    exportItem:function(){
+			    	 $wrapper.spinModal();
 			         $.post(contextPath+"/workflow/exportPolish",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
@@ -176,6 +177,7 @@ $(document).ready(function() {
                                     buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
                                 });
                     		}
+			        	 $wrapper.spinModal(false);
                      },'json'); 
 			    },
 			    deleteItem : function(selectedItems) {

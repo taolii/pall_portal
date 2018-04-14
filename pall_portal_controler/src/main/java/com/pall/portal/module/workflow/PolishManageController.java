@@ -92,25 +92,25 @@ public class PolishManageController{
 	 * 初始化配置数据
 	 */
 	private Model initConfigData(Model model){
-		model.addAttribute("polishTableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
-		model.addAttribute("polishBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISHBOM)));
-		model.addAttribute("tmpDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_THROWMILLSTONEPOS)));
+		model.addAttribute("polishTableName", UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME));
+		model.addAttribute("polishBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_POLISHBOM)));
+		model.addAttribute("tmpDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_THROWMILLSTONEPOS)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
-		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
+		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_WF));
 		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.work"));
 		workingfaceTypes.add(dataConfigTypeEntity1);
 		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
-		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
+		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_NWF));
 		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.nowork"));
 		workingfaceTypes.add(dataConfigTypeEntity2);
 		model.addAttribute("workingfaceTypes", workingfaceTypes);
-		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
+		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_WF));
 		model.addAttribute("workingfaceDefectConfigs", wdataConfigEntitys);
 		List<DataConfigEntity> dataConfigEntitys=new ArrayList<DataConfigEntity>();
-		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
+		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_NWF));
 		if(nwdataConfigEntitys==null){
 			nwdataConfigEntitys=new ArrayList<DataConfigEntity>();
 		}
@@ -128,11 +128,11 @@ public class PolishManageController{
 	@RequestMapping(value="workflow/polishManage", method= RequestMethod.GET)
     public  String polishManage(Model model, HttpServletRequest request) {	
 		model=initConfigData(model);
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
-		model.addAttribute("polishDefectConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT)));
+		model.addAttribute("polishDefectConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT)));
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -163,7 +163,7 @@ public class PolishManageController{
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
-				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
+				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME));
 				jsonData= JSONTools.defectsOverturnFiled(jsonData,defectTypes);
 			}
 		} catch (Exception e) {
@@ -182,7 +182,7 @@ public class PolishManageController{
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String polishTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME);
+			String polishTableName=UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
 					requestValue=request.getParameter(polishTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
@@ -222,8 +222,8 @@ public class PolishManageController{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,polishEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,polishEntity,ndataConfigEntitys);if(sumDefectValue>polishEntity.getCasualInspectionNum()){
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -298,8 +298,8 @@ public class PolishManageController{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_POLISH_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,polishEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,polishEntity,ndataConfigEntitys);
 				if(sumDefectValue>polishEntity.getCasualInspectionNum()){
@@ -365,7 +365,7 @@ public class PolishManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME));
+	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME));
 	        List<PolishEntity> polishEntitys=(List<PolishEntity>)baseResponse.getReturnObjects();
 	        
 	        int currentRowNum=excelheadlinesMap.size();
@@ -379,7 +379,7 @@ public class PolishManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_POLISH_TABLENAME), polishEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME), polishEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

@@ -134,7 +134,6 @@ $(document).ready(function() {
     	});
     	$('#addDataForm [name=scrapQty]').val(defectNum);
     	var outputQty=Number($('#addDataForm [name=inputQty]').val())-defectNum-Number($('#addDataForm [name=toOtherQty]').val());
-    	alert(outputQty);
     	$('#addDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);

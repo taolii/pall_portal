@@ -88,28 +88,27 @@ public class OpticalFilmingManageController{
 	@Value("${system.default.file.download.path}")
 	private String downloadFilePath;
 	/*
-	 * 光学镀膜管理
+	 * 初始化配置数据
 	 */
-	@RequestMapping(value="workflow/opticalFilmingManage", method= RequestMethod.GET)
-    public  String opticalFilmingManage(Model model, HttpServletRequest request) {	
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
-		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
+		model.addAttribute("supplierDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_SUPPLIER)));
+		model.addAttribute("ocBomDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_OCBOM)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
-		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
+		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_WF));
 		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("opticalfilmingManage.form.defecttype.select.work"));
 		workingfaceTypes.add(dataConfigTypeEntity1);
 		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
-		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
+		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_NWF));
 		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("opticalfilmingManage.form.defecttype.select.nowork"));
 		workingfaceTypes.add(dataConfigTypeEntity2);
 		model.addAttribute("workingfaceTypes", workingfaceTypes);
-		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
+		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_WF));
 		model.addAttribute("workingfaceDefectConfigs", wdataConfigEntitys);
 		List<DataConfigEntity> dataConfigEntitys=new ArrayList<DataConfigEntity>();
-		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
+		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_NWF));
 		if(nwdataConfigEntitys==null){
 			nwdataConfigEntitys=new ArrayList<DataConfigEntity>();
 		}
@@ -119,9 +118,20 @@ public class OpticalFilmingManageController{
 		dataConfigEntitys.addAll(nwdataConfigEntitys);
 		dataConfigEntitys.addAll(wdataConfigEntitys);
 		model.addAttribute("defectConfigs",dataConfigEntitys);
-		model.addAttribute("tableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+		model.addAttribute("opticalFilmingTableName", UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME));
+		return model;
+	}
+	/*
+	 * 光学镀膜管理
+	 */
+	@RequestMapping(value="workflow/opticalFilmingManage", method= RequestMethod.GET)
+    public  String opticalFilmingManage(Model model, HttpServletRequest request) {	
+		model=initConfigData(model);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -152,7 +162,7 @@ public class OpticalFilmingManageController{
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
-				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME));
 				jsonData= JSONTools.defectsOverturnFiled(jsonData,defectTypes);
 			}
 		} catch (Exception e) {
@@ -167,14 +177,43 @@ public class OpticalFilmingManageController{
 	 * 添加光学镀膜信息
 	 */
 	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/addOpticalFilming", method= RequestMethod.GET)
+    public   String addOpticalFilming(Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEANSEL_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEANSEL_TABLENAME));
+		if(tableFieldBindMap!=null){
+			tableFieldBinds.addAll(tableFieldBindMap.values());
+		}
+		Collections.sort(tableFieldBinds,new Comparator<ExcelHeaderNode>() {
+			@Override
+	        public int compare(ExcelHeaderNode o1, ExcelHeaderNode o2) {
+				if(o1.getColNum()>o2.getColNum()){
+					return 1;
+				}else if(o1.getColNum()<o2.getColNum()){
+					return -1;
+				}else{
+					return 0;
+				}
+	        }
+		});
+		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
+		return "workflow/opticalfilming/addOpticalFilming";
+    }
+	/*
+	 * 添加光学镀膜信息
+	 */
+	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addOpticalFilming", method= RequestMethod.POST)
     public  @ResponseBody String addOpticalFilming(@Validated(ADD.class) OpticalCoatingEntity opticalCoatingEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,opticalCoatingEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,opticalCoatingEntity,ndataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
@@ -199,7 +238,7 @@ public class OpticalFilmingManageController{
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME);
+			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
 					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
@@ -221,6 +260,63 @@ public class OpticalFilmingManageController{
 		return sumDefectValue;
 	}
 	/*
+	 * 修改抛光信息
+	 */
+	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/modOpticalFilming", method= RequestMethod.GET)
+    public   String modOpticalFilming(@RequestParam("opfID") String opfID,@RequestParam("operator") String operator,Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		BaseResponse baseResponse=new BaseResponse();
+		try {
+			OpticalFilmingQueryFormEntity opticalFilmingQueryFormEntity=new OpticalFilmingQueryFormEntity();
+			opticalFilmingQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			opticalFilmingQueryFormEntity.setOpfID(opfID);
+			baseResponse=opticalFilmingService.exportOpticalFilming(opticalFilmingQueryFormEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.opticalFilmingManage.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.opticalFilmingManage.exception"));
+		}
+		//数据查询成功，将文件写入下载目录以便下载
+		OpticalCoatingEntity opticalCoatingEntity=null;
+		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+	        List<OpticalCoatingEntity> opticalCoatingEntitys=(List<OpticalCoatingEntity>)baseResponse.getReturnObjects();
+	        if (opticalCoatingEntitys!=null &&  opticalCoatingEntitys.size()>0){
+	        	opticalCoatingEntity=opticalCoatingEntitys.get(0);
+	        }
+		}
+		if(opticalCoatingEntity==null){
+			opticalCoatingEntity=new OpticalCoatingEntity();
+		}
+		model.addAttribute("opticalCoatingEntity", opticalCoatingEntity);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEANSEL_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEANSEL_TABLENAME));
+		if(tableFieldBindMap!=null){
+			tableFieldBinds.addAll(tableFieldBindMap.values());
+		}
+		Collections.sort(tableFieldBinds,new Comparator<ExcelHeaderNode>() {
+			@Override
+	        public int compare(ExcelHeaderNode o1, ExcelHeaderNode o2) {
+				if(o1.getColNum()>o2.getColNum()){
+					return 1;
+				}else if(o1.getColNum()<o2.getColNum()){
+					return -1;
+				}else{
+					return 0;
+				}
+	        }
+		});
+		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
+		if("copy".equals(operator)){
+			model.addAttribute("operator", "copy");
+			return "workflow/opticalfilming/copyOpticalFilming";
+		}else{
+			return "workflow/opticalfilming/modOpticalFilming";
+		}
+    }
+	/*
 	 * 修改光学镀膜信息
 	 */
 	@Token(flag=Token.CHECK)
@@ -230,8 +326,8 @@ public class OpticalFilmingManageController{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_OPTICALFILMING_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,opticalCoatingEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,opticalCoatingEntity,ndataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
@@ -284,7 +380,7 @@ public class OpticalFilmingManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME));
+	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME));
 	        List<OpticalCoatingEntity> opticalCoatingEntitys=(List<OpticalCoatingEntity>)baseResponse.getReturnObjects();
 	        
 	        int currentRowNum=excelheadlinesMap.size();
@@ -298,7 +394,7 @@ public class OpticalFilmingManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_OPTICALFILMING_TABLENAME), opticalCoatingEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME), opticalCoatingEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();
