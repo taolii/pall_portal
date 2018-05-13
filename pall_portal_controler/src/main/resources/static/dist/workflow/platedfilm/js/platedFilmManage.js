@@ -1,13 +1,93 @@
 $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
-	$('#queryCoatingTime').datetimepicker({  
+	var pfManage = {
+	    currentItem : null,
+	    fuzzySearch : true,
+	    addItemShow: function() {
+	    	LoadPage(contextPath+"/workflow/addPlatedFilm");
+	    },
+	    editItemShow: function(item) {
+	    	LoadPage(contextPath+"/workflow/modPlatedFilm?pfid="+item.pfID+"&operator=");
+	    },
+	    copyItem: function(item) {
+	    	LoadPage(contextPath+"/workflow/modPlatedFilm?pfid="+item.pfID+"&operator=copy");
+	    },
+	    exportItem:function(){
+	         $.post(contextPath+"/workflow/exportPlatedFilm",$queryForm.serializeArray(), function(result) {
+	        	 if(result.resultCode==0){
+	        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
+    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+    	    		 window.location.href = downUrl;
+            		}else{
+            			Lobibox.alert('error', {
+                            msg: '<span class="red">导出数据失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+                            title:Lobibox.base.OPTIONS.title.error,
+                            width:Lobibox.base.OPTIONS.width,
+                            buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+                        });
+            		}
+             },'json'); 
+	    },
+	    deleteItem : function(selectedItems) {
+	        var message;
+	        if (selectedItems&&selectedItems.length) {
+	            if (selectedItems.length == 1) {
+	                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
+	 
+	            }else{
+	                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
+	            }
+	            Lobibox.confirm({
+	                msg: message,
+	                title:Lobibox.base.OPTIONS.title.info,
+	                callback: function ($this, type) {
+	                    if (type === 'yes') {
+	                    	var pfIDs="";
+	                    	$(selectedItems).each(function(i) {
+	                    		pfIDs=pfIDs+selectedItems[i].pfID+",";
+	                        });
+	                    	pfIDs=pfIDs.substr(pfIDs,pfIDs.length-1);
+	                    	$.post(contextPath+"/workflow/delPlatedFilm",{"pfIDs":pfIDs}, function(result) {
+	                    		if(result.resultCode==0){
+	                    			Lobibox.alert('success', {
+	                                    msg: "<h3><span class='green'>化学镀膜信息删除成功</span>",
+	                                    title:Lobibox.base.OPTIONS.title.success,
+	                                    width:Lobibox.base.OPTIONS.width,
+	                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
+	                                });
+	                    			$("#btn_refresh").click();
+	                    		}else{
+	                    			Lobibox.alert('error', {
+	                                    msg: '<span class="red">化学镀膜信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
+	                                    title:Lobibox.base.OPTIONS.title.error,
+	                                    width:Lobibox.base.OPTIONS.width,
+	                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
+	                                });
+	                    		}
+	                        },'json'); 
+	                    }
+	                }
+	            });
+	        }else{
+	        	Lobibox.alert('info', {
+	    	        msg: "请先选中要删除的记录",
+	    	        title:Lobibox.base.OPTIONS.title.info,
+	    	        width:Lobibox.base.OPTIONS.width,
+	    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
+	    	    });
+	        }
+	    }
+	};
+	$('#queryStartCoatingTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
-	$('#queryPfTime').datetimepicker({  
+	$('#queryEndCoatingTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     }); 
+	$('#queryStartCoatingTime').val(currentDate(30));
+	$('#queryEndCoatingTime').val(currentDate(0));
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
     ];
@@ -23,10 +103,11 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
             "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
-          }, width : "60px"}
+          }, width : "100px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
 	var $wrapper = $('#div-table-container');
@@ -91,6 +172,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
+	
 	$("#datatable_length").hide();
 	$("#btn-query").click(function(){
 		_table.draw();
@@ -99,10 +181,10 @@ $(document).ready(function() {
 		_table.draw();
 	});
 	$("#btn-add").click(function(){
-		polishManage.addItemShow();
+		pfManage.addItemShow();
 	});
 	$("#btn-export").click(function(){
-		polishManage.exportItem();
+		pfManage.exportItem();
 	});
 	$("#btn-delAll").click(function(){
 		var arrItemId = [];
@@ -110,7 +192,7 @@ $(document).ready(function() {
             var item = _table.row($(this).closest('tr')).data();
             arrItemId.push(item);
         });
-        polishManage.deleteItem(arrItemId);
+        pfManage.deleteItem(arrItemId);
 	});
 	$("[name='cb-check-all']").click(function(){
 		$(":checkbox",$table).prop("checked",$(this).prop("checked"));
@@ -131,123 +213,18 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        polishManage.currentItem = item;
-        polishManage.editItemInit(item);
-        polishManage.editItemShow();
+        pfManage.currentItem = item;
+        pfManage.editItemShow(item);
+    }).on("click","#copyRow",function() {
+        //点击复制按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        pfManage.currentItem = item;
+        pfManage.copyItem(item);
     }).on("click","#delRow",function() {
         //点击删除按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        polishManage.deleteItem([item]);
+        pfManage.deleteItem([item]);
     });
-	 var polishManage = {
-			    currentItem : null,
-			    fuzzySearch : true,
-			    editItemInit : function(item) {
-			        if (!item) {
-			            return;
-			        }			   
-			       $("#modDataForm [name=pfID]").val(item.pfID);
-			       $("#modDataForm [name=coatingTime]").val(item.coatingTime);
-			       $("#modDataForm [name=pfTime]").val(item.pfTime);
-			       $("#modDataForm [name=inputLotNum]").val(item.inputLotNum);
-			       $("#modDataForm [name=inputQty]").val(item.inputQty);
-			       $("#modDataForm [name=fixtureNum]").val(item.fixtureNum);
-			       $("#modDataForm [name=apsBottle]").val(item.apsBottle);
-			       $("#modDataForm [name=outputLotNum]").val(item.outputLotNum);
-			       $("#modDataForm [name=outputQty]").val(item.outputQty);
-			       $("#modDataForm [name=scrapQty]").val(item.scrapQty);
-			       $("#modDataForm [name=underIQCQty]").val(item.underIQCQty);
-			       $("#modDataForm [name=qNum]").val(item.qNum);
-			       $("#modDataForm [name=kNum]").val(item.kNum);
-			       $("#modDataForm [name=qcUseQty]").val(item.qcUseQty);
-			       $("#modDataForm [name=underIQCQty]").val(item.underIQCQty);
-			       $("#modDataForm [name=toHUBQty]").val(item.toHUBQty);
-			       $("#modDataForm [name=remainQty]").val(item.remainQty);
-			       $("#modDataForm [name=apsCondition]").val(item.apsCondition);
-			       $("#modDataForm [name=partNum]").val(item.partNum);
-			       $("#modDataForm [name=workOrderNum]").val(item.workOrderNum);
-			    },
-			    addItemShow: function() {
-			    	$addModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$addModal.css("overflow", "hidden");
-			    	$addModal.css("overflow-y", "auto");
-			    	$addModal.modal("show");
-			    },
-			    editItemShow: function() {
-			    	$modModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$modModal.css("overflow", "hidden");
-			    	$modModal.css("overflow-y", "auto");
-			    	$modModal.modal("show");
-			    },
-			    exportItem:function(){
-			         $.post(contextPath+"/workflow/exportPlatedFilm",$queryForm.serializeArray(), function(result) {
-			        	 if(result.resultCode==0){
-			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
-		    	    		 window.location.href = downUrl;
-                    		}else{
-                    			Lobibox.alert('error', {
-                                    msg: '<span class="red">导出数据失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                                    title:Lobibox.base.OPTIONS.title.error,
-                                    width:Lobibox.base.OPTIONS.width,
-                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                                });
-                    		}
-                     },'json'); 
-			    },
-			    deleteItem : function(selectedItems) {
-			        var message;
-			        if (selectedItems&&selectedItems.length) {
-			            if (selectedItems.length == 1) {
-			                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
-			 
-			            }else{
-			                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
-			            }
-			            Lobibox.confirm({
-			                msg: message,
-			                title:Lobibox.base.OPTIONS.title.info,
-			                callback: function ($this, type) {
-			                    if (type === 'yes') {
-			                    	var pfIDs="";
-			                    	$(selectedItems).each(function(i) {
-			                    		pfIDs=pfIDs+selectedItems[i].pfID+",";
-			                        });
-			                    	pfIDs=pfIDs.substr(pfIDs,pfIDs.length-1);
-			                    	$.post(contextPath+"/workflow/delPlatedFilm",{"pfIDs":pfIDs}, function(result) {
-			                    		if(result.resultCode==0){
-			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>化学镀膜信息删除成功</span>",
-			                                    title:Lobibox.base.OPTIONS.title.success,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-			                                });
-			                    			$("#btn_refresh").click();
-			                    		}else{
-			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">化学镀膜信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-			                                    title:Lobibox.base.OPTIONS.title.error,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-			                                });
-			                    		}
-			                        },'json'); 
-			                    }
-			                }
-			            });
-			        }else{
-			        	Lobibox.alert('info', {
-			    	        msg: "请先选中要删除的记录",
-			    	        title:Lobibox.base.OPTIONS.title.info,
-			    	        width:Lobibox.base.OPTIONS.width,
-			    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
-			    	    });
-			        }
-			    }
-			};
 });

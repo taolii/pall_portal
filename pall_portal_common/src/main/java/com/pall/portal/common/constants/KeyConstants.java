@@ -81,6 +81,19 @@ public class KeyConstants {
 	 */
 	public static final String DATACONFIG_TYPE_REMARK="dataconfig/type/remark";
 	/*
+	 * 数据配置表代表SF BOM的配置类型 
+	 */
+	public static final String DATACONFIG_TYPE_SFBOMNUM="dataconfig/type/sfBomNum";
+	/*
+	 * 数据配置表代表APS condition的配置类型 
+	 */
+	public static final String DATACONFIG_TYPE_APSCONDITION="dataconfig/type/apsCondition";
+
+	/*
+	 * 数据配置表代表fixture属性的配置类型 
+	 */
+	public static final String DATACONFIG_TYPE_FIXTUREATTRIBUTE="dataconfig/type/fixtureAttribute";
+	/*
 	 * 抛光流程配置表名
 	 */
 	public static final String POLISH_TABLENAME="polish/tablename";
@@ -148,6 +161,10 @@ public class KeyConstants {
 	 */
 	public static final String OPTICALFILMING_TABLENAME="opticalFilming/tablename";
 	/*
+	 * 选择光学镀膜配置表名
+	 */
+	public static final String OPTICALFILMINGSEL_TABLENAME="opticalFilmingSel/tablename";
+	/*
 	 * 光学镀膜表Optical Coating BOM在数据配置表中的类型
 	 */
 	public static final String OPTICALFILMING_DATACONFIG_TYPE_OCBOM="opticalFilming/dataconfig/type/ocBom";
@@ -189,11 +206,11 @@ public class KeyConstants {
 	public static final String DATACONFIG_TYPE_CHEMICAL_REAGENT="dataconfig/type/chemicalReagent";
 	
 	/*
-	 * 光学镀膜流程配置表名
+	 * 化学镀膜流程配置表名
 	 */
 	public static final String WORKFLOW_PLATEDFILM_TABLENAME="workflow/PlatedFilm/tablename";
 	/*
-	 * 光学镀膜管理页面excel下载子目录名称
+	 * 化学镀膜管理页面excel下载子目录名称
 	 */
 	public static final String PLATEDFILM_DOWNLOAD_SUBDIRECTORY="platedFilm/download/subdirectory";
 	

@@ -8,6 +8,25 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });  
+	
+	$(".defect-body").each(function(){
+		$(this).find("input").each(function(){
+			$('#modDataForm').bootstrapValidator('addField', $(this).attr('name'), {
+	            message: '缺损值必须为数字类型',
+	            validators: {
+	                digits: {
+	                    message: '缺损值必须为数字类型'
+	                }
+	            }
+	        });
+			$(this).parent().parent().on('click', '.removeButton', function() {
+                $('#modDataForm').bootstrapValidator('removeField', $(this).attr('name'));
+                $(this).parent().parent().remove();
+            });
+		}
+		);
+	});
+	
     $modDataForm=$('#modDataForm'),
 	$modDataForm.bootstrapValidator({
         message: 'This value is not valid',
@@ -72,13 +91,6 @@ $(document).ready(function() {
 	                }
                 }
             },
-            apsBottle: {
-                validators: {
-                    notEmpty: {
-                        message: 'APS Bottle不能为空'
-                    }
-                }
-            },
             underIQCQty: {
                 validators: {
                     notEmpty: {
@@ -105,30 +117,37 @@ $(document).ready(function() {
             }
         }
     }).on('success.form.bv', function(e) {
+    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-Number($('#modDataForm [name=scrapQty]').val())-Number($('#modDataForm [name=underIQCQty]').val())
+    		-Number($('#modDataForm [name=qcUseQty]').val())-Number($('#modDataForm [name=functionalTestQty]').val())-Number($('#modDataForm [name=toHUBQty]').val())
+    				-Number($('#modDataForm [name=remainQty]').val());
+    	$('#modDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post(contextPath+"/workflow/modPlatedFilm",  $form.serialize(), function(result) {
-    		if(result.resultCode==0){
-    			Lobibox.alert('success', {
-                    msg: "<h3><span class='green'>更新化学镀膜信息成功</span>",
-                    title:Lobibox.base.OPTIONS.title.success,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-                });
-    			$form.data('bootstrapValidator').resetForm(true);
-    			$("#modModal").modal("hide");
-    			$("#btn_refresh").click();
-    		}else{
-    			Lobibox.alert('error', {
-                    msg: '<span class="red">更新化学镀膜信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                    title:Lobibox.base.OPTIONS.title.error,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                });
-    		}
-        },'json'); 
+    	var operator=$("#operator").val();
+    	if("copy"==operator){
+    		$.post(contextPath+"/workflow/addPlatedFilm",  $form.serialize(), function(result) {
+	    		if(result.resultCode==0){
+	    			showNotice('Success',"添加化学镀膜信息成功",'success',1000*5);
+	    		}else{
+	    			showNotice('Error','<span style="padding-top:5px">添加化学镀膜信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+	    		}
+	    		$form.bootstrapValidator('disableSubmitButtons', false);
+	        },'json'); 
+    	}else{
+    		$.post(contextPath+"/workflow/modPlatedFilm",  $form.serialize(), function(result) {
+	    		if(result.resultCode==0){
+	    			showNotice('Success',"更新化学镀膜信息成功",'success',1000*5);
+	    		}else{
+	    			showNotice('Error','<span style="padding-top:5px">更新化学镀膜信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+	    		}
+	    		$form.bootstrapValidator('disableSubmitButtons', false);
+	        },'json');
+    	}
     }).on('error.form.bv', function(e, data) {
     	showNotice('Error','参数非法，请检查参数','error',1000*10);
+    });
+    $("#modBackButton").on("click",function(){
+    	window.location.href=contextPath+"/workflow/platedFilmManage";
     });
 });

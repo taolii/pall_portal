@@ -49,6 +49,8 @@ import com.pall.portal.init.DataConfigInitiator;
 import com.pall.portal.init.TableDataConfigInitiator;
 import com.pall.portal.init.UmsConfigInitiator;
 import com.pall.portal.interceptor.support.AuthToken;
+import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
+import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.repository.entity.workflow.PlatedFilmEntity;
@@ -84,6 +86,43 @@ public class PlatedFilmManageController{
 	 */
 	@Value("${system.default.file.download.path}")
 	private String downloadFilePath;
+	
+	/*
+	 * 初始化配置数据
+	 */
+	private Model initConfigData(Model model){
+		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
+		model.addAttribute("sfDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SFBOMNUM)));
+		model.addAttribute("apsDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_APSCONDITION)));
+		model.addAttribute("fixtureAttrDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_FIXTUREATTRIBUTE)));
+		model.addAttribute("platedFilmTableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_PLATEDFILM_TABLENAME));
+		//工作面类型
+		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
+		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
+		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_WF));
+		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.work"));
+		workingfaceTypes.add(dataConfigTypeEntity1);
+		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
+		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_NWF));
+		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("cleanmanage.form.defecttype.select.nowork"));
+		workingfaceTypes.add(dataConfigTypeEntity2);
+		model.addAttribute("workingfaceTypes", workingfaceTypes);
+		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_WF));
+		model.addAttribute("workingfaceDefectConfigs", wdataConfigEntitys);
+		List<DataConfigEntity> dataConfigEntitys=new ArrayList<DataConfigEntity>();
+		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_NWF));
+		if(nwdataConfigEntitys==null){
+			nwdataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
+		if(wdataConfigEntitys==null){
+			wdataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
+		dataConfigEntitys.addAll(nwdataConfigEntitys);
+		dataConfigEntitys.addAll(wdataConfigEntitys);
+		model.addAttribute("defectConfigs",dataConfigEntitys);
+		return model;
+	}
+	
 	/*
 	 * 化学镀膜管理
 	 */
@@ -131,7 +170,37 @@ public class PlatedFilmManageController{
 		 return jsonData;
     }
 	/*
-	 * 添加光学镀膜信息
+	 * 添加化学镀膜信息
+	 */
+	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/addPlatedFilm", method= RequestMethod.GET)
+    public String addPolish(Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMINGSEL_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMINGSEL_TABLENAME));
+		if(tableFieldBindMap!=null){
+			tableFieldBinds.addAll(tableFieldBindMap.values());
+		}
+		Collections.sort(tableFieldBinds,new Comparator<ExcelHeaderNode>() {
+			@Override
+	        public int compare(ExcelHeaderNode o1, ExcelHeaderNode o2) {
+				if(o1.getColNum()>o2.getColNum()){
+					return 1;
+				}else if(o1.getColNum()<o2.getColNum()){
+					return -1;
+				}else{
+					return 0;
+				}
+	        }
+		});
+		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
+		return "workflow/platedfilm/addPlatedFilm";
+    }
+	
+	/*
+	 * 添加化学镀膜信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addPlatedFilm", method= RequestMethod.POST)
@@ -155,7 +224,64 @@ public class PlatedFilmManageController{
 		return JSON.toJSONString(baseResponse);
     }
 	/*
-	 * 修改光学镀膜信息
+	 * 修改化学镀膜信息
+	 */
+	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/modPlatedFilm", method= RequestMethod.GET)
+    public  String modPlatedFilm(@RequestParam("pfid") String pfId,@RequestParam("operator") String operator,Model model,HttpServletRequest request) {
+		BaseResponse baseResponse=new BaseResponse();
+		model=initConfigData(model);
+		try {
+			PlatedFilmQueryFormEntity  platedFilmQueryFormEntity=new PlatedFilmQueryFormEntity();
+			platedFilmQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			platedFilmQueryFormEntity.setPfId(pfId);;
+			baseResponse=platedFilmService.exportPlatedFilm(platedFilmQueryFormEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("opticalfilmingManage.controler.opticalFilmingManage.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.controler.opticalFilmingManage.exception"));
+		}
+		//数据查询成功，将文件写入下载目录以便下载
+		PlatedFilmEntity platedFilmEntity=null;
+		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+	        List<PlatedFilmEntity> platedFilmEntitys=(List<PlatedFilmEntity>)baseResponse.getReturnObjects();
+	        if (platedFilmEntitys!=null &&  platedFilmEntitys.size()>0){
+	        	platedFilmEntity=platedFilmEntitys.get(0);
+	        }
+		}
+		if(platedFilmEntity==null){
+			platedFilmEntity=new PlatedFilmEntity();
+		}
+		model.addAttribute("platedFilmEntity", platedFilmEntity);
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMINGSEL_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMINGSEL_TABLENAME));
+		if(tableFieldBindMap!=null){
+			tableFieldBinds.addAll(tableFieldBindMap.values());
+		}
+		Collections.sort(tableFieldBinds,new Comparator<ExcelHeaderNode>() {
+			@Override
+	        public int compare(ExcelHeaderNode o1, ExcelHeaderNode o2) {
+				if(o1.getColNum()>o2.getColNum()){
+					return 1;
+				}else if(o1.getColNum()<o2.getColNum()){
+					return -1;
+				}else{
+					return 0;
+				}
+	        }
+		});
+		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
+		if("copy".equals(operator)){
+			model.addAttribute("operator", "copy");
+			return "workflow/platedfilm/copyPlatedFilm";
+		}else{
+			return "workflow/platedfilm/modPlatedFilmModal";
+		}
+    }
+	/*
+	 * 修改化学镀膜信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/modPlatedFilm", method= RequestMethod.POST)
@@ -179,7 +305,7 @@ public class PlatedFilmManageController{
 		return JSON.toJSONString(baseResponse);
     }
 	/*
-	 * 删除光学镀膜信息
+	 * 删除化学镀膜信息
 	 */
 	@RequestMapping(value="workflow/delPlatedFilm", method= RequestMethod.POST)
     public @ResponseBody String delPlatedFilm(@RequestParam("pfIDs") String pfIDs,Model model,HttpServletRequest request) {
@@ -200,7 +326,7 @@ public class PlatedFilmManageController{
 		return JSON.toJSONString(baseResponse);
     }
 	/*
-	 * 导出光学镀膜信息
+	 * 导出化学镀膜信息
 	 */
 	@RequestMapping(value="workflow/exportPlatedFilm", method= RequestMethod.POST)
     public @ResponseBody String exportPlatedFilm(Model model,PlatedFilmQueryFormEntity  platedFilmQueryFormEntity, HttpServletRequest request) {

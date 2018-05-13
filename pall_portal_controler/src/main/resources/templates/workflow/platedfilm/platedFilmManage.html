@@ -6,10 +6,8 @@
       layout:decorator="fragments/indexModel">
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title th:text="#{pages.system.name}+'-'+#{pages.workflow.platedfilmManage.title}"></title>
+        <title th:text="#{pages.system.name}+'-'+#{pages.workflow.platedfilm.title}"></title>
         <script type="text/javascript" th:src="@{{path}/dist/workflow/platedfilm/js/platedFilmManage.js(path=${contextPath})}"></script>
-    	<script type="text/javascript" th:src="@{{path}/dist/workflow/platedfilm/js/addPlatedFilmInfo.js(path=${contextPath})}"></script>
-    	<script type="text/javascript" th:src="@{{path}/dist/workflow/platedfilm/js/modifyPlatedFilmInfo.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">
@@ -34,24 +32,24 @@
 				                        <div class="panel panel-primary">
 				                            <div class="panel-heading">
 				                                <h4 class="panel-title">
-				                                	<i class="fa fa-search"></i>&nbsp;&nbsp;<a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.workflow.platedfilmManage.title}"></a>
+				                                	<i class="fa fa-search"></i>&nbsp;&nbsp;<a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.workflow.platedfilm.title}"></a>
 				                              	</h4>
 				                            </div>
 				                            <div id="stepOne" class="panel-collapse collapse in  ">
 				                                <div class="panel-body">
-				                                	<div class="col-md-4">
+				                                	<div class="col-md-4 form-group">
 					                                	<div class='input-group date'>  
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.coatingTime}">  
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.startCoatingTime}">  
 		                									</span>  
-											                <input type='text' name="coatingTime"  id='queryCoatingTime' class="form-control" />  
+											                <input type='text' name="startCoatingTime"  id='queryStartCoatingTime' class="form-control" />  
 											                <span class="input-group-addon">  
 											                    <span class="glyphicon glyphicon-calendar"></span>  
 											                </span>  
 		            									</div> 
 						                      		</div>
-						                      		<div class="col-md-4">
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class='input-group date'>  
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.pfTime}">  
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.pfTime}">  
 		                									</span>  
 											                <input type='text' name="pfTime"  id='queryPfTime' class="form-control" />  
 											                <span class="input-group-addon">  
@@ -59,50 +57,60 @@
 											                </span>  
 		            									</div> 
 						                      		</div>
-						                  			<div class="col-md-4">
+						                  			<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.inputLotNum}"></span>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.inputLotNum}"></span>
 									                        <input type="text" name="inputLotNum" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4">
+						                      		<div class="col-md-4 form-group">
+					                                	<div class='input-group date'>  
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.endCoatingTime}">  
+		                									</span>  
+											                <input type='text' name="endCoatingTime"  id='queryEndCoatingTime' class="form-control" />  
+											                <span class="input-group-addon">  
+											                    <span class="glyphicon glyphicon-calendar"></span>  
+											                </span>  
+		            									</div> 
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.outputLotNum}"></span>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.outputLotNum}"></span>
 									                        <input type="text" name="outputLotNum" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4">
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.fixtureNum}"></span>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.fixtureNum}"></span>
 									                        <input type="text" name="fixtureNum" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4">
+						                      		<div class="col-md-4 form-group" >
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.apsBottle}"></span>
-									                        <input type="text" name="apsBottle" class="form-control"/>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.sfBomNum}"></span>
+									                        <input type="text" name="sfBomNum" class="form-control"/>
 					                                	</div>
 						                      		</div>
-													<div class="col-md-4">
+													<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.partNum}"></span>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.partNum}"></span>
 									                        <select name="partNum" class="form-control">
-									                        	<option value="" th:text="#{pages.workflow.platedfilmManage.form.partNum.select.all}"></option>
+									                        	<option value="" th:text="#{pages.workflow.platedfilm.form.partNum.select.all}"></option>
 									                        	<option  th:each="dataConfig:${pnDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
 									                        	</option>
 			                                    			</select>
 					                                	</div>
 								                    </div>
-								                    <div class="col-md-4">
+								                    <div class="col-md-4 form-group"  style="padding-left:60px">
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilmManage.form.workOrderNum}"></span>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.platedfilm.form.workOrderNum}"></span>
 									                        <input type="text" name="workOrderNum" class="form-control" />
 					                                	</div>
 								                    </div>
-								                    <div class="form-group has-feedback text-center">
-								                        <button id="btn-query" class="btn btn-primary" type="button">
+								                    <div class="col-md-4" style="padding-left:1200px">
+								                        <button id="btn-query" class="btn btn-white btn-primary" type="button">
 								                        <i class="fa fa-search"></i>
-					                 						<span th:text="#{pages.workflow.platedfilmManage.form.query.button.tip}" th:remove="tag"></span>
+					                 						<span th:text="#{pages.workflow.platedfilm.form.query.button.tip}" th:remove="tag"></span>
 														</button> 
 								                    </div>
 				                                </div>
@@ -114,21 +122,21 @@
 	                		<div class="row">
 	                			<div class="pull-right">
 							        <div class="btn-group">
-							            <a type="button" class="btn btn-primary btn-sm" id="btn-add">
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add">
 							                <i class="fa fa-plus"></i>
-							                <span th:text="#{pages.workflow.platedfilmManage.table.button.add}" th:remove="tag"></span>
+							                <span th:text="#{pages.workflow.platedfilm.table.button.add}" th:remove="tag"></span>
 							            </a>
-							            <a type="button" class="btn btn-primary btn-sm" id="btn-delAll">
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll">
 							                <i class="fa fa-remove"></i>
-							                <span th:text="#{pages.workflow.platedfilmManage.table.button.batchdel}" th:remove="tag"></span>
+							                <span th:text="#{pages.workflow.platedfilm.table.button.batchdel}" th:remove="tag"></span>
 							            </a>
-							            <a type="button" class="btn btn-primary btn-sm" id="btn-export">
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-export">
 							                <i class="fa fa-download"></i>
-							                <span th:text="#{pages.workflow.platedfilmManage.table.button.export}" th:remove="tag"></span>
+							                <span th:text="#{pages.workflow.platedfilm.table.button.export}" th:remove="tag"></span>
 							            </a>
-							            <a id="btn_refresh" type="button" class="btn btn-primary btn-sm">
+							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm">
 							                <i class="fa fa-refresh"></i>
-							                <span th:text="#{pages.workflow.platedfilmManage.table.button.refresh}" th:remove="tag"></span>
+							                <span th:text="#{pages.workflow.platedfilm.table.button.refresh}" th:remove="tag"></span>
 							            </a>
 							        </div>
 	    						</div>
@@ -158,12 +166,6 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
-          	<div id="addPlatedFilmModal">
-				<div th:replace="workflow/platedfilm/addPlatedFilmModal:: content"></div>
-			</div>
-			<div id="modOpticalFilmingModal">
-				<div th:replace="workflow/platedfilm/modPlatedFilmModal:: content"></div>
-			</div>
         </div>
     </body>
 </html>

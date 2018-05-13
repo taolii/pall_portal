@@ -39,9 +39,15 @@ public class PlatedFilmEntity {
 	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.fixtureNum.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String fixtureNum;
 	/*
+	 * 光纤的料号及批次号,Fixture属性
+	 */
+	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.fixtureAttribute.NotEmpty}",groups={SAVE.class,ADD.class})
+	private String fixtureAttribute;
+	
+	/*
 	 * 哪一瓶化学溶剂 APS Bottle
 	 */
-	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.apsBottle.NotEmpty}",groups={SAVE.class,ADD.class})
+//	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.apsBottle.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String apsBottle;
 	/*
 	 * Output LOT#
@@ -62,6 +68,11 @@ public class PlatedFilmEntity {
 	 */
 	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
 	private Integer underIQCQty;
+	/*
+	 * Under IQC Qty(pcs)
+	 */
+	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.sfBom.NotEmpty}",groups={SAVE.class,ADD.class})
+	private String sfBomNum;
 	/*
 	 * Q-NUM
 	 */
@@ -262,6 +273,19 @@ public class PlatedFilmEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	public String getSfBomNum() {
+		return sfBomNum;
+	}
+	public void setSfBomNum(String sfBomNum) {
+		this.sfBomNum = sfBomNum;
+	}
+	public String getFixtureAttribute() {
+		return fixtureAttribute;
+	}
+	public void setFixtureAttribute(String fixtureAttribute) {
+		this.fixtureAttribute = fixtureAttribute;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

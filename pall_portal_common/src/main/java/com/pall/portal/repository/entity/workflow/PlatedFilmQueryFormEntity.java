@@ -14,9 +14,21 @@ public class PlatedFilmQueryFormEntity {
 	 */
 	private int pageSize;
 	/*
+	 * 唯一标识
+	 */
+	private String pfId;
+	/*
 	 * 涂层日期
 	 */
 	private String coatingTime;
+	/*
+	 * 开始涂层日期
+	 */
+	private String startCoatingTime;
+	/*
+	 * 截止涂层日期
+	 */
+	private String endCoatingTime;
 	/*
 	 * 镀膜日期
 	 */
@@ -32,7 +44,7 @@ public class PlatedFilmQueryFormEntity {
 	/*
 	 * 哪一瓶化学溶剂 APS Bottle
 	 */
-	private String apsBottle;
+	private String sfBomNum;
 	/*
 	 * Output LOT#
 	 */
@@ -88,11 +100,11 @@ public class PlatedFilmQueryFormEntity {
 	public void setFixtureNum(String fixtureNum) {
 		this.fixtureNum = fixtureNum;
 	}
-	public String getApsBottle() {
-		return apsBottle;
+	public String getSfBomNum() {
+		return sfBomNum;
 	}
-	public void setApsBottle(String apsBottle) {
-		this.apsBottle = apsBottle;
+	public void setSfBomNum(String sfBomNum) {
+		this.sfBomNum = sfBomNum;
 	}
 	public String getOutputLotNum() {
 		return outputLotNum;
@@ -111,6 +123,24 @@ public class PlatedFilmQueryFormEntity {
 	}
 	public void setWorkOrderNum(String workOrderNum) {
 		this.workOrderNum = workOrderNum;
+	}
+	public String getStartCoatingTime() {
+		return startCoatingTime;
+	}
+	public void setStartCoatingTime(String startCoatingTime) {
+		this.startCoatingTime = startCoatingTime;
+	}
+	public String getEndCoatingTime() {
+		return endCoatingTime;
+	}
+	public void setEndCoatingTime(String endCoatingTime) {
+		this.endCoatingTime = endCoatingTime;
+	}
+	public String getPfId() {
+		return pfId;
+	}
+	public void setPfId(String pfId) {
+		this.pfId = pfId;
 	}
 	
 }
