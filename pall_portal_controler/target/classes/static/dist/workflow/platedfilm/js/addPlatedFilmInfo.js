@@ -62,23 +62,6 @@ $(document).ready(function() {
                     }
                 }
             },
-            outputQty: {
-                validators: {
-                    notEmpty: {
-                        message: 'Output Qty(pcs)不能为空'
-                    },
-                    digits: {
-	                    message: 'Output Qty(pcs)值必须为数字'
-	                }
-                }
-            },
-            apsBottle: {
-                validators: {
-                    notEmpty: {
-                        message: 'APS Bottle不能为空'
-                    }
-                }
-            },
             underIQCQty: {
                 validators: {
                     notEmpty: {
@@ -105,6 +88,10 @@ $(document).ready(function() {
             }
         }
     }).on('success.form.bv', function(e) {
+    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-Number($('#addDataForm [name=scrapQty]').val())-Number($('#addDataForm [name=underIQCQty]').val())
+		-Number($('#addDataForm [name=qcUseQty]').val())-Number($('#addDataForm [name=functionalTestQty]').val())-Number($('#addDataForm [name=toHUBQty]').val())
+				-Number($('#addDataForm [name=remainQty]').val());
+    	$('#addDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
@@ -130,5 +117,8 @@ $(document).ready(function() {
         },'json'); 
     }).on('error.form.bv', function(e, data) {
     	showNotice('Error','参数非法，请检查参数','error',1000*10);
+    });
+    $("#addBackButton").on("click",function(){
+    	window.location.href=contextPath+"/workflow/platedFilmManage";
     });
 });
