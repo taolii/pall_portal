@@ -11,6 +11,7 @@ $(document).ready(function() {
     $addDataForm=$('#addDataForm'),
 	$addDataForm.bootstrapValidator({
         message: 'This value is not valid',
+        group:'.rowGroup',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -64,11 +65,39 @@ $(document).ready(function() {
             },
             underIQCQty: {
                 validators: {
-                    notEmpty: {
-                        message: 'Under IQC Qty(pcs)不能为空'
+                	notEmpty: {
+                        message: '领用Qty(pcs)值不能为空'
                     },
                     digits: {
-	                    message: 'Under IQC Qty(pcs)值必须为数字'
+	                    message: '领用Qty(pcs)值必须为数字'
+	                }
+                }
+            },
+            qcUseQty: {
+                validators: {
+                    digits: {
+	                    message: 'QC Use Qty(pcs)值必须为数字'
+	                }
+                }
+            },
+            functionalTestQty: {
+                validators: {
+                    digits: {
+	                    message: 'Functional Test Qty(pcs)值必须为数字'
+	                }
+                }
+            },
+            toHUBQty: {
+                validators: {
+                    digits: {
+	                    message: 'To HUB Qty(pcs)值必须为数字'
+	                }
+                }
+            },
+            remainQty: {
+                validators: {
+                    digits: {
+	                    message: 'REMAIN QTY值必须为数字'
 	                }
                 }
             },
@@ -88,35 +117,20 @@ $(document).ready(function() {
             }
         }
     }).on('success.form.bv', function(e) {
-    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-Number($('#addDataForm [name=scrapQty]').val())-Number($('#addDataForm [name=underIQCQty]').val())
-		-Number($('#addDataForm [name=qcUseQty]').val())-Number($('#addDataForm [name=functionalTestQty]').val())-Number($('#addDataForm [name=toHUBQty]').val())
-				-Number($('#addDataForm [name=remainQty]').val());
+    	var scrapQty=Number($('#addDataForm [name=underIQCQty]').val())+Number($('#addDataForm [name=qcUseQty]').val())+Number($('#addDataForm [name=functionalTestQty]').val())+Number($('#addDataForm [name=toHUBQty]').val());
+    	$('#addDataForm [name=scrapQty]').val(scrapQty);
+    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-Number($('#addDataForm [name=scrapQty]').val());
     	$('#addDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/workflow/addPlatedFilm",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			Lobibox.alert('success', {
-                    msg: "<h3><span class='green'>添加化学镀膜信息成功</span>",
-                    title:Lobibox.base.OPTIONS.title.success,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-                });
-    			$form.data('bootstrapValidator').resetForm(true);
-    			$("#addModal").modal("hide");
-    			$("#btn_refresh").click();
+    			showNotice('Success',"添加化学镀膜信息成功",'success',1000*5);
     		}else{
-    			Lobibox.alert('error', {
-                    msg: '<span class="red">添加化学镀膜信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                    title:Lobibox.base.OPTIONS.title.error,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                });
+    			showNotice('Error','<span style="padding-top:5px">添加化学镀膜信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
         },'json'); 
-    }).on('error.form.bv', function(e, data) {
-    	showNotice('Error','参数非法，请检查参数','error',1000*10);
     });
     $("#addBackButton").on("click",function(){
     	window.location.href=contextPath+"/workflow/platedFilmManage";

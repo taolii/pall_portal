@@ -77,6 +77,7 @@ $(document).ready(function() {
      	});
     $('#modDataForm').bootstrapValidator({
         message: 'This value is not valid',
+        group:'.rowGroup',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',

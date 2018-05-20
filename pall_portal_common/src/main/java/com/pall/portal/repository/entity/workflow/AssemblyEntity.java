@@ -42,7 +42,7 @@ public class AssemblyEntity {
 	/*
 	 * HUB#
 	 */
-	@NotNull(message="{assemblyManage.form.valid.assemblyEntity.hubLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
+
 	private String hubLotNum;
 	/*
 	 * Output LOT#
@@ -76,7 +76,7 @@ public class AssemblyEntity {
 	/*
 	 * drop down T01….T17  是TRAY#
 	 */
-	@NotEmpty(message="{assemblyManage.form.valid.assemblyEntity.remark.NotEmpty}",groups={SAVE.class,ADD.class})
+	
 	private String remark;
 	/*
 	 * 录入时间
@@ -94,6 +94,17 @@ public class AssemblyEntity {
 	 * 操作员名称
 	 */
 	private String operatorName;
+	private String[] assemblyBom;
+	private String assemblyBoms;
+	/*
+	 * 装夹工作人员
+	 */
+	private String clampingCP;
+	/*
+	 * 拆夹工作人员
+	 */
+	private String clampDownTheCP;
+	
 	
 	
 	public Integer getAssemblyID() {
@@ -204,6 +215,32 @@ public class AssemblyEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	
+	public String[] getAssemblyBom() {
+		return assemblyBom;
+	}
+	public void setAssemblyBom(String[] assemblyBom) {
+		this.assemblyBom = assemblyBom;
+	}
+	public String getAssemblyBoms() {
+		return assemblyBoms;
+	}
+	public void setAssemblyBoms(String assemblyBoms) {
+		this.assemblyBoms = assemblyBoms;
+	}
+	public String getClampingCP() {
+		return clampingCP;
+	}
+	public void setClampingCP(String clampingCP) {
+		this.clampingCP = clampingCP;
+	}
+	public String getClampDownTheCP() {
+		return clampDownTheCP;
+	}
+	public void setClampDownTheCP(String clampDownTheCP) {
+		this.clampDownTheCP = clampDownTheCP;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

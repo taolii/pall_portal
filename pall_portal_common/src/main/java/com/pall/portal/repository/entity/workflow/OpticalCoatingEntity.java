@@ -84,6 +84,10 @@ public class OpticalCoatingEntity {
 	 */
 	private String ocBom;
 	/*
+	 * Optical Coating bom
+	 */
+	private String[] ocBoms;
+	/*
 	 * 录入时间
 	 */
 	private String inputTime;
@@ -216,6 +220,13 @@ public class OpticalCoatingEntity {
 	}
 	public void setOcBom(String ocBom) {
 		this.ocBom = ocBom;
+	}
+	
+	public String[] getOcBoms() {
+		return ocBoms;
+	}
+	public void setOcBoms(String[] ocBoms) {
+		this.ocBoms = ocBoms;
 	}
 
 	public interface ADD{};  

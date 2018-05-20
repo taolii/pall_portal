@@ -9,7 +9,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });  
 	
-	$(".defect-body").each(function(){
+	$(".defect-panel").each(function(){
 		$(this).find("input").each(function(){
 			$('#modDataForm').bootstrapValidator('addField', $(this).attr('name'), {
 	            message: '缺损值必须为数字类型',
@@ -30,6 +30,7 @@ $(document).ready(function() {
     $modDataForm=$('#modDataForm'),
 	$modDataForm.bootstrapValidator({
         message: 'This value is not valid',
+        group:'.rowGroup',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -81,23 +82,41 @@ $(document).ready(function() {
                     }
                 }
             },
-            outputQty: {
+            underIQCQty: {
                 validators: {
-                    notEmpty: {
-                        message: 'Output Qty(pcs)不能为空'
+                	notEmpty: {
+                        message: '领用Qty(pcs)值不能为空'
                     },
                     digits: {
-	                    message: 'Output Qty(pcs)值必须为数字'
+	                    message: '领用Qty(pcs)值必须为数字'
 	                }
                 }
             },
-            underIQCQty: {
+            qcUseQty: {
                 validators: {
-                    notEmpty: {
-                        message: 'Under IQC Qty(pcs)不能为空'
-                    },
                     digits: {
-	                    message: 'Under IQC Qty(pcs)值必须为数字'
+	                    message: 'QC Use Qty(pcs)值必须为数字'
+	                }
+                }
+            },
+            functionalTestQty: {
+                validators: {
+                    digits: {
+	                    message: 'Functional Test Qty(pcs)值必须为数字'
+	                }
+                }
+            },
+            toHUBQty: {
+                validators: {
+                    digits: {
+	                    message: 'To HUB Qty(pcs)值必须为数字'
+	                }
+                }
+            },
+            remainQty: {
+                validators: {
+                    digits: {
+	                    message: 'REMAIN QTY值必须为数字'
 	                }
                 }
             },
@@ -117,9 +136,9 @@ $(document).ready(function() {
             }
         }
     }).on('success.form.bv', function(e) {
-    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-Number($('#modDataForm [name=scrapQty]').val())-Number($('#modDataForm [name=underIQCQty]').val())
-    		-Number($('#modDataForm [name=qcUseQty]').val())-Number($('#modDataForm [name=functionalTestQty]').val())-Number($('#modDataForm [name=toHUBQty]').val())
-    				-Number($('#modDataForm [name=remainQty]').val());
+    	var scrapQty=Number($('#modDataForm [name=underIQCQty]').val())+Number($('#modDataForm [name=qcUseQty]').val())+Number($('#modDataForm [name=functionalTestQty]').val())+Number($('#modDataForm [name=toHUBQty]').val());
+    	$('#modDataForm [name=scrapQty]').val(scrapQty);
+    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-Number($('#modDataForm [name=scrapQty]').val());
     	$('#modDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);

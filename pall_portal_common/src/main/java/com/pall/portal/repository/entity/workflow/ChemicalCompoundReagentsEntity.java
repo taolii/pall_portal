@@ -8,31 +8,55 @@ public class ChemicalCompoundReagentsEntity {
 	 * 化学试剂唯一标示
 	 */
 	private Integer crID;
+	private Integer srmid;
 	/*
-	 * 混合试剂名称
+	 * 试剂属性名
 	 */
-	private String compoundReagentsName;
+	private String reagentsFieldName;
 	/*
-	 * 混合试剂编号
+	 * 试剂名称
 	 */
-	private String compoundReagentsSN;
+	private String reagentsName;
+	private String mainReagent;
+	/*
+	 * 试剂编号
+	 */
+	private String reagentsSn;
 	public Integer getCrID() {
 		return crID;
+	}
+	public String getReagentsFieldName() {
+		return reagentsFieldName;
+	}
+	public void setReagentsFieldName(String reagentsFieldName) {
+		this.reagentsFieldName = reagentsFieldName;
+	}
+	public String getReagentsName() {
+		return reagentsName;
+	}
+	public void setReagentsName(String reagentsName) {
+		this.reagentsName = reagentsName;
+	}
+	public String getMainReagent() {
+		return mainReagent;
+	}
+	public void setMainReagent(String mainReagent) {
+		this.mainReagent = mainReagent;
+	}
+	public String getReagentsSn() {
+		return reagentsSn;
+	}
+	public void setReagentsSn(String reagentsSn) {
+		this.reagentsSn = reagentsSn;
 	}
 	public void setCrID(Integer crID) {
 		this.crID = crID;
 	}
-	public String getCompoundReagentsName() {
-		return compoundReagentsName;
+	public Integer getSrmid() {
+		return srmid;
 	}
-	public void setCompoundReagentsName(String compoundReagentsName) {
-		this.compoundReagentsName = compoundReagentsName;
-	}
-	public String getCompoundReagentsSN() {
-		return compoundReagentsSN;
-	}
-	public void setCompoundReagentsSN(String compoundReagentsSN) {
-		this.compoundReagentsSN = compoundReagentsSN;
+	public void setSrmid(Integer srmid) {
+		this.srmid = srmid;
 	}
 	
 }

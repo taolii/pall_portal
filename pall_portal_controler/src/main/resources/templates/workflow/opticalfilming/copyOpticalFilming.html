@@ -64,9 +64,12 @@
 									<div class="col-md-3">
 										<input type='text' id="inputLotNum" name="inputLotNum" class="form-control" readonly="readonly" th:value="${opticalCoatingEntity.inputLotNum}"/> 
 									</div>
-									 <span class="col-sm-1 btn btn-white btn-info" id="addInputLotNum">  
-		                     			<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.button.inputLotNum.add}" th:remove="tag"></label>
-		                     		</span>
+									<div class="col-md-1">
+										<span class=" btn btn-white btn-info" id="addInputLotNum">  
+			                     			<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.button.inputLotNum.add}" th:remove="tag"></label>
+			                     		</span>
+									</div>
+									 
 								</div>
 							</div>
             				<div class="form-group">
@@ -244,15 +247,23 @@
 									</div>
 								</div>
 								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.ocBom}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<select name="ocBom" class="form-control">
-							              <option  th:each="dataConfig:${ocBomDataConfigs}" th:selected="${opticalCoatingEntity.ocBom==dataConfig.configName}"  th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-							              </option>
-	                                	</select>
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
+										<fieldset>
+	    								<legend>
+	    									<label class="blue control-label" th:text="#{pages.workflow.opticalfilming.modOpticalfilming.form.ocBom}"></label>
+	    								</legend>
+											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${ocBomDataConfigs}">
+												<label>
+													<input name="ocBoms" class="ace" type="checkbox"  th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
+													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
+												</label>
+											</div>
+	  									</fieldset>
 									</div>
 								</div>
 							</div>

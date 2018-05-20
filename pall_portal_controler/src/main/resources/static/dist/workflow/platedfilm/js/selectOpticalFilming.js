@@ -96,6 +96,11 @@ $(document).ready(function() {
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
+	$("#opticalFilmingModal").on("shown.bs.modal",function(){
+		$.each($.fn.dataTable.tables(true), function(){
+			 $(this).DataTable().columns.adjust();
+		});
+	});
 	$('#selButton').click(function(){
 		var radios=$("tbody :radio:checked",$table);
 		if(radios.length<=0){
@@ -107,9 +112,6 @@ $(document).ready(function() {
 	            $(form+' [name=inputLotNum]').val(item.outputLotNum);
 	            $(form+' [name=fixtureNum]').val(item.fixtureNum);
 	            $(form+' [name=inputQty]').val(item.outputQty);
-	            $(form).data('bootstrapValidator').validateField('inputLotNum');
-	            $(form).data('bootstrapValidator').validateField('fixtureNum');
-	            $(form).data('bootstrapValidator').validateField('inputQty');
 	            $("#opticalFilmingModal").modal("hide");
 	        });
 		}

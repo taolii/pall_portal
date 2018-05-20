@@ -21,6 +21,7 @@ public class PlatedFilmQueryFormEntity {
 	 * 涂层日期
 	 */
 	private String coatingTime;
+	private String fixtureAttribute;
 	/*
 	 * 开始涂层日期
 	 */
@@ -141,6 +142,12 @@ public class PlatedFilmQueryFormEntity {
 	}
 	public void setPfId(String pfId) {
 		this.pfId = pfId;
+	}
+	public String getFixtureAttribute() {
+		return fixtureAttribute;
+	}
+	public void setFixtureAttribute(String fixtureAttribute) {
+		this.fixtureAttribute = fixtureAttribute;
 	}
 	
 }

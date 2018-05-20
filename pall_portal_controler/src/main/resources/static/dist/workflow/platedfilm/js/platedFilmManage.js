@@ -176,8 +176,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});

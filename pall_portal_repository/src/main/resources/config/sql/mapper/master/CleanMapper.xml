@@ -9,9 +9,6 @@ f.operatorid,g.account operatorName from t_ums_workflow_clean f left join t_ums_
 		<if test="cleanID != null and cleanID != '' ">  
 	       AND f.clean_id = #{cleanID}  
 	    </if>
-		<if test="cleanTime != null and cleanTime != '' ">  
-	       AND f.clean_time = #{cleanTime}  
-	    </if>
 	    <if test="startCleanTime != null and startCleanTime != '' ">  
 	       AND f.clean_time &gt;= #{startCleanTime}  
 	    </if>

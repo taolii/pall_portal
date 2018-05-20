@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.util.StringUtils;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.util.IOUtils;
@@ -92,10 +92,11 @@ public class PlatedFilmManageController{
 	 */
 	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
-		model.addAttribute("sfDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SFBOMNUM)));
-		model.addAttribute("apsDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_APSCONDITION)));
-		model.addAttribute("fixtureAttrDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_FIXTUREATTRIBUTE)));
-		model.addAttribute("platedFilmTableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_PLATEDFILM_TABLENAME));
+		
+		model.addAttribute("apsDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_DATACONFIG_TYPE_APSCONDITION)));
+		model.addAttribute("fixtureAttrDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_DATACONFIG_TYPE_FIXTUREATTRIBUTE)));
+		model.addAttribute("platedFilmTableName", UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME));
+		model.addAttribute("supplierDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_SUPPLIER)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
@@ -128,11 +129,12 @@ public class PlatedFilmManageController{
 	 */
 	@RequestMapping(value="workflow/platedFilmManage", method= RequestMethod.GET)
     public  String platedFilmManage(Model model, HttpServletRequest request) {	
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_PLATEDFILM_TABLENAME));
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+		
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_PLATEDFILM_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -166,7 +168,7 @@ public class PlatedFilmManageController{
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 			baseResponse.setResultMsg(resourceUtils.getMessage("platedfilmManage.controler.platedfilmManage.exception"));
 		}
-		jsonData=JSONTools.handleJSONNullField(jsonData, UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_PLATEDFILM_TABLENAME));
+		jsonData=JSONTools.handleJSONNullField(jsonData, UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME));
 		 return jsonData;
     }
 	/*
@@ -176,6 +178,7 @@ public class PlatedFilmManageController{
 	@RequestMapping(value="workflow/addPlatedFilm", method= RequestMethod.GET)
     public String addPolish(Model model,HttpServletRequest request) {
 		model=initConfigData(model);
+		model.addAttribute("sfDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_DATACONFIG_TYPE_SFBOMNUM)));
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMINGSEL_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
@@ -213,6 +216,9 @@ public class PlatedFilmManageController{
 				if(at!=null && at.getUserEntity()!=null){
 					platedFilmEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
+				if(platedFilmEntity.getSfBoms()!=null){
+					platedFilmEntity.setSfBomNum(StringUtils.join(platedFilmEntity.getSfBoms(), ","));
+				};
 				baseResponse=platedFilmService.addPlatedFilm(platedFilmEntity);
 			}
 		} catch (Exception e) {
@@ -243,16 +249,36 @@ public class PlatedFilmManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		PlatedFilmEntity platedFilmEntity=null;
+		List<DataConfigEntity> sfDataConfigs=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_DATACONFIG_TYPE_SFBOMNUM));
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 	        List<PlatedFilmEntity> platedFilmEntitys=(List<PlatedFilmEntity>)baseResponse.getReturnObjects();
 	        if (platedFilmEntitys!=null &&  platedFilmEntitys.size()>0){
 	        	platedFilmEntity=platedFilmEntitys.get(0);
+	        	if(sfDataConfigs!=null && sfDataConfigs.size()>0){
+	        		if(platedFilmEntity!=null && !StringUtils.isEmpty(platedFilmEntity.getSfBomNum())){
+	        			String[] sfBoms=platedFilmEntity.getSfBomNum().split(",");
+	        			for(DataConfigEntity dataConfigEntity:sfDataConfigs){
+	        				dataConfigEntity.setChecked(false);
+	        				for(String sfBom:sfBoms){
+	        					if(dataConfigEntity.getConfigName().equals(sfBom)){
+									dataConfigEntity.setChecked(true);
+									break;
+								}
+							}
+	        			}
+		        		
+	        		}
+				}
 	        }
 		}
 		if(platedFilmEntity==null){
 			platedFilmEntity=new PlatedFilmEntity();
 		}
 		model.addAttribute("platedFilmEntity", platedFilmEntity);
+		if(sfDataConfigs==null){
+			sfDataConfigs=new ArrayList<DataConfigEntity>();
+		}
+    	model.addAttribute("sfDataConfigs",sfDataConfigs);
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMINGSEL_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
@@ -294,6 +320,9 @@ public class PlatedFilmManageController{
 				if(at!=null && at.getUserEntity()!=null){
 					platedFilmEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
+				if(platedFilmEntity.getSfBoms()!=null){
+					platedFilmEntity.setSfBomNum(StringUtils.join(platedFilmEntity.getSfBoms(), ","));
+				};
 				baseResponse=platedFilmService.modifyPlatedFilm(platedFilmEntity);
 			}
 		} catch (Exception e) {
@@ -340,7 +369,7 @@ public class PlatedFilmManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_PLATEDFILM_TABLENAME));
+	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME));
 	        List<PlatedFilmEntity> platedFilmEntitys=(List<PlatedFilmEntity>)baseResponse.getReturnObjects();
 	        
 	        int currentRowNum=excelheadlinesMap.size();
@@ -354,7 +383,7 @@ public class PlatedFilmManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_PLATEDFILM_TABLENAME), platedFilmEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME), platedFilmEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

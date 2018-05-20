@@ -43,6 +43,10 @@ public class CleanEntity {
 	 */
 	private String cleanBom;
 	/*
+	 * clean Bom
+	 */
+	private String[] cleanBoms;
+	/*
 	 * Clean LOT#
 	 */
 	@NotEmpty(message="{cleanmanage.form.valid.CleanEntity.cleanLotNum.NotEmpty}",groups={SAVE.class,ADD.class})
@@ -206,6 +210,13 @@ public class CleanEntity {
 	}
 	public void setCleanBom(String cleanBom) {
 		this.cleanBom = cleanBom;
+	}
+
+	public String[] getCleanBoms() {
+		return cleanBoms;
+	}
+	public void setCleanBoms(String[] cleanBoms) {
+		this.cleanBoms = cleanBoms;
 	}
 
 	public interface ADD{};  

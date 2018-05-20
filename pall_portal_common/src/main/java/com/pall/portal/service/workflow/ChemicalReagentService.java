@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
+import com.pall.portal.repository.entity.workflow.ChemicalReagentMixtureQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity;
 
 /*
@@ -20,6 +21,12 @@ public interface ChemicalReagentService {
 	 * @return 查询结果
 	 */
 	public BaseTablesResponse queryChemicalReagentList(ChemicalReagentQueryFormEntity  chemicalReagentQueryFormEntity) throws Exception;
+	/*
+	 * 根据条件查询化学试剂混合信息
+	 * @param chemicalReagentMixtureQueryFormEntity 化学混合试剂查询对象
+	 * @return 查询结果
+	 */
+	public BaseTablesResponse queryChemicalReagentMixtureList(ChemicalReagentMixtureQueryFormEntity  chemicalReagentMixtureQueryFormEntity) throws Exception;
 	/*
 	 * 添加化学试剂信息
 	 * @param chemicalReagentEntity 化学试剂信息
@@ -44,4 +51,10 @@ public interface ChemicalReagentService {
 	 * @return 导出结果
 	 */
 	public BaseResponse exportChemicalReagent(ChemicalReagentQueryFormEntity  chemicalReagentQueryFormEntity) throws Exception;
+	/*
+	 * 导出化学试剂信息
+	 * @param chemicalReagentQueryFormEntity 化学试剂信息查询对象
+	 * @return 导出结果
+	 */
+	public ChemicalReagentEntity getChemicalReagent(ChemicalReagentQueryFormEntity  chemicalReagentQueryFormEntity) throws Exception;
 }

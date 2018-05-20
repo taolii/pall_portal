@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.util.StringUtils;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.util.IOUtils;
@@ -93,7 +93,7 @@ public class CleanManageController{
 	 */
 	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
-		model.addAttribute("cleanBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_CLEANBOM)));
+		
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
@@ -170,7 +170,6 @@ public class CleanManageController{
 			baseResponse.setResultMsg(resourceUtils.getMessage("cleanmanage.controler.cleanManage.exception"));
 			
 		}
-		logger.info("jsonData:"+jsonData);
 		 return jsonData;
     }
 	/*
@@ -209,6 +208,7 @@ public class CleanManageController{
 	@RequestMapping(value="workflow/addClean", method= RequestMethod.GET)
     public  String addClean(Model model,HttpServletRequest request) {
 		model=initConfigData(model);
+		model.addAttribute("cleanBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_CLEANBOM)));
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISHSEL_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
@@ -260,6 +260,9 @@ public class CleanManageController{
 						yield=1;
 					}
 					cleanEntity.setYield(yield*100);
+					if(cleanEntity.getCleanBoms()!=null){
+						cleanEntity.setCleanBom(StringUtils.join(cleanEntity.getCleanBoms(), ","));
+					};
 					baseResponse=cleanService.addClean(cleanEntity);
 				}
 			}
@@ -291,16 +294,36 @@ public class CleanManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		CleanEntity cleanEntity=null;
+		List<DataConfigEntity> cleanBomConfigs=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_CLEANBOM));
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 	        List<CleanEntity> cleanEntitys=(List<CleanEntity>)baseResponse.getReturnObjects();
 	        if (cleanEntitys!=null &&  cleanEntitys.size()>0){
 	        	cleanEntity=cleanEntitys.get(0);
+	        	if(cleanBomConfigs!=null && cleanBomConfigs.size()>0){
+	        		if(cleanEntity!=null && !StringUtils.isEmpty(cleanEntity.getCleanBom())){
+	        			String[] cleanBoms=cleanEntity.getCleanBom().split(",");
+	        			for(DataConfigEntity dataConfigEntity:cleanBomConfigs){
+	        				dataConfigEntity.setChecked(false);
+	        				for(String cleanBom:cleanBoms){
+	        					if(dataConfigEntity.getConfigName().equals(cleanBom)){
+									dataConfigEntity.setChecked(true);
+									break;
+								}
+							}
+	        			}
+		        		
+	        		}
+				}
 	        }
 		}
 		if(cleanEntity==null){
 			cleanEntity=new CleanEntity();
 		}
 		model.addAttribute("cleanEntity", cleanEntity);
+		if(cleanBomConfigs==null){
+			cleanBomConfigs=new ArrayList<DataConfigEntity>();
+		}
+    	model.addAttribute("cleanBomConfigs",cleanBomConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
 		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISHSEL_TABLENAME));
 		if(tableFieldBindMap!=null){
@@ -355,6 +378,9 @@ public class CleanManageController{
 						yield=1;
 					}
 					cleanEntity.setYield(yield*100);
+					if(cleanEntity.getCleanBoms()!=null){
+						cleanEntity.setCleanBom(StringUtils.join(cleanEntity.getCleanBoms(), ","));
+					};
 					baseResponse=cleanService.modifyClean(cleanEntity);
 				}
 			}

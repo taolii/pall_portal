@@ -16,7 +16,9 @@ public class AssemblyQueryFormEntity {
 	/*
 	 * 交付日期
 	 */
-	private String deliveryTime;
+	private String startDeliveryTime;
+	private String endDeliveryTime;
+	private String assemblyID;
 	/*
 	 * TRAY#
 	 */
@@ -67,11 +69,18 @@ public class AssemblyQueryFormEntity {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	public String getDeliveryTime() {
-		return deliveryTime;
+	
+	public String getStartDeliveryTime() {
+		return startDeliveryTime;
 	}
-	public void setDeliveryTime(String deliveryTime) {
-		this.deliveryTime = deliveryTime;
+	public void setStartDeliveryTime(String startDeliveryTime) {
+		this.startDeliveryTime = startDeliveryTime;
+	}
+	public String getEndDeliveryTime() {
+		return endDeliveryTime;
+	}
+	public void setEndDeliveryTime(String endDeliveryTime) {
+		this.endDeliveryTime = endDeliveryTime;
 	}
 	public String getTrayLotNum() {
 		return trayLotNum;
@@ -120,6 +129,12 @@ public class AssemblyQueryFormEntity {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public String getAssemblyID() {
+		return assemblyID;
+	}
+	public void setAssemblyID(String assemblyID) {
+		this.assemblyID = assemblyID;
 	}
 	
 }

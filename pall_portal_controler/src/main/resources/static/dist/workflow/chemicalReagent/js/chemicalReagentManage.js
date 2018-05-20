@@ -1,4 +1,14 @@
 $(document).ready(function() {
+	$('#queryStartInPutDate').datetimepicker({  
+        format: 'YYYY-MM-DD',  
+        locale: moment.locale('zh-cn')  
+    });
+	$('#queryEndInPutDate').datetimepicker({  
+        format: 'YYYY-MM-DD',  
+        locale: moment.locale('zh-cn')  
+    });
+	$('#queryStartInPutDate').val(currentDate(30));
+	$('#queryEndInPutDate').val(currentDate(0));
 	var contextPath=$("#contextPath").val();
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
@@ -10,21 +20,30 @@ $(document).ready(function() {
 		if(tableField.invisible==1){
 			v_visible=false;
 		}
-		columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
+		if(tableField.fieldName=='reagentMixture'){
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:null,render : function(data,type, row, meta) {
+				return "<div id='showDetail' class='action-buttons'><a  href='javascript:void(0)' class='green bigger-140 show-details-btn' title='Show Details'>"+
+				"<i class='ace-icon fa fa-angle-double-down'></i>"+
+				"<span class='sr-only'>Details</span>"
+				"</a></div>";
+			},width:"60px","visible":v_visible }) ;  
+		}else{
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
+		}
+		
 	});
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
             "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
-          }, width : "60px"}
+          }, width : "100px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
-	var $wrapper = $('#assembly-div-table-container');
+	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
-	$addModal=$("#addModal");
-	$modModal=$("#modModal");
 	$queryForm=$("#queryForm");
 	var _table = $table.dataTable($.extend(true,
 		{pageLength: 10,scrollX: true,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
@@ -50,7 +69,7 @@ $(document).ready(function() {
                     success: function(result) {
                     	 //异常判断与处理
                         if (result.resultCode!=0) {
-                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>化学镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
+                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>生化镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
                         	$wrapper.spinModal(false);
                         	return ;
                         }
@@ -69,7 +88,7 @@ $(document).ready(function() {
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     	var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
-                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>化学镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
+                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>生化镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
                         $wrapper.spinModal(false);
                     }
                 });
@@ -83,7 +102,7 @@ $(document).ready(function() {
             $("tbody tr",$table).eq(0).click();
         }
     })).api();
-	$("#datatable_length").hide();
+	$("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -91,10 +110,10 @@ $(document).ready(function() {
 		_table.draw();
 	});
 	$("#btn-add").click(function(){
-		polishManage.addItemShow();
+		manage.addItem();
 	});
 	$("#btn-export").click(function(){
-		polishManage.exportItem();
+		manage.exportItem();
 	});
 	$("#btn-delAll").click(function(){
 		var arrItemId = [];
@@ -102,7 +121,7 @@ $(document).ready(function() {
             var item = _table.row($(this).closest('tr')).data();
             arrItemId.push(item);
         });
-        polishManage.deleteItem(arrItemId);
+        manage.deleteItem(arrItemId);
 	});
 	$("[name='cb-check-all']").click(function(){
 		$(":checkbox",$table).prop("checked",$(this).prop("checked"));
@@ -123,101 +142,39 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        polishManage.currentItem = item;
-        polishManage.editItemInit(item);
-        polishManage.editItemShow();
+        manage.currentItem = item;
+        manage.editItem(item);
+    }).on("click","#copyRow",function() {
+        //点击编辑按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        manage.currentItem = item;
+        manage.copyItem(item);
     }).on("click","#delRow",function() {
         //点击删除按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        polishManage.deleteItem([item]);
-    });
-	 var polishManage = {
+        manage.deleteItem([item]);
+    }).on("click","#showDetail",function() {
+    	var item = _table.row($(this).closest('tr')).data();
+        manage.showReagentMixtureDetail(item);
+	});
+	 var manage = {
 			    currentItem : null,
 			    fuzzySearch : true,
 			    editItemInit : function(item) {
 			        if (!item) {
 			            return;
 			        }
-			       $chemicalReagentTableName=$("#chemicalReagentTableName"),
-			       $modChemicalReagentPanel=$('#modChemicalReagentPanel'),
-			       $crDataConfigType=$('#crDataConfigType'),
-			       $modTemplate = $('#template');
-			       $("#modDataForm [name=crID]").val(item.crID);
-			       $("#modDataForm [name=lot]").val(item.lot);
-			       $("#modDataForm [name=rawMaterial]").val(item.rawMaterial);
-			       $("#modDataForm [name=inPutDate]").val(item.inPutDate);
-			       $("#modDataForm [name=coatingStation]").val(item.coatingStation);
-			       $("#modDataForm [name=docRev]").val(item.docRev);
-			       $("#modDataForm [name=goodsQty]").val(item.goodsQty);
-			       $("#modDataForm [name=inputQty]").val(item.inputQty);
-			       $("#modDataForm [name=theoryYield]").val(item.theoryYield);
-			       $("#modWorkingface"+$crDataConfigType.val()).find(".panel-body").empty();
-			       $.each(tableFieldBinds, function(index, tableField){
-				   		if(tableField.fieldName.indexOf($chemicalReagentTableName.val())==0 && item.hasOwnProperty(tableField.fieldName) && $(item).attr(tableField.fieldName)!=''){
-				   			$modChemicalReagentPanel.show();
-				            $newRow   =$modTemplate.clone().removeAttr('id').find('.chemicalReagent').html(tableField.headline).end();
-				            $newRow=$newRow.find('input').attr('name', tableField.fieldName).end().
-				        	on('click', '.removeButton', function() {
-				        		$modDataForm.bootstrapValidator('removeField', $modChemicalReagent.val());
-				                $newRow.remove();
-				                if($modChemicalReagentPanel.find(".removeButton").length<=0){
-				                	$modChemicalReagentPanel.hide();
-				                }
-				            });
-				          
-				            $("#modWorkingface"+$crDataConfigType.val()).find(".panel-body").each(function(){
-				            	$(this).append($newRow).show();
-							});
-				            $("#modDataForm [name="+tableField.fieldName+"]").val($(item).attr(tableField.fieldName));
-				            $('#modDataForm').bootstrapValidator('addField', tableField.fieldName, {
-				            	message: '试剂编号不能为空',
-					            validators: {
-					            	notEmpty: {
-				                        message: '试剂编号不能为空'
-				                    }
-					            }
-					        });
-				   		}
-				       });
-				       if($modChemicalReagentPanel.find(".removeButton").length<=0){
-				    	   $modChemicalReagentPanel.hide();
-		                }
-				       //更新组装站位信息
-				       $checkTemplate = $('#checkTemplate');
-				       $assemblyOutputLotNumPanel=$("#modDataForm [id=assemblyOutputLotNum]").find(".panel-body");
-				       $assemblyOutputLotNumPanel.empty();
-				       var assemblyOutputLotNums=item.assemblyOutputLotNums.split(",");
-				       if(assemblyOutputLotNums){
-				    	   for(i in assemblyOutputLotNums)
-				    	   {
-				    	       if(assemblyOutputLotNums[i]){
-				    	    	   $newRow=$checkTemplate.clone().removeAttr('id').find('input').val(assemblyOutputLotNums[i]).end().
-				    	        	on('click', '.removeButton', function() {
-				    	                $(this).parent().parent().remove();
-				    	            });
-				    	    	   $assemblyOutputLotNumPanel.each(function(){
-				    	        	$(this).append($newRow).show();
-				    			});
-				    	       };
-				    	   }
-				       }
 			    },
-			    addItemShow: function() {
-			    	$addModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$addModal.css("overflow", "hidden");
-			    	$addModal.css("overflow-y", "auto");
-			    	$addModal.modal("show");
+			    addItem: function() {
+			    	LoadPage(contextPath+"/workflow/addChemicalReagent");
 			    },
-			    editItemShow: function() {
-			    	$modModal.draggable({ 
-			    		scroll: true, scrollSensitivity: 100,
-			    		cursor: "move"});
-			    	$modModal.css("overflow", "hidden");
-			    	$modModal.css("overflow-y", "auto");
-			    	$modModal.modal("show");
+			    editItem: function(item) {
+			    	LoadPage(contextPath+"/workflow/modChemicalReagent?crID="+item.crID+"&operator=");
+			    },
+			    copyItem: function(item) {
+			    	LoadPage(contextPath+"/workflow/modChemicalReagent?crID="+item.crID+"&operator=copy");
 			    },
 			    exportItem:function(){
 			         $.post(contextPath+"/workflow/exportChemicalReagent",$queryForm.serializeArray(), function(result) {
@@ -234,6 +191,17 @@ $(document).ready(function() {
                                 });
                     		}
                      },'json'); 
+			    },
+			    showReagentMixtureDetail: function(item) {
+			    	$("#queryModalForm [name=crID]").val(item.crID);
+			    	$reagentMixtureDetailModal=$("#reagentMixtureDetailModal");
+			        $reagentMixtureDetailModal.draggable({ 
+			    		scroll: true, scrollSensitivity: 100,
+			    		cursor: "move"});
+			        $reagentMixtureDetailModal.css("overflow", "hidden");
+			        $reagentMixtureDetailModal.css("overflow-y", "auto");
+			        $reagentMixtureDetailModal.modal("show");
+			        $("#queryModalButton").click();
 			    },
 			    deleteItem : function(selectedItems) {
 			        var message;

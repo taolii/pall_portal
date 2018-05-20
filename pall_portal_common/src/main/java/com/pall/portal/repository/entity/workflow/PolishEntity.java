@@ -91,6 +91,10 @@ public class PolishEntity {
 	 */
 	private String polishBom;
 	/*
+	 * 抛磨Bom
+	 */
+	private String[] polishBoms;
+	/*
 	 * 录入时间
 	 */
 	private String inputTime;
@@ -235,6 +239,13 @@ public class PolishEntity {
 	}
 	public void setOutputQty(Integer outputQty) {
 		this.outputQty = outputQty;
+	}
+	
+	public String[] getPolishBoms() {
+		return polishBoms;
+	}
+	public void setPolishBoms(String[] polishBoms) {
+		this.polishBoms = polishBoms;
 	}
 
 	public interface ADD{};  

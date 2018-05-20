@@ -18,6 +18,7 @@ import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.init.UmsConfigInitiator;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
+import com.pall.portal.repository.entity.workflow.PlatedFilmEntity;
 import com.pall.portal.repository.entity.workflow.PolishEntity;
 import com.pall.portal.repository.entity.workflow.PolishQueryFormEntity;
 import com.pall.portal.repository.mapper.workflow.DefectDao;
@@ -134,7 +135,6 @@ public class PolishServiceImpl implements PolishService{
 					List<Integer> defectIDs=new ArrayList<Integer>();
 					defectIDs.add(polishEntity.getPolishID());
 					List<Integer> defectTypes=new ArrayList<Integer>();
-					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT)));
 					defectDao.delDefectResult(defectIDs,defectTypes);
 					for(DefectEntity defectEntity:defects){
 						defectEntity.setDefectID(polishEntity.getPolishID());
@@ -183,6 +183,11 @@ public class PolishServiceImpl implements PolishService{
 			polishQueryFormEntity.setStartPageNum(0);
 			//查询总记录数
 			int totalRecords=polishDao.queryPolishTotalRecords(polishQueryFormEntity);
+			if(totalRecords==0){
+				baseResponse.setReturnObjects(new ArrayList<PolishEntity>());
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				return baseResponse;
+			}
 			//分页查询结果集
 			polishQueryFormEntity.setPageSize(totalRecords);
 			List<PolishEntity> polishEntitys=polishDao.queryPolishList(polishQueryFormEntity);

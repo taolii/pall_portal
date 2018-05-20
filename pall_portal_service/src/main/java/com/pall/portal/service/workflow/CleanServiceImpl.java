@@ -17,6 +17,7 @@ import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.init.UmsConfigInitiator;
+import com.pall.portal.repository.entity.workflow.AssemblyEntity;
 import com.pall.portal.repository.entity.workflow.CleanEntity;
 import com.pall.portal.repository.entity.workflow.CleanQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
@@ -185,6 +186,11 @@ public class CleanServiceImpl implements CleanService{
 			cleanQueryFormEntity.setStartPageNum(0);
 			//查询总记录数
 			int totalRecords=cleanDao.queryCleanTotalRecords(cleanQueryFormEntity);
+			if(totalRecords==0){
+				baseResponse.setReturnObjects(new ArrayList<CleanEntity>());
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				return baseResponse;
+			}
 			//分页查询结果集
 			cleanQueryFormEntity.setPageSize(totalRecords);
 			List<CleanEntity> cleanEntitys=cleanDao.queryCleanList(cleanQueryFormEntity);

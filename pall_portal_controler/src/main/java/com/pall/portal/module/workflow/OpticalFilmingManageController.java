@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.util.StringUtils;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.util.IOUtils;
@@ -93,7 +93,7 @@ public class OpticalFilmingManageController{
 	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
 		model.addAttribute("supplierDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_SUPPLIER)));
-		model.addAttribute("ocBomDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_OCBOM)));
+		
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
@@ -180,6 +180,7 @@ public class OpticalFilmingManageController{
 	@RequestMapping(value="workflow/addOpticalFilming", method= RequestMethod.GET)
     public   String addOpticalFilming(Model model,HttpServletRequest request) {
 		model=initConfigData(model);
+		model.addAttribute("ocBomDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_OCBOM)));
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEANSEL_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
@@ -220,6 +221,9 @@ public class OpticalFilmingManageController{
 				if(at!=null && at.getUserEntity()!=null){
 					opticalCoatingEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
+				if(opticalCoatingEntity.getOcBoms()!=null){
+					opticalCoatingEntity.setOcBom(StringUtils.join(opticalCoatingEntity.getOcBoms(), ","));
+				};
 				baseResponse=opticalFilmingService.addOpticalFilming(opticalCoatingEntity);
 			}
 		} catch (Exception e) {
@@ -279,16 +283,36 @@ public class OpticalFilmingManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		OpticalCoatingEntity opticalCoatingEntity=null;
+		List<DataConfigEntity> ocBomDataConfigs=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_OCBOM));
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 	        List<OpticalCoatingEntity> opticalCoatingEntitys=(List<OpticalCoatingEntity>)baseResponse.getReturnObjects();
 	        if (opticalCoatingEntitys!=null &&  opticalCoatingEntitys.size()>0){
 	        	opticalCoatingEntity=opticalCoatingEntitys.get(0);
+	        	if(ocBomDataConfigs!=null && ocBomDataConfigs.size()>0){
+	        		if(opticalCoatingEntity!=null && !StringUtils.isEmpty(opticalCoatingEntity.getOcBom())){
+	        			String[] ocBoms=opticalCoatingEntity.getOcBom().split(",");
+	        			for(DataConfigEntity dataConfigEntity:ocBomDataConfigs){
+	        				dataConfigEntity.setChecked(false);
+	        				for(String ocBom:ocBoms){
+	        					if(dataConfigEntity.getConfigName().equals(ocBom)){
+									dataConfigEntity.setChecked(true);
+									break;
+								}
+							}
+	        			}
+		        		
+	        		}
+				}
 	        }
 		}
 		if(opticalCoatingEntity==null){
 			opticalCoatingEntity=new OpticalCoatingEntity();
 		}
 		model.addAttribute("opticalCoatingEntity", opticalCoatingEntity);
+		if(ocBomDataConfigs==null){
+			ocBomDataConfigs=new ArrayList<DataConfigEntity>();
+		}
+    	model.addAttribute("ocBomDataConfigs",ocBomDataConfigs);
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEANSEL_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
@@ -334,6 +358,9 @@ public class OpticalFilmingManageController{
 				if(at!=null && at.getUserEntity()!=null){
 					opticalCoatingEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
+				if(opticalCoatingEntity.getOcBoms()!=null){
+					opticalCoatingEntity.setOcBom(StringUtils.join(opticalCoatingEntity.getOcBoms(), ","));
+				};
 				baseResponse=opticalFilmingService.modifyOpticalFilming(opticalCoatingEntity);
 			}
 		} catch (Exception e) {

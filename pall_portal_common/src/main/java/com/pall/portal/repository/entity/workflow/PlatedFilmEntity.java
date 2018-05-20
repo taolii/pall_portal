@@ -47,7 +47,7 @@ public class PlatedFilmEntity {
 	/*
 	 * 哪一瓶化学溶剂 APS Bottle
 	 */
-//	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.apsBottle.NotEmpty}",groups={SAVE.class,ADD.class})
+
 	private String apsBottle;
 	/*
 	 * Output LOT#
@@ -66,13 +66,18 @@ public class PlatedFilmEntity {
 	/*
 	 * Under IQC Qty(pcs)
 	 */
-	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.outputQty.NotEmpty}",groups={SAVE.class,ADD.class})
+	
 	private Integer underIQCQty;
 	/*
 	 * Under IQC Qty(pcs)
 	 */
-	@NotNull(message="{platedfilmManage.form.valid.OpticalCoatingEntity.sfBom.NotEmpty}",groups={SAVE.class,ADD.class})
+	
 	private String sfBomNum;
+	/*
+	 * Under IQC Qty(pcs)
+	 */
+	
+	private String[] sfBoms;
 	/*
 	 * Q-NUM
 	 */
@@ -128,7 +133,6 @@ public class PlatedFilmEntity {
 	 */
 	private String operatorName;
 	
-	
 	public Integer getPfID() {
 		return pfID;
 	}
@@ -165,6 +169,12 @@ public class PlatedFilmEntity {
 	public void setFixtureNum(String fixtureNum) {
 		this.fixtureNum = fixtureNum;
 	}
+	public String getFixtureAttribute() {
+		return fixtureAttribute;
+	}
+	public void setFixtureAttribute(String fixtureAttribute) {
+		this.fixtureAttribute = fixtureAttribute;
+	}
 	public String getApsBottle() {
 		return apsBottle;
 	}
@@ -194,6 +204,12 @@ public class PlatedFilmEntity {
 	}
 	public void setUnderIQCQty(Integer underIQCQty) {
 		this.underIQCQty = underIQCQty;
+	}
+	public String getSfBomNum() {
+		return sfBomNum;
+	}
+	public void setSfBomNum(String sfBomNum) {
+		this.sfBomNum = sfBomNum;
 	}
 	public Integer getqNum() {
 		return qNum;
@@ -273,17 +289,12 @@ public class PlatedFilmEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
-	public String getSfBomNum() {
-		return sfBomNum;
+	
+	public String[] getSfBoms() {
+		return sfBoms;
 	}
-	public void setSfBomNum(String sfBomNum) {
-		this.sfBomNum = sfBomNum;
-	}
-	public String getFixtureAttribute() {
-		return fixtureAttribute;
-	}
-	public void setFixtureAttribute(String fixtureAttribute) {
-		this.fixtureAttribute = fixtureAttribute;
+	public void setSfBoms(String[] sfBoms) {
+		this.sfBoms = sfBoms;
 	}
 
 	public interface ADD{};  

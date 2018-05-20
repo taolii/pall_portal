@@ -11,6 +11,7 @@
     	 <foreach collection="defectidTypes" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach>
+    	order by defect_type,defect_value
  	</select>
 	<insert id="addDefectResult" parameterType="java.util.List">
 		 insert into t_ums_workflow_defect(defect_id,defect_type,dataid,defect_value)VALUES
@@ -27,9 +28,11 @@
         <foreach collection="defectIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach>
-    	and defect_type in 
-    	<foreach collection="defectidTypes" item="item" index="index" open="(" close=")" separator=",">  
-        	#{item}  
-    	</foreach>
+    	 <if test="defectidTypes != null  and defectidTypes.size>0 ">  
+	       and defect_type in 
+	    	<foreach collection="defectidTypes" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach> 
+	    </if>
 	</delete>
 </mapper> 

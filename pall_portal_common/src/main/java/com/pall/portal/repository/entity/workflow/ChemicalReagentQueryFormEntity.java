@@ -17,6 +17,13 @@ public class ChemicalReagentQueryFormEntity {
 	 * 试剂混合物的批次，Lot
 	 */
 	private String lot;
+	private String crID;
+	private String startInPutDate;
+	private String endInPutDate;
+	private String tNum;
+	private String trayLotNum;
+	private String chemicalLotNum;
+	private String partNum;
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -40,6 +47,48 @@ public class ChemicalReagentQueryFormEntity {
 	}
 	public void setLot(String lot) {
 		this.lot = lot;
+	}
+	public String getCrID() {
+		return crID;
+	}
+	public void setCrID(String crID) {
+		this.crID = crID;
+	}
+	public String getStartInPutDate() {
+		return startInPutDate;
+	}
+	public void setStartInPutDate(String startInPutDate) {
+		this.startInPutDate = startInPutDate;
+	}
+	public String getEndInPutDate() {
+		return endInPutDate;
+	}
+	public void setEndInPutDate(String endInPutDate) {
+		this.endInPutDate = endInPutDate;
+	}
+	public String gettNum() {
+		return tNum;
+	}
+	public void settNum(String tNum) {
+		this.tNum = tNum;
+	}
+	public String getTrayLotNum() {
+		return trayLotNum;
+	}
+	public void setTrayLotNum(String trayLotNum) {
+		this.trayLotNum = trayLotNum;
+	}
+	public String getChemicalLotNum() {
+		return chemicalLotNum;
+	}
+	public void setChemicalLotNum(String chemicalLotNum) {
+		this.chemicalLotNum = chemicalLotNum;
+	}
+	public String getPartNum() {
+		return partNum;
+	}
+	public void setPartNum(String partNum) {
+		this.partNum = partNum;
 	}
 	
 	

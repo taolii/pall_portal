@@ -47,13 +47,13 @@ public class ExcelTools {
 		   							List<ChemicalCompoundReagentsEntity> chemicalCompoundReagents=(List<ChemicalCompoundReagentsEntity>)ReflectionUtils.getField(fieldMap.get(fieldName), objEntity);
 		   							if(chemicalCompoundReagents!=null){
 		   								for(ChemicalCompoundReagentsEntity ChemicalCompoundReagentsEntity:chemicalCompoundReagents){
-		   									if(StringUtils.isEmpty(ChemicalCompoundReagentsEntity.getCompoundReagentsName()))continue;
-				   							 if(null!=fieldNameBindMap.get(ChemicalCompoundReagentsEntity.getCompoundReagentsName())){
+		   									//if(StringUtils.isEmpty(ChemicalCompoundReagentsEntity.getCompoundReagentsName()))continue;
+				   							/* if(null!=fieldNameBindMap.get(ChemicalCompoundReagentsEntity.getCompoundReagentsName())){
 									   				ExcelDataNode excelDataNode=new ExcelDataNode();
 									   				excelDataNode.setColNum(fieldNameBindMap.get(ChemicalCompoundReagentsEntity.getCompoundReagentsName()).getColNum());
 									   				excelDataNode.setData(ChemicalCompoundReagentsEntity.getCompoundReagentsSN());
 										        	excelDataNodes.add(excelDataNode);
-							   				   }
+							   				   }*/
 				   							}
 		   							}
 		   						}else if(pt.getActualTypeArguments()[0]==DefectEntity.class){

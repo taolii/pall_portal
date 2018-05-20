@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.util.StringUtils;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.util.IOUtils;
@@ -88,41 +88,76 @@ public class AssemblyManageController{
 	@Value("${system.default.file.download.path}")
 	private String downloadFilePath;
 	/*
-	 * 组装管理
+	 * 初始化配置数据
 	 */
-	@RequestMapping(value="workflow/assemblyManage", method= RequestMethod.GET)
-    public  String assemblyManage(Model model, HttpServletRequest request) {	
-		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
-		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
+	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
-		model.addAttribute("remarkDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_REMARK)));
+		model.addAttribute("clampDownTheCPDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_CLAMP_DOWN_THE_CP)));
+		model.addAttribute("clampingCPDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_CLAMPING_CP)));
+		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
+		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
 		DataConfigTypeEntity dataConfigTypeEntity1=new DataConfigTypeEntity();
-		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
+		dataConfigTypeEntity1.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF));
 		dataConfigTypeEntity1.setDataTypeName(resourceUtils.getMessage("assemblyManage.form.defecttype.select.work"));
 		workingfaceTypes.add(dataConfigTypeEntity1);
 		DataConfigTypeEntity dataConfigTypeEntity2=new DataConfigTypeEntity();
-		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
+		dataConfigTypeEntity2.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF));
 		dataConfigTypeEntity2.setDataTypeName(resourceUtils.getMessage("assemblyManage.form.defecttype.select.nowork"));
 		workingfaceTypes.add(dataConfigTypeEntity2);
+		DataConfigTypeEntity dataConfigTypeEntity3=new DataConfigTypeEntity();
+		dataConfigTypeEntity3.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_CLAMPING));
+		dataConfigTypeEntity3.setDataTypeName(resourceUtils.getMessage("assemblyManage.form.defecttype.select.clamping"));
+		workingfaceTypes.add(dataConfigTypeEntity3);
+		DataConfigTypeEntity dataConfigTypeEntity4=new DataConfigTypeEntity();
+		dataConfigTypeEntity4.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_INSTALLHUB));
+		dataConfigTypeEntity4.setDataTypeName(resourceUtils.getMessage("assemblyManage.form.defecttype.select.install.hub"));
+		workingfaceTypes.add(dataConfigTypeEntity4);
+		DataConfigTypeEntity dataConfigTypeEntity5=new DataConfigTypeEntity();
+		dataConfigTypeEntity5.setDataType(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_OTHER));
+		dataConfigTypeEntity5.setDataTypeName(resourceUtils.getMessage("assemblyManage.form.defecttype.select.other"));
+		workingfaceTypes.add(dataConfigTypeEntity5);
 		model.addAttribute("workingfaceTypes", workingfaceTypes);
-		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
+		List<DataConfigEntity> wdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF));
 		model.addAttribute("workingfaceDefectConfigs", wdataConfigEntitys);
 		List<DataConfigEntity> dataConfigEntitys=new ArrayList<DataConfigEntity>();
-		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
+		List<DataConfigEntity> nwdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF));
+		List<DataConfigEntity> clampingDataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_CLAMPING));
+		List<DataConfigEntity> installHubdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_INSTALLHUB));
+		List<DataConfigEntity> otherdataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_OTHER));
 		if(nwdataConfigEntitys==null){
 			nwdataConfigEntitys=new ArrayList<DataConfigEntity>();
 		}
 		if(wdataConfigEntitys==null){
 			wdataConfigEntitys=new ArrayList<DataConfigEntity>();
 		}
+		if(clampingDataConfigEntitys==null){
+			clampingDataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
+		if(installHubdataConfigEntitys==null){
+			installHubdataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
+		if(otherdataConfigEntitys==null){
+			otherdataConfigEntitys=new ArrayList<DataConfigEntity>();
+		}
 		dataConfigEntitys.addAll(nwdataConfigEntitys);
 		dataConfigEntitys.addAll(wdataConfigEntitys);
+		dataConfigEntitys.addAll(clampingDataConfigEntitys);
+		dataConfigEntitys.addAll(installHubdataConfigEntitys);
+		dataConfigEntitys.addAll(otherdataConfigEntitys);
 		model.addAttribute("defectConfigs",dataConfigEntitys);
-		model.addAttribute("tableName", UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
+		model.addAttribute("tableName", UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
+		return model;
+	}
+	/*
+	 * 组装管理
+	 */
+	@RequestMapping(value="workflow/assemblyManage", method= RequestMethod.GET)
+    public  String assemblyManage(Model model, HttpServletRequest request) {
+		model=initConfigData(model);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
-		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
+		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
 		if(tableFieldBindMap!=null){
 			tableFieldBinds.addAll(tableFieldBindMap.values());
 		}
@@ -153,7 +188,7 @@ public class AssemblyManageController{
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
-				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
+				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
 				jsonData= JSONTools.defectsOverturnFiled(jsonData,defectTypes);
 			}
 		} catch (Exception e) {
@@ -168,20 +203,33 @@ public class AssemblyManageController{
 	 * 添加组装信息
 	 */
 	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/addAssembly", method= RequestMethod.GET)
+    public  String addAssembly(Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		model.addAttribute("assemblyBomsDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_ASSEMBLY_BOMS)));
+		return "workflow/assembly/addAssembly";
+    }
+	/*
+	 * 添加组装信息
+	 */
+	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addAssembly", method= RequestMethod.POST)
     public  @ResponseBody String addAssembly(@Validated(ADD.class) AssemblyEntity assemblyEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,assemblyEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,assemblyEntity,ndataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
 				if(at!=null && at.getUserEntity()!=null){
 					assemblyEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
+				if(assemblyEntity.getAssemblyBom()!=null){
+					assemblyEntity.setAssemblyBoms(StringUtils.join(assemblyEntity.getAssemblyBom(), ","));
+				};
 				baseResponse=assemblyService.addAssembly(assemblyEntity);
 			}
 		} catch (Exception e) {
@@ -200,7 +248,7 @@ public class AssemblyManageController{
 		List<DefectEntity> defects=new ArrayList<DefectEntity>();
 		if(dataConfigEntitys!=null){
 			String requestValue="";
-			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME);
+			String opticalFilmingTableName=UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME);
 			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
 					requestValue=request.getParameter(opticalFilmingTableName+dataConfigEntity.getDataid());
 					if(!StringUtils.isEmpty(requestValue)){
@@ -224,14 +272,70 @@ public class AssemblyManageController{
 	 * 修改组装信息
 	 */
 	@Token(flag=Token.CHECK)
+	@RequestMapping(value="workflow/modAssembly", method= RequestMethod.GET)
+    public   String modAssembly(@RequestParam("assemblyID") String assemblyID,@RequestParam("operator") String operator,Model model,HttpServletRequest request) {
+		model=initConfigData(model);
+		BaseResponse baseResponse=new BaseResponse();
+		try {
+			AssemblyQueryFormEntity assemblyQueryFormEntity=new AssemblyQueryFormEntity();
+			assemblyQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			assemblyQueryFormEntity.setAssemblyID(assemblyID);
+			baseResponse=assemblyService.exportAssembly(assemblyQueryFormEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("cleanmanage.controler.queryClean.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("cleanmanage.controler.queryClean.exception"));
+		}
+		//数据查询成功，将文件写入下载目录以便下载
+		AssemblyEntity assemblyEntity=null;
+		List<DataConfigEntity> assemblyBomsDataConfigs=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_ASSEMBLY_BOMS));
+		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+	        List<AssemblyEntity> assemblyEntitys=(List<AssemblyEntity>)baseResponse.getReturnObjects();
+	        if (assemblyEntitys!=null &&  assemblyEntitys.size()>0){
+	        	assemblyEntity=assemblyEntitys.get(0);
+	        	if(assemblyBomsDataConfigs!=null && assemblyBomsDataConfigs.size()>0){
+	        		if(assemblyEntity!=null && !StringUtils.isEmpty(assemblyEntity.getAssemblyBoms())){
+	        			String[] assemblyBoms=assemblyEntity.getAssemblyBoms().split(",");
+	        			for(DataConfigEntity dataConfigEntity:assemblyBomsDataConfigs){
+	        				dataConfigEntity.setChecked(false);
+	        				for(String assemblyBom:assemblyBoms){
+	        					if(dataConfigEntity.getConfigName().equals(assemblyBom)){
+									dataConfigEntity.setChecked(true);
+									break;
+								}
+							}
+	        			}
+	        		}
+				}
+	        }
+		}
+		if(assemblyEntity==null){
+			assemblyEntity=new AssemblyEntity();
+		}
+		if(assemblyBomsDataConfigs==null){
+			assemblyBomsDataConfigs=new ArrayList<DataConfigEntity>();
+		}
+    	model.addAttribute("assemblyBomsDataConfigs",assemblyBomsDataConfigs);
+		model.addAttribute("assemblyEntity", assemblyEntity);
+		if("copy".equals(operator)){
+			model.addAttribute("operator", "copy");
+			return "workflow/assembly/copyAssembly";
+		}else{
+			return "workflow/assembly/modAssembly";
+		}
+    }
+	/*
+	 * 修改组装信息
+	 */
+	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/modAssembly", method= RequestMethod.POST)
     public  @ResponseBody String modAssembly(@Validated(SAVE.class) AssemblyEntity assemblyEntity,BindingResult result,Model model,HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF));
-				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF));
+				List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF));
+				List<DataConfigEntity> ndataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF));
 				int sumDefectValue=getDefectEntitys(request,assemblyEntity,dataConfigEntitys);
 				sumDefectValue=sumDefectValue+getDefectEntitys(request,assemblyEntity,ndataConfigEntitys);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
@@ -284,7 +388,7 @@ public class AssemblyManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME));
+	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
 	        List<AssemblyEntity> assemblyEntitys=(List<AssemblyEntity>)baseResponse.getReturnObjects();
 	        
 	        int currentRowNum=excelheadlinesMap.size();
@@ -298,7 +402,7 @@ public class AssemblyManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.WORKFLOW_ASSEMBLY_TABLENAME), assemblyEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME), assemblyEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

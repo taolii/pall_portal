@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.util.StringUtils;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.util.IOUtils;
@@ -94,7 +94,7 @@ public class PolishManageController{
 	private Model initConfigData(Model model){
 		model.addAttribute("pnDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_PARTNUM)));
 		model.addAttribute("polishTableName", UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME));
-		model.addAttribute("polishBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_POLISHBOM)));
+		
 		model.addAttribute("tmpDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_THROWMILLSTONEPOS)));
 		//工作面类型
 		List<DataConfigTypeEntity> workingfaceTypes=new ArrayList<DataConfigTypeEntity>();
@@ -210,6 +210,7 @@ public class PolishManageController{
 	@RequestMapping(value="workflow/addPolish", method= RequestMethod.GET)
     public   String addPolish(Model model,HttpServletRequest request) {
 		model=initConfigData(model);
+		model.addAttribute("polishBomConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_POLISHBOM)));
 		return "workflow/polish/addPolish";
     }
 	/*
@@ -240,6 +241,9 @@ public class PolishManageController{
 						yield=1;
 					}
 					polishEntity.setYield(yield*100);
+					if(polishEntity.getPolishBoms()!=null){
+						polishEntity.setPolishBom(StringUtils.join(polishEntity.getPolishBoms(), ","));
+					};
 					baseResponse=polishService.addPolish(polishEntity);
 				}
 			}
@@ -280,7 +284,36 @@ public class PolishManageController{
 		if(polishEntity==null){
 			polishEntity=new PolishEntity();
 		}
+		List<DataConfigEntity> polishBomConfigs=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_POLISHBOM));
+		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+			List<PolishEntity> polishEntitys=(List<PolishEntity>)baseResponse.getReturnObjects();
+	        if (polishEntitys!=null &&  polishEntitys.size()>0){
+	        	polishEntity=polishEntitys.get(0);
+	        	if(polishBomConfigs!=null && polishBomConfigs.size()>0){
+	        		if(polishEntity!=null && !StringUtils.isEmpty(polishEntity.getPolishBom())){
+	        			String[] polishBoms=polishEntity.getPolishBom().split(",");
+	        			for(DataConfigEntity dataConfigEntity:polishBomConfigs){
+	        				dataConfigEntity.setChecked(false);
+	        				for(String polishBom:polishBoms){
+	        					if(dataConfigEntity.getConfigName().equals(polishBom)){
+									dataConfigEntity.setChecked(true);
+									break;
+								}
+							}
+	        			}
+		        		
+	        		}
+				}
+	        }
+		}
+		if(polishEntity==null){
+			polishEntity=new PolishEntity();
+		}
+		if(polishBomConfigs==null){
+			polishBomConfigs=new ArrayList<DataConfigEntity>();
+		}
 		model.addAttribute("polishEntity", polishEntity);
+    	model.addAttribute("polishBomConfigs",polishBomConfigs);
 		if("copy".equals(operator)){
 			model.addAttribute("operator", "copy");
 			return "workflow/polish/copyPolish";
@@ -317,6 +350,9 @@ public class PolishManageController{
 						yield=1;
 					}
 					polishEntity.setYield(yield*100);
+					if(polishEntity.getPolishBoms()!=null){
+						polishEntity.setPolishBom(StringUtils.join(polishEntity.getPolishBoms(), ","));
+					};
 					baseResponse=polishService.modifyPolish(polishEntity);
 				}
 			}

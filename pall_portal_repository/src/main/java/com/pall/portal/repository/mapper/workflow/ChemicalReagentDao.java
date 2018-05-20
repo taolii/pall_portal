@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
+import com.pall.portal.repository.entity.workflow.ChemicalReagentMixtureQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentRelationEntity;
 
@@ -28,6 +29,18 @@ public interface ChemicalReagentDao {
 	 */
 	public int queryChemicalReagentTotalRecords(ChemicalReagentQueryFormEntity  chemicalReagentQueryFormEntity);
 	/*
+	 * 根据条件查询化学试剂混合信息
+	 * @param chemicalReagentMixtureQueryFormEntity 化学混合试剂查询对象
+	 * @return 查询结果
+	 */
+	public List<ChemicalCompoundReagentsEntity> queryChemicalReagentMixtureList(ChemicalReagentMixtureQueryFormEntity  chemicalReagentMixtureQueryFormEntity);
+	/*
+	 * 根据条件查询生化镀膜记录数
+	 * @param chemicalReagentQueryFormEntity 生化镀膜信息查询对象
+	 * @return 查询结果
+	 */
+	public int queryChemicalReagentMixtureTotalRecords(ChemicalReagentMixtureQueryFormEntity  chemicalReagentMixtureQueryFormEntity);
+	/*
 	 * 添加生化镀膜信息
 	 * @param chemicalReagentEntity 生化镀膜对象
 	 * @return 添加结果
@@ -38,7 +51,7 @@ public interface ChemicalReagentDao {
 	 * @param compoundReagents 化学混合试剂集合
 	 * @return 添加结果
 	 */
-	public int addChemicalCompoundReagents(List<ChemicalCompoundReagentsEntity> compoundReagents) throws Exception;
+	public int addChemicalCompoundReagents(ChemicalCompoundReagentsEntity compoundReagents) throws Exception;
 	/*
 	 * 添加生化镀膜关联关系对象
 	 * @param chemicalReagentRelations 化学混合试剂对象
@@ -81,5 +94,11 @@ public interface ChemicalReagentDao {
 	 * @return 添加结果
 	 */
 	public List<ChemicalReagentRelationEntity> queryChemicalReagentRelations(@Param("crIDs") List<Integer> crIDs) throws Exception;
+	/*
+	 * 查询生化镀膜关联关系对象
+	 * @param crID 需要删除的生化镀膜信息列表
+	 * @return 添加结果
+	 */
+	public List<ChemicalReagentRelationEntity> getChemicalReagentRelations(@Param("crID") String crID) throws Exception;
 	
 }

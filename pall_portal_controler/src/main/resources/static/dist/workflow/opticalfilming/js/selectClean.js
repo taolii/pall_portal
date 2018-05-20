@@ -83,6 +83,11 @@ $(document).ready(function() {
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
+	$("#cleanModal").on("shown.bs.modal",function(){
+		$.each($.fn.dataTable.tables(true), function(){
+			 $(this).DataTable().columns.adjust();
+		});
+	});
 	$('#selButton').click(function(){
 		var radios=$("tbody :radio:checked",$table);
 		if(radios.length<=0){
@@ -94,9 +99,6 @@ $(document).ready(function() {
 	            $(form+' [name=inputLotNum]').val(item.cleanLotNum);
 	            $(form+' [name=fixtureNum]').val(item.fixtureNumber);
 	            $(form+' [name=inputQty]').val(item.outputQty);
-	            $(form).data('bootstrapValidator').validateField('inputLotNum');
-	            $(form).data('bootstrapValidator').validateField('fixtureNum');
-	            $(form).data('bootstrapValidator').validateField('inputQty');
 	            $("#cleanModal").modal("hide");
 	        });
 		}

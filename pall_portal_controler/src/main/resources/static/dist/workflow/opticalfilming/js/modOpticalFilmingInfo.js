@@ -14,7 +14,7 @@ $(document).ready(function() {
 		  }); 
 		   
 	});
-	$(".defect-body").each(function(){
+	$(".defect-panel").each(function(){
 		$(this).find("input").each(function(){
 			$('#modDataForm').bootstrapValidator('addField', $(this).attr('name'), {
 	            message: '缺损值必须为数字类型',

@@ -14,6 +14,17 @@ $(document).ready(function() {
 		  }); 
 		   
 	});
+	$("#deliveryType").change(function(){
+		if($(this).val()==2){
+			$("#addDataForm [name=inputLotNum]").removeAttr("readonly");
+			$("#addDataForm [name=fixtureNum]").removeAttr("readonly");
+			$("#addInputLotNum").addClass("disabled");
+		}else{
+			$("#addDataForm [name=inputLotNum]").attr("readonly","readonly");
+			$("#addDataForm [name=fixtureNum]").attr("readonly","readonly");
+			$("#addInputLotNum").removeClass("disabled");
+		}
+	});
     $addDataForm=$('#addDataForm'),
     $addDefectPanel=$('#addDefectPanel'),
     $addDefectButton=$('#addDefectButton');
@@ -58,6 +69,7 @@ $(document).ready(function() {
 
 	$addDataForm.bootstrapValidator({
         message: 'This value is not valid',
+        group:'.rowGroup',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -95,35 +107,11 @@ $(document).ready(function() {
                     }
                 }
             },
-            hubLotNum: {
-                validators: {
-                    notEmpty: {
-                        message: 'HUB Lot#不能为空'
-                    }
-                }
-            },
             outputLotNum: {
                 validators: {
                     notEmpty: {
                         message: 'Output LOT#不能为空'
                     }
-                }
-            },
-            outputQty: {
-                validators: {
-                    notEmpty: {
-                        message: 'Output Qty(pcs)不能为空'
-                    },
-                    digits: {
-	                    message: 'Output Qty(pcs)值必须为数字'
-	                }
-                }
-            },
-            scrapQty: {
-                validators: {
-                    digits: {
-	                    message: 'Scrap Qty(pcs)值必须为数字'
-	                }
                 }
             },
             partNum: {
@@ -139,44 +127,31 @@ $(document).ready(function() {
                         message: 'Work Order Number不能为空'
                     }
                 }
-            },
-            remark: {
-                validators: {
-                    notEmpty: {
-                        message: 'Remark不能为空'
-                    }
-                }
             }
         }
     }).on('success.form.bv', function(e) {
+    	var defectNum=0;
+    	$(".defect-panel input").each(function(){
+    		if($(this).val()!=null){
+    			defectNum=defectNum+Number($(this).val());
+    		}
+    	});
+    	$('#addDataForm [name=scrapQty]').val(defectNum);
+    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-defectNum;
+    	$('#addDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/workflow/addAssembly",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			Lobibox.alert('success', {
-                    msg: "<h3><span class='green'>添加组装信息成功</span>",
-                    title:Lobibox.base.OPTIONS.title.success,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-                });
-    			$addDefectPanel.find(".panel-body").each(function(){
-    				$(this).empty();
-    			});
-    			$addDefectPanel.hide();
-    			$form.data('bootstrapValidator').resetForm(true);
-    			$("#addModal").modal("hide");
-    			$("#btn_refresh").click();
+    			showNotice('Success',"添加组装信息成功",'success',1000*5);
     		}else{
-    			Lobibox.alert('error', {
-                    msg: '<span class="red">添加组装信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                    title:Lobibox.base.OPTIONS.title.error,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                });
+    			showNotice('Error','<span style="padding-top:5px">添加组装信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
+    		$form.bootstrapValidator('disableSubmitButtons', false);
         },'json'); 
-    }).on('error.form.bv', function(e, data) {
-    	showNotice('Error','参数非法，请检查参数','error',1000*10);
+    });
+	$("#addBackButton").on("click",function(){
+    	window.location.href=contextPath+"/workflow/assemblyManage";
     });
 });

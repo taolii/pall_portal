@@ -14,6 +14,7 @@ public class DataConfigEntity {
 	 * 数据类型
 	 */
 	private int dataType;
+	private boolean checked;
 	/*
 	 * 操作员id
 	 */
@@ -76,6 +77,12 @@ public class DataConfigEntity {
 	}
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
+	}
+	public boolean isChecked() {
+		return checked;
+	}
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 	
 }

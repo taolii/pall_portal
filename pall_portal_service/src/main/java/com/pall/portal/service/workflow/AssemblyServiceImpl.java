@@ -19,6 +19,7 @@ import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.init.UmsConfigInitiator;
 import com.pall.portal.repository.entity.workflow.AssemblyEntity;
 import com.pall.portal.repository.entity.workflow.AssemblyQueryFormEntity;
+import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.mapper.workflow.AssemblyDao;
 import com.pall.portal.repository.mapper.workflow.DefectDao;
@@ -74,8 +75,8 @@ public class AssemblyServiceImpl implements AssemblyService{
 		}
 		if(defectids.size()>0){
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF)));
 			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
 			if(null!=defectEntitys){
 				for(DefectEntity defectEntity:defectEntitys){
@@ -166,8 +167,8 @@ public class AssemblyServiceImpl implements AssemblyService{
 		try{
 			assemblyDao.delAssembly(assemblyIDS);
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_ASSEMBLY_DEFECT_NWF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF)));
+			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF)));
 			defectDao.delDefectResult(assemblyIDS,defectTypes);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
@@ -184,6 +185,11 @@ public class AssemblyServiceImpl implements AssemblyService{
 			assemblyQueryFormEntity.setStartPageNum(0);
 			//查询总记录数
 			int totalRecords=assemblyDao.queryAssemblyQueryTotalRecords(assemblyQueryFormEntity);
+			if(totalRecords==0){
+				baseResponse.setReturnObjects(new ArrayList<AssemblyEntity>());
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				return baseResponse;
+			}
 			//分页查询结果集
 			assemblyQueryFormEntity.setPageSize(totalRecords);
 			List<AssemblyEntity> assemblyEntitys=assemblyDao.queryAssemblyQueryList(assemblyQueryFormEntity);

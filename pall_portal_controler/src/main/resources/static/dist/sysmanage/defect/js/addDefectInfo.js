@@ -31,22 +31,12 @@ $(document).ready(function() {
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/dataconfig/addDataconfig",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			Lobibox.alert('success', {
-                    msg: "<h3><span class='green'>添加缺损信息成功</span>",
-                    title:Lobibox.base.OPTIONS.title.success,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-                });
+    			showNotice('Success',"添加缺损信息成功",'success',1000*5);
     			$form.data('bootstrapValidator').resetForm(true);
     			$("#addDefectModal").modal("hide");
     			$("#btn_refresh").click();
     		}else{
-    			Lobibox.alert('error', {
-                    msg: '<span class="red">添加缺损信息失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                    title:Lobibox.base.OPTIONS.title.error,
-                    width:Lobibox.base.OPTIONS.width,
-                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                });
+    			showNotice('Error','<span style="padding-top:5px">添加缺损信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
         },'json'); 
     });

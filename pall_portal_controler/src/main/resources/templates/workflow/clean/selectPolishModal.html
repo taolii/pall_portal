@@ -6,8 +6,6 @@
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.workflow.clean.selpolish.title}"></title>
-        <script type="text/javascript" th:src="@{{path}/dist/workflow/polish/js/polishManage.js(path=${contextPath})}"></script>
-    	
     </head>
     <body>
         <div th:fragment="content">
@@ -24,7 +22,7 @@
 							</div>
 						</div>
 						<div class="modal-body" >
-							<div class="row">
+							<div class="col-xs-12">
 								 <form id="queryForm" method="post" class="form-horizontal">
 				                    <div class="panel-group" id="steps">
 				                        <div class="panel panel-primary">
@@ -108,10 +106,10 @@
 				                    </div>
 		                		</form>
 	                		</div>
-							<div class="row" id="div-table-container">
-		                 		<div class="table-responsive" style="overflow-x:hidden">
+							<div class="col-xs-12" id="div-table-container">
+		                 		<div class="table-responsive"  >
 		                 			<input id="tableFieldBinds" name="tableFieldBinds" type="hidden" th:value="${tableFieldBinds}"/>
-			                 		<table id="datatable" class="table table-striped table-bordered table-hover" >
+			                 		<table id="datatable" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top" >
 									</table>
 								</div>
 		                 	</div>

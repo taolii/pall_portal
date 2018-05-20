@@ -1,5 +1,6 @@
 package com.pall.portal.service.workflow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import com.pall.portal.common.datatables.Entity.DatatablesView;
 import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
+import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
 import com.pall.portal.repository.entity.workflow.PlatedFilmEntity;
 import com.pall.portal.repository.entity.workflow.PlatedFilmQueryFormEntity;
 import com.pall.portal.repository.mapper.workflow.PlatedFilmDao;
@@ -110,6 +112,11 @@ public class PlatedFilmServiceImpl implements PlatedFilmService{
 			platedFilmQueryFormEntity.setStartPageNum(0);
 			//查询总记录数
 			int totalRecords=platedFilmDao.queryPlatedFilmTotalRecords(platedFilmQueryFormEntity);
+			if(totalRecords==0){
+				baseResponse.setReturnObjects(new ArrayList<PlatedFilmEntity>());
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				return baseResponse;
+			}
 			//分页查询结果集
 			platedFilmQueryFormEntity.setPageSize(totalRecords);
 			List<PlatedFilmEntity> opticalCoatingEntitys=platedFilmDao.queryPlatedFilmList(platedFilmQueryFormEntity);

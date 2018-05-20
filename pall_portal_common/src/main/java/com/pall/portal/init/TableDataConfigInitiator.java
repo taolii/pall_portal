@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -113,7 +114,7 @@ public class TableDataConfigInitiator {
 			Map<Integer,List<TableHeaderConfigEntity>> dynamicRowDataMap=dynamicDataMap.get(tableName);
 			if(null!=dynamicRowDataMap && dynamicRowDataMap.size()>0){
 				//动态数据所在行，每列存在的数据个数 key:列号 value：对象个数
-				Map<Integer,Integer> colsObjectNumDynamicDataMap=new HashMap<Integer,Integer>();
+				Map<Integer,Integer> colsObjectNumDynamicDataMap=new TreeMap<Integer,Integer>();
 				int dynamicRowNum=-1;
 				//获取动态数据所在行号
 				for(Integer rowNum:dynamicRowDataMap.keySet()){

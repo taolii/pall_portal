@@ -17,6 +17,7 @@ import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.init.UmsConfigInitiator;
+import com.pall.portal.repository.entity.workflow.CleanEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
 import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
@@ -185,6 +186,11 @@ public class OpticalFilmingServiceImpl implements OpticalFilmingService{
 			opticalFilmingQueryFormEntity.setStartPageNum(0);
 			//查询总记录数
 			int totalRecords=opticalFilmingDao.queryOpticalFilmingTotalRecords(opticalFilmingQueryFormEntity);
+			if(totalRecords==0){
+				baseResponse.setReturnObjects(new ArrayList<OpticalCoatingEntity>());
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				return baseResponse;
+			}
 			//分页查询结果集
 			opticalFilmingQueryFormEntity.setPageSize(totalRecords);
 			List<OpticalCoatingEntity> opticalCoatingEntitys=opticalFilmingDao.queryOpticalFilmingList(opticalFilmingQueryFormEntity);

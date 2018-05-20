@@ -14,7 +14,7 @@ $(document).ready(function() {
 		  }); 
 		   
 	});
-	$(".defect-body").each(function(){
+	$(".defect-panel").each(function(){
 		$(this).find("input").each(function(){
 			$('#modDataForm').bootstrapValidator('addField', $(this).attr('name'), {
 	            message: '缺损值必须为数字类型',
@@ -148,7 +148,7 @@ $(document).ready(function() {
 	    		}
 	    	});
 	    	$('#modDataForm [name=scrapQty]').val(defectNum);
-	    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-defectNum-Number($('#modDataForm [name=toOtherQty]').val()-Number($('#modDataForm [name=qcUseQty]').val());
+	    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-defectNum-Number($('#modDataForm [name=toOtherQty]').val());
 	    	$('#modDataForm [name=outputQty]').val(outputQty);
 	    	e.preventDefault();
 	    	var $form = $(e.target);
