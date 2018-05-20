@@ -60,14 +60,13 @@ $(document).ready(function() {
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
     	var $form = $(e.target);
-    	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/user/modifyPwd", $form.serialize(), function(result) {
     		if(result.resultCode==0){
     			showNotice('Success',"密码更新成功",'success',1000*5);
     		}else{
-    			$(ids.dataForm).bootstrapValidator('disableSubmitButtons', false); 
     			showNotice('Error','<span style="padding-top:5px">密码更新失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
+    		$form.bootstrapValidator('disableSubmitButtons', false); 
         },'json'); 
     });
 });

@@ -42,14 +42,14 @@
 									<ul class="dropdown-menu dropdown-navbar">
 										<li>
 											<a href="#">
-												<img th:src="@{{path}/dist/common/images/avatar4.png(path=${contextPath})}" class="msg-photo" alt="Alex's Avatar" />
+												<img th:src="@{{path}/dist/common/images/avatar4.png(path=${contextPath})}" class="msg-photo"/>
 												<span class="msg-body">
 													<span class="msg-title">
-														<span class="blue" th:text="#{pages.index.main_top.loginip}"></span>
+														<span th:text="#{pages.index.main_top.loginip}"></span>
 													</span>
 													<span class="msg-time">
 														<i class="ace-icon fa  fa-certificate"></i>
-														<span class="time" th:text="${session.LOGIN_USER.loginIP}"></span>
+														<span th:text="${session.LOGIN_USER.loginIP}"></span>
 													</span>
 												</span>
 											</a>
@@ -57,14 +57,14 @@
 
 										<li>
 											<a href="#">
-												<img th:src="@{{path}/dist/common/images/avatar.png(path=${contextPath})}" class="msg-photo" alt="Alex's Avatar" />
+												<img th:src="@{{path}/dist/common/images/avatar.png(path=${contextPath})}" class="msg-photo" />
 												<span class="msg-body">
 													<span class="msg-title">
-														<span class="blue" th:text="#{pages.index.main_top.logintime}"></span>
+														<span th:text="#{pages.index.main_top.logintime}"></span>
 													</span>
 													<span class="msg-time">
 														<i class="ace-icon fa fa-clock-o"></i>
-														<span class="time" th:text="${#dates.format(session.LOGIN_USER.loginTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+														<span  th:text="${#dates.format(session.LOGIN_USER.loginTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
 													</span>
 												</span>
 											</a>
@@ -77,7 +77,7 @@
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								<span class="time"><label id="time"></label></span>
 								<span class="user-info">
-									 &nbsp;&nbsp;&nbsp;&nbsp;<span th:text="#{pages.index.main_left.welcomelogin}" th:remove="tag"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									 &nbsp;&nbsp;<span th:text="#{pages.index.main_left.welcomelogin}" th:remove="tag"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									 <br/>
                 					 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${session.LOGIN_USER.userEntity.account}" th:remove="tag"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								</span>

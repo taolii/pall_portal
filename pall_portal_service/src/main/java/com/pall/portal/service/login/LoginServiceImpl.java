@@ -43,6 +43,12 @@ public class LoginServiceImpl implements LoginService{
 				baseResponse.setResultMsg(messageSource.getMessage("user.login.error.islogin.check.validcode.nopass", null, LocaleContextHolder.getLocale()));
 				return baseResponse;
 			}*/
+			if(StringUtils.isEmpty(loginEntity.getLoginName()) || StringUtils.isEmpty(loginEntity.getLoginPasswd())){
+				baseResponse=new BaseResponse();
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("user.login.error.usernameorpassword", null, LocaleContextHolder.getLocale()));
+				return baseResponse;
+			}
 			baseResponse=userManageService.findUserByUserName(null,loginEntity.getLoginName());
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				UserEntity userEntity=(UserEntity)baseResponse.getReturnObjects().get(0);

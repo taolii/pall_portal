@@ -37,18 +37,23 @@ function currentDate(num){
     return str; 
 };
 function LoadPage(url) {
-	$(".main-content").load(url,function(){
-		var submenu=$("#menu_nav .submenu").find(".active");
-        if(submenu){
-        	if($("#breadcrumbs .homemenu")){
-    			$("#breadcrumbs .homemenu").html($(submenu).parents("ul").parent("li").find("span").html());
-    		}
-    		if($("#breadcrumbs .submenumenu")){
-    			$("#breadcrumbs .submenumenu").html($(submenu).find("span").html());
-    			$("#breadcrumbs .submenumenu").attr('href',$(submenu).find("a").attr("href"));
-    		}
+	$.ajax({
+        url: url,
+        cache: false,
+        success: function(html){
+        	$(".main-content").html(html);
+        	var submenu=$("#menu_nav .submenu").find(".active");
+            if(submenu){
+            	if($("#breadcrumbs .homemenu")){
+        			$("#breadcrumbs .homemenu").html($(submenu).parents("ul").parent("li").find("span").html());
+        		}
+        		if($("#breadcrumbs .submenumenu")){
+        			$("#breadcrumbs .submenumenu").html($(submenu).find("span").html());
+        			$("#breadcrumbs .submenumenu").attr('href',$(submenu).find("a").attr("href"));
+        		}
+            }
         }
-	});
+    });
   return true;
 }
 function showNotice(title, text, type, delay) {
