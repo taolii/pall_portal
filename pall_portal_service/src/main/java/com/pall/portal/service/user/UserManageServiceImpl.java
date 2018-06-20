@@ -15,9 +15,9 @@ import com.pall.portal.common.datatables.Entity.DatatablesView;
 import com.pall.portal.common.i18n.ResourceUtils;
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
-import com.pall.portal.repository.entity.user.ModifyUPwdEntity;
 import com.pall.portal.repository.entity.user.UserEntity;
 import com.pall.portal.repository.entity.user.UserPermissionEntity;
+import com.pall.portal.repository.entity.user.UserPwdEntity;
 import com.pall.portal.repository.entity.user.UserQueryFormEntity;
 import com.pall.portal.repository.mapper.user.UserManageDao;
 
@@ -146,26 +146,26 @@ public class UserManageServiceImpl implements UserManageService{
 	}
 
 	@Override
-	public BaseResponse modifyPwd(ModifyUPwdEntity modifyUPwdEntity,boolean isAdmin) throws Exception {
+	public BaseResponse modifyPwd(UserPwdEntity userPwdEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			if(!isAdmin){
-				baseResponse = findUserByUserName(modifyUPwdEntity.getOperatorid(),null);
+			if(!"true".equals(userPwdEntity.getIsAdmin())){
+				baseResponse = findUserByUserName(userPwdEntity.getOperatorid(),null);
 				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 					UserEntity userEntity=(UserEntity)baseResponse.getReturnObjects().get(0);
-					if(!modifyUPwdEntity.getPassword().equals(userEntity.getPassword())){
+					if(!userPwdEntity.getPassword().equals(userEntity.getPassword())){
 						baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 						baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyPwd.service.input.old.passwd.error"));
 						return baseResponse;
 					}
 				}
 			}
-			if(!modifyUPwdEntity.getNewPwd().equals(modifyUPwdEntity.getEnsureNewPwd())){
+			if(!userPwdEntity.getNewPwd().equals(userPwdEntity.getEnsureNewPwd())){
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 				baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyPwd.service.inconformity.newandnewensure.passwd"));
 			}else{
-				modifyUPwdEntity.setPassword(modifyUPwdEntity.getNewPwd());
-				int resultNum=userManageDao.modifyPwd(modifyUPwdEntity);
+				userPwdEntity.setPassword(userPwdEntity.getNewPwd());
+				int resultNum=userManageDao.modifyPwd(userPwdEntity);
 				if(resultNum>0){
 					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 				}else{

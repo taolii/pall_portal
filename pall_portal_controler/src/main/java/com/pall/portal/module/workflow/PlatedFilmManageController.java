@@ -52,12 +52,14 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.repository.entity.workflow.PlatedFilmEntity;
 import com.pall.portal.repository.entity.workflow.PlatedFilmEntity.ADD;
 import com.pall.portal.repository.entity.workflow.PlatedFilmEntity.SAVE;
 import com.pall.portal.repository.entity.workflow.PlatedFilmQueryFormEntity;
 import com.pall.portal.service.excel.IExcelHandler;
+import com.pall.portal.service.menu.ButtonManageService;
 import com.pall.portal.service.workflow.PlatedFilmService;
 /*
  * 化学镀膜管理控制器
@@ -75,6 +77,8 @@ public class PlatedFilmManageController{
 	 */
 	@Autowired
 	private PlatedFilmService platedFilmService;
+	@Autowired
+	private ButtonManageService buttonManageService;
 	/*
 	 * excel处理对象
 	 */
@@ -128,7 +132,20 @@ public class PlatedFilmManageController{
 	 * 化学镀膜管理
 	 */
 	@RequestMapping(value="workflow/platedFilmManage", method= RequestMethod.GET)
-    public  String platedFilmManage(Model model, HttpServletRequest request) {	
+    public  String platedFilmManage(Model model, HttpServletRequest request) {
+		//获取按钮权限
+		AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
+		if(at!=null && at.getUserEntity()!=null){
+			try {
+				BaseResponse buttonResonse=buttonManageService.getRightButton(String.valueOf(at.getUserEntity().getOperatorid()),UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_MENUID));
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==buttonResonse.getResultCode()){
+					List<ButtonEntity> buttonEntitys=(List<ButtonEntity>)buttonResonse.getReturnObjects();
+					model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		
@@ -219,6 +236,9 @@ public class PlatedFilmManageController{
 				if(platedFilmEntity.getSfBoms()!=null){
 					platedFilmEntity.setSfBomNum(StringUtils.join(platedFilmEntity.getSfBoms(), ","));
 				};
+				if(StringUtils.isEmpty(platedFilmEntity.getPfTime())){
+					platedFilmEntity.setPfTime(null);
+				}
 				baseResponse=platedFilmService.addPlatedFilm(platedFilmEntity);
 			}
 		} catch (Exception e) {
@@ -303,7 +323,7 @@ public class PlatedFilmManageController{
 			model.addAttribute("operator", "copy");
 			return "workflow/platedfilm/copyPlatedFilm";
 		}else{
-			return "workflow/platedfilm/modPlatedFilmModal";
+			return "workflow/platedfilm/modPlatedFilm";
 		}
     }
 	/*
@@ -323,6 +343,9 @@ public class PlatedFilmManageController{
 				if(platedFilmEntity.getSfBoms()!=null){
 					platedFilmEntity.setSfBomNum(StringUtils.join(platedFilmEntity.getSfBoms(), ","));
 				};
+				if(StringUtils.isEmpty(platedFilmEntity.getPfTime())){
+					platedFilmEntity.setPfTime(null);
+				}
 				baseResponse=platedFilmService.modifyPlatedFilm(platedFilmEntity);
 			}
 		} catch (Exception e) {

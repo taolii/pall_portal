@@ -85,6 +85,10 @@ public class KeyConstants {
 	 */
 	public static final String POLISH_TABLENAME="polish/tablename";
 	/*
+	 * 抛光流程菜单id
+	 */
+	public static final String POLISH_MENUID="polish/menuid";
+	/*
 	 * 选择抛磨配置表名
 	 */
 	public static final String POLISHSEL_TABLENAME="polishSel/tablename";
@@ -117,6 +121,10 @@ public class KeyConstants {
 	 */
 	public static final String CLEAN_TABLENAME="clean/tablename";
 	/*
+	 * 清洗流程菜单id
+	 */
+	public static final String CLEAN_MENUID="clean/menuid";
+	/*
 	 * 选择清洗配置表名
 	 */
 	public static final String CLEANSEL_TABLENAME="cleanSel/tablename";
@@ -148,6 +156,10 @@ public class KeyConstants {
 	 */
 	public static final String OPTICALFILMING_TABLENAME="opticalFilming/tablename";
 	/*
+	 * 光学镀膜流程菜单id
+	 */
+	public static final String OPTICALFILMING_MENUID="opticalFilming/menuid";
+	/*
 	 * 光学镀膜表Optical Coating BOM在数据配置表中的类型
 	 */
 	public static final String OPTICALFILMING_DATACONFIG_TYPE_OCBOM="opticalFilming/dataconfig/type/ocBom";
@@ -176,13 +188,42 @@ public class KeyConstants {
 	 */
 	public static final String OPTICALFILMINGSEL_TABLENAME="opticalFilmingSel/tablename";
 	/*
+	 * 化学镀膜APS流程配置表名
+	 */
+	public static final String PLATEDFILM_TABLENAME="platedFilm/tablename";
+	/*
+	 * 化学镀膜APS流程菜单id
+	 */
+	public static final String PLATEDFILM_MENUID="platedFilm/menuid";
+	/*
+	 * 化学镀膜APS管理页面excel下载子目录名称
+	 */
+	public static final String PLATEDFILM_DOWNLOAD_SUBDIRECTORY="platedFilm/download/subdirectory";
+	/*
+	 * 化学镀膜APS数据配置表代表SF BOM的配置类型 
+	 */
+	public static final String PLATEDFILM_DATACONFIG_TYPE_SFBOMNUM="platedFilm/dataconfig/type/sfBomNum";
+	/*
+	 * 化学镀膜APS数据配置表代表APS condition的配置类型 
+	 */
+	public static final String PLATEDFILM_DATACONFIG_TYPE_APSCONDITION="platedFilm/dataconfig/type/apsCondition";
+
+	/*
+	 * 化学镀膜APS数据配置表代表fixture属性的配置类型 
+	 */
+	public static final String PLATEDFILM_DATACONFIG_TYPE_FIXTUREATTRIBUTE="platedFilm/dataconfig/type/fixtureAttribute";
+	/*
 	 * 组装流程配置表名
 	 */
 	public static final String ASSEMBLY_TABLENAME="assembly/tablename";
 	/*
+	 * 组装流程流程菜单id
+	 */
+	public static final String ASSEMBLY_MENUID="assembly/menuid";
+	/*
 	 * 数据配置表代表组装 defect的配置类型
 	 */
-	public static final String ASSEMBLYDATACONFIG_TYPE_DEFECT="assemblydataconfig/type/defect";
+	public static final String ASSEMBLY_DATACONFIG_TYPE_DEFECT="assembly/dataconfig/type/defect";
 	/*
 	 * 组装表工作面的缺损信息在数据配置表中的类型
 	 */
@@ -238,6 +279,10 @@ public class KeyConstants {
 	 */
 	public static final String CHEMICALREAGENT_TABLENAME="chemicalReagent/tablename";
 	/*
+	 * 生物镀膜BIO流程菜单id
+	 */
+	public static final String CHEMICALREAGENT_MENUID="chemicalReagent/menuid";
+	/*
 	 * 生物镀膜BIO管理页面excel下载子目录名称
 	 */
 	public static final String CHEMICALREAGENT_DOWNLOAD_SUBDIRECTORY="chemicalReagent/download/subdirectory";
@@ -274,6 +319,10 @@ public class KeyConstants {
 	 */
 	public static final String TWICE_CHEMICALREAGENT_TABLENAME="twicechemicalReagent/tablename";
 	/*
+	 * 二次生物镀膜BIO流程菜单id
+	 */
+	public static final String TWICE_CHEMICALREAGENT_MENUID="twicechemicalReagent/menuid";
+	/*
 	 * 生物镀膜BIO管理页面excel下载子目录名称
 	 */
 	public static final String TWICE_CHEMICALREAGENT_DOWNLOAD_SUBDIRECTORY="twicechemicalReagent/download/subdirectory";
@@ -305,26 +354,5 @@ public class KeyConstants {
 	 * 生物镀膜Coating Station在数据配置表中的类型
 	 */
 	public static final String TWICE_CHEMICALREAGENT_DATACONFIG_TYPE_COATINGSTATION="twicechemicalReagent/dataconfig/type/coatingStation";
-	/*
-	 * 光学镀膜流程配置表名
-	 */
-	public static final String PLATEDFILM_TABLENAME="platedFilm/tablename";
-	/*
-	 * 光学镀膜管理页面excel下载子目录名称
-	 */
-	public static final String PLATEDFILM_DOWNLOAD_SUBDIRECTORY="platedFilm/download/subdirectory";
-	/*
-	 * 数据配置表代表SF BOM的配置类型 
-	 */
-	public static final String PLATEDFILM_DATACONFIG_TYPE_SFBOMNUM="platedFilm/dataconfig/type/sfBomNum";
-	/*
-	 * 数据配置表代表APS condition的配置类型 
-	 */
-	public static final String PLATEDFILM_DATACONFIG_TYPE_APSCONDITION="platedFilm/dataconfig/type/apsCondition";
-
-	/*
-	 * 数据配置表代表fixture属性的配置类型 
-	 */
-	public static final String PLATEDFILM_DATACONFIG_TYPE_FIXTUREATTRIBUTE="platedFilm/dataconfig/type/fixtureAttribute";
 	
 }

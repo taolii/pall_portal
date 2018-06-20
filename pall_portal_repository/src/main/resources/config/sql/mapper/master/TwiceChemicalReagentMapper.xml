@@ -19,17 +19,23 @@
 	    <if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>
-	    <if test="partNum != null and partNum != '' ">  
-	       AND f.part_num = #{partNum}  
+	     <if test="bioPatNum != null and bioPatNum != '' ">  
+	       AND f.bio_pat_num = #{bioPatNum}  
 	    </if>
-	    <if test="tNum != null and tNum != '' "> 
-	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation a where a.cr_id=f.cr_id and a.t_lot_num=#{tNum})  
+	    <if test="trayNum != null and trayNum != '' "> 
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation a where a.cr_id=f.cr_id and a.tray_num=#{trayNum})  
 	    </if>
-	    <if test="trayLotNum != null and trayLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.tray_lot_num=#{trayLotNum})  
+	    <if test="oldLotNum != null and oldLotNum != '' ">  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_lot_num=#{oldLotNum})  
+	    </if>
+	     <if test="oldTrayNum != null and oldTrayNum != '' ">  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_tray_num=#{oldTrayNum})  
+	    </if>
+	     <if test="oldBioPatNum != null and oldBioPatNum != '' ">  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_bio_pat_num=#{oldBioPatNum})  
 	    </if>
 	    <if test="chemicalLotNum != null and chemicalLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_twicebiocoatint_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
 	    </if>
 	     order by f.update_time desc limit #{startPageNum},#{pageSize}
  	</select> 
@@ -47,17 +53,23 @@
 	    <if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>
-	    <if test="partNum != null and partNum != '' ">  
-	       AND f.part_num = #{partNum}  
+	     <if test="bioPatNum != null and bioPatNum != '' ">  
+	       AND f.bio_pat_num = #{bioPatNum}  
 	    </if>
-	    <if test="tNum != null and tNum != '' "> 
-	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation a where a.cr_id=f.cr_id and a.t_lot_num=#{tNum})  
+	    <if test="trayNum != null and trayNum != '' "> 
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation a where a.cr_id=f.cr_id and a.tray_num=#{trayNum})  
 	    </if>
-	    <if test="trayLotNum != null and trayLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.tray_lot_num=#{trayLotNum})  
+	    <if test="oldLotNum != null and oldLotNum != '' ">  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_lot_num=#{oldLotNum})  
+	    </if>
+	     <if test="oldTrayNum != null and oldTrayNum != '' ">  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_tray_num=#{oldTrayNum})  
+	    </if>
+	     <if test="oldBioPatNum != null and oldBioPatNum != '' ">  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_bio_pat_num=#{oldBioPatNum})  
 	    </if>
 	    <if test="chemicalLotNum != null and chemicalLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_twicebiocoatint_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
 	    </if>
  	</select>
  	
@@ -69,7 +81,7 @@
 		scrap_qty,receive_qty,heavy_smoke_qty,to_pqc_qty,to_other_qty,part_num,theory_yield,actual_yield,theory_actual_yield,operatorid,input_time,update_time)
         values(#{lot},#{bioBom},#{bioPatNum},#{crOperator1},#{crOperator2},#{rawMaterial},#{inPutDate},#{coatingStation},#{docRev},#{goodsQty},#{auxiliaryReagent1},#{auxiliaryReagent2},#{auxiliaryReagent3},#{inputQty},#{scrapQty},#{receiveQty},#{heavySmokeQty},#{toPqcQty},#{toOtherQty},#{partNum},#{theoryYield},#{actualYield},#{theoryActualYield},#{operatorid},now(),now())
     </insert>
-    <update id="modifyChemicalReagent" parameterType="com.pall.portal.repository.entity.workflow.TwiceChemicalReagentEntity">
+    <update id="modifyTwiceChemicalReagent" parameterType="com.pall.portal.repository.entity.workflow.TwiceChemicalReagentEntity">
         update  t_ums_workflow_twicebiocoating f set f.lot=#{lot},f.biobom=#{bioBom},f.bio_pat_num=#{bioPatNum},f.croperator1=#{crOperator1},f.croperator2=#{crOperator2},f.raw_material=#{rawMaterial},f.in_put_date=#{inPutDate},f.coating_station=#{coatingStation},f.doc_rev=#{docRev},
 			f.goods_qty=#{goodsQty},f.auxiliary_reagent1=#{auxiliaryReagent1},f.auxiliary_reagent2=#{auxiliaryReagent2},f.auxiliary_reagent3=#{auxiliaryReagent3},f.input_qty=#{inputQty},
 			f.part_num=#{partNum},f.scrap_qty=#{scrapQty},f.receive_qty=#{receiveQty},f.heavy_smoke_qty=#{heavySmokeQty},f.to_pqc_qty=#{toPqcQty},f.to_other_qty=#{toOtherQty},f.theory_yield=#{theoryYield},f.actual_yield=#{actualYield},f.theory_actual_yield=#{theoryActualYield},
@@ -83,7 +95,7 @@
     	</foreach> 
 	</delete>
 	<delete id="delTwiceChemicalCompoundReagents"  parameterType="java.util.List">  
-        DELETE FROM t_ums_workflow_twicebiocoatint_reagents WHERE cr_id in 
+        DELETE FROM t_ums_workflow_twicebiocoating_reagents WHERE cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 
@@ -95,43 +107,42 @@
     	</foreach> 
 	</delete>
 	<insert id="addTwiceChemicalCompoundReagents" parameterType="com.pall.portal.repository.entity.workflow.TwiceChemicalCompoundReagentsEntity">
-		 insert into t_ums_workflow_twicebiocoatint_reagents(cr_id,reagents_field_name,main_reagent,reagents_name,reagents_sn) 
+		 insert into t_ums_workflow_twicebiocoating_reagents(cr_id,reagents_field_name,main_reagent,reagents_name,reagents_sn) 
 		 select #{crID},#{reagentsFieldName},f.main_reagent,f.reagents_name,#{reagentsSn} from t_ums_reagentmixture_sns f where f.srmid=#{srmid}
     </insert>
-    <insert id="addChemicalReagentRelations" parameterType="java.util.List">
-		 insert into t_ums_workflow_twicebiocoating_relation(cr_id,tray_lot_num,t_lot_num)VALUES
+    <insert id="addTwiceChemicalReagentRelations" parameterType="java.util.List">
+		 insert into t_ums_workflow_twicebiocoating_relation(cr_id,tray_num,old_lot_num,old_tray_num,old_bio_pat_num)VALUES
 		<foreach collection="list" item="item" index="index" separator="," >  
-		        (#{item.crID},#{item.trayLotNum},#{item.tLotNum})
+		        (#{item.crID},#{item.trayNum},#{item.oldLotNum},#{item.oldTrayNum},#{item.oldBioPatNum})
     	</foreach> 
     </insert>
     <select id="queryTwiceChemicalCompoundReagents" resultType="com.pall.portal.repository.entity.workflow.TwiceChemicalCompoundReagentsEntity" parameterType="java.util.List"> 
- 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_twicebiocoatint_reagents f where cr_id in 
+ 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_twicebiocoating_reagents f where cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 
  	</select> 
  	<select id="getTwiceChemicalReagentRelations" resultType="com.pall.portal.repository.entity.workflow.TwiceChemicalReagentRelationEntity" > 
- 		select a.cr_id crID,a.tray_lot_num trayLotNum,a.t_lot_num tLotNum from t_ums_workflow_twicebiocoating_relation a where a.cr_id=#{crID}
+ 		select a.cr_id crID,a.tray_num trayNum,a.old_lot_num oldLotNum,a.old_tray_num oldTrayNum,a.old_bio_pat_num oldBioPatNum from t_ums_workflow_twicebiocoating_relation a where a.cr_id=#{crID}
  	</select> 
  	<select id="queryTwiceChemicalReagentRelations" resultType="com.pall.portal.repository.entity.workflow.TwiceChemicalReagentRelationEntity" parameterType="java.util.List"> 
- 		select distinct a.cr_id crID,a.tray_lot_num trayLotNum,a.t_lot_num tLotNum,f.output_lot_num assemblyLotNum,f.assembly_bom assemblyBom,b.output_lot_num apsLotNum,b.sf_bom apsBom,c.output_lot_num ocLotNum,c.oc_bom ocBom,d.clean_lot_num cleanLotNum,d.clean_bom cleanBom,e.polish_lot_num polishLotNum,e.polish_bom polishBom from t_ums_workflow_twicebiocoating_relation a
-		left join t_ums_workflow_assembly f on f.tray_lot_num=a.tray_lot_num left join t_ums_workflow_platedfilm b on f.input_lot_num=b.output_lot_num LEFT JOIN t_ums_workflow_opticalfilming c on c.output_lot_num=b.input_lot_num
-		LEFT JOIN t_ums_workflow_clean d on d.clean_lot_num=c.input_lot_num LEFT JOIN t_ums_workflow_polish e on e.polish_lot_num=d.input_lot_num
-		where a.cr_id in
+ 		select  a.cr_id crID,group_concat(distinct a.tray_num) trayNum,group_concat(distinct a.old_lot_num)oldLotNum,group_concat(distinct a.old_tray_num)oldTrayNum,group_concat(distinct a.old_bio_pat_num)oldBioPatNum from t_ums_workflow_twicebiocoating_relation a  
+ 		where a.cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 
+ 		GROUP BY a.cr_id 
  	</select>
  	<select id="queryTwiceChemicalReagentMixtureList" resultType="com.pall.portal.repository.entity.workflow.TwiceChemicalCompoundReagentsEntity"
 	parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentMixtureQueryFormEntity"> 
- 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_twicebiocoatint_reagents f where 1=1 
+ 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_twicebiocoating_reagents f where 1=1 
 		<if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>
 	     order by f.main_reagent desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryTwiceChemicalReagentMixtureTotalRecords" resultType="int" parameterType="com.pall.portal.repository.entity.workflow.TwiceChemicalReagentMixtureQueryFormEntity"> 
- 		select count(1) from t_ums_workflow_twicebiocoatint_reagents f  where 1=1
+ 		select count(1) from t_ums_workflow_twicebiocoating_reagents f  where 1=1
 		<if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>

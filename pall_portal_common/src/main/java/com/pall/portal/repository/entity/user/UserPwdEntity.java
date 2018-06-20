@@ -7,7 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  * 修改用户密码对象
  */
 
-public class ModifyUPwdEntity {
+public class UserPwdEntity {
+	private String isAdmin;
 	/*
 	 * 操作员id
 	 */
@@ -22,8 +23,8 @@ public class ModifyUPwdEntity {
 	/*
 	 * 登录密码
 	 */
-	@NotEmpty(message="{usermanage.form.valid.ModifyUPwdEntity.password.NotEmpty}",groups={COMMON.class})
-	@Length(min=4,max=18, message="{usermanage.form.valid.ModifyUPwdEntity.password.Length}",groups={COMMON.class}) 
+	/*@NotEmpty(message="{usermanage.form.valid.ModifyUPwdEntity.password.NotEmpty}",groups={COMMON.class})
+	@Length(min=4,max=18, message="{usermanage.form.valid.ModifyUPwdEntity.password.Length}",groups={COMMON.class}) */
 	private String password;
 	/*
 	 * 新密码
@@ -69,6 +70,13 @@ public class ModifyUPwdEntity {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	public interface ADMIN{};  

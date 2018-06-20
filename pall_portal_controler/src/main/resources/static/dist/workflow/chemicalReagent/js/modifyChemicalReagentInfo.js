@@ -36,6 +36,7 @@ $(document).ready(function() {
     	$assemblyManageModal.css("overflow", "hidden");
     	$assemblyManageModal.css("overflow-y", "auto");
     	$assemblyManageModal.modal("show");
+    	$("#queryAssemblyModalButton").click();
 	});
 	$('#addAuxiliaryReagent1').on('click', function() {
 		$singleReagentMixtureModal.draggable({ 
@@ -74,6 +75,7 @@ $(document).ready(function() {
 		$multipleReagentMixtureModal.css("overflow", "hidden");
 		$multipleReagentMixtureModal.css("overflow-y", "auto");
 		$multipleReagentMixtureModal.modal("show");
+		$("#queryMultipleReagentMixtureButton").click();
 	});
 	
 	$modDataForm.bootstrapValidator({
@@ -88,12 +90,15 @@ $(document).ready(function() {
         	lot: {
                 validators: {
                     notEmpty: {
-                        message: 'Lot不能为空'
+                        message: 'Lot#不能为空'
                     }
                 }
             },
             goodsQty: {
                 validators: {
+                	notEmpty: {
+                        message: 'goods Qty(pcs)不能为空'
+                    },
                     digits: {
 	                    message: 'goods Qty(pcs)值必须为数字'
 	                }
@@ -125,6 +130,13 @@ $(document).ready(function() {
                     digits: {
 	                    message: 'To PQC QTY必须为数字'
 	                }
+                }
+            },
+            partNum: {
+                validators: {
+                    notEmpty: {
+                        message: 'PN#不能为空'
+                    }
                 }
             }
         }

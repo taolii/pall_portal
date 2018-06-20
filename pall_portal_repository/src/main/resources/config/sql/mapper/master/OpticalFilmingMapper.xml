@@ -31,7 +31,7 @@ f.operatorid,g.account operatorName from T_UMS_WORKFLOW_OPTICALFILMING f left jo
 	       AND f.work_order_num = #{workOrderNum}  
 	    </if>
 	     <if test="supplier != null and supplier != '' ">  
-	       AND f.supplier &gt;= #{supplier}  
+	       AND f.supplier = #{supplier}  
 	    </if>
 	     order by f.update_time desc limit #{startPageNum},#{pageSize}
  	</select> 
@@ -62,7 +62,7 @@ f.operatorid,g.account operatorName from T_UMS_WORKFLOW_OPTICALFILMING f left jo
 	       AND f.work_order_num = #{workOrderNum}  
 	    </if>
 	    <if test="supplier != null and supplier != '' ">  
-	       AND f.supplier &gt;= #{supplier}  
+	       AND f.supplier= #{supplier}  
 	    </if>
  	</select>
  	

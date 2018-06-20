@@ -123,7 +123,9 @@
 										<div class="col-md-4 checkbox" style="padding-top:10px;padding-bottom:10px" th:each="role,iterStat:${roles}">
 											<label>
 												<input name="roleList" class="ace" type="checkbox" th:value="${role.roleid}">
-												<span class="lbl" th:text="${role.roleName}"></span>
+												<span class="lbl">&nbsp;&nbsp;
+													<span th:text="${role.roleName}" th:remove="tag"></span>
+												</span>
 											</label>
 										</div>
 									</div>

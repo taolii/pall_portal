@@ -54,6 +54,7 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentMixtureQueryFormEntity;
@@ -63,6 +64,7 @@ import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.ADD;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.SAVE;
 import com.pall.portal.service.excel.IExcelHandler;
+import com.pall.portal.service.menu.ButtonManageService;
 import com.pall.portal.service.workflow.ChemicalReagentService;
 /*
  * 生化镀膜管理控制器
@@ -80,6 +82,8 @@ public class ChemicalReagentManageController{
 	 */
 	@Autowired
 	private ChemicalReagentService chemicalReagentService;
+	@Autowired
+	private ButtonManageService buttonManageService;
 	/*
 	 * excel处理对象
 	 */
@@ -122,7 +126,7 @@ public class ChemicalReagentManageController{
  			baseResponse.setResultMsg(resourceUtils.getMessage("chemicalReagentManage.controler.reagentMixtureDetail.exception"));
  			
  		}
- 		 return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+ 		 return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
     }
 	/*
 	 * 生化镀膜管理
@@ -130,6 +134,19 @@ public class ChemicalReagentManageController{
 	@RequestMapping(value="workflow/chemicalReagentManage", method= RequestMethod.GET)
     public  String chemicalReagentManage(Model model, HttpServletRequest request) {
 		model=initConfigData(model);
+		//获取按钮权限
+		AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
+		if(at!=null && at.getUserEntity()!=null){
+			try {
+				BaseResponse buttonResonse=buttonManageService.getRightButton(String.valueOf(at.getUserEntity().getOperatorid()),UmsConfigInitiator.getDataConfig(KeyConstants.CHEMICALREAGENT_MENUID));
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==buttonResonse.getResultCode()){
+					List<ButtonEntity> buttonEntitys=(List<ButtonEntity>)buttonResonse.getReturnObjects();
+					model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		Map<Integer,List<TableHeaderConfigEntity>> assemblyTableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
 		model.addAttribute("assemblyTableHeaderConfigs", assemblyTableHeaderConfigs);
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CHEMICALREAGENT_TABLENAME));
@@ -193,7 +210,7 @@ public class ChemicalReagentManageController{
         String jsonData="";
 		try {
 			baseResponse=chemicalReagentService.queryChemicalReagentList(chemicalReagentQueryFormEntity);
-			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("chemicalReagentManage.controler.chemicalReagentManage.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -317,13 +334,13 @@ public class ChemicalReagentManageController{
 	 */
 	private ChemicalReagentEntity  getFieldEntitys(HttpServletRequest request,ChemicalReagentEntity chemicalReagentEntity,List<DataConfigEntity> dataConfigEntitys){
 		//不良率计算
-		/*if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getInputQty()>0){
+		if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getInputQty()>0){
 			double yield=new BigDecimal((float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			chemicalReagentEntity.setActualYield(yield*100);
-		}*/
-		if(chemicalReagentEntity.getTheoryYield()!=0){
-			double yield=new BigDecimal((float)chemicalReagentEntity.getActualYield()/chemicalReagentEntity.getTheoryYield()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			chemicalReagentEntity.setTheoryActualYield(yield*100);
+			chemicalReagentEntity.setActualYield(String.valueOf(yield*100));
+		}
+		if(!StringUtils.isEmpty(chemicalReagentEntity.getTheoryYield()) && !"0".equals(chemicalReagentEntity.getTheoryYield())){
+			double yield=new BigDecimal(Double.valueOf(chemicalReagentEntity.getActualYield())/Double.valueOf(chemicalReagentEntity.getTheoryYield())).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setTheoryActualYield(String.valueOf(yield*100));
 		}
 		if(chemicalReagentEntity.getCompoundReagents()==null){
 			chemicalReagentEntity.setCompoundReagents(new ArrayList<ChemicalCompoundReagentsEntity>());
@@ -485,7 +502,6 @@ public class ChemicalReagentManageController{
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CHEMICALREAGENT_TABLENAME));
 	        List<ChemicalReagentEntity> chemicalReagentEntitys=(List<ChemicalReagentEntity>)baseResponse.getReturnObjects();
-	        
 	        int currentRowNum=excelheadlinesMap.size();
 	        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
 	        if(null!=chemicalReagentEntitys && chemicalReagentEntitys.size()>0){

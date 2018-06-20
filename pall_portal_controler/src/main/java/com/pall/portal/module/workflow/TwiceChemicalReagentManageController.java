@@ -54,6 +54,7 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.ADD;
@@ -64,6 +65,7 @@ import com.pall.portal.repository.entity.workflow.TwiceChemicalReagentMixtureQue
 import com.pall.portal.repository.entity.workflow.TwiceChemicalReagentQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.TwiceChemicalReagentRelationEntity;
 import com.pall.portal.service.excel.IExcelHandler;
+import com.pall.portal.service.menu.ButtonManageService;
 import com.pall.portal.service.workflow.TwiceChemicalReagentService;
 /*
  * 2次生化镀膜管理控制器
@@ -81,6 +83,8 @@ public class TwiceChemicalReagentManageController{
 	 */
 	@Autowired
 	private TwiceChemicalReagentService twiceChemicalReagentService;
+	@Autowired
+	private ButtonManageService buttonManageService;
 	/*
 	 * excel处理对象
 	 */
@@ -131,6 +135,19 @@ public class TwiceChemicalReagentManageController{
 	@RequestMapping(value="workflow/twiceChemicalReagentManage", method= RequestMethod.GET)
     public  String twiceChemicalReagentManage(Model model, HttpServletRequest request) {
 		model=initConfigData(model);
+		//获取按钮权限
+		AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
+		if(at!=null && at.getUserEntity()!=null){
+			try {
+				BaseResponse buttonResonse=buttonManageService.getRightButton(String.valueOf(at.getUserEntity().getOperatorid()),UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_MENUID));
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==buttonResonse.getResultCode()){
+					List<ButtonEntity> buttonEntitys=(List<ButtonEntity>)buttonResonse.getReturnObjects();
+					model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		Map<Integer,List<TableHeaderConfigEntity>> assemblyTableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
 		model.addAttribute("assemblyTableHeaderConfigs", assemblyTableHeaderConfigs);
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_TABLENAME));
@@ -282,24 +299,19 @@ public class TwiceChemicalReagentManageController{
 					}
 				}
 				List<TwiceChemicalReagentRelationEntity> chemicalReagentRelations=new ArrayList<TwiceChemicalReagentRelationEntity>();
-				int i=1;
-				if(chemicalReagentEntity.getTrayLotNum()!=null){
-					for(String trayLotNum:chemicalReagentEntity.getTrayLotNum()){
+				String trayNumLen=request.getParameter("trayNumLen");
+				if(!StringUtils.isEmpty(trayNumLen)){
+					for(int i=0;i<Integer.parseInt(trayNumLen);i++){
 						TwiceChemicalReagentRelationEntity chemicalReagentRelationEntity=new TwiceChemicalReagentRelationEntity();
-						chemicalReagentRelationEntity.setTrayLotNum(trayLotNum);
-						if(i<=9){
-							chemicalReagentRelationEntity.settLotNum("T0"+i);
-						}else{
-							chemicalReagentRelationEntity.settLotNum("T"+i);
-						}
-						i++;
+						chemicalReagentRelationEntity.setTrayNum(request.getParameter("trayNum"+i));
+						chemicalReagentRelationEntity.setOldLotNum(request.getParameter("oldLotNum"+i));
+						chemicalReagentRelationEntity.setOldBioPatNum(request.getParameter("oldBioPatNum"+i));
+						chemicalReagentRelationEntity.setOldTrayNum(request.getParameter("oldTrayNum"+i));
 						chemicalReagentRelations.add(chemicalReagentRelationEntity);
 					}
-				};
+				}
 				chemicalReagentEntity.setChemicalReagentRelations(chemicalReagentRelations);
-				if(chemicalReagentEntity.getBioBoms()!=null){
-					chemicalReagentEntity.setBioBom(StringUtils.join(chemicalReagentEntity.getBioBoms(), ","));
-				};
+				
 				if(StringUtils.isEmpty(chemicalReagentEntity.getInPutDate())){
 					chemicalReagentEntity.setInPutDate(null);
 				}
@@ -318,13 +330,13 @@ public class TwiceChemicalReagentManageController{
 	 */
 	private TwiceChemicalReagentEntity  getFieldEntitys(HttpServletRequest request,TwiceChemicalReagentEntity chemicalReagentEntity,List<DataConfigEntity> dataConfigEntitys){
 		//不良率计算
-		/*if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getInputQty()>0){
-			double yield=new BigDecimal((float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			chemicalReagentEntity.setActualYield(yield*100);
-		}*/
-		if(chemicalReagentEntity.getTheoryYield()!=0){
-			double yield=new BigDecimal((float)chemicalReagentEntity.getActualYield()/chemicalReagentEntity.getTheoryYield()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			chemicalReagentEntity.setTheoryActualYield(yield*100);
+		if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getInputQty()>0){
+			double yield=new BigDecimal((float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty()*100).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setActualYield(String.valueOf(yield));
+		}
+		if(!StringUtils.isEmpty(chemicalReagentEntity.getTheoryYield()) && !"0".equals(chemicalReagentEntity.getTheoryYield())){
+			double yield=new BigDecimal(Double.valueOf(chemicalReagentEntity.getActualYield())/Double.valueOf(chemicalReagentEntity.getTheoryYield())*100).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setTheoryActualYield(String.valueOf(yield));
 		}
 		if(chemicalReagentEntity.getCompoundReagents()==null){
 			chemicalReagentEntity.setCompoundReagents(new ArrayList<TwiceChemicalCompoundReagentsEntity>());
@@ -352,21 +364,7 @@ public class TwiceChemicalReagentManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		List<DataConfigEntity> bioBomConfigs=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_DATACONFIG_TYPE_BIOBOM));
-    	if(bioBomConfigs!=null && bioBomConfigs.size()>0){
-    		if(chemicalReagentEntity!=null && !StringUtils.isEmpty(chemicalReagentEntity.getBioBom())){
-    			String[] bioBoms=chemicalReagentEntity.getBioBom().split(",");
-    			for(DataConfigEntity dataConfigEntity:bioBomConfigs){
-    				dataConfigEntity.setChecked(false);
-    				for(String bioBom:bioBoms){
-    					if(dataConfigEntity.getConfigName().equals(bioBom)){
-							dataConfigEntity.setChecked(true);
-							break;
-						}
-					}
-    			}
-        		
-    		}
-		}
+    	
 		model.addAttribute("chemicalReagentEntity", chemicalReagentEntity);
 		if(bioBomConfigs==null){
 			bioBomConfigs=new ArrayList<DataConfigEntity>();
@@ -417,24 +415,19 @@ public class TwiceChemicalReagentManageController{
 					}
 				}
 				List<TwiceChemicalReagentRelationEntity> chemicalReagentRelations=new ArrayList<TwiceChemicalReagentRelationEntity>();
-				int i=1;
-				if(chemicalReagentEntity.getTrayLotNum()!=null){
-					for(String trayLotNum:chemicalReagentEntity.getTrayLotNum()){
+				String trayNumLen=request.getParameter("trayNumLen");
+				if(!StringUtils.isEmpty(trayNumLen)){
+					for(int i=0;i<Integer.parseInt(trayNumLen);i++){
 						TwiceChemicalReagentRelationEntity chemicalReagentRelationEntity=new TwiceChemicalReagentRelationEntity();
-						chemicalReagentRelationEntity.setTrayLotNum(trayLotNum);
-						if(i<=9){
-							chemicalReagentRelationEntity.settLotNum("T0"+i);
-						}else{
-							chemicalReagentRelationEntity.settLotNum("T"+i);
-						}
-						i++;
+						chemicalReagentRelationEntity.setTrayNum(request.getParameter("trayNum"+i));
+						chemicalReagentRelationEntity.setOldLotNum(request.getParameter("oldLotNum"+i));
+						chemicalReagentRelationEntity.setOldBioPatNum(request.getParameter("oldBioPatNum"+i));
+						chemicalReagentRelationEntity.setOldTrayNum(request.getParameter("oldTrayNum"+i));
 						chemicalReagentRelations.add(chemicalReagentRelationEntity);
 					}
-				};
+				}
 				chemicalReagentEntity.setChemicalReagentRelations(chemicalReagentRelations);
-				if(chemicalReagentEntity.getBioBoms()!=null){
-					chemicalReagentEntity.setBioBom(StringUtils.join(chemicalReagentEntity.getBioBoms(), ","));
-				};
+				
 				if(StringUtils.isEmpty(chemicalReagentEntity.getInPutDate())){
 					chemicalReagentEntity.setInPutDate(null);
 				}

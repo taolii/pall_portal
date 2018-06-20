@@ -7,7 +7,7 @@
 f.output_qty outputQty,f.scrap_qty scrapQty,f.under_iqc_qty underIQCQty,f.q_num qNum,f.k_num kNum,f.qc_use_qty qcUseQty,f.functional_test_qty functionalTestQty,f.to_hub_qty toHUBQty,f.remain_qty remainQty,
 f.aps_condition apsCondition,f.part_num partNum,f.work_order_num workOrderNum,f.input_time inputTime,f.update_time updateTime,
 f.operatorid,g.account operatorName from T_UMS_WORKFLOW_PLATEDFILM f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
-	    <if test="pfId != null and pfId != '' ">  
+		<if test="pfId != null and pfId != '' ">  
 	       AND f.pf_id = #{pfId}  
 	    </if>
 	    <if test="startCoatingTime != null and startCoatingTime != '' ">  
@@ -29,7 +29,7 @@ f.operatorid,g.account operatorName from T_UMS_WORKFLOW_PLATEDFILM f left join t
 	       AND f.fixture_attribute = #{fixtureAttribute}  
 	    </if>
 	    <if test="sfBomNum != null and sfBomNum != '' ">  
-	       AND f.sf_bom = #{sfBomNum}  
+	       AND f.sf_bom like concat(concat('%',#{sfBomNum}),'%')
 	    </if>
 	    <if test="fixtureNum != null and fixtureNum != '' ">  
 	       AND f.fixture_num = #{fixtureNum}  
@@ -66,7 +66,7 @@ f.operatorid,g.account operatorName from T_UMS_WORKFLOW_PLATEDFILM f left join t
 	       AND f.output_lot_num = #{outputLotNum}  
 	    </if>
 	    <if test="sfBomNum != null and sfBomNum != '' ">  
-	       AND f.sf_bom = #{sfBomNum}  
+	       AND f.sf_bom like concat(concat('%',#{sfBomNum}),'%')
 	    </if>
 	    <if test="fixtureNum != null and fixtureNum != '' ">  
 	       AND f.fixture_num = #{fixtureNum}  

@@ -45,5 +45,5 @@ public interface ButtonManageService {
 	 * @param  按钮列表查询对象
 	 * @return 查询结果
 	 */
-	public BaseResponse getRightButton(String operatorid) throws Exception;
+	public BaseResponse getRightButton(String operatorid,String menuid) throws Exception;
 }

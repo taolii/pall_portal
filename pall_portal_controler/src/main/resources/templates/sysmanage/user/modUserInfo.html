@@ -117,8 +117,10 @@
 									<div class="col-md-10">
 										<div class="col-md-4  checkbox" style="padding-top:10px;padding-bottom:10px" th:each="role,iterStat:${roles}">
 											<label>
-											<input name="roleList" class="ace" type="checkbox" th:checked="${role.checked==true}" th:value="${role.roleEntity.roleid}">
-											<span class="lbl" th:text="${role.roleEntity.roleName}"></span>
+												<input name="roleList" class="ace" type="checkbox" th:checked="${role.checked==true}" th:value="${role.roleEntity.roleid}">
+												<span class="lbl">&nbsp;&nbsp;
+													<span th:text="${role.roleEntity.roleName}" th:remove="tag"></span>
+												</span>
 											</label>
 										</div>
 									</div>

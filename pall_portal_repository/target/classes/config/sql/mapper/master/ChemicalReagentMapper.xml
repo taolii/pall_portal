@@ -19,8 +19,8 @@
 	    <if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>
-	    <if test="partNum != null and partNum != '' ">  
-	       AND f.part_num = #{partNum}  
+	    <if test="bioPatNum != null and bioPatNum != '' ">  
+	       AND f.bio_pat_num = #{bioPatNum}  
 	    </if>
 	    <if test="tNum != null and tNum != '' "> 
 	       AND exists(select 1 from t_ums_workflow_biocoating_relation a where a.cr_id=f.cr_id and a.t_lot_num=#{tNum})  
@@ -29,7 +29,7 @@
 	       AND exists(select 1 from t_ums_workflow_biocoating_relation b where b.cr_id=f.cr_id and b.tray_lot_num=#{trayLotNum})  
 	    </if>
 	    <if test="chemicalLotNum != null and chemicalLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_biocoatint_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
+	       AND exists(select 1 from t_ums_workflow_biocoating_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
 	    </if>
 	     order by f.update_time desc limit #{startPageNum},#{pageSize}
  	</select> 
@@ -47,8 +47,8 @@
 	    <if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>
-	    <if test="partNum != null and partNum != '' ">  
-	       AND f.part_num = #{partNum}  
+	    <if test="bioPatNum != null and bioPatNum != '' ">  
+	       AND f.bio_pat_num = #{bioPatNum}  
 	    </if>
 	    <if test="tNum != null and tNum != '' "> 
 	       AND exists(select 1 from t_ums_workflow_biocoating_relation a where a.cr_id=f.cr_id and a.t_lot_num=#{tNum})  
@@ -57,7 +57,7 @@
 	       AND exists(select 1 from t_ums_workflow_biocoating_relation b where b.cr_id=f.cr_id and b.tray_lot_num=#{trayLotNum})  
 	    </if>
 	    <if test="chemicalLotNum != null and chemicalLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_biocoatint_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
+	       AND exists(select 1 from t_ums_workflow_biocoating_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
 	    </if>
  	</select>
  	
@@ -83,7 +83,7 @@
     	</foreach> 
 	</delete>
 	<delete id="delChemicalCompoundReagents"  parameterType="java.util.List">  
-        DELETE FROM t_ums_workflow_biocoatint_reagents WHERE cr_id in 
+        DELETE FROM t_ums_workflow_biocoating_reagents WHERE cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 
@@ -95,7 +95,7 @@
     	</foreach> 
 	</delete>
 	<insert id="addChemicalCompoundReagents" parameterType="com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity">
-		 insert into t_ums_workflow_biocoatint_reagents(cr_id,reagents_field_name,main_reagent,reagents_name,reagents_sn) 
+		 insert into t_ums_workflow_biocoating_reagents(cr_id,reagents_field_name,main_reagent,reagents_name,reagents_sn) 
 		 select #{crID},#{reagentsFieldName},f.main_reagent,f.reagents_name,#{reagentsSn} from t_ums_reagentmixture_sns f where f.srmid=#{srmid}
     </insert>
     <insert id="addChemicalReagentRelations" parameterType="java.util.List">
@@ -105,7 +105,7 @@
     	</foreach> 
     </insert>
     <select id="queryChemicalCompoundReagents" resultType="com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity" parameterType="java.util.List"> 
- 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_biocoatint_reagents f where cr_id in 
+ 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_biocoating_reagents f where cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 
@@ -114,24 +114,23 @@
  		select a.cr_id crID,a.tray_lot_num trayLotNum,a.t_lot_num tLotNum from t_ums_workflow_biocoating_relation a where a.cr_id=#{crID}
  	</select> 
  	<select id="queryChemicalReagentRelations" resultType="com.pall.portal.repository.entity.workflow.ChemicalReagentRelationEntity" parameterType="java.util.List"> 
- 		select distinct a.cr_id crID,a.tray_lot_num trayLotNum,a.t_lot_num tLotNum,f.output_lot_num assemblyLotNum,f.assembly_bom assemblyBom,b.output_lot_num apsLotNum,b.sf_bom apsBom,c.output_lot_num ocLotNum,c.oc_bom ocBom,d.clean_lot_num cleanLotNum,d.clean_bom cleanBom,e.polish_lot_num polishLotNum,e.polish_bom polishBom from t_ums_workflow_biocoating_relation a
-		left join t_ums_workflow_assembly f on f.tray_lot_num=a.tray_lot_num left join t_ums_workflow_platedfilm b on f.input_lot_num=b.output_lot_num LEFT JOIN t_ums_workflow_opticalfilming c on c.output_lot_num=b.input_lot_num
-		LEFT JOIN t_ums_workflow_clean d on d.clean_lot_num=c.input_lot_num LEFT JOIN t_ums_workflow_polish e on e.polish_lot_num=d.input_lot_num
-		where a.cr_id in
+ 		select  a.cr_id crID,group_concat(distinct a.tray_lot_num) trayLotNum,group_concat(distinct a.t_lot_num) tLotNum,group_concat(distinct  f.fixture_num) fixtrueNums,group_concat(distinct  f.output_lot_num) assemblyLotNum,group_concat(distinct  f.assembly_bom) assemblyBom,group_concat(distinct  b.output_lot_num) apsLotNum,group_concat(distinct  b.sf_bom) apsBom,group_concat(distinct  c.output_lot_num) ocLotNum,group_concat(distinct  c.oc_bom) ocBom,group_concat(distinct  d.clean_lot_num) cleanLotNum,group_concat(distinct  d.clean_bom) cleanBom,group_concat(distinct  e.polish_lot_num) polishLotNum,group_concat(distinct  e.polish_bom) polishBom from t_ums_workflow_biocoating_relation a left join t_ums_workflow_assembly f on f.tray_lot_num=a.tray_lot_num left join t_ums_workflow_platedfilm b on f.input_lot_num=b.output_lot_num LEFT JOIN t_ums_workflow_opticalfilming c on c.output_lot_num=b.input_lot_num LEFT JOIN t_ums_workflow_clean d on d.clean_lot_num=c.input_lot_num LEFT JOIN t_ums_workflow_polish e on e.polish_lot_num=d.input_lot_num 
+ 		where a.cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
     	</foreach> 
+ 		GROUP BY a.cr_id 
  	</select>
  	<select id="queryChemicalReagentMixtureList" resultType="com.pall.portal.repository.entity.workflow.ChemicalCompoundReagentsEntity"
 	parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentMixtureQueryFormEntity"> 
- 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_biocoatint_reagents f where 1=1 
+ 		select f.cr_id crID,f.reagents_field_name reagentsFieldName,f.main_reagent mainReagent,f.reagents_name reagentsName,f.reagents_sn reagentsSn from t_ums_workflow_biocoating_reagents f where 1=1 
 		<if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>
 	     order by f.main_reagent desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryChemicalReagentMixtureTotalRecords" resultType="int" parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentMixtureQueryFormEntity"> 
- 		select count(1) from t_ums_workflow_biocoatint_reagents f  where 1=1
+ 		select count(1) from t_ums_workflow_biocoating_reagents f  where 1=1
 		<if test="crID != null and crID != '' ">  
 	       AND f.cr_id = #{crID}  
 	    </if>

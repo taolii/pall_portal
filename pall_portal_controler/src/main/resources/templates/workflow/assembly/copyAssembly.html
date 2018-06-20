@@ -46,6 +46,10 @@
 								 </div>
                 			</div>
                 			<div class="form-group">
+								<div style="color:red;padding-left:80px" th:text="#{pages.workflow.assembly.form.desc}">
+								</div>
+							</div>
+                			<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.assembly.modAssembly.form.deliveryType}" th:remove="tag"></label>
@@ -135,40 +139,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.assembly.modAssembly.form.outputLotNum}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="outputLotNum" class="form-control" th:value="${assemblyEntity.outputLotNum}"/>  
-									</div>
-								</div>
-								<div class="rowGroup">
-									
-								</div>
-							</div>
-							<div class="form-group" style="display:none">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.assembly.modAssembly.form.scrapQty}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="scrapQty" class="form-control" th:value="${assemblyEntity.scrapQty}"/>  
-									</div>
-								</div>
-								<div class="rowGroup">
-									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.assembly.modAssembly.form.outputQty}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="outputQty" class="form-control" th:value="${assemblyEntity.outputQty}"/>  
-									</div>
-								</div>
-							</div>
+							
 							<div class="form-group" style="margin-bottom:0px;padding-bottom:0px;">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
@@ -233,6 +204,15 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.assembly.modAssembly.form.outputLotNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="outputLotNum" class="form-control" th:value="${assemblyEntity.outputLotNum}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
 										<label th:text="#{pages.workflow.assembly.modAssembly.form.partNum}" th:remove="tag"></label> 
 										<font style="color:#a94442">*</font>
 									</span>
@@ -243,6 +223,28 @@
 	                                	</select>    
 									</div>
 								</div>
+							</div>
+							<div class="form-group" style="display:none">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.assembly.modAssembly.form.scrapQty}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="scrapQty" class="form-control" th:value="${assemblyEntity.scrapQty}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.assembly.modAssembly.form.outputQty}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="outputQty" class="form-control" th:value="${assemblyEntity.outputQty}"/>  
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.assembly.modAssembly.form.workOrderNum}" th:remove="tag"></label>
@@ -251,6 +253,36 @@
 									<div class="col-md-4">
 										<input type='text' name="workOrderNum" class="form-control" th:value="${assemblyEntity.workOrderNum}"/>  
 									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.assembly.modAssembly.form.clampDownTheCP}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<select name="clampDownTheCP" class="form-control">
+							              <option  th:each="dataConfig:${clampDownTheCPDataConfigs}" th:selected="${assemblyEntity.clampDownTheCP==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                	</select>    
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.assembly.modAssembly.form.clampingCP}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<select name="clampingCP" class="form-control">
+							              <option  th:each="dataConfig:${clampingCPDataConfigs}" th:selected="${assemblyEntity.clampingCP==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                	</select> 
+									</div>
+								</div>
+								<div class="rowGroup">
+										
 								</div>
 							</div>
 							<div class="form-group">
@@ -267,32 +299,6 @@
 												</label>
 											</div>
 	  									</fieldset>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.assembly.modAssembly.form.clampDownTheCP}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<select name="clampDownTheCP" class="form-control">
-							              <option  th:each="dataConfig:${clampDownTheCPDataConfigs}" th:selected="${assemblyEntity.clampDownTheCP==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-							              </option>
-	                                	</select>    
-									</div>
-								</div>
-								<div class="rowGroup">
-										<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.assembly.modAssembly.form.clampingCP}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<select name="clampingCP" class="form-control">
-							              <option  th:each="dataConfig:${clampingCPDataConfigs}" th:selected="${assemblyEntity.clampingCP==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-							              </option>
-	                                	</select> 
 									</div>
 								</div>
 							</div>

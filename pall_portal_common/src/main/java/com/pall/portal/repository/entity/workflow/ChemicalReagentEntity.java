@@ -37,6 +37,10 @@ public class ChemicalReagentEntity {
 	 */
 	private String trayLotNums;
 	/*
+	 * 14####LOT
+	 */
+	private String fixtrueNums;
+	/*
 	 * T#
 	 */
 	private String tLotNums;
@@ -162,15 +166,15 @@ public class ChemicalReagentEntity {
 	 * 理论良率
 	 */
 	@NotNull(message="{chemicalReagentManage.form.valid.chemicalReagentEntity.theoryYield.NotEmpty",groups={SAVE.class,ADD.class})
-	private double theoryYield;
+	private String theoryYield;
 	/*
 	 * 实际良率
 	 */
-	private double actualYield;
+	private String actualYield;
 	/*
 	 * 理论和实际良率比较
 	 */
-	private double theoryActualYield;
+	private String theoryActualYield;
 	/*
 	 * 混合试剂信息
 	 */
@@ -197,6 +201,7 @@ public class ChemicalReagentEntity {
 	 */
 	private String operatorName;
 	
+	
 	public Integer getCrID() {
 		return crID;
 	}
@@ -215,6 +220,12 @@ public class ChemicalReagentEntity {
 	public void setBioPatNum(String bioPatNum) {
 		this.bioPatNum = bioPatNum;
 	}
+	public String getPartNum() {
+		return partNum;
+	}
+	public void setPartNum(String partNum) {
+		this.partNum = partNum;
+	}
 	public String[] getTrayLotNum() {
 		return trayLotNum;
 	}
@@ -226,6 +237,12 @@ public class ChemicalReagentEntity {
 	}
 	public void setTrayLotNums(String trayLotNums) {
 		this.trayLotNums = trayLotNums;
+	}
+	public String getFixtrueNums() {
+		return fixtrueNums;
+	}
+	public void setFixtrueNums(String fixtrueNums) {
+		this.fixtrueNums = fixtrueNums;
 	}
 	public String gettLotNums() {
 		return tLotNums;
@@ -401,22 +418,22 @@ public class ChemicalReagentEntity {
 	public void setToOtherQty(Integer toOtherQty) {
 		this.toOtherQty = toOtherQty;
 	}
-	public double getTheoryYield() {
+	public String getTheoryYield() {
 		return theoryYield;
 	}
-	public void setTheoryYield(double theoryYield) {
+	public void setTheoryYield(String theoryYield) {
 		this.theoryYield = theoryYield;
 	}
-	public double getActualYield() {
+	public String getActualYield() {
 		return actualYield;
 	}
-	public void setActualYield(double actualYield) {
+	public void setActualYield(String actualYield) {
 		this.actualYield = actualYield;
 	}
-	public double getTheoryActualYield() {
+	public String getTheoryActualYield() {
 		return theoryActualYield;
 	}
-	public void setTheoryActualYield(double theoryActualYield) {
+	public void setTheoryActualYield(String theoryActualYield) {
 		this.theoryActualYield = theoryActualYield;
 	}
 	public List<ChemicalCompoundReagentsEntity> getCompoundReagents() {
@@ -455,14 +472,6 @@ public class ChemicalReagentEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
-	
-	public String getPartNum() {
-		return partNum;
-	}
-	public void setPartNum(String partNum) {
-		this.partNum = partNum;
-	}
-
 	public interface ADD{};  
 	public interface SAVE{};
 }

@@ -20,15 +20,14 @@ public class TwiceChemicalReagentQueryFormEntity {
 	private String crID;
 	private String startInPutDate;
 	private String endInPutDate;
-	private String tNum;
-	private String trayLotNum;
+	private String oldLotNum;
+	private String oldTrayNum;
+	private String oldBioPatNum;
+	private String trayNum;
 	private String chemicalLotNum;
-	private String partNum;
+	private String bioPatNum;
 	public int getStartPageNum() {
 		return startPageNum;
-	}
-	public void setStartPageNum(int startPageNum) {
-		this.startPageNum = startPageNum;
 	}
 	public int getDraw() {
 		return draw;
@@ -66,17 +65,29 @@ public class TwiceChemicalReagentQueryFormEntity {
 	public void setEndInPutDate(String endInPutDate) {
 		this.endInPutDate = endInPutDate;
 	}
-	public String gettNum() {
-		return tNum;
+	public String getOldLotNum() {
+		return oldLotNum;
 	}
-	public void settNum(String tNum) {
-		this.tNum = tNum;
+	public void setOldLotNum(String oldLotNum) {
+		this.oldLotNum = oldLotNum;
 	}
-	public String getTrayLotNum() {
-		return trayLotNum;
+	public String getOldTrayNum() {
+		return oldTrayNum;
 	}
-	public void setTrayLotNum(String trayLotNum) {
-		this.trayLotNum = trayLotNum;
+	public void setOldTrayNum(String oldTrayNum) {
+		this.oldTrayNum = oldTrayNum;
+	}
+	public String getOldBioPatNum() {
+		return oldBioPatNum;
+	}
+	public void setOldBioPatNum(String oldBioPatNum) {
+		this.oldBioPatNum = oldBioPatNum;
+	}
+	public String getTrayNum() {
+		return trayNum;
+	}
+	public void setTrayNum(String trayNum) {
+		this.trayNum = trayNum;
 	}
 	public String getChemicalLotNum() {
 		return chemicalLotNum;
@@ -84,12 +95,14 @@ public class TwiceChemicalReagentQueryFormEntity {
 	public void setChemicalLotNum(String chemicalLotNum) {
 		this.chemicalLotNum = chemicalLotNum;
 	}
-	public String getPartNum() {
-		return partNum;
+	public String getBioPatNum() {
+		return bioPatNum;
 	}
-	public void setPartNum(String partNum) {
-		this.partNum = partNum;
+	public void setBioPatNum(String bioPatNum) {
+		this.bioPatNum = bioPatNum;
 	}
-	
+	public void setStartPageNum(int startPageNum) {
+		this.startPageNum = startPageNum;
+	}
 	
 }

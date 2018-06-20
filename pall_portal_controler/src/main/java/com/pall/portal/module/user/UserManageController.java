@@ -2,9 +2,7 @@ package com.pall.portal.module.user;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,12 +34,11 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.role.GroupRoleEntity;
 import com.pall.portal.repository.entity.role.RoleEntity;
 import com.pall.portal.repository.entity.role.RoleQueryFormEntity;
-import com.pall.portal.repository.entity.user.ModifyUPwdEntity;
-import com.pall.portal.repository.entity.user.ModifyUPwdEntity.ADMIN;
-import com.pall.portal.repository.entity.user.ModifyUPwdEntity.COMMON;
 import com.pall.portal.repository.entity.user.UserEntity;
 import com.pall.portal.repository.entity.user.UserEntity.ADD;
 import com.pall.portal.repository.entity.user.UserEntity.SAVE;
+import com.pall.portal.repository.entity.user.UserPwdEntity;
+import com.pall.portal.repository.entity.user.UserPwdEntity.COMMON;
 import com.pall.portal.repository.entity.user.UserQueryFormEntity;
 import com.pall.portal.service.role.RoleManageService;
 import com.pall.portal.service.user.UserManageService;
@@ -258,31 +255,14 @@ public class UserManageController{
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="user/modifyPwd",method= RequestMethod.POST)
-    public @ResponseBody String modifyPwd(@Validated(COMMON.class) ModifyUPwdEntity modifyUPwdEntity, BindingResult result,Model model,HttpServletRequest request){
+    public @ResponseBody String modifyPwd(@Validated(COMMON.class) UserPwdEntity userPwdEntity,BindingResult result,Model model,HttpServletRequest request){
 		BaseResponse baseResponse=new BaseResponse();
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				baseResponse=userManageService.modifyPwd(modifyUPwdEntity,false);
+				baseResponse=userManageService.modifyPwd(userPwdEntity);
 			}
 			
-		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("usermanage.modifyPwd.exception"),e);
-			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("usermanage.modifyPwd.exception"));
-		}
-		baseResponse.setReturnObjects(null);
-		return JSON.toJSONString(baseResponse);
-    }
-	@Token(flag=Token.CHECK)
-	@RequestMapping(value="user/modPwd",method= RequestMethod.POST)
-    public @ResponseBody String modPwd(@Validated(ADMIN.class) ModifyUPwdEntity modifyUPwdEntity, BindingResult result,Model model,HttpServletRequest request){
-		BaseResponse baseResponse=new BaseResponse();
-		try {
-			baseResponse=HolderContext.getBindingResult(result);
-			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-				baseResponse=userManageService.modifyPwd(modifyUPwdEntity,true);
-			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("usermanage.modifyPwd.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);

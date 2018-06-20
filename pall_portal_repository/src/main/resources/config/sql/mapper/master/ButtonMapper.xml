@@ -56,8 +56,11 @@
          insert into t_ums_menu_button(menuid,btnename,btncname,btnclass,btniconclass,DESCRIPTION)values(#{menuid},#{btnEName},#{btnCName},#{btnClass},#{btnIconClass},#{description})
     </insert>
     <select id="getRightButton" resultType="com.pall.portal.repository.entity.menu.ButtonEntity" parameterType="java.lang.String"> 
- 		select btnid,menuid,btnename,btncname,btnclass,btniconclass,ifnull(f.DESCRIPTION,'') DESCRIPTION from t_ums_menu_button a where 
- 		 exists(select 1 from t_ums_userpermission a left join t_ums_rolepermission b on a.ROLEID=b.ROLEID LEFT JOIN t_ums_right c on c.RIGHTID=b.RIGHTID where c.RIGHTTYPE=2 and f.btnid=c.dataid 
+ 		select f.btnid,f.menuid,f.btnename,f.btncname,f.btnclass,f.btniconclass from t_ums_menu_button f where 1=1 
+ 		 <if test="menuid != null and menuid != ''">  
+	       AND f.menuid=#{menuid, jdbcType=INTEGER}
+	     </if>
+ 		 AND exists(select 1 from t_ums_userpermission a left join t_ums_rolepermission b on a.ROLEID=b.ROLEID LEFT JOIN t_ums_right c on c.RIGHTID=b.RIGHTID where c.RIGHTTYPE=2 and f.btnid=c.dataid 
  		 AND a.operatorid = #{operatorid, jdbcType=INTEGER} 
  		)
  	</select> 

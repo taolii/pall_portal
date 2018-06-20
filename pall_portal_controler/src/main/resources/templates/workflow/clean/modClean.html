@@ -92,37 +92,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<div class="col-md-11 col-md-offset-1">
-										<fieldset>
-	    								<legend>
-	    									<label class="blue control-label" th:text="#{pages.workflow.clean.modClean.form.cleanBom}"></label>
-	    								</legend>
-											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${cleanBomConfigs}">
-												<label>
-													<input name="cleanBoms" class="ace" type="checkbox"  th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
-													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
-												</label>
-											</div>
-	  									</fieldset>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.cleanLotNum}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="cleanLotNum" class="form-control" th:value="${cleanEntity.cleanLotNum}"/> 
-									</div>
-								</div>
-								<div class="rowGroup">
-									
-								</div>
-							</div>
+							
 							<div class="form-group" style="display:none">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
@@ -206,14 +176,24 @@
 							</div>
 							<div class="form-group">
 								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.cleanLotNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="cleanLotNum" class="form-control" th:value="${cleanEntity.cleanLotNum}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.clean.modClean.form.toOtherQty}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
 										<input type='text' name="toOtherQty" class="form-control"  th:value="${cleanEntity.toOtherQty}" />
 									</div>
 								</div>
+							</div>
+							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
 										<label th:text="#{pages.workflow.clean.modClean.form.partNum}" th:remove="tag"></label> 
@@ -226,8 +206,6 @@
 	                                	</select>    
 									</div>
 								</div>
-							</div>
-							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.clean.modClean.form.workOrderNum}" th:remove="tag"></label>
@@ -237,7 +215,22 @@
 										<input type='text' name="workOrderNum" class="form-control" th:value="${cleanEntity.workOrderNum}"/>  
 									</div>
 								</div>
+							</div>
+							<div class="form-group">
 								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
+										<fieldset>
+	    								<legend>
+	    									<label class="blue control-label" th:text="#{pages.workflow.clean.modClean.form.cleanBom}"></label>
+	    								</legend>
+											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${cleanBomConfigs}">
+												<label>
+													<input name="cleanBoms" class="ace" type="checkbox"  th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
+													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
+												</label>
+											</div>
+	  									</fieldset>
+									</div>
 								</div>
 							</div>
 							<div class="form-group">

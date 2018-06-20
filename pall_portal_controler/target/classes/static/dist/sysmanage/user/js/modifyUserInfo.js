@@ -45,7 +45,6 @@ $(document).ready(function() {
     }).on('success.form.bv', function(e) {
 	    	e.preventDefault();
 	    	var $form = $(e.target);
-	    	var bv = $form.data('bootstrapValidator');
 	    	$.post(contextPath+"/user/modifyUser",  $form.serialize(), function(result) {
 	    		if(result.resultCode==0){
 	    			showNotice('Success',"用户信息更新成功",'success',1000*5);

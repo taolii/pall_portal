@@ -73,13 +73,10 @@ $(document).ready(function() {
           ],
         "drawCallback": function( settings ) {
             //渲染完毕后的回调
-            //清空全选状态
-            $(":checkbox[name='cb-check-all']",$wrapper).prop('checked', false);
-            //默认选中第一行
-            $("tbody tr",$table).eq(0).click();
+        	$(":checkbox[name='cb-check-all']","#datatable_wrapper").prop('checked', false);
         }
     })).api();
-	$("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -114,7 +111,6 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        defectManage.currentItem = item;
         defectManage.editItemInit(item);
         defectManage.editItemShow();
     }).on("click","#delRow",function() {

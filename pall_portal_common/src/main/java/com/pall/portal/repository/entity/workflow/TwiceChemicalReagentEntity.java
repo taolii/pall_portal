@@ -16,6 +16,15 @@ public class TwiceChemicalReagentEntity {
 	@NotNull(message="{chemicalReagentManage.form.valid.chemicalReagentEntity.crid.NotEmpty}",groups={SAVE.class})
 	private Integer crID;
 	/*
+	 * old lot#
+	 */
+	private String oldLotNums;
+	/*
+	 * old tray lot#
+	 */
+	private String oldTrayNums;
+	private String oldBioPatNums;
+	/*
 	 * 试剂混合物的批次，Lot
 	 */
 	@NotEmpty(message="{chemicalReagentManage.form.valid.chemicalReagentEntity.lot.NotEmpty}",groups={SAVE.class,ADD.class})
@@ -25,61 +34,17 @@ public class TwiceChemicalReagentEntity {
 	 */
 	private String bioPatNum;
 	/*
+	 * BIO BOM
+	 */
+	private String bioBom;
+	/*
 	 * 零件号
 	 */
 	private String partNum;
 	/*
-	 * 14####LOT
+	 * tray#
 	 */
-	private String[] trayLotNum;
-	/*
-	 * 14####LOT
-	 */
-	private String trayLotNums;
-	/*
-	 * T#
-	 */
-	private String tLotNums;
-	/*
-	 * 组装站位OUTPUT LOT#
-	 */
-	private String assemblyLotNums;
-	/*
-	 * 化学镀膜OUTPUT LOT#
-	 */
-	private String apsLotNums;
-	/*
-	 * 光学镀膜OUTPUT LOT#
-	 */
-	private String ocLotNums;
-	/*
-	 * 清洗OUTPUT LOT#
-	 */
-	private String cleanLotNums;
-	/*
-	 * 抛光OUTPUT LOT#
-	 */
-	private String polishLotNums;
-	/*
-	 * Assembly BOM
-	 */
-	private String assemblyBoms;
-	/*
-	 * 化学镀膜BOM
-	 */
-	private String apsBoms;
-	/*
-	 *  光学镀膜BOM
-	 */
-	private String ocBoms;
-	/*
-	 * 清洗BOM
-	 */
-	private String cleanBoms;
-	/*
-	 * 抛光BOM
-	 */
-	private String polishBoms;
+	private String trayNums;
 	/*
 	 * 操作人员1
 	 */
@@ -88,14 +53,6 @@ public class TwiceChemicalReagentEntity {
 	 * 操作人员2
 	 */
 	private String crOperator2;
-	/*
-	 * BIO BOM
-	 */
-	private String bioBom;
-	/*
-	 * BIO BOM
-	 */
-	private String[] bioBoms;
 	/*
 	 * 03-0067
 	 */
@@ -162,15 +119,15 @@ public class TwiceChemicalReagentEntity {
 	 * 理论良率
 	 */
 	@NotNull(message="{chemicalReagentManage.form.valid.chemicalReagentEntity.theoryYield.NotEmpty",groups={SAVE.class,ADD.class})
-	private double theoryYield;
+	private String theoryYield;
 	/*
 	 * 实际良率
 	 */
-	private double actualYield;
+	private String actualYield;
 	/*
 	 * 理论和实际良率比较
 	 */
-	private double theoryActualYield;
+	private String theoryActualYield;
 	/*
 	 * 混合试剂信息
 	 */
@@ -197,11 +154,30 @@ public class TwiceChemicalReagentEntity {
 	 */
 	private String operatorName;
 	
+	
 	public Integer getCrID() {
 		return crID;
 	}
 	public void setCrID(Integer crID) {
 		this.crID = crID;
+	}
+	public String getOldLotNums() {
+		return oldLotNums;
+	}
+	public void setOldLotNums(String oldLotNums) {
+		this.oldLotNums = oldLotNums;
+	}
+	public String getOldTrayNums() {
+		return oldTrayNums;
+	}
+	public void setOldTrayNums(String oldTrayNums) {
+		this.oldTrayNums = oldTrayNums;
+	}
+	public String getOldBioPatNums() {
+		return oldBioPatNums;
+	}
+	public void setOldBioPatNums(String oldBioPatNums) {
+		this.oldBioPatNums = oldBioPatNums;
 	}
 	public String getLot() {
 		return lot;
@@ -215,83 +191,23 @@ public class TwiceChemicalReagentEntity {
 	public void setBioPatNum(String bioPatNum) {
 		this.bioPatNum = bioPatNum;
 	}
-	public String[] getTrayLotNum() {
-		return trayLotNum;
+	public String getBioBom() {
+		return bioBom;
 	}
-	public void setTrayLotNum(String[] trayLotNum) {
-		this.trayLotNum = trayLotNum;
+	public void setBioBom(String bioBom) {
+		this.bioBom = bioBom;
 	}
-	public String getTrayLotNums() {
-		return trayLotNums;
+	public String getPartNum() {
+		return partNum;
 	}
-	public void setTrayLotNums(String trayLotNums) {
-		this.trayLotNums = trayLotNums;
+	public void setPartNum(String partNum) {
+		this.partNum = partNum;
 	}
-	public String gettLotNums() {
-		return tLotNums;
+	public String getTrayNums() {
+		return trayNums;
 	}
-	public void settLotNums(String tLotNums) {
-		this.tLotNums = tLotNums;
-	}
-	public String getAssemblyLotNums() {
-		return assemblyLotNums;
-	}
-	public void setAssemblyLotNums(String assemblyLotNums) {
-		this.assemblyLotNums = assemblyLotNums;
-	}
-	public String getApsLotNums() {
-		return apsLotNums;
-	}
-	public void setApsLotNums(String apsLotNums) {
-		this.apsLotNums = apsLotNums;
-	}
-	public String getOcLotNums() {
-		return ocLotNums;
-	}
-	public void setOcLotNums(String ocLotNums) {
-		this.ocLotNums = ocLotNums;
-	}
-	public String getCleanLotNums() {
-		return cleanLotNums;
-	}
-	public void setCleanLotNums(String cleanLotNums) {
-		this.cleanLotNums = cleanLotNums;
-	}
-	public String getPolishLotNums() {
-		return polishLotNums;
-	}
-	public void setPolishLotNums(String polishLotNums) {
-		this.polishLotNums = polishLotNums;
-	}
-	public String getAssemblyBoms() {
-		return assemblyBoms;
-	}
-	public void setAssemblyBoms(String assemblyBoms) {
-		this.assemblyBoms = assemblyBoms;
-	}
-	public String getApsBoms() {
-		return apsBoms;
-	}
-	public void setApsBoms(String apsBoms) {
-		this.apsBoms = apsBoms;
-	}
-	public String getOcBoms() {
-		return ocBoms;
-	}
-	public void setOcBoms(String ocBoms) {
-		this.ocBoms = ocBoms;
-	}
-	public String getCleanBoms() {
-		return cleanBoms;
-	}
-	public void setCleanBoms(String cleanBoms) {
-		this.cleanBoms = cleanBoms;
-	}
-	public String getPolishBoms() {
-		return polishBoms;
-	}
-	public void setPolishBoms(String polishBoms) {
-		this.polishBoms = polishBoms;
+	public void setTrayNums(String trayNums) {
+		this.trayNums = trayNums;
 	}
 	public String getCrOperator1() {
 		return crOperator1;
@@ -304,18 +220,6 @@ public class TwiceChemicalReagentEntity {
 	}
 	public void setCrOperator2(String crOperator2) {
 		this.crOperator2 = crOperator2;
-	}
-	public String getBioBom() {
-		return bioBom;
-	}
-	public void setBioBom(String bioBom) {
-		this.bioBom = bioBom;
-	}
-	public String[] getBioBoms() {
-		return bioBoms;
-	}
-	public void setBioBoms(String[] bioBoms) {
-		this.bioBoms = bioBoms;
 	}
 	public String getAuxiliaryReagent1() {
 		return auxiliaryReagent1;
@@ -401,22 +305,22 @@ public class TwiceChemicalReagentEntity {
 	public void setToOtherQty(Integer toOtherQty) {
 		this.toOtherQty = toOtherQty;
 	}
-	public double getTheoryYield() {
+	public String getTheoryYield() {
 		return theoryYield;
 	}
-	public void setTheoryYield(double theoryYield) {
+	public void setTheoryYield(String theoryYield) {
 		this.theoryYield = theoryYield;
 	}
-	public double getActualYield() {
+	public String getActualYield() {
 		return actualYield;
 	}
-	public void setActualYield(double actualYield) {
+	public void setActualYield(String actualYield) {
 		this.actualYield = actualYield;
 	}
-	public double getTheoryActualYield() {
+	public String getTheoryActualYield() {
 		return theoryActualYield;
 	}
-	public void setTheoryActualYield(double theoryActualYield) {
+	public void setTheoryActualYield(String theoryActualYield) {
 		this.theoryActualYield = theoryActualYield;
 	}
 	public List<TwiceChemicalCompoundReagentsEntity> getCompoundReagents() {
@@ -455,14 +359,6 @@ public class TwiceChemicalReagentEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
-	
-	public String getPartNum() {
-		return partNum;
-	}
-	public void setPartNum(String partNum) {
-		this.partNum = partNum;
-	}
-
 	public interface ADD{};  
 	public interface SAVE{};
 }

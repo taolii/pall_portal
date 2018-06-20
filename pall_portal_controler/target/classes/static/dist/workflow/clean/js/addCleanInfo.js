@@ -3,6 +3,8 @@ $(document).ready(function() {
 	$('#addFormCleanTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
+    }).on('blur',function(e) {
+    	$('#addDataForm').data('bootstrapValidator').updateStatus('cleanTime', 'NOT_VALIDATED',null).validateField('cleanTime');  
     }); 
 	$("#workingfaceType").change(function(){
 		var workingfaceType=$(this).val();
@@ -66,10 +68,14 @@ $(document).ready(function() {
         },
         fields: {
         	cleanTime: {
-                validators: {
+                validators:{
                     notEmpty: {
                         message: 'Clean日期不能为空'
-                    }
+                    },
+                    date:{  
+                    	format:'YYYY-MM-DD',
+                    	message:'日期格式不正确'  
+                     }
                 }
             },
             fixtureNumber: {
@@ -103,17 +109,10 @@ $(document).ready(function() {
                     }
                 }
             },
-            toOtherQty: {
-                validators: {
-                    digits: {
-	                    message: 'to other Qty值必须为数字'
-	                }
-                }
-            },
             partNum: {
                 validators: {
                     notEmpty: {
-                        message: 'Part NO不能为空'
+                        message: 'PN#不能为空'
                     }
                 }
             },
@@ -133,7 +132,7 @@ $(document).ready(function() {
     		}
     	});
     	$('#addDataForm [name=scrapQty]').val(defectNum);
-    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-defectNum-Number($('#addDataForm [name=toOtherQty]').val());
+    	var outputQty=Number($('#addDataForm [name=inputQty]').val())-Number($('#addDataForm [name=toOtherQty]').val());
     	$('#addDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);

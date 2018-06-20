@@ -53,6 +53,7 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.workflow.CleanEntity;
 import com.pall.portal.repository.entity.workflow.CleanEntity.ADD;
 import com.pall.portal.repository.entity.workflow.CleanEntity.SAVE;
@@ -60,6 +61,7 @@ import com.pall.portal.repository.entity.workflow.CleanQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.service.excel.IExcelHandler;
+import com.pall.portal.service.menu.ButtonManageService;
 import com.pall.portal.service.workflow.CleanService;
 /*
  * 清洗管理控制器
@@ -77,6 +79,8 @@ public class CleanManageController{
 	 */
 	@Autowired
 	private CleanService cleanService;
+	@Autowired
+	private ButtonManageService buttonManageService;
 	/*
 	 * excel处理对象
 	 */
@@ -127,6 +131,19 @@ public class CleanManageController{
 	@RequestMapping(value="workflow/cleanManage", method= RequestMethod.GET)
     public  String cleanManage(Model model, HttpServletRequest request) {	
 		model=initConfigData(model);
+		//获取按钮权限
+		AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
+		if(at!=null && at.getUserEntity()!=null){
+			try {
+				BaseResponse buttonResonse=buttonManageService.getRightButton(String.valueOf(at.getUserEntity().getOperatorid()),UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_MENUID));
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==buttonResonse.getResultCode()){
+					List<ButtonEntity> buttonEntitys=(List<ButtonEntity>)buttonResonse.getReturnObjects();
+					model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
@@ -158,7 +175,7 @@ public class CleanManageController{
         String jsonData="";
 		try {
 			baseResponse=cleanService.queryCleanList(cleanQueryFormEntity);
-			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
 				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME));

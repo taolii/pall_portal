@@ -50,7 +50,7 @@ $(document).ready(function() {
                 });
         },
         columns: [
-        	 {className: "ellipsis",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
+        	 {className: "td-reagent-checkbox",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
                      return '<input name='+data.reagentsFieldName+'_'+data.srmid+' type="checkbox" class="ace"><span class="lbl"></span>';
              }},
 	        {className : "ellipsis",title:"srmid",data: "srmid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "5%"},
@@ -76,6 +76,10 @@ $(document).ready(function() {
 	$("#queryMultipleReagentMixtureButton").click(function(){
 		$multipleReagentMixtureTable.draw();
 	});
+	$("#multipleReagentMixtureTable").on("click",".td-reagent-checkbox",function(event) {
+        //点击单元格即点击复选框
+        !$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click");
+    });
 	$("#multipleReagentMixtureTable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#multipleReagentMixtureModal").on("shown.bs.modal",function(){
 		$.each($.fn.dataTable.tables(true), function(){

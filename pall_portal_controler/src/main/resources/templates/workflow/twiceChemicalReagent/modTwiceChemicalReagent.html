@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{pages.system.name}+'-'+#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.title}"></title>
+<title th:text="#{pages.system.name}+'-'+#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.title}"></title>
 <script type="text/javascript" th:src="@{{path}/dist/workflow/twiceChemicalReagent/js/modifyTwiceChemicalReagentInfo.js(path=${contextPath})}"></script>
 <script type="text/javascript" th:src="@{{path}/dist/workflow/twiceChemicalReagent/js/selMultipleReagentMixture.js(path=${contextPath})}"></script>
 <script type="text/javascript" th:src="@{{path}/dist/workflow/twiceChemicalReagent/js/selSingleReagentMixture.js(path=${contextPath})}"></script>
@@ -22,7 +22,7 @@
 					<a href="javascript:void(0)" class="submenumenu"></a>
 				</li>
 				<li>
-					<a href="javascript:void(0)" th:onclick="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/workflow/modTwiceChemicalReagent?crID='+${chemicalReagentEntity.crID}+'&operator=\');'" th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.title}"></a>
+					<a href="javascript:void(0)" th:onclick="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/workflow/modTwiceChemicalReagent?crID='+${chemicalReagentEntity.crID}+'&operator=\');'" th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.title}"></a>
 				</li>
 			</ul>
 		</div>
@@ -31,6 +31,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<form method="POST" id="modDataForm" class="form-horizontal">
+							<input type='hidden' name="trayNumLen" value="" />
 							<input type='hidden' id="updateForm" name="updateForm" value="#modDataForm" />
 							<input type='hidden'  name="crID" th:value="${chemicalReagentEntity.crID}" />
 							<input type='hidden' id="addAuxiliaryReagent" name="addAuxiliaryReagent" value="#addAuxiliaryReagent1" />
@@ -48,22 +49,48 @@
 							         </div>
 								 </div>
                 			</div>
-							<div class="form-group"  style="display: none;">
-								<div class="col-md-4" style="margin-bottom:20px" id="assemblyTemplate">
-                    				<div class="rowGroup">
-										<div class="checkbox removeButton">
-											<label>
-												<input name="trayLotNum" class="ace" type="checkbox" checked="checked">
-												<span class="lbl assembly"></span>
-											</label>
+							<div style="margin-bottom:20px" id="assemblyTemplate"  style="display: none;">
+	                			<div class="form-group">
+	                				<div class="rowGroup">
+										<span class="col-md-2  control-label">
+											<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.trayNum}" th:remove="tag"></label> 
+										</span>
+										<div class="col-md-4 bioInfo">
+											<input type='text'  name="trayNum"  class="form-control"/>
 										</div>
-							         </div>
-								 </div>
-                			</div>
+									</div>
+									<div class="rowGroup">
+										<span class="col-md-2  control-label">
+											<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.oldLotNum}" th:remove="tag"></label> 
+										</span>
+										<div class="col-md-4">
+											<input type='text'  name="oldLotNum"  class="form-control"/>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="rowGroup">
+										<span class="col-md-2  control-label">
+											<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.oldTrayNum}" th:remove="tag"></label> 
+										</span>
+										<div class="col-md-4">
+											<input type='text'  name="oldTrayNum"  class="form-control"/>
+										</div>
+									</div>
+									<div class="rowGroup">
+										<span class="col-md-2  control-label">
+											<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.oldBioPatNum}" th:remove="tag"></label> 
+										</span>
+										<div class="col-md-4">
+											<input type='text'  name="oldBioPatNum"  class="form-control"/>
+										</div>
+									</div>
+								</div>
+							</div>
                 			<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.lot}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.lot}" th:remove="tag"></label> 
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
@@ -72,7 +99,7 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.bioPatNum}" th:remove="tag"></label>
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.bioPatNum}" th:remove="tag"></label>
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
@@ -86,12 +113,66 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<div class="col-md-11 col-md-offset-1">
+										<fieldset style="margin-top:0px">
+		    								<legend>
+		    									<label class="blue control-label" th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.assemblyOutputLotNum}"></label>
+		    									<span class="btn btn-white btn-primary btn-sm" id="addAssemblyOutputLotNumButton">  
+					                     			<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.compoundReagents.button}" th:remove="tag"></label>
+					                     		</span>
+		    								</legend>
+											<div class="col-md-10" id="addAssemblyPanel">
+							                      <div th:each="chemicalReagentRelation,iterStat:${chemicalReagentEntity.chemicalReagentRelations}" th:remove="tag">
+				                          			<div class="form-group">
+						                				<div class="rowGroup">
+															<span class="col-md-2  control-label">
+																<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.trayNum}" th:remove="tag"></label> 
+															</span>
+															<div class="col-md-4 bioInfo">
+																<input type='text'  th:name="trayNum+${iterStat.index}"  class="form-control" th:value="${chemicalReagentRelation.trayNum}"/>
+															</div>
+														</div>
+														<div class="rowGroup">
+															<span class="col-md-2  control-label">
+																<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.oldLotNum}" th:remove="tag"></label> 
+															</span>
+															<div class="col-md-4">
+																<input type='text'  th:name="oldLotNum+${iterStat.index}"  class="form-control" th:value="${chemicalReagentRelation.oldLotNum}"/>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="rowGroup">
+															<span class="col-md-2  control-label">
+																<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.oldTrayNum}" th:remove="tag"></label> 
+															</span>
+															<div class="col-md-4">
+																<input type='text'  th:name="oldTrayNum+${iterStat.index}"  class="form-control" th:value="${chemicalReagentRelation.oldTrayNum}"/>
+															</div>
+														</div>
+														<div class="rowGroup">
+															<span class="col-md-2  control-label">
+																<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.oldBioPatNum}" th:remove="tag"></label> 
+															</span>
+															<div class="col-md-4">
+																<input type='text'  th:name="oldBioPatNum+${iterStat.index}"  class="form-control" th:value="${chemicalReagentRelation.oldBioPatNum}"/>
+															</div>
+														</div>
+													</div>
+				                          		  </div>
+											</div>
+	  									</fieldset>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
 										<fieldset>
 		    								<legend>
-		    									<label class="blue control-label" th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.compoundReagents}">
+		    									<label class="blue control-label" th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.compoundReagents}">
 												</label>
 												<span class="btn btn-white btn-primary btn-sm" id="addChemicalReagentButton">  
-					                     			<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.compoundReagents.button}" th:remove="tag"></label>
+					                     			<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.compoundReagents.button}" th:remove="tag"></label>
 					                     		</span>
 		    								</legend>
 											<div class="col-md-10" id="addChemicalReagentPanel">
@@ -114,38 +195,11 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<div class="col-md-11 col-md-offset-1">
-										<fieldset style="margin-top:0px">
-		    								<legend>
-		    									<label class="blue control-label" th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.assemblyOutputLotNum}"></label>
-		    									<span class="btn btn-white btn-primary btn-sm" id="addAssemblyOutputLotNumButton">  
-					                     			<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.compoundReagents.button}" th:remove="tag"></label>
-					                     		</span>
-		    								</legend>
-											<div class="col-md-10" id="addAssemblyPanel">
-							                      <div th:each="chemicalReagentRelation:${chemicalReagentEntity.chemicalReagentRelations}" th:remove="tag">
-				                          			<div class="col-md-4" style="margin-bottom:20px">
-					                    				<div class="rowGroup">
-															<div class="checkbox removeButton">
-																<label>
-																	<input name="trayLotNum" class="ace" type="checkbox" checked="checked">
-																	&nbsp;&nbsp;<span class="lbl assembly" th:text="${chemicalReagentRelation.trayLotNum}"></span>
-																</label>
-															</div>
-												         </div>
-													 </div>
-				                          		</div>
-											</div>
-	  									</fieldset>
-									</div>
-								</div>
-							</div>
+							
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.crOperator1}" th:remove="tag"></label>
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.crOperator1}" th:remove="tag"></label>
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
@@ -157,7 +211,7 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.crOperator2}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.crOperator2}" th:remove="tag"></label> 
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
@@ -168,47 +222,31 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<div class="col-md-11 col-md-offset-1">
-										<fieldset>
-	    								<legend>
-	    									<label class="blue control-label" th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.bioBom}"></label>
-	    								</legend>
-											<div class="col-md-2 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${bioBomConfigs}">
-												<label>
-													<input name="bioBoms" class="ace" type="checkbox" th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
-													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
-												</label>
-											</div>
-	  									</fieldset>
-									</div>
-								</div>
-							</div>
+							
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent1}" th:remove="tag"></label>							
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent1}" th:remove="tag"></label>							
 									</span>
 									<div class="col-md-3">
 										 <input type='text' name="auxiliaryReagent1" class="form-control" readonly="readonly" th:value="${chemicalReagentEntity.auxiliaryReagent1}"/> 
 									</div>
 									<div class="col-md-1">
 										<span class=" btn btn-white btn-info" id="addAuxiliaryReagent1">  
-		                     				<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
+		                     				<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
 		                     			</span> 
 									</div>
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent2}" th:remove="tag"></label>
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent2}" th:remove="tag"></label>
 									</span>
 									<div class="col-md-3">
 										 <input type='text' name="auxiliaryReagent2" class="form-control" readonly="readonly" th:value="${chemicalReagentEntity.auxiliaryReagent2}"/>  
 									</div>
 									<div class="col-md-1">
 										<span class=" btn btn-white btn-info" id="addAuxiliaryReagent2">  
-		                     				<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
+		                     				<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
 		                     			</span> 
 									</div>
 								</div>
@@ -216,20 +254,20 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent3}" th:remove="tag"></label>
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent3}" th:remove="tag"></label>
 									</span>
 									<div class="col-md-3">
 										 <input type='text' name="auxiliaryReagent3" class="form-control" readonly="readonly" th:value="${chemicalReagentEntity.auxiliaryReagent3}"/> 
 									</div>
 									<div class="col-md-1">
 										<span class=" btn btn-white btn-info" id="addAuxiliaryReagent3">  
-		                     				<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
+		                     				<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
 		                     			</span> 
 									</div>
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.rawMaterial}" th:remove="tag"></label>
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.rawMaterial}" th:remove="tag"></label>
 									</span>
 									<div class="col-md-4">
 										 <select name="rawMaterial" class="form-control">
@@ -242,7 +280,7 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.inPutDate}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.inPutDate}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
@@ -251,7 +289,7 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.coatingStation}" th:remove="tag"></label>
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.coatingStation}" th:remove="tag"></label>
 										
 									</span>
 									<div class="col-md-4">
@@ -265,7 +303,7 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.docRev}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.docRev}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
@@ -274,8 +312,8 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.goodsQty}" th:remove="tag"></label>
-										
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.goodsQty}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
 										 <input type='text' name="goodsQty" class="form-control" value="0" th:value="${chemicalReagentEntity.goodsQty}"/>   
@@ -285,7 +323,7 @@
 							<div class="form-group" style="display:none">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.inputQty}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.inputQty}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
@@ -294,7 +332,7 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.scrapQty}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.scrapQty}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
@@ -305,7 +343,7 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.toPqcQty}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.toPqcQty}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
@@ -314,7 +352,7 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.heavySmokeQty}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.heavySmokeQty}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
@@ -325,7 +363,7 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.receiveQty}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.receiveQty}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
@@ -334,22 +372,21 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.toOtherQty}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.toOtherQty}" th:remove="tag"></label> 
 									</span>
 									<div class="col-md-4">
 										<input type='text' name="toOtherQty" class="form-control" value="0" th:value="${chemicalReagentEntity.toOtherQty}"/>    
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display:none">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.partNum}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.partNum}" th:remove="tag"></label> 
 									</span>
 									<div class="col-md-4">
 										<select name="partNum" class="form-control">
-							              <option  th:each="dataConfig:${pnDataConfigs}" th:selected="${chemicalReagentEntity.partNum==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-							              </option>
+							              
 	                                	</select>     
 									</div>
 								</div>
@@ -360,7 +397,7 @@
 							<div class="form-group" style="display:none">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.theoryYield}" th:remove="tag"></label>
+										<label th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.theoryYield}" th:remove="tag"></label>
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
@@ -371,16 +408,32 @@
 									
 								</div>
 							</div>
-							
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
+										<fieldset>
+	    								<legend>
+	    									<label class="blue control-label" th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.bioBom}"></label>
+	    								</legend>
+											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${bioBomConfigs}">
+												<label>
+													<input name="bioBoms" class="ace" type="checkbox" th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
+													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
+												</label>
+											</div>
+	  									</fieldset>
+									</div>
+								</div>
+							</div>
 							<div class="form-group">
 								<div class="text-center">
 									<button class="btn btn-white btn-primary">
 										<i class="fa fa-check"></i> 
-										<span th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.button.mod}" th:remove="tag"></span>
+										<span th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.button.mod}" th:remove="tag"></span>
 									</button>
 									<button id="addBackButton"  type="button" class="btn btn-white btn-primary" data-dismiss="modal">
 										<i class="fa fa-close"></i> 
-										<span th:text="#{pages.twiceChemicalReagentManage.modTwiceChemicalReagent.form.button.shut}" th:remove="tag"></span>
+										<span th:text="#{pages.workflow.twiceChemicalReagentManage.modTwiceChemicalReagent.form.button.shut}" th:remove="tag"></span>
 									</button> 
 								</div>
 							</div>

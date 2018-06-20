@@ -25,9 +25,9 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
-        	"<button id='copyRow' class='btn btn-xs btn-success' type='button'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
-            "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
-            "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
+            "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+            "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
           }, width : "100px"}
     ];
@@ -88,13 +88,12 @@ $(document).ready(function() {
         columns:columns_setting ,
         "drawCallback": function( settings ) {
             //渲染完毕后的回调
-            //清空全选状态
-            $(":checkbox[name='cb-check-all']",$wrapper).prop('checked', false);
-            //默认选中第一行
-            $("tbody tr",$table).eq(0).click();
+        	$(":checkbox[name='cb-check-all']","#datatable_wrapper").prop('checked', false);
+          //按钮权限初始化
+        	manage.initButtonRight();
         }
     })).api();
-	$("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -115,7 +114,7 @@ $(document).ready(function() {
         });
         manage.deleteItem(arrItemId);
 	});
-	$("[name='cb-check-all']").click(function(){
+	$("#datatable_wrapper [name='cb-check-all']").click(function(){
 		$(":checkbox",$table).prop("checked",$(this).prop("checked"));
 	});
 	$table.on("change",":checkbox",function() {
@@ -134,13 +133,13 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        manage.currentItem = item;
+        
         manage.editItem(item);
     }).on("click","#copyRow",function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        manage.currentItem = item;
+        
         manage.copyItem(item);
     }).on("click","#delRow",function() {
         //点击删除按钮
@@ -160,20 +159,53 @@ $(document).ready(function() {
 			    copyItem: function(item) {
 			    	LoadPage(contextPath+"/workflow/modAssembly?assemblyID="+item.assemblyID+"&operator=copy");
 			    },
+			    initButtonRight:function(){
+			    	var buttonRights=$("#buttonRights").val();
+			    	buttonRights=eval("(" + buttonRights + ")");
+			    	$.each(buttonRights, function(index, buttonRight){
+			    		if("btn-query"==buttonRight.btnEName){
+			    			$("#btn-query").show();
+			    		}
+			    		if("btn-delAll"==buttonRight.btnEName){
+			    			$("#btn-delAll").show();
+			    		}
+			    		if("btn-export"==buttonRight.btnEName){
+			    			$("#btn-export").show();
+			    		}
+			    		if("btn_refresh"==buttonRight.btnEName){
+			    			$("#btn_refresh").show();
+			    		}
+			    		if("btn-add"==buttonRight.btnEName){
+			    			$("#btn-add").show();
+			    		}
+			    		if("copyRow"==buttonRight.btnEName){
+			    			$("#datatable #copyRow").each(function(){
+			    				$(this).show();
+			    			});
+			    		}
+			    		if("editRow"==buttonRight.btnEName){
+			    			$("#datatable #editRow").each(function(){
+			    				$(this).show();
+			    			});
+			    		}
+			    		if("delRow"==buttonRight.btnEName){
+			    			$("#datatable #delRow").each(function(){
+			    				$(this).show();
+			    			});
+			    		}
+			    	});
+			    },
 			    exportItem:function(){
+			    	 $wrapper.spinModal();
 			         $.post(contextPath+"/workflow/exportAssembly",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
 		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
 		    	    		 window.location.href = downUrl;
                     		}else{
-                    			Lobibox.alert('error', {
-                                    msg: '<span class="red">导出数据失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                                    title:Lobibox.base.OPTIONS.title.error,
-                                    width:Lobibox.base.OPTIONS.width,
-                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                                });
+                    			showNotice('Error','<span style="padding-top:5px">数据导出失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
                     		}
+			        	 $wrapper.spinModal(false);
                      },'json'); 
 			    },
 			    deleteItem : function(selectedItems) {
@@ -197,32 +229,17 @@ $(document).ready(function() {
 			                    	assemblyIDS=assemblyIDS.substr(assemblyIDS,assemblyIDS.length-1);
 			                    	$.post(contextPath+"/workflow/delAssembly",{"assemblyIDS":assemblyIDS}, function(result) {
 			                    		if(result.resultCode==0){
-			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>组装信息删除成功</span>",
-			                                    title:Lobibox.base.OPTIONS.title.success,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-			                                });
+			                    			showNotice('Success',"组装信息删除成功",'success',1000*5);
 			                    			$("#btn_refresh").click();
 			                    		}else{
-			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">组装信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-			                                    title:Lobibox.base.OPTIONS.title.error,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-			                                });
+			                    			showNotice('Error','<span style="padding-top:5px">组装信息删除失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
 			                    		}
 			                        },'json'); 
 			                    }
 			                }
 			            });
 			        }else{
-			        	Lobibox.alert('info', {
-			    	        msg: "请先选中要删除的记录",
-			    	        title:Lobibox.base.OPTIONS.title.info,
-			    	        width:Lobibox.base.OPTIONS.width,
-			    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
-			    	    });
+			        	showNotice('Info',"请先选中要删除的记录",'info',1000*5);
 			        }
 			    }
 			};

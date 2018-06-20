@@ -52,6 +52,7 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity;
@@ -59,6 +60,7 @@ import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.ADD;
 import com.pall.portal.repository.entity.workflow.OpticalCoatingEntity.SAVE;
 import com.pall.portal.repository.entity.workflow.OpticalFilmingQueryFormEntity;
 import com.pall.portal.service.excel.IExcelHandler;
+import com.pall.portal.service.menu.ButtonManageService;
 import com.pall.portal.service.workflow.OpticalFilmingService;
 /*
  * 光学镀膜管理控制器
@@ -76,6 +78,8 @@ public class OpticalFilmingManageController{
 	 */
 	@Autowired
 	private OpticalFilmingService opticalFilmingService;
+	@Autowired
+	private ButtonManageService buttonManageService;
 	/*
 	 * excel处理对象
 	 */
@@ -127,6 +131,19 @@ public class OpticalFilmingManageController{
 	@RequestMapping(value="workflow/opticalFilmingManage", method= RequestMethod.GET)
     public  String opticalFilmingManage(Model model, HttpServletRequest request) {	
 		model=initConfigData(model);
+		//获取按钮权限
+		AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
+		if(at!=null && at.getUserEntity()!=null){
+			try {
+				BaseResponse buttonResonse=buttonManageService.getRightButton(String.valueOf(at.getUserEntity().getOperatorid()),UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_MENUID));
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==buttonResonse.getResultCode()){
+					List<ButtonEntity> buttonEntitys=(List<ButtonEntity>)buttonResonse.getReturnObjects();
+					model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
 		

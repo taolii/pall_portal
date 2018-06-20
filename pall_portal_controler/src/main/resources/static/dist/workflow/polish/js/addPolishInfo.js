@@ -3,11 +3,15 @@ $(document).ready(function() {
 	$('#addFormPickingTime').datetimepicker({  
         format: 'YYYY-MM-DD',
         locale: moment.locale('zh-cn')  
+    }).on('blur',function(e) {
+    	$('#addDataForm').data('bootstrapValidator').updateStatus('pickingTime', 'NOT_VALIDATED',null).validateField('pickingTime');  
     }); 
 	$('#addFormpolishTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
-    });
+    }).on('blur',function(e) {
+    	$('#addDataForm').data('bootstrapValidator').updateStatus('polishTime', 'NOT_VALIDATED',null).validateField('polishTime');  
+    }); 
 	$("#workingfaceType").change(function(){
 		var workingfaceType=$(this).val();
 		$("#addefect").empty();
@@ -72,14 +76,22 @@ $(document).ready(function() {
                 validators: {
                     notEmpty: {
                         message: '领料日期不能为空'
-                    }
+                    },
+                    date:{  
+                    	format:'YYYY-MM-DD',
+                    	message:'日期格式不正确'  
+                     }
                 }
             },
             polishTime: {
                 validators: {
                     notEmpty: {
                         message: 'Polish Date不能为空'
-                    }
+                    },
+                    date:{  
+                    	format:'YYYY-MM-DD',
+                    	message:'日期格式不正确'  
+                     }
                 }
             },
             fixtureNumber: {
@@ -123,7 +135,7 @@ $(document).ready(function() {
             partNum: {
                 validators: {
                     notEmpty: {
-                        message: 'Part NO不能为空'
+                        message: 'PN#不能为空'
                     }
                 }
             },

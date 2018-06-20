@@ -3,11 +3,11 @@ $(document).ready(function() {
 	$('#modFormPickingTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
-    }); 
+    });
 	$('#modFormpolishTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
-    });
+    }); 
 	$("#modWorkingfaceType").change(function(){
 		var workingfaceType=$(this).val();
 		$("#modDefect").empty();
@@ -139,7 +139,7 @@ $(document).ready(function() {
             partNum: {
                 validators: {
                     notEmpty: {
-                        message: 'Part NO不能为空'
+                        message: 'PN#不能为空'
                     }
                 }
             },

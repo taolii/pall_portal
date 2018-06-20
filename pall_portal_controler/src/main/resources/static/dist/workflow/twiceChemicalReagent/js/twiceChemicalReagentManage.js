@@ -27,6 +27,22 @@ $(document).ready(function() {
 				"<span class='sr-only'>Details</span>"
 				"</a></div>";
 			},width:"60px","visible":v_visible }) ;  
+		}else if(tableField.fieldName=='trayNums'){
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
+				return '<span title="' + data + '">' + data + '</span>';
+			},width:"60px","visible":v_visible }) ;
+		}else if(tableField.fieldName=='oldLotNums'){
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
+				return '<span title="' + data + '">' + data + '</span>';
+			},width:"60px","visible":v_visible }) ;
+		}else if(tableField.fieldName=='oldTrayNums'){
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
+				return '<span title="' + data + '">' + data + '</span>';
+			},width:"60px","visible":v_visible }) ;
+		}else if(tableField.fieldName=='oldBioPatNums'){
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
+				return '<span title="' + data + '">' + data + '</span>';
+			},width:"60px","visible":v_visible }) ;
 		}else{
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
 		}
@@ -35,9 +51,9 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
-        	"<button id='copyRow' class='btn btn-xs btn-success' type='button'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
-            "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
-            "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
+            "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+            "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
           }, width : "100px"}
     ];
@@ -69,7 +85,7 @@ $(document).ready(function() {
                     success: function(result) {
                     	 //异常判断与处理
                         if (result.resultCode!=0) {
-                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>生化镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
+                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>二次生化镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
                         	$wrapper.spinModal(false);
                         	return ;
                         }
@@ -88,7 +104,7 @@ $(document).ready(function() {
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     	var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
-                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>生化镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
+                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>二次生化镀膜信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
                         $wrapper.spinModal(false);
                     }
                 });
@@ -96,13 +112,12 @@ $(document).ready(function() {
         columns:columns_setting ,
         "drawCallback": function( settings ) {
             //渲染完毕后的回调
-            //清空全选状态
-            $(":checkbox[name='cb-check-all']",$table).prop('checked', false);
-            //默认选中第一行
-            $("tbody tr",$table).eq(0).click();
+        	$(":checkbox[name='cb-check-all']","#datatable_wrapper").prop('checked', false);
+          //按钮权限初始化
+        	manage.initButtonRight();
         }
     })).api();
-	$("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find("#datatable_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -123,7 +138,7 @@ $(document).ready(function() {
         });
         manage.deleteItem(arrItemId);
 	});
-	$("[name='cb-check-all']").click(function(){
+	$("#datatable_wrapper [name='cb-check-all']").click(function(){
 		$(":checkbox",$table).prop("checked",$(this).prop("checked"));
 	});
 	$table.on("change",":checkbox",function() {
@@ -142,13 +157,13 @@ $(document).ready(function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        manage.currentItem = item;
+        
         manage.editItem(item);
     }).on("click","#copyRow",function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        manage.currentItem = item;
+        
         manage.copyItem(item);
     }).on("click","#delRow",function() {
         //点击删除按钮
@@ -176,20 +191,53 @@ $(document).ready(function() {
 			    copyItem: function(item) {
 			    	LoadPage(contextPath+"/workflow/modTwiceChemicalReagent?crID="+item.crID+"&operator=copy");
 			    },
+			    initButtonRight:function(){
+			    	var buttonRights=$("#buttonRights").val();
+			    	buttonRights=eval("(" + buttonRights + ")");
+			    	$.each(buttonRights, function(index, buttonRight){
+			    		if("btn-query"==buttonRight.btnEName){
+			    			$("#btn-query").show();
+			    		}
+			    		if("btn-delAll"==buttonRight.btnEName){
+			    			$("#btn-delAll").show();
+			    		}
+			    		if("btn-export"==buttonRight.btnEName){
+			    			$("#btn-export").show();
+			    		}
+			    		if("btn_refresh"==buttonRight.btnEName){
+			    			$("#btn_refresh").show();
+			    		}
+			    		if("btn-add"==buttonRight.btnEName){
+			    			$("#btn-add").show();
+			    		}
+			    		if("copyRow"==buttonRight.btnEName){
+			    			$("#datatable #copyRow").each(function(){
+			    				$(this).show();
+			    			});
+			    		}
+			    		if("editRow"==buttonRight.btnEName){
+			    			$("#datatable #editRow").each(function(){
+			    				$(this).show();
+			    			});
+			    		}
+			    		if("delRow"==buttonRight.btnEName){
+			    			$("#datatable #delRow").each(function(){
+			    				$(this).show();
+			    			});
+			    		}
+			    	});
+			    },
 			    exportItem:function(){
+			    	$wrapper.spinModal();
 			         $.post(contextPath+"/workflow/exportTwiceChemicalReagent",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
 		    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
 		    	    		 window.location.href = downUrl;
                     		}else{
-                    			Lobibox.alert('error', {
-                                    msg: '<span class="red">导出数据失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-                                    title:Lobibox.base.OPTIONS.title.error,
-                                    width:Lobibox.base.OPTIONS.width,
-                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-                                });
+                    			showNotice('Error','<span style="padding-top:5px">数据导出失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
                     		}
+			        	 $wrapper.spinModal(false);
                      },'json'); 
 			    },
 			    showReagentMixtureDetail: function(item) {
@@ -224,32 +272,17 @@ $(document).ready(function() {
 			                    	crIDs=crIDs.substr(crIDs,crIDs.length-1);
 			                    	$.post(contextPath+"/workflow/delTwiceChemicalReagent",{"crIDs":crIDs}, function(result) {
 			                    		if(result.resultCode==0){
-			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>生化镀膜信息删除成功</span>",
-			                                    title:Lobibox.base.OPTIONS.title.success,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-			                                });
+			                    			showNotice('Success',"二次生化镀膜信息删除成功",'success',1000*5);
 			                    			$("#btn_refresh").click();
 			                    		}else{
-			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">生化镀膜信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-			                                    title:Lobibox.base.OPTIONS.title.error,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-			                                });
+			                    			showNotice('Error','<span style="padding-top:5px">二次生化镀膜信息删除失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
 			                    		}
 			                        },'json'); 
 			                    }
 			                }
 			            });
 			        }else{
-			        	Lobibox.alert('info', {
-			    	        msg: "请先选中要删除的记录",
-			    	        title:Lobibox.base.OPTIONS.title.info,
-			    	        width:Lobibox.base.OPTIONS.width,
-			    	        buttons:{yes:Lobibox.base.OPTIONS.buttons.info}
-			    	    });
+			        	showNotice('Info',"请先选中要删除的记录",'info',1000*5);
 			        }
 			    }
 			};

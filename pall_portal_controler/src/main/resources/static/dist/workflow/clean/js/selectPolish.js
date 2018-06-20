@@ -80,10 +80,14 @@ $(document).ready(function() {
         },
         columns:columns_setting
     })).api();
-	$("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
+	$table.on("click",".td-radio",function(event) {
+        //点击单元格即点击复选框
+        !$(event.target).is(":radio") && $(":radio",this).trigger("click");
+    });
 	$("#polishModal").on("shown.bs.modal",function(){
 		$.each($.fn.dataTable.tables(true), function(){
 			 $(this).DataTable().columns.adjust();

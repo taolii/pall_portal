@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.pall.portal.repository.entity.user.ModifyUPwdEntity;
 import com.pall.portal.repository.entity.user.UserEntity;
 import com.pall.portal.repository.entity.user.UserPermissionEntity;
+import com.pall.portal.repository.entity.user.UserPwdEntity;
 import com.pall.portal.repository.entity.user.UserQueryFormEntity;
 @Repository("userManageDao")
 public interface UserManageDao {
@@ -50,10 +50,10 @@ public interface UserManageDao {
 	public int delUser(@Param("operatorids") List<String> operatorids);
 	/*
 	 * 修改用户密码
-	 * @param modifyUPwdEntity 密码修改信息
+	 * @param userPwdEntity 密码修改信息
 	 * @return 
 	 */
-	public int modifyPwd(ModifyUPwdEntity modifyUPwdEntity);
+	public int modifyPwd(UserPwdEntity userPwdEntity);
 	/*
 	 * 添加用户权限
 	 * @param userPermissionEntity 用户角色赋权对象

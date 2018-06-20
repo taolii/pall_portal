@@ -81,13 +81,10 @@ $(document).ready(function() {
         ],
         "drawCallback": function( settings ) {
             //渲染完毕后的回调
-            //清空全选状态
-            $(":checkbox[name='cb-check-all']",$wrapper).prop('checked', false);
-            //默认选中第一行
-            $("tbody tr",$table).eq(0).click();
+            $(":checkbox[name='cb-check-all']","#datatable_wrapper").prop('checked', false);
         }
     })).api();
-	$("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -104,6 +101,9 @@ $(document).ready(function() {
             arrItemId.push(item);
         });
         userManage.deleteItem(arrItemId);
+	});
+	$("#datatable_wrapper [name='cb-check-all']").click(function(){
+		$(":checkbox",$table).prop("checked",$(this).prop("checked"));
 	});
 	$table.on("change",":checkbox",function() {
         if ($(this).is("[name='cb-check-all']")) {

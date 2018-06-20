@@ -134,7 +134,7 @@ $(document).ready(function() {
             partNum: {
                 validators: {
                     notEmpty: {
-                        message: 'Part NUM不能为空'
+                        message: 'PN#不能为空'
                     }
                 }
             },

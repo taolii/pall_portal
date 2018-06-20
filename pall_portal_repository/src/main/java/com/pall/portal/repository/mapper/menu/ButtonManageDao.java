@@ -44,5 +44,5 @@ public interface ButtonManageDao {
 	 * @param  按钮列表查询对象
 	 * @return 查询结果
 	 */
-	public List<ButtonEntity> getRightButton(@Param("operatorid") String operatorid);
+	public List<ButtonEntity> getRightButton(@Param("operatorid") String operatorid,@Param("menuid") String menuid);
 }

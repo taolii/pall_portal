@@ -84,7 +84,11 @@ $(document).ready(function() {
 	                validators: {
 	                    notEmpty: {
 	                        message: 'Clean日期不能为空'
-	                    }
+	                    },
+	                    date:{  
+	                    	format:'YYYY-MM-DD',
+	                    	message:'日期格式不正确'  
+	                     }
 	                }
 	            },
 	            fixtureNumber: {
@@ -118,17 +122,10 @@ $(document).ready(function() {
 	                    }
 	                }
 	            },
-	            toOtherQty: {
-	                validators: {
-	                    digits: {
-		                    message: 'to other Qty值必须为数字'
-		                }
-	                }
-	            },
 	            partNum: {
 	                validators: {
 	                    notEmpty: {
-	                        message: 'Part NO不能为空'
+	                        message: 'PN#不能为空'
 	                    }
 	                }
 	            },
@@ -148,7 +145,7 @@ $(document).ready(function() {
 	    		}
 	    	});
 	    	$('#modDataForm [name=scrapQty]').val(defectNum);
-	    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-defectNum-Number($('#modDataForm [name=toOtherQty]').val());
+	    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-Number($('#modDataForm [name=toOtherQty]').val());
 	    	$('#modDataForm [name=outputQty]').val(outputQty);
 	    	e.preventDefault();
 	    	var $form = $(e.target);

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.pall.portal.common.response.BaseResponse;
 import com.pall.portal.common.response.BaseTablesResponse;
-import com.pall.portal.repository.entity.user.ModifyUPwdEntity;
 import com.pall.portal.repository.entity.user.UserEntity;
+import com.pall.portal.repository.entity.user.UserPwdEntity;
 import com.pall.portal.repository.entity.user.UserQueryFormEntity;
 /*
  * 用户管理服务
@@ -47,9 +47,9 @@ public interface UserManageService {
 	public BaseResponse delUser(List<String> operatorids) throws Exception;
 	/*
 	 * 修改用户密码
-	 * @param modifyUPwdEntity 密码修改信息
+	 * @param userPwdEntity 密码修改信息
 	 * @param isAdmin 是否是管理员修改
 	 * @return 删除结果
 	 */
-	public BaseResponse modifyPwd(ModifyUPwdEntity modifyUPwdEntity,boolean isAdmin) throws Exception;
+	public BaseResponse modifyPwd(UserPwdEntity userPwdEntity) throws Exception;
 }

@@ -94,6 +94,7 @@ public class RightManageServiceImpl implements RightManageService{
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 			}else{
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			
 				baseResponse.setResultMsg(resourceUtils.getMessage("rightManage.dao.modRight.dao.failed"));
 			}
 		}catch(Exception e){

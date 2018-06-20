@@ -25,6 +25,7 @@
 						<form method="POST" id="dataForm" class="form-horizontal">
 							<div class="form-group">
 								<div class="col-sm-10">
+									<input type="hidden" name="isAdmin" th:value="false" />
 									<input type="hidden" name="operatorid" th:value="${userEntity.operatorid}" />
 									<span class="col-sm-2 control-label"> 
 										<label th:text="#{pages.user.modifyPwd.input.username}" th:remove="tag"></label>

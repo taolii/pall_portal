@@ -10,6 +10,7 @@ public class DatatablesView {
     private List<?> data; 
 
     private int recordsTotal; 
+    private String statistic;
     private int iTotalDisplayRecords;
 
     private int recordsFiltered;  
@@ -30,6 +31,14 @@ public class DatatablesView {
 
 	public void setRecordsTotal(int recordsTotal) {
 		this.recordsTotal = recordsTotal;
+	}
+
+	public String getStatistic() {
+		return statistic;
+	}
+
+	public void setStatistic(String statistic) {
+		this.statistic = statistic;
 	}
 
 	public int getRecordsFiltered() {

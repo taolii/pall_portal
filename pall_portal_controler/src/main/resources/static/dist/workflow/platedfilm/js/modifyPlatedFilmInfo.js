@@ -3,6 +3,8 @@ $(document).ready(function() {
 	$('#modFormCoatingTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
+    }).on('blur',function(e) {
+    	$('#modDataForm').data('bootstrapValidator').updateStatus('coatingTime', 'NOT_VALIDATED',null).validateField('coatingTime');  
     });
 	$('#modFormPfTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
@@ -41,15 +43,20 @@ $(document).ready(function() {
                 validators: {
                     notEmpty: {
                         message: 'Coating Date不能为空'
-                    }
+                    },
+                    date:{  
+                    	format:'YYYY-MM-DD',
+                    	message:'日期格式不正确'  
+                     }
                 }
             },
             pfTime: {
-                validators: {
-                    notEmpty: {
-                        message: 'Date不能为空'
-                    }
-                }
+            	validators: {
+           		 date:{  
+                    	format:'YYYY-MM-DD',
+                    	message:'日期格式不正确'  
+                     }
+           	 	}
             },
             inputLotNum: {
                 validators: {
@@ -60,9 +67,6 @@ $(document).ready(function() {
             },
             inputQty: {
                 validators: {
-                	 notEmpty: {
-                         message: 'Input Qty(pcs)不能为空'
-                     },
                     digits: {
 	                    message: 'Input Qty(pcs)值必须为数字'
 	                }
@@ -84,9 +88,6 @@ $(document).ready(function() {
             },
             underIQCQty: {
                 validators: {
-                	notEmpty: {
-                        message: '领用Qty(pcs)值不能为空'
-                    },
                     digits: {
 	                    message: '领用Qty(pcs)值必须为数字'
 	                }
@@ -106,13 +107,6 @@ $(document).ready(function() {
 	                }
                 }
             },
-            toHUBQty: {
-                validators: {
-                    digits: {
-	                    message: 'To HUB Qty(pcs)值必须为数字'
-	                }
-                }
-            },
             remainQty: {
                 validators: {
                     digits: {
@@ -123,7 +117,7 @@ $(document).ready(function() {
             partNum: {
                 validators: {
                     notEmpty: {
-                        message: 'Part NUM不能为空'
+                        message: 'PN#不能为空'
                     }
                 }
             },

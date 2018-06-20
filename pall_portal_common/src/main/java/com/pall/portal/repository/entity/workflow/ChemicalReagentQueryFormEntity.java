@@ -23,7 +23,7 @@ public class ChemicalReagentQueryFormEntity {
 	private String tNum;
 	private String trayLotNum;
 	private String chemicalLotNum;
-	private String partNum;
+	private String bioPatNum;
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -84,12 +84,11 @@ public class ChemicalReagentQueryFormEntity {
 	public void setChemicalLotNum(String chemicalLotNum) {
 		this.chemicalLotNum = chemicalLotNum;
 	}
-	public String getPartNum() {
-		return partNum;
+	public String getBioPatNum() {
+		return bioPatNum;
 	}
-	public void setPartNum(String partNum) {
-		this.partNum = partNum;
+	public void setBioPatNum(String bioPatNum) {
+		this.bioPatNum = bioPatNum;
 	}
-	
 	
 }

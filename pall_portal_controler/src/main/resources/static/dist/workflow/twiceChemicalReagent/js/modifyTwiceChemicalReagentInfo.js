@@ -18,11 +18,6 @@ $(document).ready(function() {
             $(this).parent().parent().remove();
         });
 	});
-	$("#addAssemblyPanel").on('change', 'input[type=checkbox]', function() {
-	   	 if(!$(this).prop('checked')){
-			 $(this).parent().parent().parent().parent().remove();
-		 }
-	});
 	$modDataForm=$('#modDataForm'),
 	$addAssemblyOutputLotNumButton=$('#addAssemblyOutputLotNumButton'),
 	$assemblyManageModal=$('#assemblyManageModal'),
@@ -30,12 +25,14 @@ $(document).ready(function() {
 	$singleReagentMixtureModal=$("#singleReagentMixtureModal"),
 	$multipleReagentMixtureModal=$("#multipleReagentMixtureModal"),
 	$addAssemblyOutputLotNumButton.on('click', function() {
-		$assemblyManageModal.draggable({ 
-    		scroll: true, scrollSensitivity: 100,
-    		cursor: "move"});
-    	$assemblyManageModal.css("overflow", "hidden");
-    	$assemblyManageModal.css("overflow-y", "auto");
-    	$assemblyManageModal.modal("show");
+		$assemblyPanel=$("#modDataForm [id=addAssemblyPanel]");
+		var len=$assemblyPanel.find(".bioInfo").length;
+		$newRow   =$("#assemblyTemplate").clone().removeAttr('id').end();
+	    $assemblyPanel.append($newRow.html()).show();
+	    $assemblyPanel.find("[name=trayNum]").attr('name','trayNum'+len),
+	    $assemblyPanel.find("[name=oldLotNum]").attr('name','oldLotNum'+len),
+	    $assemblyPanel.find("[name=oldTrayNum]").attr('name','oldTrayNum'+len),
+	    $assemblyPanel.find("[name=oldBioPatNum]").attr('name','oldBioPatNum'+len);
 	});
 	$('#addAuxiliaryReagent1').on('click', function() {
 		$singleReagentMixtureModal.draggable({ 
@@ -74,6 +71,7 @@ $(document).ready(function() {
 		$multipleReagentMixtureModal.css("overflow", "hidden");
 		$multipleReagentMixtureModal.css("overflow-y", "auto");
 		$multipleReagentMixtureModal.modal("show");
+		$("#queryMultipleReagentMixtureButton").click();
 	});
 	
 	$modDataForm.bootstrapValidator({
@@ -94,6 +92,9 @@ $(document).ready(function() {
             },
             goodsQty: {
                 validators: {
+                	notEmpty: {
+                        message: 'goods Qty(pcs)不能为空'
+                    },
                     digits: {
 	                    message: 'goods Qty(pcs)值必须为数字'
 	                }
@@ -126,13 +127,20 @@ $(document).ready(function() {
 	                    message: 'To PQC QTY必须为数字'
 	                }
                 }
+            },
+            partNum: {
+                validators: {
+                    notEmpty: {
+                        message: 'PN#不能为空'
+                    }
+                }
             }
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
     	var $form = $(e.target);
-    	var assemblyCount=$("#modDataForm [id=addAssemblyPanel]").find(":checkbox").length;
-		$("#modDataForm [name=inputQty]").val(assemblyCount*96);
+    	$("#modDataForm [name=trayNumLen]").val($("#modDataForm [id=addAssemblyPanel]").find(".bioInfo").length);
+		$("#modDataForm [name=inputQty]").val($("#modDataForm [name=trayNumLen]").val()*96);
 		var count=Number($("#modDataForm [name=toPqcQty]").val())+Number($("#modDataForm [name=heavySmokeQty]").val())+Number($("#modDataForm [name=receiveQty]").val())+Number($("#modDataForm [name=toOtherQty]").val());
 		$("#modDataForm [name=scrapQty]").val(count);
 		if($("#modDataForm [name=inputQty]").val()==0){
@@ -146,18 +154,18 @@ $(document).ready(function() {
     	if("copy"==operator){
     		$.post(contextPath+"/workflow/addTwiceChemicalReagent",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"添加生化镀膜信息成功",'success',1000*5);
+        			showNotice('Success',"添加二次生化镀膜信息成功",'success',1000*5);
         		}else{
-        			showNotice('Error','<span style="padding-top:5px">添加生化镀膜信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+        			showNotice('Error','<span style="padding-top:5px">添加二次生化镀膜信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
         		$form.bootstrapValidator('disableSubmitButtons', false);
             },'json');
     	}else{
     		$.post(contextPath+"/workflow/modTwiceChemicalReagent",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"更新生化镀膜信息成功",'success',1000*5);
+        			showNotice('Success',"更新二次生化镀膜信息成功",'success',1000*5);
         		}else{
-        			showNotice('Error','<span style="padding-top:5px">更新生化镀膜信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+        			showNotice('Error','<span style="padding-top:5px">更新二次生化镀膜信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
         		$form.bootstrapValidator('disableSubmitButtons', false);
             },'json');

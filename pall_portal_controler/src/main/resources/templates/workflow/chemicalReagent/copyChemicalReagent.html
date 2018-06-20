@@ -32,7 +32,7 @@
 					<div class="col-xs-12">
 						<form method="POST" id="modDataForm" class="form-horizontal">
 							<input type='hidden' id="updateForm" name="updateForm" value="#modDataForm" />
-							<input type='hidden'  name="crID" th:value="${chemicalReagentEntity.crID}" />
+							<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
 							<input type='hidden' id="addAuxiliaryReagent" name="addAuxiliaryReagent" value="#addAuxiliaryReagent1" />
 							<div class="form-group"  style="display: none;">
 								<div class="col-md-8" style="margin-bottom:20px" id="reagentPanelTemplate">
@@ -53,7 +53,7 @@
                     				<div class="rowGroup">
 										<div class="checkbox removeButton">
 											<label>
-												<input name="trayLotNum" class="ace" type="checkbox" checked="checked">
+												<input name="trayLotNum1" class="ace" type="checkbox" checked="checked">
 												<span class="lbl assembly"></span>
 											</label>
 										</div>
@@ -130,7 +130,7 @@
 					                    				<div class="rowGroup">
 															<div class="checkbox removeButton">
 																<label>
-																	<input name="trayLotNum" class="ace" type="checkbox" checked="checked">
+																	<input name="trayLotNum" class="ace" type="checkbox" checked="checked" th:value="${chemicalReagentRelation.trayLotNum}">
 																	&nbsp;&nbsp;<span class="lbl assembly" th:text="${chemicalReagentRelation.trayLotNum}"></span>
 																</label>
 															</div>
@@ -142,49 +142,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.crOperator1}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										 <select name="crOperator1" class="form-control">
-								              <option  th:each="dataConfig:${cp1Configs}" th:selected="${chemicalReagentEntity.crOperator1==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-								              </option>
-	                                	</select>
-									</div>
-								</div>
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.crOperator2}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										 <select name="crOperator2" class="form-control">
-								              <option  th:each="dataConfig:${cp2Configs}" th:selected="${chemicalReagentEntity.crOperator2==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-								              </option>
-	                                	</select> 
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<div class="col-md-11 col-md-offset-1">
-										<fieldset>
-	    								<legend>
-	    									<label class="blue control-label" th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.bioBom}"></label>
-	    								</legend>
-											<div class="col-md-2 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${bioBomConfigs}">
-												<label>
-													<input name="bioBoms" class="ace" type="checkbox" th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
-													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
-												</label>
-											</div>
-	  									</fieldset>
-									</div>
-								</div>
-							</div>
+							
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
@@ -275,7 +233,7 @@
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.goodsQty}" th:remove="tag"></label>
-										
+										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
 										 <input type='text' name="goodsQty" class="form-control" value="0" th:value="${chemicalReagentEntity.goodsQty}"/>   
@@ -343,13 +301,39 @@
 							</div>
 							<div class="form-group">
 								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.crOperator1}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										 <select name="crOperator1" class="form-control">
+								              <option  th:each="dataConfig:${cp1Configs}" th:selected="${chemicalReagentEntity.crOperator1==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+								              </option>
+	                                	</select>
+									</div>
+								</div>
+								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.partNum}" th:remove="tag"></label> 
+										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.crOperator2}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										 <select name="crOperator2" class="form-control">
+								              <option  th:each="dataConfig:${cp2Configs}" th:selected="${chemicalReagentEntity.crOperator2==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+								              </option>
+	                                	</select> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group" style="display:none">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.partNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font> 
 									</span>
 									<div class="col-md-4">
 										<select name="partNum" class="form-control">
-							              <option  th:each="dataConfig:${pnDataConfigs}" th:selected="${chemicalReagentEntity.partNum==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-							              </option>
+							              
 	                                	</select>     
 									</div>
 								</div>
@@ -371,7 +355,23 @@
 									
 								</div>
 							</div>
-							
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
+										<fieldset>
+	    								<legend>
+	    									<label class="blue control-label" th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.bioBom}"></label>
+	    								</legend>
+											<div class="col-md-2 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${bioBomConfigs}">
+												<label>
+													<input name="bioBoms" class="ace" type="checkbox" th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
+													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
+												</label>
+											</div>
+	  									</fieldset>
+									</div>
+								</div>
+							</div>
 							<div class="form-group">
 								<div class="text-center">
 									<button class="btn btn-white btn-primary">

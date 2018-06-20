@@ -114,7 +114,7 @@ public class ReagentMixtureManageController{
 			baseResponse.setResultMsg(resourceUtils.getMessage("reagentMixtureManage.controler.reagentMixtureManage.exception"));
 			
 		}
-	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
     }
 	@RequestMapping(value="reagent/reagentMixtureSnsManage", method= RequestMethod.POST)
     public @ResponseBody String reagentMixtureSnsManage(Model model,ReagentMixtureSnsQueryFormEntity  reagentMixtureSnsQueryFormEntity, HttpServletRequest request) {

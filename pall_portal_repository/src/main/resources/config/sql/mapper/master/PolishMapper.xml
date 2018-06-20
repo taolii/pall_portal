@@ -25,6 +25,9 @@
 	    <if test="inputLotNum != null and inputLotNum != '' ">  
 	       AND f.input_lot_num = #{inputLotNum}  
 	    </if>
+	     <if test="polishLotNum != null and polishLotNum != '' ">  
+	       AND f.polish_lot_num = #{polishLotNum}  
+	    </if>
 	    <if test="fixtureNumber != null and fixtureNumber != '' ">  
 	       AND f.fixture_number = #{fixtureNumber}  
 	    </if>
@@ -52,6 +55,9 @@
 	    </if>
 	    <if test="endPolishTime != null and endPolishTime != '' ">  
 	       AND f.polish_time &lt;= #{endPolishTime}  
+	    </if>
+	     <if test="polishLotNum != null and polishLotNum != '' ">  
+	       AND f.polish_lot_num = #{polishLotNum}  
 	    </if>
 	    <if test="inputLotNum != null and inputLotNum != '' ">  
 	       AND f.input_lot_num = #{inputLotNum}  

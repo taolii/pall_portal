@@ -62,7 +62,7 @@ $(document).ready(function() {
         },
         columns: [
        	 {className: "ellipsis",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
-                    return '<input name='+data.reagentsFieldName+'_'+data.rmid+' type="checkbox" class="ace"><span class="lbl"></span>';
+                    return '<input name='+data.trayLotNum+' type="checkbox" class="ace"><span class="lbl"></span>';
             }},
 	        {className : "ellipsis",title:"assemblyID",data: "assemblyID",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "1%"},
 	        {className : "ellipsis",title:"DeliveryDate",data: "deliveryTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
@@ -76,11 +76,13 @@ $(document).ready(function() {
 	        {className : "ellipsis",title:"WON#",data: "workOrderNum",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
 	     ],
         "drawCallback": function( settings ) {
-	        $(":checkbox[name='cb-check-all']","#detailTable").prop('checked', false);
 	        $assemblyPanel=$($("#updateForm").val()+" [id=addAssemblyPanel]");
 	        $assemblyPanel.find("input").each(function(){
 	    		var cValue=$(this).val();
-	    		$(":checkbox","#detailTable").each(function(){
+	    		$(":checkbox","#assemblyTable_wrapper").each(function(){
+	    			if($(this).attr("name")=='cb-check-all'){
+	    				$(this).prop('checked', false);
+	    			}
 	    			if($(this).attr("name")==cValue){
 	    				$(this).prop('checked', true);
 	    			}
@@ -134,7 +136,7 @@ $(document).ready(function() {
         	return;
         }
 		$newRow   =$("#assemblyTemplate").clone().removeAttr('id').find('.assembly').html("&nbsp;&nbsp;"+item.trayLotNum).end();
-	    $newRow=$newRow.find('input').val(item.trayLotNum).end().
+	    $newRow=$newRow.find('input').attr('name','trayLotNum').val(item.trayLotNum).end().
 	             on('change', 'input[type=checkbox]', function() {
 	            	 if(!$(this).prop('checked')){
 	            		 $(this).parent().parent().parent().parent().remove();

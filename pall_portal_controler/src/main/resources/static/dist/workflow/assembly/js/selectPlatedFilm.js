@@ -5,10 +5,6 @@ $(document).ready(function() {
 		var form=$('#updateForm').val();
         $("#queryForm [name=fixtureAttribute]").val($(form+' [name=fixtureAttribute]').val());
 	});
-	
-	var columns_setting=[
-    	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
-    ];
 	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
 	$platedFilmQueryForm=$("#queryForm");
@@ -61,7 +57,7 @@ $(document).ready(function() {
                 });
         },
         columns: [
-        	{className: "ellipsis",title:"选择",width:"20px",data: null,render: function (data, type, row, meta) {
+        	{className: "td-radio",title:"选择",width:"20px",data: null,render: function (data, type, row, meta) {
                 return '<input name="select" type="radio" class="ace"><span class="lbl"></span>';
         	}},
    	        {className : "ellipsis",title:"pfID",data: "pfID",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "1%"},
@@ -76,7 +72,7 @@ $(document).ready(function() {
    	        {className : "ellipsis",title:"WON#",data: "workOrderNum",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
    	     ]
     })).api();
-	$("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -85,6 +81,10 @@ $(document).ready(function() {
 			 $(this).DataTable().columns.adjust();
 		});
 	});
+	$table.on("click",".td-radio",function(event) {
+        //点击单元格即点击复选框
+        !$(event.target).is(":radio") && $(":radio",this).trigger("click");
+    });
 	$('#selButton').click(function(){
 		var radios=$("tbody :radio:checked",$table);
 		if(radios.length<=0){

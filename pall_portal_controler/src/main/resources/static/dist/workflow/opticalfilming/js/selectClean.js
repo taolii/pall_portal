@@ -79,7 +79,7 @@ $(document).ready(function() {
         },
         columns:columns_setting 
     })).api();
-	$("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -88,6 +88,10 @@ $(document).ready(function() {
 			 $(this).DataTable().columns.adjust();
 		});
 	});
+	$table.on("click",".td-radio",function(event) {
+        //点击单元格即点击复选框
+        !$(event.target).is(":radio") && $(":radio",this).trigger("click");
+    });
 	$('#selButton').click(function(){
 		var radios=$("tbody :radio:checked",$table);
 		if(radios.length<=0){

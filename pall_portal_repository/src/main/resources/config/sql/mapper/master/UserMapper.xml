@@ -63,7 +63,7 @@
 	<select id="findUserPermission" resultType="com.pall.portal.repository.entity.user.UserPermissionEntity" parameterType="java.lang.String"> 
  		select operatorid,roleid from t_ums_userpermission f where operatorid=#{operatorid} 
  	</select> 
-	<update id="modifyPwd"  parameterType="com.pall.portal.repository.entity.user.ModifyUPwdEntity">
+	<update id="modifyPwd"  parameterType="com.pall.portal.repository.entity.user.UserPwdEntity">
          update t_ums_admininfo f set PASSWORD=#{password},UPDATETIME=now()  where f.OPERATORID = #{operatorid}
     </update>
 </mapper> 

@@ -52,6 +52,7 @@ import com.pall.portal.interceptor.support.AuthToken;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.repository.entity.dataconfig.DataConfigTypeEntity;
 import com.pall.portal.repository.entity.dataconfig.TableHeaderConfigEntity;
+import com.pall.portal.repository.entity.menu.ButtonEntity;
 import com.pall.portal.repository.entity.workflow.AssemblyEntity;
 import com.pall.portal.repository.entity.workflow.AssemblyEntity.ADD;
 import com.pall.portal.repository.entity.workflow.AssemblyEntity.SAVE;
@@ -59,6 +60,7 @@ import com.pall.portal.repository.entity.workflow.AssemblyQueryFormEntity;
 import com.pall.portal.repository.entity.workflow.DefectEntity;
 import com.pall.portal.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.portal.service.excel.IExcelHandler;
+import com.pall.portal.service.menu.ButtonManageService;
 import com.pall.portal.service.workflow.AssemblyService;
 /*
  * 组装管理控制器
@@ -76,6 +78,8 @@ public class AssemblyManageController{
 	 */
 	@Autowired
 	private AssemblyService assemblyService;
+	@Autowired
+	private ButtonManageService buttonManageService;
 	/*
 	 * excel处理对象
 	 */
@@ -156,6 +160,19 @@ public class AssemblyManageController{
 	@RequestMapping(value="workflow/assemblyManage", method= RequestMethod.GET)
     public  String assemblyManage(Model model, HttpServletRequest request) {
 		model=initConfigData(model);
+		//获取按钮权限
+		AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
+		if(at!=null && at.getUserEntity()!=null){
+			try {
+				BaseResponse buttonResonse=buttonManageService.getRightButton(String.valueOf(at.getUserEntity().getOperatorid()),UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_MENUID));
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==buttonResonse.getResultCode()){
+					List<ButtonEntity> buttonEntitys=(List<ButtonEntity>)buttonResonse.getReturnObjects();
+					model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		List<ExcelHeaderNode> tableFieldBinds=new ArrayList<ExcelHeaderNode>();
 		Map<String,ExcelHeaderNode> tableFieldBindMap=TableDataConfigInitiator.getTableFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
 		if(tableFieldBindMap!=null){
@@ -185,7 +202,7 @@ public class AssemblyManageController{
         String jsonData="";
 		try {
 			baseResponse=assemblyService.queryAssemblyList(assemblyQueryFormEntity);
-			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
 				defectTypes.add(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));

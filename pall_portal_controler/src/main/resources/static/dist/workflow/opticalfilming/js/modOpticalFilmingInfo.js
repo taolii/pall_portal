@@ -120,9 +120,6 @@ $(document).ready(function() {
             },
             qcUseQty: {
                 validators: {
-                    notEmpty: {
-                        message: 'QC Use Qty(pcs)不能为空'
-                    },
                     digits: {
 	                    message: 'QC Use Qty(pcs)值必须为数字'
 	                }
@@ -130,9 +127,6 @@ $(document).ready(function() {
             },
             toOtherQty: {
                 validators: {
-                    notEmpty: {
-                        message: 'To Other Qty(pcs)不能为空'
-                    },
                     digits: {
 	                    message: 'To Other Qty(pcs)值必须为数字'
 	                }
@@ -141,7 +135,7 @@ $(document).ready(function() {
             partNum: {
                 validators: {
                     notEmpty: {
-                        message: 'Part NUM不能为空'
+                        message: 'PN#不能为空'
                     }
                 }
             },
@@ -161,7 +155,7 @@ $(document).ready(function() {
     		}
     	});
     	$('#modDataForm [name=scrapQty]').val(defectNum);
-    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-defectNum-Number($('#modDataForm [name=toOtherQty]').val());
+    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-Number($('#modDataForm [name=toOtherQty]').val());
     	$('#modDataForm [name=outputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);

@@ -36,7 +36,7 @@ var TABLE_CONSTANT = {
             },
             COLUMN: {
                 CHECKBOX: { //复选框单元格
-                	className: "",
+                	className:"td-checkbox",
                     orderable: false,
                     width: "20px",
                     data: null,
@@ -45,7 +45,7 @@ var TABLE_CONSTANT = {
                     }
                 },
                 RADIO: { //复选框单元格
-                	className: "",
+                	className: "td-radio",
                     orderable: false,
                     width: "20px",
                     data: null,

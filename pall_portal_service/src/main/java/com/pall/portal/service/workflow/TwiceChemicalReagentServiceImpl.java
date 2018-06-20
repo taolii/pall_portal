@@ -1,6 +1,7 @@
 package com.pall.portal.service.workflow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,8 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
-import com.alibaba.druid.util.StringUtils;
 import com.pall.portal.common.constants.IResponseConstants;
 import com.pall.portal.common.datatables.Entity.DatatablesView;
 import com.pall.portal.common.i18n.ResourceUtils;
@@ -60,19 +62,10 @@ public class TwiceChemicalReagentServiceImpl implements TwiceChemicalReagentServ
 					if(chemicalReagentEntity.getCompoundReagents()==null){
 						chemicalReagentEntity.setCompoundReagents(new ArrayList<TwiceChemicalCompoundReagentsEntity>());
 					}
-					chemicalReagentEntity.setApsBoms("");
-					chemicalReagentEntity.setApsLotNums("");
-					chemicalReagentEntity.setTrayLotNums("");
-					chemicalReagentEntity.settLotNums("");
-					chemicalReagentEntity.setAssemblyBoms("");
-					chemicalReagentEntity.setAssemblyLotNums("");
-					chemicalReagentEntity.setPolishBoms("");
-					chemicalReagentEntity.setPolishLotNums("");
-					chemicalReagentEntity.setCleanBoms("");
-					chemicalReagentEntity.setCleanLotNums("");
-					chemicalReagentEntity.setOcBoms("");
-					chemicalReagentEntity.setOcLotNums("");
-					
+					chemicalReagentEntity.setTrayNums("");
+					chemicalReagentEntity.setOldBioPatNums("");
+					chemicalReagentEntity.setOldLotNums("");
+					chemicalReagentEntity.setOldTrayNums("");
 					chemicalReagentMap.put(chemicalReagentEntity.getCrID(), chemicalReagentEntity);
 				}
 				if(chemicalReagentMap!=null && chemicalReagentMap.size()>0){
@@ -121,107 +114,59 @@ public class TwiceChemicalReagentServiceImpl implements TwiceChemicalReagentServ
 			for(TwiceChemicalReagentRelationEntity chemicalReagentRelationEntity:chemicalReagentRelations){
 				if(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID())!=null){
 					chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getChemicalReagentRelations().add(chemicalReagentRelationEntity);
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getTrayLotNum())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getTrayLotNums())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setTrayLotNums(chemicalReagentRelationEntity.getTrayLotNum());
-							tempSet.add("trayLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getTrayLotNum());
-						}else if(tempSet.add("trayLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getTrayLotNum())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setTrayLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getTrayLotNums()+","+chemicalReagentRelationEntity.getTrayLotNum());
+					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getTrayNum())){
+						tempSet.clear();
+						String[]temps=StringUtils.commaDelimitedListToStringArray(chemicalReagentRelationEntity.getTrayNum());
+						if(ObjectUtils.isEmpty(temps)){
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setTrayNums(chemicalReagentRelationEntity.getTrayNum());
+						}else{
+							tempSet.addAll(Arrays.asList(temps));
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setTrayNums(StringUtils.collectionToCommaDelimitedString(tempSet));
 						}
 					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.gettLotNum())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).gettLotNums())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).settLotNums(chemicalReagentRelationEntity.gettLotNum());
-							tempSet.add("tLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.gettLotNum());
-						}else if(tempSet.add("tLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.gettLotNum())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).settLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).gettLotNums()+","+chemicalReagentRelationEntity.gettLotNum());
+					
+				}
+				if(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID())!=null){
+					chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getChemicalReagentRelations().add(chemicalReagentRelationEntity);
+					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getOldTrayNum())){
+						tempSet.clear();
+						String[]temps=StringUtils.commaDelimitedListToStringArray(chemicalReagentRelationEntity.getOldTrayNum());
+						if(ObjectUtils.isEmpty(temps)){
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOldTrayNums(chemicalReagentRelationEntity.getOldTrayNum());
+						}else{
+							tempSet.addAll(Arrays.asList(temps));
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOldTrayNums(StringUtils.collectionToCommaDelimitedString(tempSet));
 						}
 					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getAssemblyLotNum())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getAssemblyLotNums())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setAssemblyLotNums(chemicalReagentRelationEntity.getAssemblyLotNum());
-							tempSet.add("assemblyLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getAssemblyLotNum());
-						}else if(tempSet.add("assemblyLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getAssemblyLotNum())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setAssemblyLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getAssemblyLotNums()+","+chemicalReagentRelationEntity.getAssemblyLotNum());
-						}
-						
-					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getAssemblyBom())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getAssemblyBoms())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setAssemblyBoms(chemicalReagentRelationEntity.getAssemblyBom());
-							tempSet.add("assemblyBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getAssemblyBom());
-						}else if(tempSet.add("assemblyBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getAssemblyBom())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setAssemblyBoms(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getAssemblyBoms()+","+chemicalReagentRelationEntity.getAssemblyBom());
+					
+				}
+				if(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID())!=null){
+					chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getChemicalReagentRelations().add(chemicalReagentRelationEntity);
+					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getOldLotNum())){
+						tempSet.clear();
+						String[]temps=StringUtils.commaDelimitedListToStringArray(chemicalReagentRelationEntity.getOldLotNum());
+						if(ObjectUtils.isEmpty(temps)){
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOldLotNums(chemicalReagentRelationEntity.getOldLotNum());
+						}else{
+							tempSet.addAll(Arrays.asList(temps));
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOldLotNums(StringUtils.collectionToCommaDelimitedString(tempSet));
 						}
 					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getApsLotNum())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getApsLotNums())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setApsLotNums(chemicalReagentRelationEntity.getApsLotNum());
-							tempSet.add("apsLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getApsLotNum());
-						}else if(tempSet.add("apsLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getApsLotNum())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setApsLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getApsLotNums()+","+chemicalReagentRelationEntity.getApsLotNum());
+					
+				}
+				if(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID())!=null){
+					chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getChemicalReagentRelations().add(chemicalReagentRelationEntity);
+					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getOldBioPatNum())){
+						tempSet.clear();
+						String[]temps=StringUtils.commaDelimitedListToStringArray(chemicalReagentRelationEntity.getOldBioPatNum());
+						if(ObjectUtils.isEmpty(temps)){
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOldBioPatNums(chemicalReagentRelationEntity.getOldBioPatNum());
+						}else{
+							tempSet.addAll(Arrays.asList(temps));
+							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOldBioPatNums(StringUtils.collectionToCommaDelimitedString(tempSet));
 						}
 					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getApsBom())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getApsBoms())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setApsBoms(chemicalReagentRelationEntity.getApsBom());
-							tempSet.add("apsBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getApsBom());
-						}else if(tempSet.add("apsBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getApsBom())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setApsBoms(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getApsBoms()+","+chemicalReagentRelationEntity.getApsBom());
-						}
-					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getOcLotNum())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getOcLotNums())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setTrayLotNums(chemicalReagentRelationEntity.getOcLotNum());
-							tempSet.add("ocLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getOcLotNum());
-						}else if(tempSet.add("ocLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getOcLotNum())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOcLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getOcLotNums()+","+chemicalReagentRelationEntity.getOcLotNum());
-						}
-					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getOcBom())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getOcBoms())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOcBoms(chemicalReagentRelationEntity.getOcBom());
-							tempSet.add("ocBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getOcBom());
-						}else if(tempSet.add("ocBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getOcBom())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setOcBoms(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getOcBoms()+","+chemicalReagentRelationEntity.getOcBom());
-						}
-						
-					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getCleanLotNum())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getCleanLotNums())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setCleanLotNums(chemicalReagentRelationEntity.getCleanLotNum());
-							tempSet.add("cleanLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getCleanLotNum());
-						}else if(tempSet.add("cleanLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getCleanLotNum())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setCleanLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getCleanLotNums()+","+chemicalReagentRelationEntity.getCleanLotNum());
-						}
-					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getCleanBom())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getCleanBoms())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setCleanBoms(chemicalReagentRelationEntity.getCleanBom());
-							tempSet.add("cleanBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getCleanBom());
-						}else if(tempSet.add("cleanBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getCleanBom())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setCleanBoms(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getCleanBoms()+","+chemicalReagentRelationEntity.getCleanBom());
-						}
-						
-					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getPolishLotNum())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getPolishLotNums())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setPolishLotNums(chemicalReagentRelationEntity.getPolishLotNum());
-							tempSet.add("polishLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getPolishLotNum());
-						}else if(tempSet.add("polishLotNum"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getPolishLotNum())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setPolishLotNums(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getPolishLotNums()+","+chemicalReagentRelationEntity.getPolishLotNum());
-						}
-						
-					}
-					if(!StringUtils.isEmpty(chemicalReagentRelationEntity.getPolishBom())){
-						if(StringUtils.isEmpty(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getPolishBoms())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setPolishBoms(chemicalReagentRelationEntity.getPolishBom());
-							tempSet.add("polishBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getPolishBom());
-						}else if(tempSet.add("polishBom"+chemicalReagentRelationEntity.getCrID()+chemicalReagentRelationEntity.getPolishBom())){
-							chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).setPolishBoms(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getPolishBoms()+","+chemicalReagentRelationEntity.getPolishBom());
-						}
-						
-					}
+					
 				}
 			}
 		}

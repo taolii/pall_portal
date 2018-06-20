@@ -50,7 +50,7 @@ $(document).ready(function() {
                 });
         },
         columns: [
-        	 {className: "ellipsis",title:"选择",width:"20px",data: null,render: function (data, type, row, meta) {
+        	 {className: "td_reagent_radio",title:"选择",width:"20px",data: null,render: function (data, type, row, meta) {
                      return '<input name="select" type="radio" class="ace"><span class="lbl"></span>';
              }},
 	        {className : "ellipsis",title:"rmid",data: "rmid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "5%"},
@@ -63,6 +63,10 @@ $(document).ready(function() {
 	$("#querySingleReagentMixtureButton").click(function(){
 		$singleReagentMixtureTable.draw();
 	});
+	$("#singleReagentMixtureTable").on("click",".td_reagent_radio",function(event) {
+        //点击单元格即点击复选框
+        !$(event.target).is(":radio") && $(":radio",this).trigger("click");
+    });
 	$("#singleReagentMixtureTable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#singleReagentMixtureModal").on("shown.bs.modal",function(){
 		$.each($.fn.dataTable.tables(true), function(){

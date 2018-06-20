@@ -122,13 +122,14 @@ public class BttonManageServiceImpl implements ButtonManageService{
 		return baseResponse;
 	}
 	@Override
-	public BaseResponse getRightButton(String operatorid) throws Exception {
+	public BaseResponse getRightButton(String operatorid,String menuid) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
-			List<ButtonEntity> buttonEntitys=buttonManageDao.getRightButton(operatorid);
+			List<ButtonEntity> buttonEntitys=buttonManageDao.getRightButton(operatorid,menuid);
 			if(buttonEntitys==null){
 				buttonEntitys=new ArrayList<ButtonEntity>();
 			}
+			baseResponse.setReturnObjects(buttonEntitys);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("buttonManage.service.getRightButton.service.exception"),e);

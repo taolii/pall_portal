@@ -51,4 +51,16 @@ public class StringTools {
 			sb.append(s);
 		return sb.toString();
 	}
+	public static boolean isNumeric(String str) {
+		if(str == null || "".equals(str)){
+			return false;
+		};
+		for (int i = 0; i < str.length(); i++) {  
+	        if (!Character.isDigit(str.charAt(i))) {  
+		     return false;  
+	        }  
+		}  
+		return true;  
+	}  
+
 }

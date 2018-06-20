@@ -21,7 +21,7 @@ public class PlatedFilmEntity {
 	/*
 	 * 镀膜日期
 	 */
-	@NotEmpty(message="{platedfilmManage.form.valid.OpticalCoatingEntity.coatingTime.NotEmpty}",groups={SAVE.class,ADD.class})
+	//@NotEmpty(message="{platedfilmManage.form.valid.OpticalCoatingEntity.coatingTime.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String pfTime;
 	/*
 	 * input LOT#

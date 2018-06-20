@@ -11,128 +11,48 @@ public class TwiceChemicalReagentRelationEntity {
 	/*
 	 * tray#
 	 */
-	private String trayLotNum;
+	private String trayNum;
+	/*
+	 * tray#
+	 */
+	private String oldLotNum;
 	/*
 	 * T#
 	 */
-	private String tLotNum;
+	private String oldTrayNum;
 	/*
-	 * 组装站位OUTPUT LOT#
+	 * PN#
 	 */
-	private String assemblyLotNum;
-	/*
-	 * 化学镀膜OUTPUT LOT#
-	 */
-	private String apsLotNum;
-	/*
-	 * 光学镀膜OUTPUT LOT#
-	 */
-	private String ocLotNum;
-	/*
-	 * 清洗OUTPUT LOT#
-	 */
-	private String cleanLotNum;
-	/*
-	 * 抛光OUTPUT LOT#
-	 */
-	private String polishLotNum;
-	/*
-	 * Assembly BOM
-	 */
-	private String assemblyBom;
-	/*
-	 * 化学镀膜BOM
-	 */
-	private String apsBom;
-	/*
-	 *  光学镀膜BOM
-	 */
-	private String ocBom;
-	/*
-	 * 清洗BOM
-	 */
-	private String cleanBom;
-	/*
-	 * 抛光BOM
-	 */
-	private String polishBom;
+	private String oldBioPatNum;
 	public Integer getCrID() {
 		return crID;
 	}
 	public void setCrID(Integer crID) {
 		this.crID = crID;
 	}
-	public String getTrayLotNum() {
-		return trayLotNum;
+	public String getTrayNum() {
+		return trayNum;
 	}
-	public void setTrayLotNum(String trayLotNum) {
-		this.trayLotNum = trayLotNum;
+	public void setTrayNum(String trayNum) {
+		this.trayNum = trayNum;
 	}
-	public String gettLotNum() {
-		return tLotNum;
+	public String getOldLotNum() {
+		return oldLotNum;
 	}
-	public void settLotNum(String tLotNum) {
-		this.tLotNum = tLotNum;
+	public void setOldLotNum(String oldLotNum) {
+		this.oldLotNum = oldLotNum;
 	}
-	public String getAssemblyLotNum() {
-		return assemblyLotNum;
+	public String getOldTrayNum() {
+		return oldTrayNum;
 	}
-	public void setAssemblyLotNum(String assemblyLotNum) {
-		this.assemblyLotNum = assemblyLotNum;
+	public void setOldTrayNum(String oldTrayNum) {
+		this.oldTrayNum = oldTrayNum;
 	}
-	public String getApsLotNum() {
-		return apsLotNum;
+	public String getOldBioPatNum() {
+		return oldBioPatNum;
 	}
-	public void setApsLotNum(String apsLotNum) {
-		this.apsLotNum = apsLotNum;
-	}
-	public String getOcLotNum() {
-		return ocLotNum;
-	}
-	public void setOcLotNum(String ocLotNum) {
-		this.ocLotNum = ocLotNum;
-	}
-	public String getCleanLotNum() {
-		return cleanLotNum;
-	}
-	public void setCleanLotNum(String cleanLotNum) {
-		this.cleanLotNum = cleanLotNum;
-	}
-	public String getPolishLotNum() {
-		return polishLotNum;
-	}
-	public void setPolishLotNum(String polishLotNum) {
-		this.polishLotNum = polishLotNum;
-	}
-	public String getAssemblyBom() {
-		return assemblyBom;
-	}
-	public void setAssemblyBom(String assemblyBom) {
-		this.assemblyBom = assemblyBom;
-	}
-	public String getApsBom() {
-		return apsBom;
-	}
-	public void setApsBom(String apsBom) {
-		this.apsBom = apsBom;
-	}
-	public String getOcBom() {
-		return ocBom;
-	}
-	public void setOcBom(String ocBom) {
-		this.ocBom = ocBom;
-	}
-	public String getCleanBom() {
-		return cleanBom;
-	}
-	public void setCleanBom(String cleanBom) {
-		this.cleanBom = cleanBom;
-	}
-	public String getPolishBom() {
-		return polishBom;
-	}
-	public void setPolishBom(String polishBom) {
-		this.polishBom = polishBom;
+	public void setOldBioPatNum(String oldBioPatNum) {
+		this.oldBioPatNum = oldBioPatNum;
 	}
 	
 }
