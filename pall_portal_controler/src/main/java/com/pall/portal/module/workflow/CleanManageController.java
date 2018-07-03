@@ -64,7 +64,7 @@ import com.pall.portal.service.excel.IExcelHandler;
 import com.pall.portal.service.menu.ButtonManageService;
 import com.pall.portal.service.workflow.CleanService;
 /*
- * 清洗管理控制器
+ * 清洁管理控制器
  */
 @Controller
 public class CleanManageController{
@@ -126,7 +126,7 @@ public class CleanManageController{
 		return model;
 	}
 	/*
-	 * 清洗管理
+	 * 清洁管理
 	 */
 	@RequestMapping(value="workflow/cleanManage", method= RequestMethod.GET)
     public  String cleanManage(Model model, HttpServletRequest request) {	
@@ -219,7 +219,7 @@ public class CleanManageController{
 		return sumDefectValue;
 	}
 	/*
-	 * 添加清洗信息
+	 * 添加清洁信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addClean", method= RequestMethod.GET)
@@ -249,7 +249,7 @@ public class CleanManageController{
 		return "workflow/clean/addClean";
     }
 	/*
-	 * 添加清洗信息
+	 * 添加清洁信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addClean", method= RequestMethod.POST)
@@ -367,7 +367,7 @@ public class CleanManageController{
 		}
     }
 	/*
-	 * 修改清洗信息
+	 * 修改清洁信息
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/modClean", method= RequestMethod.POST)
@@ -410,7 +410,7 @@ public class CleanManageController{
 		return JSON.toJSONString(baseResponse);
     }
 	/*
-	 * 删除清洗信息
+	 * 删除清洁信息
 	 */
 	@RequestMapping(value="workflow/delClean", method= RequestMethod.POST)
     public @ResponseBody String delClean(@RequestParam("cleanIDs") String cleanIDs,Model model,HttpServletRequest request) {
@@ -431,7 +431,7 @@ public class CleanManageController{
 		return JSON.toJSONString(baseResponse);
     }
 	/*
-	 * 导出清洗信息
+	 * 导出清洁信息
 	 */
 	@RequestMapping(value="workflow/exportClean", method= RequestMethod.POST)
     public @ResponseBody String exportClean(Model model,CleanQueryFormEntity  cleanQueryFormEntity, HttpServletRequest request) {

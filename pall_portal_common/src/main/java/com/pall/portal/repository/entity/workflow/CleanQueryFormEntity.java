@@ -1,7 +1,7 @@
 package com.pall.portal.repository.entity.workflow;
 
 /*
- * 清洗查询对象
+ * 清洁查询对象
  */
 public class CleanQueryFormEntity {
 	/*
@@ -18,15 +18,15 @@ public class CleanQueryFormEntity {
 	 */
 	private String cleanID;
 	/*
-	 * 清洗日期
+	 * 清洁日期
 	 */
 	private String cleanTime;
 	/*
-	 * 清洗日期
+	 * 清洁日期
 	 */
 	private String startCleanTime;
 	/*
-	 * 清洗日期
+	 * 清洁日期
 	 */
 	private String endCleanTime;
 	/*

@@ -27,7 +27,6 @@ var TABLE_CONSTANT = {
                         "sSortDescending": ": 以降序排列此列"
                     }
                 },
-                
                 stripeClasses: ["odd", "even"],//为奇偶行加上样式，兼容不支持CSS伪类的场合
                 order: [],          //取消默认排序查询,否则复选框一列会出现小箭头
                 processing: false,  //隐藏加载提示,自行处理

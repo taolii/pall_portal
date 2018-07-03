@@ -29,7 +29,7 @@ public class ChemicalReagentRelationEntity {
 	 */
 	private String ocLotNum;
 	/*
-	 * 清洗OUTPUT LOT#
+	 * 清洁OUTPUT LOT#
 	 */
 	private String cleanLotNum;
 	/*
@@ -49,7 +49,7 @@ public class ChemicalReagentRelationEntity {
 	 */
 	private String ocBom;
 	/*
-	 * 清洗BOM
+	 * 清洁BOM
 	 */
 	private String cleanBom;
 	/*

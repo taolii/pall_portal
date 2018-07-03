@@ -117,15 +117,15 @@ public class KeyConstants {
 	 */
 	public static final String POLISH_DOWNLOAD_SUBDIRECTORY="polish/download/subdirectory";
 	/*
-	 * 清洗流程配置表名
+	 * 清洁流程配置表名
 	 */
 	public static final String CLEAN_TABLENAME="clean/tablename";
 	/*
-	 * 清洗流程菜单id
+	 * 清洁流程菜单id
 	 */
 	public static final String CLEAN_MENUID="clean/menuid";
 	/*
-	 * 选择清洗配置表名
+	 * 选择清洁配置表名
 	 */
 	public static final String CLEANSEL_TABLENAME="cleanSel/tablename";
 	
@@ -139,16 +139,16 @@ public class KeyConstants {
 	public static final String CLEAN_DATACONFIG_TYPE_DEFECT="clean/dataconfig/type/defect";
 	
 	/*
-	 * 清洗表工作面的缺损信息在数据配置表中的类型
+	 * 清洁表工作面的缺损信息在数据配置表中的类型
 	 */
 	public static final String CLEAN_DATACONFIG_TYPE_DEFECT_WF="clean/dataconfig/type/workingface";
 	/*
-	 * 清洗表非工作面的缺损信息在数据配置表中的类型
+	 * 清洁表非工作面的缺损信息在数据配置表中的类型
 	 */
 	public static final String CLEAN_DATACONFIG_TYPE_DEFECT_NWF="clean/dataconfig/type/noworkingface";
 	
 	/*
-	 * 清洗管理页面excel下载子目录名称
+	 * 清洁管理页面excel下载子目录名称
 	 */
 	public static final String CLEAN_DOWNLOAD_SUBDIRECTORY="clean/download/subdirectory";
 	/*
@@ -354,5 +354,12 @@ public class KeyConstants {
 	 * 生物镀膜Coating Station在数据配置表中的类型
 	 */
 	public static final String TWICE_CHEMICALREAGENT_DATACONFIG_TYPE_COATINGSTATION="twicechemicalReagent/dataconfig/type/coatingStation";
-	
+	/*
+	 * 组装报废汇总配置表名
+	 */
+	public static final String REPORT_ASSEMBLY_SCRAP_SUMMARY_TABLENAME="report/assemblyScrapSummary/tablename";
+	/*
+	 * 产出数量追踪配置表名
+	 */
+	public static final String REPORT_PRODUCTTRACKING_TABLENAME="report/productTracking/tablename";
 }

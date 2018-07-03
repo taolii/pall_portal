@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /*
- * 清洗信息
+ * 清洁信息
  */
 public class AssemblyEntity {
 	/*

@@ -139,9 +139,9 @@ $(document).ready(function() {
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/workflow/addClean",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			showNotice('Success',"添加清洗信息成功",'success',1000*5);
+    			showNotice('Success',"添加清洁信息成功",'success',1000*5);
     		}else{
-    			showNotice('Error','<span style="padding-top:5px">添加清洗信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+    			showNotice('Error','<span style="padding-top:5px">添加清洁信息失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
     		$form.bootstrapValidator('disableSubmitButtons', false);
         },'json'); 

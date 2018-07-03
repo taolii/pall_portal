@@ -14,32 +14,32 @@ import com.pall.portal.repository.entity.workflow.CleanQueryFormEntity;
 @Repository("cleanDao")
 public interface CleanDao {
 	/*
-	 * 根据条件查询清洗记录信息
-	 * @param cleanQueryFormEntity 清洗信息查询对象
+	 * 根据条件查询清洁记录信息
+	 * @param cleanQueryFormEntity 清洁信息查询对象
 	 * @return 查询结果
 	 */
 	public List<CleanEntity> queryCleanList(CleanQueryFormEntity cleanQueryFormEntity);
 	/*
-	 * 根据条件查询清洗记录数
-	 * @param cleanQueryFormEntity 清洗信息查询对象
+	 * 根据条件查询清洁记录数
+	 * @param cleanQueryFormEntity 清洁信息查询对象
 	 * @return 查询结果
 	 */
 	public int queryCleanTotalRecords(CleanQueryFormEntity cleanQueryFormEntity);
 	/*
-	 * 添加清洗信息
-	 * @param cleanEntity 清洗信息
+	 * 添加清洁信息
+	 * @param cleanEntity 清洁信息
 	 * @return 添加结果
 	 */
 	public int addClean(CleanEntity cleanEntity) throws Exception;
 	/*
-	 * 修改清洗信息
-	 * @param cleanEntity 清洗信息
+	 * 修改清洁信息
+	 * @param cleanEntity 清洁信息
 	 * @return 修改结果
 	 */
 	public int modifyClean(CleanEntity cleanEntity) throws Exception;
 	/*
-	 * 删除清洗信息
-	 * @param cleanIDs 需要删除的清洗信息列表
+	 * 删除清洁信息
+	 * @param cleanIDs 需要删除的清洁信息列表
 	 * @return 删除结果
 	 */
 	public int delClean(@Param("cleanIDs") List<Integer> cleanIDs) throws Exception;

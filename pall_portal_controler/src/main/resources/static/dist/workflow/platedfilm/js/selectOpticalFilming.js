@@ -113,6 +113,10 @@ $(document).ready(function() {
 			$(radios).each(function(i) {
 				var item = _table.row($(this).closest('tr')).data();
 				var form=$('#updateForm').val();
+				if(item.outputLotNum.length<8){
+					showNotice('Error','OutputLot#字符长度少于8位,请修改后选择','error',1000*2);
+					return;
+				}
 	            $(form+' [name=inputLotNum]').val(item.outputLotNum);
 	            $(form+' [name=fixtureNum]').val(item.fixtureNum);
 	            $(form+' [name=inputQty]').val(item.outputQty);

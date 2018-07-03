@@ -7,7 +7,7 @@
  		 <if test="dataType !=0">  
 	       AND datatype= #{dataType}  
 	    </if>
-	     order by datatype,configname,ifnull(updatetime,now()) desc limit #{startPageNum},#{pageSize}
+	     order by datatype,ifnull(updatetime,now()) desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryDataConfigTotalRecords" resultType="int"
 	parameterType="com.pall.portal.repository.entity.dataconfig.DataConfigQueryFormEntity"> 

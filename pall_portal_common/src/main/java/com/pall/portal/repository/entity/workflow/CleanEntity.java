@@ -10,7 +10,7 @@ import com.pall.portal.repository.entity.workflow.PolishEntity.ADD;
 import com.pall.portal.repository.entity.workflow.PolishEntity.SAVE;
 
 /*
- * 清洗信息
+ * 清洁信息
  */
 public class CleanEntity {
 	/*
@@ -19,7 +19,7 @@ public class CleanEntity {
 	@NotNull(message="{cleanmanage.form.valid.CleanEntity.cleanID.NotEmpty}",groups={SAVE.class})
 	private Integer cleanID;
 	/*
-	 * 清洗日期
+	 * 清洁日期
 	 */
 	@NotEmpty(message="{cleanmanage.form.valid.CleanEntity.cleanTime.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String cleanTime;

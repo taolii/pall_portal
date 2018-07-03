@@ -61,7 +61,7 @@ $(document).ready(function() {
                     success: function(result) {
                     	 //异常判断与处理
                         if (result.resultCode!=0) {
-                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>清洗信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
+                        	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>清洁信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>');
                         	$wrapper.spinModal(false);
                         	return ;
                         }
@@ -80,7 +80,7 @@ $(document).ready(function() {
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     	var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
-                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>清洗信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
+                    	$(".error").html('<h3><span class="red"><i class="glyphicon glyphicon-remove"></i>清洁信息查询失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+error+'</span>');
                         $wrapper.spinModal(false);
                     }
                 });
@@ -229,10 +229,10 @@ $(document).ready(function() {
 	                    	cleanIDs=cleanIDs.substr(cleanIDs,cleanIDs.length-1);
 	                    	$.post(contextPath+"/workflow/delClean",{"cleanIDs":cleanIDs}, function(result) {
 	                    		if(result.resultCode==0){
-	                    			showNotice('Success',"清洗信息删除成功",'success',1000*5);
+	                    			showNotice('Success',"清洁信息删除成功",'success',1000*5);
 	                    			$("#btn_refresh").click();
 	                    		}else{
-	                    			showNotice('Error','<span style="padding-top:5px">清洗信息删除失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+	                    			showNotice('Error','<span style="padding-top:5px">清洁信息删除失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
 	                    		}
 	                        },'json'); 
 	                    }

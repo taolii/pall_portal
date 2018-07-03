@@ -57,7 +57,7 @@ public class ChemicalReagentEntity {
 	 */
 	private String ocLotNums;
 	/*
-	 * 清洗OUTPUT LOT#
+	 * 清洁OUTPUT LOT#
 	 */
 	private String cleanLotNums;
 	/*
@@ -77,7 +77,7 @@ public class ChemicalReagentEntity {
 	 */
 	private String ocBoms;
 	/*
-	 * 清洗BOM
+	 * 清洁BOM
 	 */
 	private String cleanBoms;
 	/*
