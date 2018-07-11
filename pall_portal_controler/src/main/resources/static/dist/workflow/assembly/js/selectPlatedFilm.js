@@ -107,7 +107,7 @@ $(document).ready(function() {
 		    fuzzySearch : true,
 		    platedFilmShow: function() {
 		    	$platedFilmModal=$("#selectPlatedFilmModal");
-		    	$platedFilmModal.draggable({ 
+		    	$platedFilmModal.draggable({ handle:".table-header",
 		    		scroll: true, scrollSensitivity: 100,
 		    		cursor: "move"});
 		    	$platedFilmModal.css("overflow", "hidden");

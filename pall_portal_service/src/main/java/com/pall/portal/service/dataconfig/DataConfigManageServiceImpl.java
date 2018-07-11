@@ -74,6 +74,16 @@ public class DataConfigManageServiceImpl implements DataConfigManageService{
 	public BaseResponse addDataConfig(DataConfigEntity dataConfigEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			//查询configName是否存在
+			DataConfigQueryFormEntity dataConfigQueryFormEntity=new DataConfigQueryFormEntity();
+			dataConfigQueryFormEntity.setDataType(dataConfigEntity.getDataType());
+			dataConfigQueryFormEntity.setConfigName(dataConfigEntity.getConfigName());
+			int totalCount=dataConfigManageDao.queryDataConfigTotalRecords(dataConfigQueryFormEntity);
+			if(totalCount>=1){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(dataConfigEntity.getConfigName()+resourceUtils.getMessage("dataconfigmanage.configName.exists"));
+				return baseResponse;
+			}
 			int resultNum=dataConfigManageDao.addDataConfig(dataConfigEntity);
 			if(resultNum>0){
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
@@ -92,6 +102,7 @@ public class DataConfigManageServiceImpl implements DataConfigManageService{
 	public BaseResponse modDataConfig(DataConfigEntity dataConfigEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			
 			int resultNum=dataConfigManageDao.modDataConfig(dataConfigEntity);
 			if(resultNum>0){
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);

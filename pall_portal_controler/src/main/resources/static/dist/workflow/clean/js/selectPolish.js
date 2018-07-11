@@ -114,7 +114,7 @@ $(document).ready(function() {
 			    fuzzySearch : true,
 			    polishShow: function() {
 			    	$polishModal=$("#polishModal");
-			    	$polishModal.draggable({ 
+			    	$polishModal.draggable({handle:".table-header", 
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			    	$polishModal.css("overflow", "hidden");

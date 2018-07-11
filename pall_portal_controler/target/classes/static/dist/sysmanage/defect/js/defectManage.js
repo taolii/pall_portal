@@ -145,14 +145,14 @@ $(document).ready(function() {
 			    },
 			    addItemShow: function() {
 			    	$addDefectModal=$("#addDefectModal");
-			    	$addDefectModal.draggable({ 
+			    	$addDefectModal.draggable({handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			    	$addDefectModal.css("overflow", "hidden");
 			    	$addDefectModal.css("overflow-y", "auto");
 			    	$addDefectModal.modal("show");
 			    },
-			    editItemShow: function() {
+			    editItemShow: function() {handle:".table-header",
 			        $modDefectModal=$("#modDefectModal");
 			    	$modDefectModal.draggable({ 
 			    		scroll: true, scrollSensitivity: 100,

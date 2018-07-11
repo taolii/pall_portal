@@ -13,6 +13,10 @@ public class DataConfigQueryFormEntity {
 	 */
 	private int pageSize;
 	/*
+	 * 配置名称
+	 */
+	private String configName;
+	/*
 	 * 数据类型 1 抛光缺损信息
 	 */
 	private int dataType;
@@ -40,6 +44,12 @@ public class DataConfigQueryFormEntity {
 	}
 	public void setDraw(int draw) {
 		this.draw = draw;
+	}
+	public String getConfigName() {
+		return configName;
+	}
+	public void setConfigName(String configName) {
+		this.configName = configName;
 	}
 	
 }

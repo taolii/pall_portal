@@ -5,7 +5,7 @@ $(document).ready(function() {
 	    fuzzySearch : true,
 	    opticalFilmingShow: function() {
 	    	$opticalFilmingModal=$("#opticalFilmingModal");
-	    	$opticalFilmingModal.draggable({ 
+	    	$opticalFilmingModal.draggable({handle:".table-header", 
 	    		scroll: true, scrollSensitivity: 100,
 	    		cursor: "move"});
 	    	$opticalFilmingModal.css("overflow", "hidden");

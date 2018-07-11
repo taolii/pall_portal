@@ -21,7 +21,7 @@ $(document).ready(function() {
 	    $assemblyPanel.find("[name=oldBioPatNum]").attr('name','oldBioPatNum'+len);
 	});
 	$('#addAuxiliaryReagent1').on('click', function() {
-		$singleReagentMixtureModal.draggable({ 
+		$singleReagentMixtureModal.draggable({handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -31,7 +31,7 @@ $(document).ready(function() {
 		$("#querySingleReagentMixtureButton").click();
 	});
 	$('#addAuxiliaryReagent2').on('click', function() {
-		$singleReagentMixtureModal.draggable({ 
+		$singleReagentMixtureModal.draggable({handle:".table-header", 
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -41,7 +41,7 @@ $(document).ready(function() {
 		$("#querySingleReagentMixtureButton").click();
 	});
 	$('#addAuxiliaryReagent3').on('click', function() {
-		$singleReagentMixtureModal.draggable({ 
+		$singleReagentMixtureModal.draggable({handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -51,7 +51,7 @@ $(document).ready(function() {
 		$("#querySingleReagentMixtureButton").click();
 	});
 	$addChemicalReagentButton.on('click', function() {
-		$multipleReagentMixtureModal.draggable({ 
+		$multipleReagentMixtureModal.draggable({handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$multipleReagentMixtureModal.css("overflow", "hidden");

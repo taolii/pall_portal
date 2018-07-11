@@ -113,7 +113,7 @@ $(document).ready(function() {
 	    fuzzySearch : true,
 	    cleanShow:function() {
 	    	$cleanModal=$("#cleanModal");
-	    	$cleanModal.draggable({ 
+	    	$cleanModal.draggable({handle:".table-header",
 	    		scroll: true, scrollSensitivity: 100,
 	    		cursor: "move"});
 	    	$cleanModal.css("overflow", "hidden");

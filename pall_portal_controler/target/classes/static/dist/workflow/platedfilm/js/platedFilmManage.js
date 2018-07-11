@@ -104,10 +104,10 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     }); 
-	$('#queryPfTime').datetimepicker({  
+	/*$('#queryPfTime').datetimepicker({  
         format: 'YYYY-MM-DD',
         locale: moment.locale('zh-cn')  
-    }); 
+    }); */
 	$('#queryStartCoatingTime').val(currentDate(30));
 	$('#queryEndCoatingTime').val(currentDate(0));
 	var columns_setting=[

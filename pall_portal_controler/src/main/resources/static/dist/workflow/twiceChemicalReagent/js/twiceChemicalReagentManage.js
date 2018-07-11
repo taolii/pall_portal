@@ -29,19 +29,27 @@ $(document).ready(function() {
 			},width:"60px","visible":v_visible }) ;  
 		}else if(tableField.fieldName=='trayNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' +  text + '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else if(tableField.fieldName=='oldLotNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' +  text+ '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else if(tableField.fieldName=='oldTrayNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' + text + '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else if(tableField.fieldName=='oldBioPatNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' + text + '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else{
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
@@ -243,7 +251,7 @@ $(document).ready(function() {
 			    showReagentMixtureDetail: function(item) {
 			    	$("#queryModalForm [name=crID]").val(item.crID);
 			    	$reagentMixtureDetailModal=$("#reagentMixtureDetailModal");
-			        $reagentMixtureDetailModal.draggable({ 
+			        $reagentMixtureDetailModal.draggable({handle:".table-header", 
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			        $reagentMixtureDetailModal.css("overflow", "hidden");

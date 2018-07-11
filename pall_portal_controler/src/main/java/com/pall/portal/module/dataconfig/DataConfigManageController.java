@@ -139,7 +139,9 @@ public class DataConfigManageController{
 					dataConfigEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
 				baseResponse=dataConfigManageService.addDataConfig(dataConfigEntity);
-				dataConfigReload();
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					dataConfigReload();
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("dataconfigmanage.addDataconfig.exception"),e);
@@ -164,7 +166,9 @@ public class DataConfigManageController{
 					dataConfigEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
 				baseResponse=dataConfigManageService.modDataConfig(dataConfigEntity);
-				dataConfigReload();
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					dataConfigReload();
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("dataconfigmanage.modDataconfig.exception"),e);

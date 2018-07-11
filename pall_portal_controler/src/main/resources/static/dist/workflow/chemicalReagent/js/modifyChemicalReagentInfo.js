@@ -30,7 +30,7 @@ $(document).ready(function() {
 	$singleReagentMixtureModal=$("#singleReagentMixtureModal"),
 	$multipleReagentMixtureModal=$("#multipleReagentMixtureModal"),
 	$addAssemblyOutputLotNumButton.on('click', function() {
-		$assemblyManageModal.draggable({ 
+		$assemblyManageModal.draggable({ handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
     	$assemblyManageModal.css("overflow", "hidden");
@@ -39,7 +39,7 @@ $(document).ready(function() {
     	$("#queryAssemblyModalButton").click();
 	});
 	$('#addAuxiliaryReagent1').on('click', function() {
-		$singleReagentMixtureModal.draggable({ 
+		$singleReagentMixtureModal.draggable({ handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -49,7 +49,7 @@ $(document).ready(function() {
 		$("#querySingleReagentMixtureButton").click();
 	});
 	$('#addAuxiliaryReagent2').on('click', function() {
-		$singleReagentMixtureModal.draggable({ 
+		$singleReagentMixtureModal.draggable({ handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -58,8 +58,8 @@ $(document).ready(function() {
 		$("#addAuxiliaryReagent").val("#addAuxiliaryReagent2");
 		$("#querySingleReagentMixtureButton").click();
 	});
-	$('#addAuxiliaryReagent3').on('click', function() {
-		$singleReagentMixtureModal.draggable({ 
+	$('#addAuxiliaryReagent3').on('click', function() {handle:".table-header",
+		$singleReagentMixtureModal.draggable({
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -69,7 +69,7 @@ $(document).ready(function() {
 		$("#querySingleReagentMixtureButton").click();
 	});
 	$addChemicalReagentButton.on('click', function() {
-		$multipleReagentMixtureModal.draggable({ 
+		$multipleReagentMixtureModal.draggable(handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$multipleReagentMixtureModal.css("overflow", "hidden");

@@ -7,6 +7,9 @@
  		 <if test="dataType !=0">  
 	       AND datatype= #{dataType}  
 	    </if>
+	    <if test="configName != null and configName != '' ">  
+	       AND configname = #{configName}  
+	    </if>
 	     order by datatype,ifnull(updatetime,now()) desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryDataConfigTotalRecords" resultType="int"
@@ -14,6 +17,9 @@
  		select count(1) from t_ums_data_config where 1=1
  		<if test="dataType !=0">  
 	       AND datatype= #{dataType}
+	    </if>
+	    <if test="configName != null and configName != '' ">  
+	       AND configname = #{configName}  
 	    </if>
  	</select>
  	<update id="modDataConfig" parameterType="com.pall.portal.repository.entity.dataconfig.DataConfigEntity">

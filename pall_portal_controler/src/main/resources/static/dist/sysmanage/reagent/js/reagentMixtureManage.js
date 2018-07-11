@@ -8,7 +8,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$('#queryStartConfigTime').val(currentDate(30));
-	$('#queryEndConfigTime').val(currentDate(0));
+	$('#queryEndConfigTime').val(currentDate(-1));
 	var ids={"contextPath":"#contextPath","datatable":"#datatable","tableContainer":"#div-table-container","queryForm":"#queryForm"}
 	var contextPath=$(ids.contextPath).val();
 	var columns_setting=[
@@ -154,7 +154,7 @@ $(document).ready(function() {
 			    showReagentMixtureDetail: function(item) {
 			    	$("#queryModalForm [name=rmid]").val(item.rmid);
 			    	$reagentMixtureDetailModal=$("#reagentMixtureDetailModal");
-			        $reagentMixtureDetailModal.draggable({ 
+			        $reagentMixtureDetailModal.draggable({ handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			        $reagentMixtureDetailModal.css("overflow", "hidden");

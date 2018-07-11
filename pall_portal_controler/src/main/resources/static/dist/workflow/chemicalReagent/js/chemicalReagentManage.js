@@ -29,23 +29,33 @@ $(document).ready(function() {
 			},width:"60px","visible":v_visible }) ;  
 		}else if(tableField.fieldName=='trayLotNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '" style="width:100px;height:100px;overflow: hidden;text-overflow: ellipsis;">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' + text+ '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else if(tableField.fieldName=='tLotNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '" style="width:100px;height:100px;overflow: hidden;text-overflow: ellipsis;">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' + text + '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else if(tableField.fieldName=='apsLotNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '" style="width:100px;height:100px;overflow: hidden;text-overflow: ellipsis;">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' +  text+ '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else if(tableField.fieldName=='ocLotNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '" style="width:100px;height:100px;overflow: hidden;text-overflow: ellipsis;">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' +  text + '</span>';
 			},width:"60px","visible":v_visible }) ;
 		}else if(tableField.fieldName=='cleanLotNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				return '<span title="' + data + '" style="width:100px;height:100px;overflow: hidden;text-overflow: ellipsis;">' + data + '</span>';
+				var text=data.substr(0, 20);
+				if(data.length>20) text=text+"..";
+				return '<span title="' + data + '">' + text + '</span>';
 			},width:"100px","visible":v_visible }) ;
 		}else{
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  

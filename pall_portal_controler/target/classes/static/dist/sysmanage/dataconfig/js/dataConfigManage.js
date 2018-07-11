@@ -142,7 +142,7 @@ $(document).ready(function() {
 			    },
 			    addItemShow: function() {
 			    	$addDefectModal=$("#addDefectModal");
-			    	$addDefectModal.draggable({ 
+			    	$addDefectModal.draggable({handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			    	$addDefectModal.css("overflow", "hidden");
@@ -151,7 +151,7 @@ $(document).ready(function() {
 			    },
 			    editItemShow: function() {
 			        $modDefectModal=$("#modDefectModal");
-			    	$modDefectModal.draggable({ 
+			    	$modDefectModal.draggable({handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			    	$modDefectModal.css("overflow", "hidden");

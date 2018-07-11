@@ -138,7 +138,7 @@ $(document).ready(function() {
 			    },
 			    addItemShow: function() {
 			    	$addModal=$("#addModal");
-			    	$addModal.draggable({ 
+			    	$addModal.draggable({ handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			    	$addModal.css("overflow", "hidden");
@@ -147,7 +147,7 @@ $(document).ready(function() {
 			    },
 			    editItemShow: function() {
 			        $modModal=$("#modModal");
-			        $modModal.draggable({ 
+			        $modModal.draggable({ handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			        $modModal.css("overflow", "hidden");

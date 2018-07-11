@@ -1,15 +1,15 @@
 $(document).ready(function() {
 	var ids={"contextPath":"#contextPath","dataForm":"#addDataForm","backButton":"#addBackButton"};
 	$('#addFormConfigTime').datetimepicker({  
-        format: 'YYYY-MM-DD',  
+        format: 'YYYY-MM-DD HH:mm:ss',  
         locale: moment.locale('zh-cn')  
     });
 	$('#addFormTemperatureUpEndtime').datetimepicker({  
-        format: 'YYYY-MM-DD',  
+        format: 'YYYY-MM-DD HH:mm:ss',  
         locale: moment.locale('zh-cn')  
     });
 	$('#addFormTemperatureUpStarttime').datetimepicker({  
-        format: 'YYYY-MM-DD',  
+        format: 'YYYY-MM-DD HH:mm:ss',  
         locale: moment.locale('zh-cn')  
     });
 	$('#addSubReagentButton').click(function(){

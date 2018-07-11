@@ -167,7 +167,7 @@ $(document).ready(function() {
 				    var buttonTreeMenu = new ButtonTreeMenu(contextPath,ids);
 				    buttonTreeMenu.getAjaxTree();
 			        $addRightModal=$("#addRightModal");
-			        $addRightModal.draggable({ 
+			        $addRightModal.draggable({ handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			        $addRightModal.css("overflow", "hidden");
