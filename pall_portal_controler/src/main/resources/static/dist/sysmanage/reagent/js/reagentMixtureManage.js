@@ -21,7 +21,7 @@ $(document).ready(function() {
 		if(tableField.invisible==1){
 			v_visible=false;
 		}
-		if(tableField.fieldName=='reagentMixture'){
+		if(tableField.fieldName=='subReagent'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:null,render : function(data,type, row, meta) {
 				return "<div id='showDetail' class='action-buttons'><a  href='javascript:void(0)' class='green bigger-140 show-details-btn' title='Show Details'>"+
 						"<i class='ace-icon fa fa-angle-double-down'></i>"+

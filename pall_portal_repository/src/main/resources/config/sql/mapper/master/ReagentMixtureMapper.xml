@@ -72,7 +72,7 @@ f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_
     </insert>
     <select id="queryReagentSnsMixtureList" resultType="com.pall.portal.repository.entity.reagentmixture.ReagentMixtureEntitySns"
 	parameterType="com.pall.portal.repository.entity.reagentmixture.ReagentMixtureSnsQueryFormEntity"> 
- 		select f.srmid,f.rmid,f.reagents_name reagentsName,f.reagents_sn  reagentsSn,f.reagents_field_name reagentsFieldName,g.main_reagent mainReagent from t_ums_reagentmixture_sns f,t_ums_reagentmixture g  where f.rmid=g.rmid
+ 		select f.srmid,f.rmid,f.reagents_name reagentsName,f.reagents_sn  reagentsSn,f.reagents_field_name reagentsFieldName,g.main_reagent mainReagent from t_ums_reagentmixture g left join t_ums_reagentmixture_sns f  on f.rmid=g.rmid where f.rmid is not null
 	    <if test="rmid != null and rmid != '' ">  
 	       AND f.rmid = #{rmid}  
 	    </if>
@@ -85,7 +85,7 @@ f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_
 	     limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryReagentMixtureSnsTotalRecords" resultType="int" parameterType="com.pall.portal.repository.entity.reagentmixture.ReagentMixtureSnsQueryFormEntity"> 
- 		select count(1) from t_ums_reagentmixture_sns f,t_ums_reagentmixture g  where f.rmid=g.rmid
+ 		select count(1) from  t_ums_reagentmixture g  left join  t_ums_reagentmixture_sns f on f.rmid=g.rmid where f.rmid is not null
 		 <if test="rmid != null and rmid != '' ">  
 	       AND f.rmid = #{rmid}  
 	    </if>

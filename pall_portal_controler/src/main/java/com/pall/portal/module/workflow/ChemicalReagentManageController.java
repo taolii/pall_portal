@@ -335,12 +335,12 @@ public class ChemicalReagentManageController{
 	private ChemicalReagentEntity  getFieldEntitys(HttpServletRequest request,ChemicalReagentEntity chemicalReagentEntity,List<DataConfigEntity> dataConfigEntitys){
 		//不良率计算
 		if(chemicalReagentEntity.getInputQty()!=null && chemicalReagentEntity.getGoodsQty()!=null && chemicalReagentEntity.getInputQty()>0){
-			double yield=new BigDecimal((float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			chemicalReagentEntity.setActualYield(String.valueOf(yield*100));
+			double yield=new BigDecimal(((float)chemicalReagentEntity.getGoodsQty()/chemicalReagentEntity.getInputQty())*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setActualYield(String.valueOf(yield));
 		}
 		if(!StringUtils.isEmpty(chemicalReagentEntity.getTheoryYield()) && !"0".equals(chemicalReagentEntity.getTheoryYield())){
-			double yield=new BigDecimal(Double.valueOf(chemicalReagentEntity.getActualYield())/Double.valueOf(chemicalReagentEntity.getTheoryYield())).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			chemicalReagentEntity.setTheoryActualYield(String.valueOf(yield*100));
+			double yield=new BigDecimal((Float.parseFloat(chemicalReagentEntity.getActualYield())/Float.parseFloat(chemicalReagentEntity.getTheoryYield()))*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			chemicalReagentEntity.setTheoryActualYield(String.valueOf(yield));
 		}
 		if(chemicalReagentEntity.getCompoundReagents()==null){
 			chemicalReagentEntity.setCompoundReagents(new ArrayList<ChemicalCompoundReagentsEntity>());

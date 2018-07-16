@@ -27,36 +27,20 @@ $(document).ready(function() {
 				"<span class='sr-only'>Details</span>"
 				"</a></div>";
 			},width:"60px","visible":v_visible }) ;  
-		}else if(tableField.fieldName=='trayLotNums'){
+		}else if(tableField.fieldName=='trayLotNums' ||tableField.fieldName=='tLotNums'||tableField.fieldName=='apsLotNums'||tableField.fieldName=='ocLotNums'
+	      || tableField.fieldName=='cleanLotNums'|| tableField.fieldName=='polishLotNums'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				var text=data.substr(0, 20);
+				var text=data.substr(0, 10);
 				if(data.length>20) text=text+"..";
 				return '<span title="' + data + '">' + text+ '</span>';
 			},width:"60px","visible":v_visible }) ;
-		}else if(tableField.fieldName=='tLotNums'){
+		}else if(tableField.fieldName=='assemblyBoms' || tableField.fieldName=='remark' || tableField.fieldName=='bioBom' || tableField.fieldName=='polishBoms'
+			|| tableField.fieldName=='cleanBoms' || tableField.fieldName=='ocBoms' || tableField.fieldName=='apsBoms'){
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				var text=data.substr(0, 20);
+				var text=data.substr(0, 10);
 				if(data.length>20) text=text+"..";
 				return '<span title="' + data + '">' + text + '</span>';
 			},width:"60px","visible":v_visible }) ;
-		}else if(tableField.fieldName=='apsLotNums'){
-			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				var text=data.substr(0, 20);
-				if(data.length>20) text=text+"..";
-				return '<span title="' + data + '">' +  text+ '</span>';
-			},width:"60px","visible":v_visible }) ;
-		}else if(tableField.fieldName=='ocLotNums'){
-			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				var text=data.substr(0, 20);
-				if(data.length>20) text=text+"..";
-				return '<span title="' + data + '">' +  text + '</span>';
-			},width:"60px","visible":v_visible }) ;
-		}else if(tableField.fieldName=='cleanLotNums'){
-			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : function(data,type, row, meta) {
-				var text=data.substr(0, 20);
-				if(data.length>20) text=text+"..";
-				return '<span title="' + data + '">' + text + '</span>';
-			},width:"100px","visible":v_visible }) ;
 		}else{
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
 		}
@@ -69,7 +53,7 @@ $(document).ready(function() {
             "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
-          }, width : "100px"}
+          }, width : "140px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
 	var $wrapper = $('#div-table-container');

@@ -42,8 +42,6 @@ import com.pall.portal.repository.entity.reagentmixture.ReagentMixtureEntity;
 import com.pall.portal.repository.entity.reagentmixture.ReagentMixtureEntitySns;
 import com.pall.portal.repository.entity.reagentmixture.ReagentMixtureQueryFormEntity;
 import com.pall.portal.repository.entity.reagentmixture.ReagentMixtureSnsQueryFormEntity;
-import com.pall.portal.repository.entity.workflow.CleanEntity;
-import com.pall.portal.repository.entity.workflow.CleanQueryFormEntity;
 import com.pall.portal.service.reagentmixture.ReagentMixtureManageService;
 /*
  * 试剂混合管理控制器
@@ -130,7 +128,7 @@ public class ReagentMixtureManageController{
 			baseResponse.setResultMsg(resourceUtils.getMessage("reagentMixtureManage.controler.reagentMixtureManage.exception"));
 			
 		}
-	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue);
+	   return JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
     }
 	private ReagentMixtureEntity  getFieldEntitys(HttpServletRequest request,ReagentMixtureEntity reagentMixtureEntity,List<DataConfigEntity> dataConfigEntitys){
 		String reagentMixtureTableName=UmsConfigInitiator.getDataConfig(KeyConstants.REAGENTMIXTURE_TABLENAME);

@@ -235,7 +235,7 @@
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
-										 <input type='text' name="goodsQty" class="form-control" value="0" th:value="${chemicalReagentEntity.goodsQty}"/>   
+										 <input type='text' name="goodsQty" class="form-control"  th:value="${chemicalReagentEntity.goodsQty}"/>   
 									</div>
 								</div>
 							</div>
@@ -249,7 +249,7 @@
 										<input type='text' name="inputQty" class="form-control" th:value="${chemicalReagentEntity.inputQty}"/>    
 									</div>
 								</div>
-								<div class="rowGroup">
+								<!-- div class="rowGroup">
 									<span class="col-md-2  control-label">
 										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.scrapQty}" th:remove="tag"></label> 
 										
@@ -257,7 +257,7 @@
 									<div class="col-md-4">
 										<input type='text' name="scrapQty" class="form-control" th:value="${chemicalReagentEntity.scrapQty}"/>    
 									</div>
-								</div>
+								</div-->
 							</div>
 							<div class="form-group">
 								<div class="rowGroup">
@@ -266,7 +266,7 @@
 										
 									</span>
 									<div class="col-md-4">
-										<input type='text' name="toPqcQty" class="form-control" value="0" th:value="${chemicalReagentEntity.toPqcQty}"/>    
+										<input type='text' name="toPqcQty" class="form-control"  th:value="${chemicalReagentEntity.toPqcQty}"/>    
 									</div>
 								</div>
 								<div class="rowGroup">
@@ -275,7 +275,7 @@
 										
 									</span>
 									<div class="col-md-4">
-										<input type='text' name="heavySmokeQty" class="form-control" value="0" th:value="${chemicalReagentEntity.heavySmokeQty}"/>    
+										<input type='text' name="heavySmokeQty" class="form-control"  th:value="${chemicalReagentEntity.heavySmokeQty}"/>    
 									</div>
 								</div>
 							</div>
@@ -286,7 +286,7 @@
 										
 									</span>
 									<div class="col-md-4">
-										<input type='text' name="receiveQty" class="form-control" value="0" th:value="${chemicalReagentEntity.receiveQty}"/>    
+										<input type='text' name="receiveQty" class="form-control"  th:value="${chemicalReagentEntity.receiveQty}"/>    
 									</div>
 								</div>
 								<div class="rowGroup">
@@ -294,7 +294,26 @@
 										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.toOtherQty}" th:remove="tag"></label> 
 									</span>
 									<div class="col-md-4">
-										<input type='text' name="toOtherQty" class="form-control" value="0" th:value="${chemicalReagentEntity.toOtherQty}"/>    
+										<input type='text' name="toOtherQty" class="form-control"  th:value="${chemicalReagentEntity.toOtherQty}"/>    
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.scrapQty}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="scrapQty" class="form-control"  th:value="${chemicalReagentEntity.scrapQty}"/>    
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.toOtherQty}" th:remove="tag"></label> 
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="remark" class="form-control"  th:value="${chemicalReagentEntity.remark}"/>    
 									</div>
 								</div>
 							</div>

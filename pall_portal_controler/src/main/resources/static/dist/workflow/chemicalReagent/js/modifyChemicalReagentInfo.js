@@ -30,7 +30,7 @@ $(document).ready(function() {
 	$singleReagentMixtureModal=$("#singleReagentMixtureModal"),
 	$multipleReagentMixtureModal=$("#multipleReagentMixtureModal"),
 	$addAssemblyOutputLotNumButton.on('click', function() {
-		$assemblyManageModal.draggable({ handle:".table-header",
+		$assemblyManageModal.draggable({ 
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
     	$assemblyManageModal.css("overflow", "hidden");
@@ -39,7 +39,7 @@ $(document).ready(function() {
     	$("#queryAssemblyModalButton").click();
 	});
 	$('#addAuxiliaryReagent1').on('click', function() {
-		$singleReagentMixtureModal.draggable({ handle:".table-header",
+		$singleReagentMixtureModal.draggable({ 
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -49,7 +49,7 @@ $(document).ready(function() {
 		$("#querySingleReagentMixtureButton").click();
 	});
 	$('#addAuxiliaryReagent2').on('click', function() {
-		$singleReagentMixtureModal.draggable({ handle:".table-header",
+		$singleReagentMixtureModal.draggable({ 
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -58,8 +58,8 @@ $(document).ready(function() {
 		$("#addAuxiliaryReagent").val("#addAuxiliaryReagent2");
 		$("#querySingleReagentMixtureButton").click();
 	});
-	$('#addAuxiliaryReagent3').on('click', function() {handle:".table-header",
-		$singleReagentMixtureModal.draggable({
+	$('#addAuxiliaryReagent3').on('click', function() {
+		$singleReagentMixtureModal.draggable({ 
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$singleReagentMixtureModal.css("overflow", "hidden");
@@ -69,7 +69,7 @@ $(document).ready(function() {
 		$("#querySingleReagentMixtureButton").click();
 	});
 	$addChemicalReagentButton.on('click', function() {
-		$multipleReagentMixtureModal.draggable(handle:".table-header",
+		$multipleReagentMixtureModal.draggable({ 
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
 		$multipleReagentMixtureModal.css("overflow", "hidden");
@@ -114,7 +114,7 @@ $(document).ready(function() {
             toOtherQty: {
                 validators: {
                     digits: {
-	                    message: '其他QTY必须为数字'
+	                    message: '留样QTY必须为数字'
 	                }
                 }
             },
@@ -132,6 +132,13 @@ $(document).ready(function() {
 	                }
                 }
             },
+            scrapQty: {
+                validators: {
+                    digits: {
+	                    message: '报废QTY必须为数字'
+	                }
+                }
+            },
             partNum: {
                 validators: {
                     notEmpty: {
@@ -145,13 +152,13 @@ $(document).ready(function() {
     	var $form = $(e.target);
     	var assemblyCount=$("#modDataForm [id=addAssemblyPanel]").find(":checkbox").length;
 		$("#modDataForm [name=inputQty]").val(assemblyCount*96);
-		var count=Number($("#modDataForm [name=toPqcQty]").val())+Number($("#modDataForm [name=heavySmokeQty]").val())+Number($("#modDataForm [name=receiveQty]").val())+Number($("#modDataForm [name=toOtherQty]").val());
-		$("#modDataForm [name=scrapQty]").val(count);
+		//var count=Number($("#modDataForm [name=toPqcQty]").val())+Number($("#modDataForm [name=heavySmokeQty]").val())+Number($("#modDataForm [name=receiveQty]").val())+Number($("#modDataForm [name=toOtherQty]").val());
+		//$("#modDataForm [name=scrapQty]").val(count);
 		if($("#modDataForm [name=inputQty]").val()==0){
 			$("#modDataForm [name=theoryYield]").val(0);
 		}else{
 			var theoryYield=(Number($("#modDataForm [name=inputQty]").val())-Number($("#modDataForm [name=scrapQty]").val()))/Number($("#modDataForm [name=inputQty]").val())*100;
-			$("#modDataForm [name=theoryYield]").val(theoryYield);
+			$("#modDataForm [name=theoryYield]").val(new Number(theoryYield).toFixed(2));
 		}
     	var bv = $form.data('bootstrapValidator');
     	var operator=$("#operator").val();

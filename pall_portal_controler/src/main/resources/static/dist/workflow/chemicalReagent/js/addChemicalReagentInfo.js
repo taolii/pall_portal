@@ -94,7 +94,7 @@ $(document).ready(function() {
             toOtherQty: {
                 validators: {
                     digits: {
-	                    message: '其他QTY必须为数字'
+	                    message: '留样QTY必须为数字'
 	                }
                 }
             },
@@ -112,6 +112,13 @@ $(document).ready(function() {
 	                }
                 }
             },
+            scrapQty: {
+                validators: {
+                    digits: {
+	                    message: '报废QTY必须为数字'
+	                }
+                }
+            },
             partNum: {
                 validators: {
                     notEmpty: {
@@ -125,13 +132,13 @@ $(document).ready(function() {
     	var $form = $(e.target);
 		var assemblyCount=$("#addDataForm [id=addAssemblyPanel]").find(":checkbox").length;
 		$("#addDataForm [name=inputQty]").val(assemblyCount*96);
-		var count=Number($("#addDataForm [name=toPqcQty]").val())+Number($("#addDataForm [name=heavySmokeQty]").val())+Number($("#addDataForm [name=receiveQty]").val())+Number($("#addDataForm [name=toOtherQty]").val());
-		$("#addDataForm [name=scrapQty]").val(count);
+		//var count=Number($("#addDataForm [name=toPqcQty]").val())+Number($("#addDataForm [name=heavySmokeQty]").val())+Number($("#addDataForm [name=receiveQty]").val())+Number($("#addDataForm [name=scrapQty]").val())+Number($("#addDataForm [name=toOtherQty]").val());
+		//$("#addDataForm [name=scrapQty]").val(count);
 		if($("#addDataForm [name=inputQty]").val()==0){
 			$("#addDataForm [name=theoryYield]").val(0);
 		}else{
 			var theoryYield=(Number($("#addDataForm [name=inputQty]").val())-Number($("#addDataForm [name=scrapQty]").val()))/Number($("#addDataForm [name=inputQty]").val())*100;
-			$("#addDataForm [name=theoryYield]").val(theoryYield);
+			$("#addDataForm [name=theoryYield]").val(new Number(theoryYield).toFixed(2));
 		}
 		var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/workflow/addChemicalReagent",  $form.serialize(), function(result) {

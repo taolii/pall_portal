@@ -3,10 +3,10 @@ package com.pall.portal.service.workflow;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,7 +119,7 @@ public class ChemicalReagentServiceImpl implements ChemicalReagentService{
 		crIDs.addAll(chemicalReagentMap.keySet());
 		List<ChemicalReagentRelationEntity> chemicalReagentRelations=chemicalReagentDao.queryChemicalReagentRelations(crIDs);
 		if(chemicalReagentRelations!=null && chemicalReagentRelations.size()>0){
-			Set<String> tempSet=new HashSet<String>();
+			Set<String> tempSet=new TreeSet<String>();
 			for(ChemicalReagentRelationEntity chemicalReagentRelationEntity:chemicalReagentRelations){
 				if(chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID())!=null){
 					chemicalReagentMap.get(chemicalReagentRelationEntity.getCrID()).getChemicalReagentRelations().add(chemicalReagentRelationEntity);

@@ -1,6 +1,8 @@
 package com.pall.portal.init;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.pall.portal.common.support.excel.ExcelHeaderNode;
 import com.pall.portal.repository.entity.dataconfig.DataConfigEntity;
 import com.pall.portal.service.dataconfig.DataConfigManageService;
 
@@ -46,6 +49,20 @@ public class DataConfigInitiator {
 			}
 		} catch (Exception e) {
 			logger.error("init data config  exception",e);
+		}
+		//数据按照字典顺序排序
+		if(tempDataConfigMap!=null && tempDataConfigMap.size()>0){
+			for(String key:tempDataConfigMap.keySet()){
+				List<DataConfigEntity> dataConfigEntitys=tempDataConfigMap.get(key);
+				if(dataConfigEntitys==null ||dataConfigEntitys.size()==0)continue;
+				Collections.sort(dataConfigEntitys,new Comparator<DataConfigEntity>() {
+					@Override
+			        public int compare(DataConfigEntity o1, DataConfigEntity o2) {
+						String temp=o1.getConfigName()==null?"":o1.getConfigName();
+						return temp.compareTo(o2.getConfigName());
+			        }
+				});
+			}
 		}
 		dataConfigMap=tempDataConfigMap;
 	}

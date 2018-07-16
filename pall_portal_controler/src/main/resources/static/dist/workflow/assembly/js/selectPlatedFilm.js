@@ -95,8 +95,10 @@ $(document).ready(function() {
 				var form=$('#updateForm').val();
 	            $(form+' [name=inputLotNum]').val(item.outputLotNum);
 	            $(form+' [name=fixtureNum]').val(item.fixtureNum);
+	            $(form+' [name=fixtureAttribute]').attr("disabled","disabled");
 	            $(form).data('bootstrapValidator').validateField('inputLotNum');
 	            $(form).data('bootstrapValidator').validateField('fixtureNum');
+	            
 	            $("#selectPlatedFilmModal").modal("hide");
 	        });
 		}

@@ -116,6 +116,10 @@ public class TwiceChemicalReagentEntity {
 	 */
 	private Integer toOtherQty;
 	/*
+	 * remark
+	 */
+	private String remark;
+	/*
 	 * 理论良率
 	 */
 	@NotNull(message="{chemicalReagentManage.form.valid.chemicalReagentEntity.theoryYield.NotEmpty",groups={SAVE.class,ADD.class})
@@ -359,6 +363,14 @@ public class TwiceChemicalReagentEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

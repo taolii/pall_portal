@@ -92,7 +92,11 @@ $(document).ready(function() {
 			if (!$(this).is("[name='cb-check-all']")) {
 				var item = $multipleReagentMixtureTable.row($(this).closest('tr')).data();
 	        	if($(this).is(':checked')){
-	        		insertReagentMixture(item,true);
+	        		if(!(item.reagentsName && item.reagentsName && item.reagentsSn)){
+	        			$(this).prop('checked', false);
+	        		}else{
+	        			insertReagentMixture(item,true);
+	        		}
 	        	}else{
 	        		insertReagentMixture(item,false);
 	        	}
@@ -106,6 +110,11 @@ $(document).ready(function() {
         }else{
         	var item = $multipleReagentMixtureTable.row($(this).closest('tr')).data();
         	if($(this).is(':checked')){
+        		if(!(item.reagentsName && item.reagentsName && item.reagentsSn)){
+        			showNotice('Error','<span style="padding-top:5px">主试剂、混合试剂、试剂编号不能为空</span>','error',1000*10);
+        			$(this).prop('checked', false);
+        			return;
+        		}
         		insertReagentMixture(item,true);
         	}else{
         		insertReagentMixture(item,false);

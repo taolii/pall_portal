@@ -130,6 +130,7 @@ $(document).ready(function() {
             }
         }
     }).on('success.form.bv', function(e) {
+    	$('#addDataForm [name=fixtureAttribute]').removeAttr("disabled");
     	var defectNum=0;
     	$(".defect-panel input").each(function(){
     		if($(this).val()!=null){
@@ -143,6 +144,7 @@ $(document).ready(function() {
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/workflow/addAssembly",  $form.serialize(), function(result) {
+    		$('#addDataForm [name=fixtureAttribute]').attr("disabled","disabled");
     		if(result.resultCode==0){
     			showNotice('Success',"添加组装信息成功",'success',1000*5);
     		}else{

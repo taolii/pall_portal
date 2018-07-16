@@ -110,7 +110,7 @@ $(document).ready(function() {
             toOtherQty: {
                 validators: {
                     digits: {
-	                    message: '其他QTY必须为数字'
+	                    message: '留样QTY必须为数字'
 	                }
                 }
             },
@@ -128,6 +128,13 @@ $(document).ready(function() {
 	                }
                 }
             },
+            scrapQty: {
+                validators: {
+                    digits: {
+	                    message: '报废QTY必须为数字'
+	                }
+                }
+            },
             partNum: {
                 validators: {
                     notEmpty: {
@@ -141,13 +148,13 @@ $(document).ready(function() {
     	var $form = $(e.target);
     	$("#modDataForm [name=trayNumLen]").val($("#modDataForm [id=addAssemblyPanel]").find(".bioInfo").length);
 		$("#modDataForm [name=inputQty]").val($("#modDataForm [name=trayNumLen]").val()*96);
-		var count=Number($("#modDataForm [name=toPqcQty]").val())+Number($("#modDataForm [name=heavySmokeQty]").val())+Number($("#modDataForm [name=receiveQty]").val())+Number($("#modDataForm [name=toOtherQty]").val());
-		$("#modDataForm [name=scrapQty]").val(count);
+		//var count=Number($("#modDataForm [name=toPqcQty]").val())+Number($("#modDataForm [name=heavySmokeQty]").val())+Number($("#modDataForm [name=receiveQty]").val())+Number($("#modDataForm [name=toOtherQty]").val());
+		//$("#modDataForm [name=scrapQty]").val(count);
 		if($("#modDataForm [name=inputQty]").val()==0){
 			$("#modDataForm [name=theoryYield]").val(0);
 		}else{
 			var theoryYield=(Number($("#modDataForm [name=inputQty]").val())-Number($("#modDataForm [name=scrapQty]").val()))/Number($("#modDataForm [name=inputQty]").val())*100;
-			$("#modDataForm [name=theoryYield]").val(theoryYield);
+			$("#modDataForm [name=theoryYield]").val(new Number(theoryYield).toFixed(2));
 		}
     	var bv = $form.data('bootstrapValidator');
     	var operator=$("#operator").val();

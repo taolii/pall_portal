@@ -79,6 +79,11 @@ $(document).ready(function() {
     });
 	$("#singleReagentMixtureTable").on("change",":radio",function() {
 		var item = $singleReagentMixtureTable.row($(this).closest('tr')).data();
+		if(!(item.reagentsName && item.reagentsName && item.reagentsSn)){
+			showNotice('Error','<span style="padding-top:5px">主试剂、混合试剂、试剂编号不能为空</span>','error',1000*10);
+			$(this).prop('checked', false);
+			return;
+		}
 		$($("#addAuxiliaryReagent").val()).parent().parent().find("input").val(item.reagentsSn);
     });
 });

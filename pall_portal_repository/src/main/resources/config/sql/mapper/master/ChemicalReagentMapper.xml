@@ -5,7 +5,7 @@
 	parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentQueryFormEntity"> 
  		select f.cr_id crID,f.lot lot,f.biobom bioBom,f.bio_pat_num bioPatNum,f.croperator1 crOperator1,f.croperator2 crOperator2,f.raw_material rawMaterial,f.in_put_date inPutDate,f.coating_station coatingStation,f.doc_rev docRev,
  		f.goods_qty goodsQty,f.auxiliary_reagent1 auxiliaryReagent1,f.auxiliary_reagent2 auxiliaryReagent2,f.auxiliary_reagent3 auxiliaryReagent3,f.input_qty inputQty,f.scrap_qty scrapQty,f.receive_qty receiveQty,f.heavy_smoke_qty heavySmokeQty,f.to_pqc_qty toPqcQty,f.to_other_qty toOtherQty,
- 		f.part_num partNum,f.theory_yield theoryYield,f.actual_yield actualYield,f.theory_actual_yield theoryActualYield,f.input_time inputTime,f.update_time updateTime,
+ 		f.remark,f.part_num partNum,f.theory_yield theoryYield,f.actual_yield actualYield,f.theory_actual_yield theoryActualYield,f.input_time inputTime,f.update_time updateTime,
         f.operatorid,g.account operatorName from t_ums_workflow_biocoating f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
 		<if test="lot != null and lot != '' ">  
 	       AND f.lot = #{lot}  
@@ -66,12 +66,12 @@
             select LAST_INSERT_ID()
         </selectKey>
     	insert into  t_ums_workflow_biocoating(lot,biobom,bio_pat_num,croperator1,croperator2,raw_material,in_put_date,coating_station,doc_rev,goods_qty,auxiliary_reagent1,auxiliary_reagent2,auxiliary_reagent3,input_qty,
-		scrap_qty,receive_qty,heavy_smoke_qty,to_pqc_qty,to_other_qty,part_num,theory_yield,actual_yield,theory_actual_yield,operatorid,input_time,update_time)
-        values(#{lot},#{bioBom},#{bioPatNum},#{crOperator1},#{crOperator2},#{rawMaterial},#{inPutDate},#{coatingStation},#{docRev},#{goodsQty},#{auxiliaryReagent1},#{auxiliaryReagent2},#{auxiliaryReagent3},#{inputQty},#{scrapQty},#{receiveQty},#{heavySmokeQty},#{toPqcQty},#{toOtherQty},#{partNum},#{theoryYield},#{actualYield},#{theoryActualYield},#{operatorid},now(),now())
+		scrap_qty,receive_qty,heavy_smoke_qty,to_pqc_qty,to_other_qty,part_num,theory_yield,actual_yield,theory_actual_yield,remark,operatorid,input_time,update_time)
+        values(#{lot},#{bioBom},#{bioPatNum},#{crOperator1},#{crOperator2},#{rawMaterial},#{inPutDate},#{coatingStation},#{docRev},#{goodsQty},#{auxiliaryReagent1},#{auxiliaryReagent2},#{auxiliaryReagent3},#{inputQty},#{scrapQty},#{receiveQty},#{heavySmokeQty},#{toPqcQty},#{toOtherQty},#{partNum},#{theoryYield},#{actualYield},#{theoryActualYield},#{remark},#{operatorid},now(),now())
     </insert>
     <update id="modifyChemicalReagent" parameterType="com.pall.portal.repository.entity.workflow.ChemicalReagentEntity">
         update  t_ums_workflow_biocoating f set f.lot=#{lot},f.biobom=#{bioBom},f.bio_pat_num=#{bioPatNum},f.croperator1=#{crOperator1},f.croperator2=#{crOperator2},f.raw_material=#{rawMaterial},f.in_put_date=#{inPutDate},f.coating_station=#{coatingStation},f.doc_rev=#{docRev},
-			f.goods_qty=#{goodsQty},f.auxiliary_reagent1=#{auxiliaryReagent1},f.auxiliary_reagent2=#{auxiliaryReagent2},f.auxiliary_reagent3=#{auxiliaryReagent3},f.input_qty=#{inputQty},
+			f.goods_qty=#{goodsQty},f.auxiliary_reagent1=#{auxiliaryReagent1},f.auxiliary_reagent2=#{auxiliaryReagent2},f.auxiliary_reagent3=#{auxiliaryReagent3},f.input_qty=#{inputQty},f.remark=#{remark},
 			f.part_num=#{partNum},f.scrap_qty=#{scrapQty},f.receive_qty=#{receiveQty},f.heavy_smoke_qty=#{heavySmokeQty},f.to_pqc_qty=#{toPqcQty},f.to_other_qty=#{toOtherQty},f.theory_yield=#{theoryYield},f.actual_yield=#{actualYield},f.theory_actual_yield=#{theoryActualYield},
 			f.operatorid=#{operatorid},f.update_time=now()
         where f.cr_id=#{crID}
@@ -114,7 +114,12 @@
  		select a.cr_id crID,a.tray_lot_num trayLotNum,a.t_lot_num tLotNum from t_ums_workflow_biocoating_relation a where a.cr_id=#{crID}
  	</select> 
  	<select id="queryChemicalReagentRelations" resultType="com.pall.portal.repository.entity.workflow.ChemicalReagentRelationEntity" parameterType="java.util.List"> 
- 		select  a.cr_id crID,group_concat(distinct a.tray_lot_num) trayLotNum,group_concat(distinct a.t_lot_num) tLotNum,group_concat(distinct  f.fixture_num) fixtrueNums,group_concat(distinct  f.output_lot_num) assemblyLotNum,group_concat(distinct  f.assembly_bom) assemblyBom,group_concat(distinct  b.output_lot_num) apsLotNum,group_concat(distinct  b.sf_bom) apsBom,group_concat(distinct  c.output_lot_num) ocLotNum,group_concat(distinct  c.oc_bom) ocBom,group_concat(distinct  d.clean_lot_num) cleanLotNum,group_concat(distinct  d.clean_bom) cleanBom,group_concat(distinct  e.polish_lot_num) polishLotNum,group_concat(distinct  e.polish_bom) polishBom from t_ums_workflow_biocoating_relation a left join t_ums_workflow_assembly f on f.tray_lot_num=a.tray_lot_num left join t_ums_workflow_platedfilm b on f.input_lot_num=b.output_lot_num LEFT JOIN t_ums_workflow_opticalfilming c on c.output_lot_num=b.input_lot_num LEFT JOIN t_ums_workflow_clean d on d.clean_lot_num=c.input_lot_num LEFT JOIN t_ums_workflow_polish e on e.polish_lot_num=d.input_lot_num 
+ 		select  a.cr_id crID,group_concat(a.tray_lot_num) trayLotNum,group_concat(a.t_lot_num) tLotNum,group_concat(distinct  f.fixture_num) fixtrueNums,group_concat(distinct  f.output_lot_num) assemblyLotNum,group_concat(distinct  f.assembly_bom) assemblyBom,group_concat(distinct  b.output_lot_num) apsLotNum,group_concat(distinct  b.sf_bom) apsBom,group_concat(distinct  c.output_lot_num) ocLotNum,group_concat(distinct  c.oc_bom) ocBom,group_concat(distinct  d.clean_lot_num) cleanLotNum,group_concat(distinct  d.clean_bom) cleanBom,group_concat(distinct  e.polish_lot_num) polishLotNum,group_concat(distinct  e.polish_bom) polishBom from t_ums_workflow_biocoating_relation a 
+ 		LEFT JOIN t_ums_workflow_assembly f ON f.tray_lot_num = a.tray_lot_num
+		LEFT JOIN t_ums_workflow_platedfilm b ON f.input_lot_num = b.output_lot_num and f.fixture_num=b.fixture_num
+		LEFT JOIN t_ums_workflow_opticalfilming c ON c.output_lot_num = b.input_lot_num and c.fixture_num=b.fixture_num
+		LEFT JOIN t_ums_workflow_clean d ON d.clean_lot_num = c.input_lot_num and d.fixture_number=c.fixture_num
+		LEFT JOIN t_ums_workflow_polish e ON e.polish_lot_num = d.input_lot_num and e.fixture_number=d.fixture_number
  		where a.cr_id in 
         <foreach collection="crIDs" item="item" index="index" open="(" close=")" separator=",">  
         	#{item}  
