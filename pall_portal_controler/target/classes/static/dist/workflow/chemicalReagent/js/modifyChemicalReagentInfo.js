@@ -21,8 +21,10 @@ $(document).ready(function() {
 	$("#addAssemblyPanel").on('change', 'input[type=checkbox]', function() {
 	   	 if(!$(this).prop('checked')){
 			 $(this).parent().parent().parent().parent().remove();
+			 $("#assemblynum").html("("+$("#addAssemblyPanel").find('input').length+")");
 		 }
 	});
+	$("#assemblynum").html("("+$("#addAssemblyPanel").find('input').length+")");
 	$modDataForm=$('#modDataForm'),
 	$addAssemblyOutputLotNumButton=$('#addAssemblyOutputLotNumButton'),
 	$assemblyManageModal=$('#assemblyManageModal'),

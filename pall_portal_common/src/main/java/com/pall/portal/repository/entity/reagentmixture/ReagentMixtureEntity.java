@@ -37,7 +37,7 @@ public class ReagentMixtureEntity {
 	/*
 	 * Amount(mg)
 	 */
-	private Integer amount;
+	private double amount;
 	/*
 	 * PH值
 	 */
@@ -128,10 +128,11 @@ public class ReagentMixtureEntity {
 	public void setReagentMixtureEntitySns(List<ReagentMixtureEntitySns> reagentMixtureEntitySns) {
 		this.reagentMixtureEntitySns = reagentMixtureEntitySns;
 	}
-	public Integer getAmount() {
+	
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(Integer amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	public Double getPhValue() {

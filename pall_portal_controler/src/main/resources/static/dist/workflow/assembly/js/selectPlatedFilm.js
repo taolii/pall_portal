@@ -1,13 +1,15 @@
 $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
+	$platedFilmQueryForm=$("#queryForm");
 	$('#addInputLotNum').click(function(){
 		manage.platedFilmShow();
 		var form=$('#updateForm').val();
-        $("#queryForm [name=fixtureAttribute]").val($(form+' [name=fixtureAttribute]').val());
+		$("#queryForm [name=fixtureAttribute]").val($(form+' [name=fixtureAttribute]').val());
+		$("#btn-query").click();
 	});
 	var $wrapper = $('#div-table-container');
 	var $table = $('#datatable');
-	$platedFilmQueryForm=$("#queryForm");
+	
 	var _table = $table.dataTable($.extend(true,
 		{pageLength: 10,scrollX: true,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 		{
@@ -47,7 +49,6 @@ $(document).ready(function() {
                         //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                         //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                         callback(returnData);
-                        
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     	var error="status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus;
@@ -96,9 +97,6 @@ $(document).ready(function() {
 	            $(form+' [name=inputLotNum]').val(item.outputLotNum);
 	            $(form+' [name=fixtureNum]').val(item.fixtureNum);
 	            $(form+' [name=fixtureAttribute]').attr("disabled","disabled");
-	            $(form).data('bootstrapValidator').validateField('inputLotNum');
-	            $(form).data('bootstrapValidator').validateField('fixtureNum');
-	            
 	            $("#selectPlatedFilmModal").modal("hide");
 	        });
 		}

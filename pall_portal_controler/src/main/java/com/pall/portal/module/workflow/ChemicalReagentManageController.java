@@ -46,6 +46,7 @@ import com.pall.portal.common.response.BaseTablesResponse;
 import com.pall.portal.common.support.excel.ExcelDataNode;
 import com.pall.portal.common.support.excel.ExcelHeaderNode;
 import com.pall.portal.common.tools.ExcelTools;
+import com.pall.portal.common.tools.StringTools;
 import com.pall.portal.context.HolderContext;
 import com.pall.portal.init.DataConfigInitiator;
 import com.pall.portal.init.TableDataConfigInitiator;
@@ -276,43 +277,8 @@ public class ChemicalReagentManageController{
 				if(at!=null && at.getUserEntity()!=null){
 					chemicalReagentEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				String reagentMixturetableName=UmsConfigInitiator.getDataConfig(KeyConstants.REAGENTMIXTURE_TABLENAME);
-				Map<String,String[]>paras=request.getParameterMap();
-				if(paras!=null){
-					List<ChemicalCompoundReagentsEntity> chemicalCompoundReagents=new ArrayList<ChemicalCompoundReagentsEntity>();
-					chemicalReagentEntity.setCompoundReagents(chemicalCompoundReagents);
-					for(String paramName:paras.keySet()){
-						if(paramName.startsWith(reagentMixturetableName)){
-							ChemicalCompoundReagentsEntity chemicalCompoundReagentsEntity=new ChemicalCompoundReagentsEntity();
-							String[] temps=paramName.split("_");
-							if(temps.length>=2){
-								chemicalCompoundReagentsEntity.setSrmid(Integer.parseInt(temps[1]));
-							}else{
-								continue;
-							}
-							chemicalCompoundReagentsEntity.setReagentsFieldName(paramName);
-							chemicalCompoundReagentsEntity.setReagentsSn(paras.get(paramName)[0]);
-							chemicalCompoundReagents.add(chemicalCompoundReagentsEntity);
-							
-						}
-					}
-				}
-				List<ChemicalReagentRelationEntity> chemicalReagentRelations=new ArrayList<ChemicalReagentRelationEntity>();
-				int i=1;
-				if(chemicalReagentEntity.getTrayLotNum()!=null){
-					for(String trayLotNum:chemicalReagentEntity.getTrayLotNum()){
-						ChemicalReagentRelationEntity chemicalReagentRelationEntity=new ChemicalReagentRelationEntity();
-						chemicalReagentRelationEntity.setTrayLotNum(trayLotNum);
-						if(i<=9){
-							chemicalReagentRelationEntity.settLotNum("T0"+i);
-						}else{
-							chemicalReagentRelationEntity.settLotNum("T"+i);
-						}
-						i++;
-						chemicalReagentRelations.add(chemicalReagentRelationEntity);
-					}
-				};
-				chemicalReagentEntity.setChemicalReagentRelations(chemicalReagentRelations);
+				chemicalReagentEntity.setCompoundReagents(getChemicalCompoundReagents(request.getParameterMap()));
+				chemicalReagentEntity.setChemicalReagentRelations(getChemicalReagentRelations(chemicalReagentEntity.getTrayLotNum()));
 				if(chemicalReagentEntity.getBioBoms()!=null){
 					chemicalReagentEntity.setBioBom(StringUtils.join(chemicalReagentEntity.getBioBoms(), ","));
 				};
@@ -411,43 +377,8 @@ public class ChemicalReagentManageController{
 				if(at!=null && at.getUserEntity()!=null){
 					chemicalReagentEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				String reagentMixturetableName=UmsConfigInitiator.getDataConfig(KeyConstants.REAGENTMIXTURE_TABLENAME);
-				Map<String,String[]>paras=request.getParameterMap();
-				if(paras!=null){
-					List<ChemicalCompoundReagentsEntity> chemicalCompoundReagents=new ArrayList<ChemicalCompoundReagentsEntity>();
-					chemicalReagentEntity.setCompoundReagents(chemicalCompoundReagents);
-					for(String paramName:paras.keySet()){
-						if(paramName.startsWith(reagentMixturetableName)){
-							ChemicalCompoundReagentsEntity chemicalCompoundReagentsEntity=new ChemicalCompoundReagentsEntity();
-							String[] temps=paramName.split("_");
-							if(temps.length>=2){
-								chemicalCompoundReagentsEntity.setSrmid(Integer.parseInt(temps[1]));
-							}else{
-								continue;
-							}
-							chemicalCompoundReagentsEntity.setReagentsFieldName(paramName);
-							chemicalCompoundReagentsEntity.setReagentsSn(paras.get(paramName)[0]);
-							chemicalCompoundReagents.add(chemicalCompoundReagentsEntity);
-							
-						}
-					}
-				}
-				List<ChemicalReagentRelationEntity> chemicalReagentRelations=new ArrayList<ChemicalReagentRelationEntity>();
-				int i=1;
-				if(chemicalReagentEntity.getTrayLotNum()!=null){
-					for(String trayLotNum:chemicalReagentEntity.getTrayLotNum()){
-						ChemicalReagentRelationEntity chemicalReagentRelationEntity=new ChemicalReagentRelationEntity();
-						chemicalReagentRelationEntity.setTrayLotNum(trayLotNum);
-						if(i<=9){
-							chemicalReagentRelationEntity.settLotNum("T0"+i);
-						}else{
-							chemicalReagentRelationEntity.settLotNum("T"+i);
-						}
-						i++;
-						chemicalReagentRelations.add(chemicalReagentRelationEntity);
-					}
-				};
-				chemicalReagentEntity.setChemicalReagentRelations(chemicalReagentRelations);
+				chemicalReagentEntity.setCompoundReagents(getChemicalCompoundReagents(request.getParameterMap()));
+				chemicalReagentEntity.setChemicalReagentRelations(getChemicalReagentRelations(chemicalReagentEntity.getTrayLotNum()));
 				if(chemicalReagentEntity.getBioBoms()!=null){
 					chemicalReagentEntity.setBioBom(StringUtils.join(chemicalReagentEntity.getBioBoms(), ","));
 				};
@@ -557,4 +488,75 @@ public class ChemicalReagentManageController{
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
     }
+	//封装chemicalReagentRelations
+	private List<ChemicalReagentRelationEntity> getChemicalReagentRelations(String[] trayLotNums){
+		List<ChemicalReagentRelationEntity> chemicalReagentRelations=new ArrayList<ChemicalReagentRelationEntity>();
+		int i=1;
+		if(trayLotNums!=null){
+			for(String trayLotNum:trayLotNums){
+				if(StringUtils.isEmpty(trayLotNum))continue;
+				ChemicalReagentRelationEntity chemicalReagentRelationEntity=new ChemicalReagentRelationEntity();
+				chemicalReagentRelationEntity.setTrayLotNum(trayLotNum);
+				chemicalReagentRelations.add(chemicalReagentRelationEntity);
+			}
+			Collections.sort(chemicalReagentRelations,new Comparator<ChemicalReagentRelationEntity>() {
+				@Override
+		        public int compare(ChemicalReagentRelationEntity o1, ChemicalReagentRelationEntity o2) {
+					String TrayLotNum1=o1.getTrayLotNum().substring(1,o1.getTrayLotNum().length());
+					String TrayLotNum2=o2.getTrayLotNum().substring(1,o2.getTrayLotNum().length());
+					if(StringTools.isInteger(TrayLotNum1) && StringTools.isInteger(TrayLotNum2)){
+						if(Integer.valueOf(TrayLotNum1)>Integer.valueOf(TrayLotNum2)){
+							return 1;
+						}else if(Integer.valueOf(TrayLotNum1)<Integer.valueOf(TrayLotNum2)){
+							return -1;
+						}else{
+							return 0;
+						}
+					}else{
+						if(o1.getTrayLotNum().compareTo(o2.getTrayLotNum())>0){
+							return 1;
+						}else if(o1.getTrayLotNum().compareTo(o2.getTrayLotNum())<0){
+							return -1;
+						}else{
+							return 0;
+						}
+					}
+					
+		        }
+			});
+		};
+		for(ChemicalReagentRelationEntity chemicalReagentRelationEntity:chemicalReagentRelations){
+			if(i<=9){
+				chemicalReagentRelationEntity.settLotNum("T0"+i);
+			}else{
+				chemicalReagentRelationEntity.settLotNum("T"+i);
+			}
+			i++;
+		}
+		return chemicalReagentRelations;
+	}
+	//封装ChemicalCompoundReagents
+	private List<ChemicalCompoundReagentsEntity> getChemicalCompoundReagents(Map<String,String[]>paras){
+		String reagentMixturetableName=UmsConfigInitiator.getDataConfig(KeyConstants.REAGENTMIXTURE_TABLENAME);
+		List<ChemicalCompoundReagentsEntity> chemicalCompoundReagents=new ArrayList<ChemicalCompoundReagentsEntity>();
+		if(paras!=null){
+			for(String paramName:paras.keySet()){
+				if(paramName.startsWith(reagentMixturetableName)){
+					ChemicalCompoundReagentsEntity chemicalCompoundReagentsEntity=new ChemicalCompoundReagentsEntity();
+					String[] temps=paramName.split("_");
+					if(temps.length>=2){
+						chemicalCompoundReagentsEntity.setSrmid(Integer.parseInt(temps[1]));
+					}else{
+						continue;
+					}
+					chemicalCompoundReagentsEntity.setReagentsFieldName(paramName);
+					chemicalCompoundReagentsEntity.setReagentsSn(paras.get(paramName)[0]);
+					chemicalCompoundReagents.add(chemicalCompoundReagentsEntity);
+					
+				}
+			}
+		}
+		return chemicalCompoundReagents;
+	} 
+	
 }

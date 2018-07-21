@@ -53,7 +53,7 @@ public class PolishServiceImpl implements PolishService{
 			if(polishEntitys!=null){
 				datatablesViews.setiTotalDisplayRecords(totalRecords);
 				datatablesViews.setRecordsTotal(totalRecords);
-				datatablesViews.setData(getDefectRecords(polishEntitys,polishQueryFormEntity));
+				datatablesViews.setData(getDefectRecords(polishEntitys));
 			}
 			baseResponse.setDatatablesView(datatablesViews);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
@@ -67,7 +67,7 @@ public class PolishServiceImpl implements PolishService{
 	/*
 	 * 获取缺损信息
 	 */
-	private List<PolishEntity> getDefectRecords(List<PolishEntity> polishEntitys,PolishQueryFormEntity polishQueryFormEntity) throws Exception{
+	private List<PolishEntity> getDefectRecords(List<PolishEntity> polishEntitys) throws Exception{
 		List<Integer> defectids=new ArrayList<Integer>();
 		Map<Integer,PolishEntity> map=new HashMap<Integer,PolishEntity>();
 		for(PolishEntity polishEntity:polishEntitys){
@@ -75,12 +75,10 @@ public class PolishServiceImpl implements PolishService{
 			map.put(polishEntity.getPolishID(),polishEntity);
 		}
 		if(defectids.size()>0){
-			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_DATACONFIG_TYPE_DEFECT_NWF)));
-			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
+			List<DefectEntity> defectEntitys=defectDao.queryDefectsByDefectID(defectids);
 			if(null!=defectEntitys){
 				for(DefectEntity defectEntity:defectEntitys){
+					defectEntity.setFieldName(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME)+defectEntity.getDataid());
 					if(null!=map.get(defectEntity.getDefectID())){
 						if(null==map.get(defectEntity.getDefectID()).getDefects()){
 							map.get(defectEntity.getDefectID()).setDefects(new ArrayList<DefectEntity>());
@@ -191,7 +189,7 @@ public class PolishServiceImpl implements PolishService{
 			//分页查询结果集
 			polishQueryFormEntity.setPageSize(totalRecords);
 			List<PolishEntity> polishEntitys=polishDao.queryPolishList(polishQueryFormEntity);
-			polishEntitys=getDefectRecords(polishEntitys,polishQueryFormEntity);
+			polishEntitys=getDefectRecords(polishEntitys);
 			baseResponse.setReturnObjects(polishEntitys);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){

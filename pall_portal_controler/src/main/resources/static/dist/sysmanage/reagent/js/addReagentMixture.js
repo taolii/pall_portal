@@ -56,8 +56,8 @@ $(document).ready(function() {
             },
             amount: {
             	validators: {
-	                digits: {
-	                    message: 'Amount(mg)值必须为数字'
+            		numeric: {
+	                    message: 'Amount(mg/ml)值必须为数字'
 	                }
             	}
             },

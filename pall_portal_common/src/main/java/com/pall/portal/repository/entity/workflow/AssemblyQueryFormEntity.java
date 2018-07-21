@@ -19,6 +19,7 @@ public class AssemblyQueryFormEntity {
 	private String startDeliveryTime;
 	private String endDeliveryTime;
 	private String assemblyID;
+	private String filterTrayLotNum;
 	/*
 	 * TRAY#
 	 */
@@ -135,6 +136,12 @@ public class AssemblyQueryFormEntity {
 	}
 	public void setAssemblyID(String assemblyID) {
 		this.assemblyID = assemblyID;
+	}
+	public String getFilterTrayLotNum() {
+		return filterTrayLotNum;
+	}
+	public void setFilterTrayLotNum(String filterTrayLotNum) {
+		this.filterTrayLotNum = filterTrayLotNum;
 	}
 	
 }

@@ -20,6 +20,13 @@ public interface DefectDao {
 	 */
 	public List<DefectEntity> queryDefectList(@Param("defectids") List<Integer> defectids,@Param("defectidTypes") List<Integer> defectidTypes);
 	/*
+	 * 根据条件查询抛光缺损记录信息
+	 * @param defectids 缺损信息（缺损id与缺损类型为唯一标示）
+	 * @param defectidTypes 缺损类型
+	 * @return 查询结果
+	 */
+	public List<DefectEntity> queryDefectsByDefectID(@Param("defectids") List<Integer> defectids);
+	/*
 	 * 添加缺损结果信息
 	 * @param DefectEntity 缺损结果信息
 	 * @return 添加结果

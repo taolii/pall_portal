@@ -75,12 +75,10 @@ public class CleanServiceImpl implements CleanService{
 			map.put(cleanEntity.getCleanID(),cleanEntity);
 		}
 		if(defectids.size()>0){
-			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_DATACONFIG_TYPE_DEFECT_NWF)));
-			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
+			List<DefectEntity> defectEntitys=defectDao.queryDefectsByDefectID(defectids);
 			if(null!=defectEntitys){
 				for(DefectEntity defectEntity:defectEntitys){
+					defectEntity.setFieldName(UmsConfigInitiator.getDataConfig(KeyConstants.CLEAN_TABLENAME)+defectEntity.getDataid());
 					if(null!=map.get(defectEntity.getDefectID())){
 						if(null==map.get(defectEntity.getDefectID()).getDefects()){
 							map.get(defectEntity.getDefectID()).setDefects(new ArrayList<DefectEntity>());

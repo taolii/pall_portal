@@ -22,6 +22,7 @@
 					<div class="modal-body" style="height:400px;">
 						<div class="col-xs-12">
 								 <form id="queryAssemblyModalForm" method="post" class="form-horizontal">
+								 	<input type="text" style="display:none" name="filterTrayLotNum" value="true"/>
 				                    <div class="panel-group" id="steps">
 				                        <div class="panel panel-primary">
 				                            <div id="stepOne" class="panel-collapse collapse in  ">
@@ -29,7 +30,7 @@
 								                   <div class="col-md-6 form-group">
 					                                	<div class='input-group date'>  
 					                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.startDeliveryTime}">  
-		                									</span>  
+		                									</span>
 											                <input type='text' name="startDeliveryTime"  id='queryStartDeliveryTime' class="form-control" />  
 											                <span class="input-group-addon">  
 											                    <span class="glyphicon glyphicon-calendar"></span>  
@@ -58,6 +59,12 @@
 									                        <input type="text" name="fixtureNum" class="form-control"/>
 					                                	</div>
 										            </div>
+										            <div class="col-md-6 form-group">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.assembly.form.trayLotNum}"></span>
+									                        <input type="text" name="trayLotNum" class="form-control"/>
+					                                	</div>
+						                      		</div>
 								                    <div class="col-md-5" style="padding-left:260px">
 								                        <button id="queryAssemblyModalButton" class="btn btn-white btn-primary" type="button">
 								                        <i class="fa fa-search"></i>

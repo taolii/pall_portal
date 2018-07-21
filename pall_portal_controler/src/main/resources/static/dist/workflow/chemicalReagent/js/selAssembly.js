@@ -136,7 +136,8 @@ $(document).ready(function() {
 			$assemblyPanel.find("[value='"+item.trayLotNum+"']").parent().parent().parent().parent().remove();
 			return;
 		}
-		if($assemblyPanel.find("[name='"+item.trayLotNum+"']").length>0){
+		
+		if($assemblyPanel.find("[value='"+item.trayLotNum+"']").length>0){
         	return;
         }
 		$newRow   =$("#assemblyTemplate").clone().removeAttr('id').find('.assembly').html("&nbsp;&nbsp;"+item.trayLotNum).end();
@@ -144,8 +145,10 @@ $(document).ready(function() {
 	             on('change', 'input[type=checkbox]', function() {
 	            	 if(!$(this).prop('checked')){
 	            		 $(this).parent().parent().parent().parent().remove();
+	            		 $("#assemblynum").html("("+$assemblyPanel.find('input').length+")");
 	            	 }
 	    });
 	    $assemblyPanel.append($newRow).show();
+	    $("#assemblynum").html("("+$assemblyPanel.find('input').length+")");
 	}
 });

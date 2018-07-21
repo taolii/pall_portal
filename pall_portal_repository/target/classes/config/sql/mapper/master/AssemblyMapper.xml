@@ -16,7 +16,7 @@ f.operatorid,g.account operatorName from t_ums_workflow_assembly f left join t_u
 	       AND f.assembly_id= #{assemblyID}  
 	    </if>
 	    <if test="trayLotNum != null and trayLotNum != '' ">  
-	       AND f.tray_lot_num = #{trayLotNum}  
+	       AND f.tray_lot_num like concat(concat('%',#{trayLotNum}),'%')   
 	    </if>
 	    <if test="hubLotNum != null and hubLotNum != '' ">  
 	       AND f.hub_lot_num = #{hubLotNum}  
@@ -39,6 +39,9 @@ f.operatorid,g.account operatorName from t_ums_workflow_assembly f left join t_u
 	    <if test="remark != null and remark != '' ">  
 	       AND f.remark = #{remark}  
 	    </if>
+	    <if test="filterTrayLotNum != null and filterTrayLotNum == 'true' ">  
+	       AND not exists(select 1 from t_ums_workflow_biocoating d,t_ums_workflow_biocoating_relation h where d.cr_id=h.cr_id and h.tray_lot_num=f.tray_lot_num) 
+	    </if>
 	     order by f.update_time desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryAssemblyQueryTotalRecords" resultType="int" parameterType="com.pall.portal.repository.entity.workflow.AssemblyQueryFormEntity"> 
@@ -53,7 +56,7 @@ f.operatorid,g.account operatorName from t_ums_workflow_assembly f left join t_u
 	       AND f.assembly_id= #{assemblyID}  
 	    </if>
 	    <if test="trayLotNum != null and trayLotNum != '' ">  
-	       AND f.tray_lot_num = #{trayLotNum}  
+	       AND f.tray_lot_num like concat(concat('%',#{trayLotNum}),'%')     
 	    </if>
 	    <if test="hubLotNum != null and hubLotNum != '' ">  
 	       AND f.hub_lot_num = #{hubLotNum}  
@@ -75,6 +78,9 @@ f.operatorid,g.account operatorName from t_ums_workflow_assembly f left join t_u
 	    </if>
 	    <if test="remark != null and remark != '' ">  
 	       AND f.remark = #{remark}  
+	    </if>
+	    <if test="filterTrayLotNum != null and filterTrayLotNum == 'true' ">  
+	       AND not exists(select 1 from t_ums_workflow_biocoating d,t_ums_workflow_biocoating_relation h where d.cr_id=h.cr_id and h.tray_lot_num=f.tray_lot_num) 
 	    </if>
  	</select>
  	

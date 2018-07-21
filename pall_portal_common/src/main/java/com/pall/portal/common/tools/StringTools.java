@@ -1,4 +1,7 @@
 package com.pall.portal.common.tools;
+
+import java.util.regex.Pattern;
+
 /*
  * 字符工具类
  */
@@ -61,6 +64,12 @@ public class StringTools {
 	        }  
 		}  
 		return true;  
-	}  
-
+	}
+	/*
+	 * 判断字符是否为数字
+	 */
+	 public static boolean isInteger(String str) {  
+	        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");  
+	        return pattern.matcher(str).matches();  
+	  }
 }

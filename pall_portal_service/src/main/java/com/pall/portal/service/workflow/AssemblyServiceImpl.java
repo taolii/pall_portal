@@ -75,15 +75,10 @@ public class AssemblyServiceImpl implements AssemblyService{
 			map.put(assemblyEntity.getAssemblyID(),assemblyEntity);
 		}
 		if(defectids.size()>0){
-			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_CLAMPING)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_INSTALLHUB)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_OTHER)));
-			List<DefectEntity> defectEntitys=defectDao.queryDefectList(defectids,defectTypes);
+			List<DefectEntity> defectEntitys=defectDao.queryDefectsByDefectID(defectids);
 			if(null!=defectEntitys){
 				for(DefectEntity defectEntity:defectEntitys){
+					defectEntity.setFieldName(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME)+defectEntity.getDataid());
 					if(null!=map.get(defectEntity.getDefectID())){
 						if(null==map.get(defectEntity.getDefectID()).getDefects()){
 							map.get(defectEntity.getDefectID()).setDefects(new ArrayList<DefectEntity>());

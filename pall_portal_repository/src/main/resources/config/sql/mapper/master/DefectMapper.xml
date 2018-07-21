@@ -13,6 +13,13 @@
     	</foreach>
     	order by defect_type,defect_value
  	</select>
+ 	<select id="queryDefectsByDefectID" resultType="com.pall.portal.repository.entity.workflow.DefectEntity" parameterType="java.util.List"> 
+ 		select distinct f.defect_id defectID,f.defect_type defectType,f.defect_value defectValue,f.dataid,g.configname defectname from t_ums_workflow_defect f left join t_ums_data_config g on f.dataid=g.DATAID where  f.defect_id in
+        <foreach collection="defectids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach>
+    	order by defect_type,defect_value
+ 	</select>
 	<insert id="addDefectResult" parameterType="java.util.List">
 		 insert into t_ums_workflow_defect(defect_id,defect_type,dataid,defect_value)VALUES
 		<foreach collection="list" item="item" index="index" separator="," >  

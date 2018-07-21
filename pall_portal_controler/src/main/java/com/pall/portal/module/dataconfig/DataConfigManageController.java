@@ -55,7 +55,6 @@ public class DataConfigManageController{
 	private TableDataConfigInitiator tableDataConfigInitiator;
 	@Autowired
 	private DataConfigInitiator initSysDataConfig;
-	
 	/*
 	 * 缺损管理
 	 */

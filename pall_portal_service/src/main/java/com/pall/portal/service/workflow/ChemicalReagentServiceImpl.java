@@ -348,7 +348,10 @@ public class ChemicalReagentServiceImpl implements ChemicalReagentService{
 		BaseResponse baseResponse=new BaseResponse();
 		try{
 			chemicalReagentDao.delChemicalReagent(crIDs);
-			
+			//删除化学试剂信息
+			chemicalReagentDao.delChemicalCompoundReagents(crIDs);
+			//删除关系关系对象信息
+			chemicalReagentDao.delChemicalReagentRelations(crIDs);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.delOpticalFilming.exception"),e);

@@ -229,20 +229,10 @@ $(document).ready(function() {
 			                    	opfIDs=opfIDs.substr(opfIDs,opfIDs.length-1);
 			                    	$.post(contextPath+"/workflow/delOpticalFilming",{"opfIDs":opfIDs}, function(result) {
 			                    		if(result.resultCode==0){
-			                    			Lobibox.alert('success', {
-			                                    msg: "<h3><span class='green'>光学镀膜信息删除成功</span>",
-			                                    title:Lobibox.base.OPTIONS.title.success,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.yes}
-			                                });
+			                    			showNotice('Success',"光学镀膜信息删除成功",'success',1000*5);
 			                    			$("#btn_refresh").click();
 			                    		}else{
-			                    			Lobibox.alert('error', {
-			                                    msg: '<span class="red">光学镀膜信息删除失败,详情如下:</span><br/><span class="red icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>',
-			                                    title:Lobibox.base.OPTIONS.title.error,
-			                                    width:Lobibox.base.OPTIONS.width,
-			                                    buttons:{yes:Lobibox.base.OPTIONS.buttons.cancel}
-			                                });
+			                    			showNotice('Error','<span style="padding-top:5px">光学镀膜信息删除失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
 			                    		}
 			                        },'json'); 
 			                    }

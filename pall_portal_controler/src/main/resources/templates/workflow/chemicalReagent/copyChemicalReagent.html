@@ -120,12 +120,13 @@
 										<fieldset style="margin-top:0px">
 		    								<legend>
 		    									<label class="blue control-label" th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.assemblyOutputLotNum}"></label>
+		    									<span class="blue control-label" id="assemblynum"></span>
 		    									<span class="btn btn-white btn-primary btn-sm" id="addAssemblyOutputLotNumButton">  
 					                     			<label th:text="#{pages.workflow.chemicalReagentManage.modChemicalReagent.form.compoundReagents.button}" th:remove="tag"></label>
 					                     		</span>
 		    								</legend>
 											<div class="col-md-10" id="addAssemblyPanel">
-							                      <div th:each="chemicalReagentRelation:${chemicalReagentEntity.chemicalReagentRelations}" th:remove="tag">
+							                      <!--div th:each="chemicalReagentRelation:${chemicalReagentEntity.chemicalReagentRelations}" th:remove="tag">
 				                          			<div class="col-md-4" style="margin-bottom:20px">
 					                    				<div class="rowGroup">
 															<div class="checkbox removeButton">
@@ -136,7 +137,7 @@
 															</div>
 												         </div>
 													 </div>
-				                          		</div>
+				                          		</div-->
 											</div>
 	  									</fieldset>
 									</div>

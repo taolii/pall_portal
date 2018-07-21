@@ -3,7 +3,7 @@
 <mapper namespace="com.pall.portal.repository.mapper.report.ReportSummaryDao"> 
 	<select id="queryAssemblyScrapSummary" resultType="com.pall.portal.repository.entity.report.AssemblyScrapSummaryEntity"
 	parameterType="com.pall.portal.repository.entity.report.AssemblyScrapSummaryQueryFormEntity">
-		select a.output_lot_num outputLotNum,a.part_num partNum,a.work_order_num workOrderNum,s.outputQtys,s.scrapQtys,b.dataid dataid,sum(b.defect_value)defectValues from(select f.output_lot_num,f.part_num,f.work_order_num,sum(f.output_qty)outputQtys,sum(f.scrap_qty) scrapQtys from t_ums_workflow_assembly f  where 1=1
+		select a.output_lot_num outputLotNum,a.part_num partNum,a.work_order_num workOrderNum,s.outputQtys,s.scrapQtys,b.dataid dataid,sum(b.defect_value)defectValues from(select f.output_lot_num,f.part_num,f.work_order_num,sum(1)outputQtys,sum(f.scrap_qty) scrapQtys from t_ums_workflow_assembly f  where 1=1
 		 <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
 	       AND f.delivery_time &gt;= #{startDeliveryTime}  
 	    </if>
@@ -32,7 +32,7 @@
  	</select>
  	<select id="queryAssemblyScrapSummaryTotalRecords" resultType="int"
 		parameterType="com.pall.portal.repository.entity.report.AssemblyScrapSummaryQueryFormEntity"> 
-	 select count(1) from(select f.output_lot_num outputLotNum,f.part_num partNum,f.work_order_num workOrderNum,sum(f.output_qty)outputQtys,sum(f.scrap_qty) scrapQtys from t_ums_workflow_assembly f where 1=1
+	 select count(1) from(select f.output_lot_num outputLotNum,f.part_num partNum,f.work_order_num workOrderNum,sum(1)outputQtys,sum(f.scrap_qty) scrapQtys from t_ums_workflow_assembly f where 1=1
 	     <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
 	       AND f.delivery_time &gt;= #{startDeliveryTime}  
 	    </if>

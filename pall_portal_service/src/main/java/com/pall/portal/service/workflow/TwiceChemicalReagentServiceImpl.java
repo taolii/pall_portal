@@ -272,7 +272,10 @@ public class TwiceChemicalReagentServiceImpl implements TwiceChemicalReagentServ
 		BaseResponse baseResponse=new BaseResponse();
 		try{
 			chemicalReagentDao.delTwiceChemicalReagent(crIDs);
-			
+			//删除化学试剂信息
+			chemicalReagentDao.delTwiceChemicalCompoundReagents(crIDs);
+			//删除关系关系对象信息
+			chemicalReagentDao.delTwiceChemicalReagentRelations(crIDs);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){
 			logger.error(resourceUtils.getMessage("opticalfilmingManage.workflow.service.delOpticalFilming.exception"),e);

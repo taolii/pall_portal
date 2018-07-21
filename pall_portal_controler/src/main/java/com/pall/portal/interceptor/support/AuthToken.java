@@ -47,7 +47,6 @@ public class AuthToken {
 	public void setUserEntity(UserEntity userEntity) {
 		this.userEntity = userEntity;
 	}
-
 	public List<String> getAuthList() {
 		return AuthList;
 	}
