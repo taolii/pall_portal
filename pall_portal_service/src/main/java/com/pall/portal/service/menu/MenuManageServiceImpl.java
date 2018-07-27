@@ -53,6 +53,7 @@ public class MenuManageServiceImpl implements MenuManageService{
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
 		}
 		return baseResponse;
+		
 	}
 	/*
 	 * 递归获取子菜单
@@ -103,6 +104,7 @@ public class MenuManageServiceImpl implements MenuManageService{
 			baseResponse.setResultMsg(resourceUtils.getMessage("menumanage.service.queryMenuList.exception")+e.toString());
 		}
 		return baseResponse;
+		
 	}
 	@Override
 	@Transactional(rollbackFor=Exception.class)

@@ -155,8 +155,8 @@ $(document).ready(function() {
     		}
     	});
     	$('#modDataForm [name=scrapQty]').val(defectNum);
-    	var outputQty=Number($('#modDataForm [name=inputQty]').val())-defectNum;
-    	$('#modDataForm [name=outputQty]').val(outputQty);
+    	var outputQty=Number($('#modDataForm [name=outputQty]').val())+defectNum;
+    	$('#modDataForm [name=inputQty]').val(outputQty);
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
