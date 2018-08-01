@@ -14,7 +14,7 @@
              	<div class="col-md-6 ">
              		<h4 class="header blue lighter bigger">
 						<i class="ace-icon fa fa-coffee green"></i>
-						用户登录
+						<span th:text="#{pages.login.title}"></span>
 					</h4>
 	                <form method="post" id="loginForm">
 	                	 <div class="form-group">
@@ -47,14 +47,14 @@
 	            </div>
 	            <div class="col-md-6 hidden-sm hidden-xs">
 	               <div class="form-group form-group-lg text-left">
-	               <img alt="" th:src="@{{path}/dist/login/images/login-box-bg.jpg(path=${contextPath})}"/>
+	               <img alt="" width="420px" th:src="@{{path}/dist/login/images/login-box-bg.jpg(path=${contextPath})}"/>
 	               </div>
 	            </div>
         	</div>
 	        <div  style="margin-top:15px;color: #a94442;font-size:14pt;text-align:left" th:if="${errMsg ne null}" role="alert" th:text="${errMsg}">
 	        </div>
 	         <div class="container text-center login-bottom" style="font:30px">
-	            &copy;<span class="show-year">2017</span><span>ForteBio Manufacture Tracking System v1</span>
+	            &copy;<span class="show-year">2017</span><span th:text=#{pages.system.version}></span>
 	        </div>
     	</div>
 	</body>

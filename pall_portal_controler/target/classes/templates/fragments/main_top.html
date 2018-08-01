@@ -13,7 +13,7 @@
 					<a th:href="${#httpServletRequest.getContextPath()}+'/index'" class="navbar-brand">
 						<small>
 							<img height="45px" width="200px" th:src="@{{path}/dist/common/images/logo.png(path=${contextPath})}"  />
-							&nbsp;&nbsp;&nbsp;&nbsp;MTS
+							&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="#{pages.system.version}"></span>
 						</small>
 						
 					</a>
