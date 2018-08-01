@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title th:text="#{pages.system.name}+'-'+#{pages.workflow.platedfilm.modPlatedfilm.title}"></title>
+	<script type="text/javascript" th:src="@{{path}/dist/workflow/platedfilm/js/modifyPlatedFilmInfo.js(path=${contextPath})}"></script>
+	<script type="text/javascript" th:src="@{{path}/dist/workflow/platedfilm/js/selectOpticalFilming.js(path=${contextPath})}"></script>
+</head>
+<body>
+	<div th:fragment="content">
+		 <div th:fragment="content">
+        	<div class="breadcrumbs" id="breadcrumbs">
+				<ul class="breadcrumb">
+					<li>
+						<i class="ace-icon fa fa-home home-icon"></i>
+						<a href="javascript:void(0)"  class="homemenu" ></a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" class="submenumenu"></a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/workflow/modPlatedFilm?pfid='+${platedFilmEntity.pfID}+'&operator=\');'" th:text="#{pages.workflow.platedfilm.modPlatedfilm.title}"></a>
+					</li>
+				</ul>
+			</div>
+		<div class="page-content">
+			<div class="page-content-area">
+				<div class="row">
+					<div class="col-xs-12">
+						<form method="POST" id="modDataForm" class="form-horizontal">
+							<input type='hidden' id="updateForm" name="updateForm" value="#modDataForm" /> 
+							<div class="form-group"  style="display: none;">
+                    			<div class="col-md-4" style="margin-bottom:20px" id="template">
+                    				<div class="rowGroup">
+	                    				<span class="col-md-3 control-label defect">
+										</span>
+										<div class="col-md-6">
+											<input type='text' class="form-control" />
+										</div>
+										<span class="col-md-2 removeButton btn btn-sm btn-danger">
+											 <i class="glyphicon glyphicon-remove"></i>
+								         </span>
+							         </div>
+								 </div>
+                			</div>
+                			<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.coatingTime}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
+										<input type='hidden' name="pfID" th:value="${platedFilmEntity.pfID}"/>
+										<input type='text' name="coatingTime" id='modFormCoatingTime' class="form-control form_datetime" th:value="${platedFilmEntity.coatingTime}"/>
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.pfTime}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="pfTime" id='modFormPfTime' class="form-control form_datetime" th:value="${platedFilmEntity.pfTime}"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.inputLotNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-3">
+										<input type='text' id="inputLotNum"  name="inputLotNum"  class="form-control" readonly="readonly" th:value="${platedFilmEntity.inputLotNum}"/>
+									</div>
+									<div class="col-md-1">
+										<span class=" btn btn-white btn-info" id="addInputLotNum">  
+		                     				<label th:text="#{pages.workflow.platedfilm.addPlatedfilm.button.inputLotNum.add}" th:remove="tag"></label>
+		                     			</span>
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.inputQty}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="inputQty" class="form-control"  th:value="${platedFilmEntity.inputQty}"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.fixtureNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="fixtureNum" class="form-control"  th:value="${platedFilmEntity.fixtureNum}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.fixtureAttribute}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4 control-input">
+										<select name="fixtureAttribute" class="form-control" >
+							              <option  th:each="dataConfig:${fixtureAttrDataConfigs}" th:selected="${platedFilmEntity.fixtureAttribute==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                	</select>    
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.outputLotNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="outputLotNum" class="form-control" th:value="${platedFilmEntity.outputLotNum}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.apsBottle}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="apsBottle" class="form-control" th:value="${platedFilmEntity.apsBottle}"/> 
+									</div>
+									
+								</div>
+							</div>
+							<div class="form-group" style="display:none">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.scrapQty}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="scrapQty" class="form-control" th:value="${platedFilmEntity.scrapQty}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label" >
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.outputQty}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="outputQty" class="form-control" th:value="${platedFilmEntity.outputQty}"/> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.underIQCQty}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="underIQCQty" class="form-control" th:value="${platedFilmEntity.underIQCQty}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.functionalTestQty}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="functionalTestQty" class="form-control" th:value="${platedFilmEntity.functionalTestQty}"/> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup" style="display:none">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.toHUBQty}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="toHUBQty" class="form-control" th:value="${platedFilmEntity.toHUBQty}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.remainQty}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="remainQty" class="form-control" th:value="${platedFilmEntity.remainQty}"/> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.apsCondition}" th:remove="tag"></label>
+									</span>
+									<div class='col-md-4 control-input'>  
+				                    	<select name="apsCondition" class="form-control">
+								              <option  th:each="dataConfig:${apsDataConfigs}" th:selected="${platedFilmEntity.apsCondition==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+								              </option>
+		                                </select>  
+	            					</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.qcUseQty}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="qcUseQty" class="form-control" th:value="${platedFilmEntity.qcUseQty}"/> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.partNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class='col-md-4 control-input'>  
+				                    	<select name="partNum" class="form-control">
+								              <option  th:each="dataConfig:${pnDataConfigs}" th:selected="${platedFilmEntity.partNum==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+								              </option>
+		                                </select>  
+	            					</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.workOrderNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="workOrderNum" class="form-control" th:value="${platedFilmEntity.workOrderNum}"/> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
+										<fieldset>
+	    								<legend>
+	    									<label class="blue control-label" th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.sfBomNum}"></label>
+	    								</legend>
+											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${sfDataConfigs}">
+												<label>
+													<input name="sfBoms" class="ace" type="checkbox"  th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
+													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
+												</label>
+											</div>
+	  									</fieldset>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="text-center">
+									<button class="btn btn-white btn-primary">
+										<i class="fa fa-check"></i> 
+										<span th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.button.mod}" th:remove="tag"></span>
+									</button>
+									<button id="modBackButton"  type="button" class="btn btn-white btn-primary" data-dismiss="modal">
+										<i class="fa fa-close"></i> 
+										<span th:text="#{pages.workflow.platedfilm.modPlatedfilm.form.button.shut}" th:remove="tag"></span>
+									</button> 
+								</div>
+							</div>
+						</form>
+                	</div>
+                </div>
+               </div>
+            </div>
+        </div>
+		<div class="clearfix"></div>
+		<div id="selectOpticalFilming">
+			<div th:replace="workflow/platedfilm/selectOpticalFilmingModal:: content"></div>
+		</div>
+	</div>
+</body>
+</html>

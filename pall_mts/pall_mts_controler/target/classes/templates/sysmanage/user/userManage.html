@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/indexModel">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title th:text="#{pages.system.name}+'-'+#{pages.user.userManage.title}"></title>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/userManage.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/user/js/adminModifyPwd.js(path=${contextPath})}"></script>
+    </head>
+    <body>
+        <div th:fragment="content">
+        	<div class="breadcrumbs" id="breadcrumbs">
+				<ul class="breadcrumb">
+					<li>
+						<i class="ace-icon fa fa-home home-icon"></i>
+						<a href="javascript:void(0)"  class="homemenu" ></a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" class="submenumenu"></a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								 <form id="queryForm" method="post" class="form-horizontal">
+				                    <div class="panel-group" id="steps">
+				                        <div class="panel panel-primary">
+				                            <div class="panel-heading">
+				                                <h4 class="panel-title">
+				                                	<i class="fa fa-search"></i>&nbsp;&nbsp;<a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.user.userManage.form.title}"></a>
+				                              	</h4>
+				                            </div>
+				                            <div id="stepOne" class="panel-collapse collapse in  ">
+				                                <div class="panel-body">
+				                                	<div class="col-md-3 ">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon "><a class="glyphicon glyphicon-user"></a></span>
+									                        <input type="text" name="account" class="form-control" th:placeholder="#{pages.user.userManage.form.account.input.tip}"/>
+					                                	</div>
+						                      		</div>
+													<div class="col-md-3">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon"><a class="glyphicon glyphicon-phone"></a></span>
+									                        <input type="text" name="mobile" class="form-control" th:placeholder="#{pages.user.userManage.form.mobile.input.tip}"/>
+					                                	</div>
+								                    </div>
+				                                	<div class="col-md-3">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon"><a class="glyphicon glyphicon-wrench"></a></span>
+									                        <select name="operatorType" class="form-control select2">
+							                                     <option value="" th:text="#{pages.user.userManage.form.operatortype.select.all}"></option>
+							                                     <option value="1" th:text="#{pages.user.userManage.form.operatortype.select.admin}"></option>
+							                                     <option value="2" th:text="#{pages.user.userManage.form.operatortype.select.common}"></option>
+			                                    			</select>
+					                                	</div>
+								                    </div>
+								                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+								                        <button id="btn-query" class="btn btn-white btn-primary s" type="button">
+								                        <i class="fa fa-search"></i>
+					                 						<span th:text="#{pages.user.userManage.form.query.button.tip}" th:remove="tag"></span>
+														</button> 
+								                    </div>
+								                    
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+		                		</form>
+	                		</div>
+	                		<div class="row">
+	                			<div class="pull-right">
+							        <div class="btn-group">
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add">
+							                <i class="fa fa-plus"></i>
+							                <span th:text="#{pages.user.userManage.table.button.add}" th:remove="tag"></span>
+							            </a>
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll">
+							                <i class="fa fa-remove"></i>
+							                <span th:text="#{pages.user.userManage.table.button.batchdel}" th:remove="tag"></span>
+							            </a>
+							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm">
+							                <i class="fa fa-refresh"></i>
+							                <span th:text="#{pages.user.userManage.table.button.refresh}" th:remove="tag"></span>
+							            </a>
+							        </div>
+		    					</div>
+	                		</div>
+	                		
+		                 	<div class="row" id="div-table-container">
+		                 		<div class="table-responsive" style="overflow-x:hidden">
+			                 		<table id="datatable" class="table table-striped table-bordered table-hover" >
+										<thead>
+											<tr>
+												<th>
+													<input class="ace" type="checkbox" name="cb-check-all"/>
+													<span class="lbl"></span>
+												</th>
+												<th th:text="#{pages.user.userManage.table.title.operatorid}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.account}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.name}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.sex}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.position}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.mobile}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.email}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.operatortype}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.createtime}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.updatetime}" class="center"></th>
+												<th th:text="#{pages.user.userManage.table.title.operator}" class="center"></th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+		                 	</div>
+	        			</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div id="modPwd">
+				<div th:replace="sysmanage/user/modPwdModal:: content"></div>
+			</div>
+		</div>
+   </body>
+</html>

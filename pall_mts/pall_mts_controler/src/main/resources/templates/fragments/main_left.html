@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/indexModel">
+
+    <head>
+        <title th:text="#{pages.system.name}+'-'+#{pages.index.main_left.title}"></title>
+    </head>
+    <body>
+	    <div th:fragment="content" th:remove="tag">
+	    	
+			<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+				<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+					<button class="btn btn-success">
+						<!--i class="icon-signal"></i-->
+					</button>
+					<button class="btn btn-info">
+						<!--i class="icon-pencil"></i-->
+					</button>
+					<button class="btn btn-warning">
+						<!--i class="icon-group"></i-->
+					</button>
+					<button class="btn btn-danger">
+						<!--i class="icon-cogs"></i-->
+					</button>
+				</div>
+				<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+					<span class="btn btn-success"></span>
+					<span class="btn btn-info"></span>
+					<span class="btn btn-warning"></span>
+					<span class="btn btn-danger"></span>
+				</div>
+			</div>
+	    	<ul id="menu_nav" class="nav nav-list">
+				<li class="">
+					<a th:href="${#httpServletRequest.getContextPath()}+'/index'">
+						<i class="menu-icon fa fa-tachometer"></i>
+						<span class="menu-text" th:text="#{pages.index.main_left.menu.h3.title}"></span>
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<div th:each="ppm, menuVs:${session.LOGIN_USER.authMenus}" th:remove="tag">
+					<li class="">
+						<a th:id="'menu_'+${ppm.pmenuInfo.menuid}" href="#" class="dropdown-toggle">
+							<i th:class="${ppm.pmenuInfo.menuIcon}"></i>
+							<span class="menu-text" th:text="${ppm.pmenuInfo.menuName}"></span>
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						<b class="arrow"></b>
+						<ul class="submenu">
+							<div th:each="pm,subMenuVs: ${ppm.subMenuInfos}" th:remove="tag">
+								<li class="">
+									<a   th:href="${#httpServletRequest.getContextPath()}+${pm.pmenuInfo.menuUrl}">
+										<i class="menu-icon fa fa-caret-right"></i>
+										<span th:text="${pm.pmenuInfo.menuName}"></span>
+									</a>
+									<b class="arrow"></b>
+								</li>
+							</div>
+						</ul>
+					</li>
+				</div>
+			</ul>
+		</div>
+    </body>
+</html>

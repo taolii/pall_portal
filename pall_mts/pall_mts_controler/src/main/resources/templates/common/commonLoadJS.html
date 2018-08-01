@@ -1,0 +1,29 @@
+<!DOCTYPE html >
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+<title th:text="#{pages.system.name}+'-'+#{pages.index.title}"></title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!-- 默认360 兼容模式 -->
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+	<div th:fragment="commonLoadJS">
+		<input type="hidden" id="contextPath" th:value="${#httpServletRequest.getContextPath()}"/>
+		
+		<script type="text/javascript" th:src="@{{path}/dist/common/js/public.js(path=${contextPath})}"></script>
+		<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace-extra.min.js(path=${contextPath})}"></script>
+		<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace-elements.min.js(path=${contextPath})}"></script>
+		<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace.min.js(path=${contextPath})}"></script>
+		<script type="text/javascript">
+		 $(document).ready(function() {
+	        	//时间设置
+		      setInterval(function(){$('#time').html(currentTime)},1000);
+	        });
+		</script>
+	</div>
+</body>
+</html>

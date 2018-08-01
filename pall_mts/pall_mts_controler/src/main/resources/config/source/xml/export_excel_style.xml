@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cellStyleConfig>
+	<headlineStyleConfig>
+		<cellFontStyleConfig>
+			<fontHeightInPoints desc="字体大小">18</fontHeightInPoints>
+			<fontName desc="字体格式">"仿宋_GB2312"</fontName>
+			<color desc="字体颜色"></color>
+		</cellFontStyleConfig>
+		<alignment desc="对齐方式">center</alignment>
+		<bottomBorderColor desc="边框颜色">0x11</bottomBorderColor>
+		<borderBottom desc="下边框大小">1</borderBottom>
+		<borderTop desc="上边框大小">1</borderTop>
+		<borderRight desc="右边框大小">1</borderRight>
+		<borderLeft desc="左边框大小">1</borderLeft>
+		<fillForegroundColor desc="单元格前景色">0x28</fillForegroundColor>
+		<fillBackgroundColor desc="单元格背景色">0x28</fillBackgroundColor>
+		<verticalAlignment desc="垂直对齐方式">center</verticalAlignment>
+		<wrapText desc="是否自动换行"></wrapText>
+	</headlineStyleConfig>
+	<cellDataStyleConfig>
+		<cellFontStyleConfig>
+			<fontHeightInPoints desc="字体大小">18</fontHeightInPoints>
+			<fontName desc="字体格式">"仿宋_GB2312"</fontName>
+			<color desc="字体颜色"></color>
+		</cellFontStyleConfig>
+		<alignment desc="对齐方式">center</alignment>
+		<bottomBorderColor desc="边框颜色">0x11</bottomBorderColor>
+		<borderBottom desc="下边框大小">1</borderBottom>
+		<borderTop desc="上边框大小">1</borderTop>
+		<borderRight desc="右边框大小">1</borderRight>
+		<borderLeft desc="左边框大小">1</borderLeft>
+		<verticalAlignment desc="垂直对齐方式">center</verticalAlignment>
+		<wrapText desc="是否自动换行"></wrapText>
+	</cellDataStyleConfig>
+</cellStyleConfig>

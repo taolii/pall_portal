@@ -1,0 +1,17 @@
+com\pall\mts\repository\mapper\report\ReportSummaryDao.class
+com\pall\mts\repository\mapper\workflow\ChemicalReagentDao.class
+com\pall\mts\repository\mapper\workflow\PlatedFilmDao.class
+com\pall\mts\repository\mapper\workflow\AssemblyDao.class
+com\pall\mts\repository\mapper\dataconfig\DataConfigManageDao.class
+com\pall\mts\repository\mapper\menu\MenuManageDao.class
+com\pall\mts\repository\mapper\workflow\OpticalFilmingDao.class
+com\pall\mts\repository\mapper\workflow\CleanDao.class
+com\pall\mts\repository\mapper\workflow\TwiceChemicalReagentDao.class
+com\pall\mts\repository\mapper\workflow\SampleAssemblyDao.class
+com\pall\mts\repository\mapper\role\RoleManageDao.class
+com\pall\mts\repository\mapper\workflow\PolishDao.class
+com\pall\mts\repository\mapper\reagentmixture\ReagentMixtureManageDao.class
+com\pall\mts\repository\mapper\workflow\DefectDao.class
+com\pall\mts\repository\mapper\user\UserManageDao.class
+com\pall\mts\repository\mapper\menu\ButtonManageDao.class
+com\pall\mts\repository\mapper\right\RightManageDao.class

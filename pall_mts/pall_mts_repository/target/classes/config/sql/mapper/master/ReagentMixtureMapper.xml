@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.mts.repository.mapper.reagentmixture.ReagentMixtureManageDao"> 
+	<select id="queryReagentMixtureList" resultType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureEntity"
+	parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureQueryFormEntity"> 
+ 		select f.rmid,date_format(f.config_time, '%Y-%m-%d %H:%i:%s') configTime,f.main_reagent mainReagent,f.rev,f.lot_num lotNum,f.wo_num woNum,f.amount,f.ph_value phValue,f.concentration,date_format(f.temperature_up_starttime, '%Y-%m-%d %H:%i:%s') temperatureUpStarttime,date_format(f.temperature_up_endtime, '%Y-%m-%d %H:%i:%s') temperatureUpEndtime,f.reagent_temperature reagentTemperature,f.config_operator configOperator,f.reserver1,f.reserver2,f.reserver3,f.createtime,f.updatetime updateTime,
+f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	    <if test="rmid != null and rmid != '' ">  
+	       AND f.rmid = #{rmid}  
+	    </if>
+	    <if test="startConfigTime != null and startConfigTime != '' ">  
+	       AND f.config_time &gt;= #{startConfigTime}  
+	    </if>
+	    <if test="endConfigTime != null and endConfigTime != '' ">  
+	       AND f.config_time &lt;= #{endConfigTime}  
+	    </if>
+	    <if test="mainReagent != null and mainReagent != '' ">  
+	       AND f.main_reagent= #{mainReagent}  
+	    </if>
+	     order by f.updatetime desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryReagentMixtureTotalRecords" resultType="int" parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureQueryFormEntity"> 
+ 		select count(1) from t_ums_reagentmixture f  where 1=1
+		 <if test="rmid != null and rmid != '' ">  
+	       AND f.rmid = #{rmid}  
+	    </if>
+		<if test="startConfigTime != null and startConfigTime != '' ">  
+	       AND f.config_time &gt;= #{startConfigTime}  
+	    </if>
+	    <if test="endConfigTime != null and endConfigTime != '' ">  
+	       AND f.config_time &lt;= #{endConfigTime}  
+	    </if>
+	    <if test="mainReagent != null and mainReagent != '' ">  
+	       AND f.main_reagent= #{mainReagent}  
+	    </if>
+ 	</select>
+ 	
+    <insert id="addReagentMixture" parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureEntity">
+    	<selectKey keyProperty="rmid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_ums_reagentmixture(config_time,main_reagent,rev,lot_num,wo_num,amount,ph_value,concentration,temperature_up_starttime,temperature_up_endtime,reagent_temperature,config_operator,reserver1,reserver2,reserver3,operatorid,createtime,updatetime)
+        values(#{configTime},#{mainReagent},#{rev},#{lotNum},#{woNum},#{amount},#{phValue},#{concentration},#{temperatureUpStarttime},#{temperatureUpEndtime},#{reagentTemperature},#{configOperator},#{reserver1},#{reserver2},#{reserver3},#{operatorid},now(),now())
+    </insert>
+    <update id="modReagentMixture" parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureEntity">
+        update t_ums_reagentmixture set config_time=#{configTime},main_reagent=#{mainReagent},rev=#{rev},lot_num=#{lotNum},wo_num=#{woNum},amount=#{amount},ph_value=#{phValue},concentration=#{concentration},temperature_up_starttime=#{temperatureUpStarttime},temperature_up_endtime=#{temperatureUpEndtime},reagent_temperature=#{reagentTemperature},config_operator=#{configOperator},reserver1=#{reserver1},reserver2=#{reserver2},reserver3=#{reserver3},operatorid=#{operatorid},updatetime=now()
+        where rmid=#{rmid}
+    </update>
+    <delete id="delReagentMixture"  parameterType="java.util.List">  
+        DELETE FROM t_ums_reagentmixture WHERE rmid in 
+        <foreach collection="rmids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<delete id="delReagentMixtureSns"  parameterType="java.util.List">  
+        DELETE FROM t_ums_reagentmixture_sns WHERE rmid in 
+        <foreach collection="rmids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryReagentMixtureSns" resultType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureEntitySns" parameterType="java.util.List"> 
+ 		select srmid,rmid,reagents_name reagentsName,reagents_sn  reagentsSn,reagents_field_name reagentsFieldName from t_ums_reagentmixture_sns f where rmid in 
+        <foreach collection="rmids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+ 	</select>
+	<insert id="addReagentMixtureSns" parameterType="java.util.List">
+		 insert into t_ums_reagentmixture_sns(rmid,reagents_field_name,main_reagent,reagents_name,reagents_sn)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.rmid},#{item.reagentsFieldName},#{item.mainReagent},#{item.reagentsName},#{item.reagentsSn})
+    	</foreach> 
+    </insert>
+    <select id="queryReagentSnsMixtureList" resultType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureEntitySns"
+	parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureSnsQueryFormEntity"> 
+ 		select f.srmid,f.rmid,f.reagents_name reagentsName,f.reagents_sn  reagentsSn,f.reagents_field_name reagentsFieldName,g.main_reagent mainReagent from t_ums_reagentmixture g left join t_ums_reagentmixture_sns f  on f.rmid=g.rmid where f.rmid is not null
+	    <if test="rmid != null and rmid != '' ">  
+	       AND f.rmid = #{rmid}  
+	    </if>
+	    <if test="mainReagent != null and mainReagent != '' ">  
+	       AND g.main_reagent = #{mainReagent}  
+	    </if>
+	    <if test="reagentsName != null and reagentsName != '' ">  
+	       AND f.reagents_name = #{reagentsName}  
+	    </if>
+	     limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryReagentMixtureSnsTotalRecords" resultType="int" parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureSnsQueryFormEntity"> 
+ 		select count(1) from  t_ums_reagentmixture g  left join  t_ums_reagentmixture_sns f on f.rmid=g.rmid where f.rmid is not null
+		 <if test="rmid != null and rmid != '' ">  
+	       AND f.rmid = #{rmid}  
+	    </if>
+	     <if test="mainReagent != null and mainReagent != '' ">  
+	       AND g.main_reagent = #{mainReagent}  
+	    </if>
+	    <if test="reagentsName != null and reagentsName != '' ">  
+	       AND f.reagents_name = #{reagentsName}  
+	    </if>
+ 	</select>
+</mapper> 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.mts.repository.mapper.right.RightManageDao"> 
+	<select id="queryRightList" resultType="com.pall.mts.repository.entity.right.RightEntity"
+	parameterType="com.pall.mts.repository.entity.right.RightQueryFormEntity"> 
+ 		select rightid,righttype,dataid,DESCRIPTION rDetail from t_ums_right where 1=1
+ 		<if test="rightType != null and rightType != ''">  
+	       AND AND f.righttype = #{rightType}
+	    </if>
+	     order by righttype desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryRightTotalRecords" resultType="int"
+	parameterType="com.pall.mts.repository.entity.right.RightQueryFormEntity"> 
+ 		select count(1) from t_ums_right where 1=1
+ 		<if test="rightType != null and rightType != ''">  
+	       AND AND f.righttype = #{rightType}
+	    </if>
+ 	</select>
+ 	<update id="modRole" parameterType="com.pall.mts.repository.entity.right.RightEntity">
+         update t_ums_right f set righttype=#{rightType},dataid=#{dataid},DESCRIPTION=#{description} where f.rightid = #{rightid}
+    </update>
+    <insert id="addRight" parameterType="com.pall.mts.repository.entity.right.RightEntity">
+    	<selectKey keyProperty="rightid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+         insert into t_ums_right(righttype,dataid,DESCRIPTION)values(#{rightType},#{dataid},#{description})
+    </insert>
+    <delete id="delRight"  parameterType="java.util.List">  
+        DELETE FROM t_ums_right WHERE 1=1 
+        <if test="(dataids== null or dataids.size==0) and (rightTypes == null  or rightTypes.size==0) ">  
+	       AND 1=2   
+	    </if> 
+        <if test="dataids != null  and dataids.size>0 ">  
+	       AND dataid in
+	        <foreach collection="dataids" item="item" index="index" open="(" close=")" separator=",">  
+        		#{item}  
+    		</foreach>  
+	    </if> 
+	     <if test="rightTypes != null  and rightTypes.size>0 ">  
+	       and righttype in 
+	    	<foreach collection="rightTypes" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach>
+	    </if>
+	</delete>
+	<delete id="delRoleRight"  parameterType="java.util.List">  
+        DELETE f,g FROM t_ums_rolepermission f,t_ums_right g where f.rightid=g.rightid 
+        <if test="(dataids== null or dataids.size==0) and (rightids == null  or rightids.size==0) ">  
+	       AND 1=2   
+	    </if> 
+        <if test="dataids != null  and dataids.size>0 ">  
+	       AND g.dataid in
+	        <foreach collection="dataids" item="item" index="index" open="(" close=")" separator=",">  
+        		#{item}  
+    		</foreach> 
+	    </if> 
+	     <if test="rightids != null  and rightids.size>0 ">  
+	       and f.rightid in 
+	    	<foreach collection="rightids" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach>
+	    </if>
+	</delete>
+</mapper> 

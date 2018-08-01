@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.portal.repository.mapper.workflow.CleanDao"> 
+	<select id="queryCleanList" resultType="com.pall.portal.repository.entity.workflow.CleanEntity"
+	parameterType="com.pall.portal.repository.entity.workflow.CleanQueryFormEntity"> 
+ 		select f.clean_id cleanid,f.clean_time cleanTime,f.clean_lot_num cleanLotNum,f.output_qty outputQty,f.scrap_qty scrapQty,
+ 	f.to_oc_qty toOCQty,f.yield,	f.part_num partNum,f.work_order_num workOrderNum,f.input_time inputTime,f.update_time updateTime,
+f.operatorid,g.account operatorName from t_ums_workflow_clean f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+		<if test="cleanTime != null and cleanTime != '' ">  
+	       AND f.clean_time = #{cleanTime}  
+	    </if>
+	    <if test="startCleanTime != null and startCleanTime != '' ">  
+	       AND f.clean_time &gt;= #{startCleanTime}  
+	    </if>
+	    <if test="endCleanTime != null and endCleanTime != '' ">  
+	       AND f.clean_time &lt;= #{endCleanTime}  
+	    </if>
+	    <if test="cleanLotNum != null and cleanLotNum != '' ">  
+	       AND f.clean_lot_num = #{cleanLotNum}  
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryCleanTotalRecords" resultType="int" parameterType="com.pall.portal.repository.entity.workflow.CleanQueryFormEntity"> 
+ 		select count(1) from t_ums_workflow_clean f  where 1=1
+		<if test="cleanTime != null and cleanTime != '' ">  
+	       AND f.clean_time = #{cleanTime}  
+	    </if>
+	    <if test="startCleanTime != null and startCleanTime != '' ">  
+	       AND f.clean_time &gt;= #{startCleanTime}  
+	    </if>
+	    <if test="endCleanTime != null and endCleanTime != '' ">  
+	       AND f.clean_time &lt;= #{endCleanTime}  
+	    </if>
+	    <if test="cleanLotNum != null and cleanLotNum != '' ">  
+	       AND f.clean_lot_num = #{cleanLotNum}  
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+ 	</select>
+ 	
+    <insert id="addClean" parameterType="com.pall.portal.repository.entity.workflow.CleanEntity">
+    	<selectKey keyProperty="cleanID" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_ums_workflow_clean(clean_time,clean_lot_num,output_qty,to_oc_qty,scrap_qty,yield,part_num,work_order_num,operatorid,input_time,update_time)
+        values(#{cleanTime},#{cleanLotNum},#{outputQty},#{toOCQty},#{scrapQty},#{yield},#{partNum},#{workOrderNum},#{operatorid},now(),now())
+    </insert>
+    <update id="modifyClean" parameterType="com.pall.portal.repository.entity.workflow.CleanEntity">
+        update  t_ums_workflow_clean f set f.clean_time=#{cleanTime},f.clean_lot_num=#{cleanLotNum},f.output_qty=#{outputQty},f.to_oc_qty=#{toOCQty},f.scrap_qty=#{scrapQty},f.yield=#{yield},
+        f.part_num=#{partNum},f.yield=#{yield},f.part_num=#{partNum},f.work_order_num=#{workOrderNum},f.operatorid=#{operatorid},f.update_time=now()
+        where f.clean_id=#{cleanID}
+    </update>
+    <delete id="delClean"  parameterType="java.util.List">  
+        DELETE FROM t_ums_workflow_clean WHERE clean_id in 
+        <foreach collection="cleanIDs" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+</mapper> 

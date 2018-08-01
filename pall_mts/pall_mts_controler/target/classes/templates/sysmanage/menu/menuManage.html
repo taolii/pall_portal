@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/indexModel">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title th:text="#{pages.system.name}+'-'+#{pages.menu.menuManage.title}"></title>
+        <script type="text/javascript" th:src="@{{path}/vendors/bootstrap-table/js/bootstraptable-treeview.js(path=${contextPath})}"></script>
+        <script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/menuManage.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/addModMenu.js(path=${contextPath})}"></script>
+      	<script type="text/javascript" th:src="@{{path}/dist/sysmanage/menu/js/treeMenu.js(path=${contextPath})}"></script>
+    </head>
+    <body>
+    	<div th:fragment="content">
+        	<div class="breadcrumbs" id="breadcrumbs">
+				<ul class="breadcrumb">
+					<li>
+						<i class="ace-icon fa fa-home home-icon"></i>
+						<a href="javascript:void(0)"  class="homemenu" ></a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" class="submenumenu"></a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="widget-box">
+										<div class="widget-header header-color-blue2">
+											<h4 class="lighter smaller" th:text="#{pages.menu.menuManage.title}"></h4>
+										</div>
+	
+										<div class="widget-body">
+											<div class="widget-main padding-8">
+												<div id="menutree"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+	
+								<div id="menuinfo" class="col-sm-8" style="display:none">
+									<div class="widget-box">
+										<div class="widget-header header-color-green2">
+											<h4 id="menuinfoTitle" class="lighter smaller" th:text="#{pages.menu.addModMenu.title}"></h4>
+										</div>
+	
+										<div class="widget-body">
+											<div class="widget-main padding-8">
+												<div th:replace="sysmanage/menu/addModMenu:: content"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div id="context-menu">
+		        <ul class="dropdown-menu" role="menu">
+		            <li><a tabindex="-1" operator="add" th:text="#{pages.menu.menuManage.contextmenu.add}"> </a></li>
+              		<li class="divider"></li>
+              		<li><a tabindex="-1"  operator="mod" th:text="#{pages.menu.menuManage.contextmenu.mod}"></a></li>
+              		<li class="divider"></li>
+              		<li><a tabindex="-1" operator="del" th:text="#{pages.menu.menuManage.contextmenu.del}"></a></li>
+		        </ul>
+    		</div>
+		</div>
+    </body>
+</html>

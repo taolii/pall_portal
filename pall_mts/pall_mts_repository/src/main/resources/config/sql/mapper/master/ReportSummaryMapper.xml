@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.mts.repository.mapper.report.ReportSummaryDao"> 
+	<select id="queryAssemblyScrapSummary" resultType="com.pall.mts.repository.entity.report.AssemblyScrapSummaryEntity"
+	parameterType="com.pall.mts.repository.entity.report.AssemblyScrapSummaryQueryFormEntity">
+		select a.output_lot_num outputLotNum,a.part_num partNum,a.work_order_num workOrderNum,s.outputQtys,s.scrapQtys,b.dataid dataid,sum(b.defect_value)defectValues from(select f.output_lot_num,f.part_num,f.work_order_num,sum(1)outputQtys,sum(f.scrap_qty) scrapQtys from t_ums_workflow_assembly f  where 1=1
+		 <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
+	       AND f.delivery_time &gt;= #{startDeliveryTime}  
+	    </if>
+	    <if test="endDeliveryTime != null and endDeliveryTime != '' ">  
+	       AND f.delivery_time &lt;= #{endDeliveryTime}  
+	    </if>
+	    
+	    <if test="outputLotNum != null and outputLotNum != '' ">  
+	       AND f.output_lot_num = #{outputLotNum}  
+	    </if>
+	    <if test="fixtureNum != null and fixtureNum != '' ">
+	    	AND f.fixture_num like concat(concat('%',#{fixtureNum}),'%') 
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+		group by f.output_lot_num,f.part_num,f.work_order_num 
+		limit #{startPageNum},#{pageSize}
+		) s left join t_ums_workflow_assembly a ON
+		a.output_lot_num=s.output_lot_num and a.part_num=s.part_num and a.work_order_num=s.work_order_num
+		left join t_ums_workflow_defect b on a.assembly_id=b.defect_id
+		group by a.output_lot_num,a.part_num,a.work_order_num,s.outputQtys,s.scrapQtys,b.dataid;
+ 	</select>
+ 	<select id="queryAssemblyScrapSummaryTotalRecords" resultType="int"
+		parameterType="com.pall.mts.repository.entity.report.AssemblyScrapSummaryQueryFormEntity"> 
+	 select count(1) from(select f.output_lot_num outputLotNum,f.part_num partNum,f.work_order_num workOrderNum,sum(1)outputQtys,sum(f.scrap_qty) scrapQtys from t_ums_workflow_assembly f where 1=1
+	     <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
+	       AND f.delivery_time &gt;= #{startDeliveryTime}  
+	    </if>
+	    <if test="endDeliveryTime != null and endDeliveryTime != '' ">  
+	       AND f.delivery_time &lt;= #{endDeliveryTime}  
+	    </if>
+	    
+	    <if test="outputLotNum != null and outputLotNum != '' ">  
+	       AND f.output_lot_num = #{outputLotNum}  
+	    </if>
+	    <if test="fixtureNum != null and fixtureNum != '' ">
+	    	AND f.fixture_num like concat(concat('%',#{fixtureNum}),'%') 
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+	    group by f.output_lot_num,f.part_num,f.work_order_num) s
+ 	</select>
+ 	<select id="queryProductTracking" resultType="com.pall.mts.repository.entity.report.ProductTrackingEntity"
+	parameterType="com.pall.mts.repository.entity.report.ProductTrackingQueryFormEntity">
+		select f.output_lot_num outputLotNum,f.fixture_num fixtureNum,sum(f.input_qty)inputQtys,sum(f.output_qty)outputQtys,sum(f.scrap_qty) scrapQtys,sum(f.input_qty)-sum(f.output_qty)-sum(f.scrap_qty) diffQtys from t_ums_workflow_assembly f  where 1=1
+		 <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
+	       AND f.delivery_time &gt;= #{startDeliveryTime}  
+	    </if>
+	    <if test="endDeliveryTime != null and endDeliveryTime != '' ">  
+	       AND f.delivery_time &lt;= #{endDeliveryTime}  
+	    </if>
+	    
+	    <if test="outputLotNum != null and outputLotNum != '' ">  
+	       AND f.output_lot_num = #{outputLotNum}  
+	    </if>
+	    <if test="fixtureNum != null and fixtureNum != '' ">
+	    	AND f.fixture_num like concat(concat('%',#{fixtureNum}),'%') 
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+		group by f.fixture_num,f.output_lot_num 
+		limit #{startPageNum},#{pageSize}
+		
+ 	</select>
+ 	<select id="queryProductTrackingTotalRecords" resultType="int"
+		parameterType="com.pall.mts.repository.entity.report.ProductTrackingQueryFormEntity"> 
+	 select count(1) from(select f.output_lot_num outputLotNum,f.fixture_num fixtureNum,sum(f.input_qty)inputQtys,sum(f.output_qty)outputQtys,sum(f.scrap_qty) scrapQtys from t_ums_workflow_assembly f where 1=1
+	     <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
+	       AND f.delivery_time &gt;= #{startDeliveryTime}  
+	    </if>
+	    <if test="endDeliveryTime != null and endDeliveryTime != '' ">  
+	       AND f.delivery_time &lt;= #{endDeliveryTime}  
+	    </if>
+	    
+	    <if test="outputLotNum != null and outputLotNum != '' ">  
+	       AND f.output_lot_num = #{outputLotNum}  
+	    </if>
+	    <if test="fixtureNum != null and fixtureNum != '' ">
+	    	AND f.fixture_num like concat(concat('%',#{fixtureNum}),'%') 
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+	    group by f.fixture_num,f.output_lot_num) s
+ 	</select>
+</mapper> 
