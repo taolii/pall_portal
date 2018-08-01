@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.pall</groupId>
+    <artifactId>pall</artifactId>
+    <version>1.0.1</version>
+  </parent>
+  <artifactId>pall_wdpts</artifactId>
+  <packaging>pom</packaging>
+  <description>Water dispenser production traceability system</description>
+  <modules>
+    <module>pall_wdpts_controler</module>
+    <module>pall_wdpts_common</module>
+    <module>pall_wdpts_api</module>
+    <module>pall_wdpts_service</module>
+    <module>pall_wdpts_repository</module>
+  </modules>
+</project>

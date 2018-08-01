@@ -7,7 +7,7 @@
   </parent>
   <artifactId>pall_mts</artifactId>
   <packaging>pom</packaging>
-  <groupId>com.pall.mts</groupId>
+  <groupId>com.pall</groupId>
   <profiles>
 		<profile>
 			<id>test</id>
@@ -37,6 +37,7 @@
   	<module>pall_mts_controler</module>
   	<module>pall_mts_repository</module>
   	<module>pall_mts_service</module>
+  	<module>pall_mts_api</module>
   </modules>
   <build>
 		<plugins>

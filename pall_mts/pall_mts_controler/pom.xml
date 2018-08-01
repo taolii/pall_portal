@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.pall.mts</groupId>
+    <groupId>com.pall</groupId>
     <artifactId>pall_mts</artifactId>
     <version>1.0.1</version>
     <relativePath>..</relativePath>
   </parent>
    <artifactId>pall_mts_controler</artifactId>
-  <packaging>jar</packaging>
   <dependencies>
     <dependency>
 		 <groupId>org.springframework.boot</groupId>
@@ -85,12 +84,13 @@
 	<dependency>
 		 <groupId>com.pall.mts</groupId>
 		 <artifactId>pall_mts_common</artifactId>
-		 <version>1.0.1</version>
+		 <version>${project.parent.version}</version>
 	</dependency>
 	<dependency>
 		 <groupId>com.pall.mts</groupId>
-		 <artifactId>pall_mts_service</artifactId>
-		 <version>1.0.1</version>
+		 <artifactId>pall_mts_api</artifactId>
+		 <version>${project.parent.version}</version>
 	</dependency>
   </dependencies>
+  <groupId>com.pall.mts</groupId>
 </project>

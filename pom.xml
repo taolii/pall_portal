@@ -195,5 +195,7 @@
   </dependencyManagement>
    <modules>
    	<module>pall_mts</module>
+   	
+   	<module>pall_wdpts</module>
    </modules>
 </project>
