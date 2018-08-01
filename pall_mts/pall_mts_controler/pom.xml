@@ -6,7 +6,8 @@
     <version>1.0.1</version>
     <relativePath>..</relativePath>
   </parent>
-   <artifactId>pall_mts_controler</artifactId>
+  <groupId>com.pall.mts</groupId>
+  <artifactId>pall_mts_controler</artifactId>
   <dependencies>
     <dependency>
 		 <groupId>org.springframework.boot</groupId>
@@ -83,14 +84,8 @@
 	</dependency>
 	<dependency>
 		 <groupId>com.pall.mts</groupId>
-		 <artifactId>pall_mts_common</artifactId>
-		 <version>${project.parent.version}</version>
-	</dependency>
-	<dependency>
-		 <groupId>com.pall.mts</groupId>
-		 <artifactId>pall_mts_api</artifactId>
+		 <artifactId>pall_mts_service</artifactId>
 		 <version>${project.parent.version}</version>
 	</dependency>
   </dependencies>
-  <groupId>com.pall.mts</groupId>
 </project>

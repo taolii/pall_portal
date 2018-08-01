@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.wdpts.repository.mapper.dataconfig.DataConfigManageDao"> 
+	<select id="queryDataConfigList" resultType="com.pall.wdpts.repository.entity.dataconfig.DataConfigEntity"
+	parameterType="com.pall.wdpts.repository.entity.dataconfig.DataConfigQueryFormEntity"> 
+ 		select dataid,datatype,configname,createtime,updatetime,operatorid,DESCRIPTION from t_ums_data_config where 1=1
+ 		 <if test="dataType !=0">  
+	       AND datatype= #{dataType}  
+	    </if>
+	    <if test="configName != null and configName != '' ">  
+	       AND configname = #{configName}  
+	    </if>
+	     order by datatype,ifnull(updatetime,now()) desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryDataConfigTotalRecords" resultType="int"
+	parameterType="com.pall.wdpts.repository.entity.dataconfig.DataConfigQueryFormEntity"> 
+ 		select count(1) from t_ums_data_config where 1=1
+ 		<if test="dataType !=0">  
+	       AND datatype= #{dataType}
+	    </if>
+	    <if test="configName != null and configName != '' ">  
+	       AND configname = #{configName}  
+	    </if>
+ 	</select>
+ 	<update id="modDataConfig" parameterType="com.pall.wdpts.repository.entity.dataconfig.DataConfigEntity">
+         update t_ums_data_config f set configname=#{configName},DESCRIPTION=#{description},updatetime=now(),operatorid=#{operatorid} where f.dataid = #{dataid}
+    </update>
+    <insert id="addDataConfig" parameterType="com.pall.wdpts.repository.entity.dataconfig.DataConfigEntity">
+    	<selectKey keyProperty="dataid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+         insert into t_ums_data_config(datatype,configname,createtime,updatetime,operatorid,DESCRIPTION)values(#{dataType},#{configName},now(),now(),#{operatorid},#{description})
+    </insert>
+    <delete id="delDataConfig"  parameterType="java.util.List">  
+        DELETE FROM t_ums_data_config WHERE dataid in 
+        <foreach collection="dataids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryTableHeaderConfigList" resultType="com.pall.wdpts.repository.entity.dataconfig.TableHeaderConfigEntity"> 
+ 		SELECT f.MENUID,f.TABLENAME,f.LINENUM,f.COLNUM,f.ROWS,f.COLS,f.sort,g.DATAID,case when f.HEADLINE is null or f.HEADLINE='' then g.configname else f.HEADLINE end headline,f.invisible,case when  g.DATAID is not null then CONCAT(f.TABLENAME,f.MENUID,g.DATAID) else f.fieldname end fieldname,f.DESCRIPTION,f.DATATYPE from t_ums_th_config f LEFT JOIN t_ums_data_config g on f.DATAtype=g.DATATYPE order by f.menuid,f.LINENUM,f.colnum,f.SORT,g.DATAID
+ 	</select>
+ 	<select id="queryUmsConfigList" resultType="com.pall.wdpts.repository.entity.dataconfig.UmsConfigEntity"> 
+ 		select f.CONFIGID,f.ALLOWMODIFY,f.CONFIGEXPRESSION,f.CONFIGNAME,f.CONFIGTYPE,f.CONFIGVALUE,f.DESCRIPTION from t_ums_config f
+ 	</select>
+</mapper> 

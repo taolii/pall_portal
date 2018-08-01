@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.wdpts.repository.mapper.workflow.AssemblyDao"> 
+	<select id="queryAssemblyQueryList" resultType="com.pall.wdpts.repository.entity.workflow.AssemblyEntity"
+	parameterType="com.pall.wdpts.repository.entity.workflow.AssemblyQueryFormEntity"> 
+ 		select f.assembly_id assemblyID,f.delivery_time deliveryTime,f.tray_lot_num trayLotNum,f.input_lot_num inputLotNum,f.input_qty inputQty,f.fixture_num fixtureNum,f.hub_lot_num hubLotNum,f.output_lot_num outputLotNum,f.output_qty outputQty,f.scrap_qty scrapQty,f.part_num partNum,
+ 		f.work_order_num workOrderNum,f.assembly_bom assemblyBoms,f.clamping_cp clampingCP,f.clamp_down_the_cp clampDownTheCP,f.input_time inputTime,f.update_time updateTime,
+f.operatorid,g.account operatorName from t_ums_workflow_assembly f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
+	       AND f.delivery_time &gt;= #{startDeliveryTime}  
+	    </if>
+	    <if test="endDeliveryTime != null and endDeliveryTime != '' ">  
+	       AND f.delivery_time &lt;= #{endDeliveryTime}  
+	    </if>
+	    <if test="assemblyID != null and assemblyID != '' ">  
+	       AND f.assembly_id= #{assemblyID}  
+	    </if>
+	    <if test="trayLotNum != null and trayLotNum != '' ">  
+	       AND f.tray_lot_num like concat(concat('%',#{trayLotNum}),'%')   
+	    </if>
+	    <if test="hubLotNum != null and hubLotNum != '' ">  
+	       AND f.hub_lot_num = #{hubLotNum}  
+	    </if>
+	    <if test="inputLotNum != null and inputLotNum != '' ">  
+	       AND f.input_lot_num = #{inputLotNum}  
+	    </if>
+	    <if test="outputLotNum != null and outputLotNum != '' ">  
+	       AND f.output_lot_num = #{outputLotNum}  
+	    </if>
+	    <if test="fixtureNum != null and fixtureNum != '' ">
+	    	AND f.fixture_num like concat(concat('%',#{fixtureNum}),'%') 
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+	    <if test="remark != null and remark != '' ">  
+	       AND f.remark = #{remark}  
+	    </if>
+	    <if test="filterTrayLotNum != null and filterTrayLotNum == 'true' ">  
+	       AND not exists(select 1 from t_ums_workflow_biocoating d,t_ums_workflow_biocoating_relation h where d.cr_id=h.cr_id and h.tray_lot_num=f.tray_lot_num) 
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryAssemblyQueryTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.workflow.AssemblyQueryFormEntity"> 
+ 		select count(1) from t_ums_workflow_assembly f  where 1=1
+		 <if test="startDeliveryTime != null and startDeliveryTime != '' ">  
+	       AND f.delivery_time &gt;= #{startDeliveryTime}  
+	    </if>
+	    <if test="endDeliveryTime != null and endDeliveryTime != '' ">  
+	       AND f.delivery_time &lt;= #{endDeliveryTime}  
+	    </if>
+	    <if test="assemblyID != null and assemblyID != '' ">  
+	       AND f.assembly_id= #{assemblyID}  
+	    </if>
+	    <if test="trayLotNum != null and trayLotNum != '' ">  
+	       AND f.tray_lot_num like concat(concat('%',#{trayLotNum}),'%')     
+	    </if>
+	    <if test="hubLotNum != null and hubLotNum != '' ">  
+	       AND f.hub_lot_num = #{hubLotNum}  
+	    </if>
+	    <if test="inputLotNum != null and inputLotNum != '' ">  
+	       AND f.input_lot_num = #{inputLotNum}  
+	    </if>
+	    <if test="outputLotNum != null and outputLotNum != '' ">  
+	       AND f.output_lot_num = #{outputLotNum}  
+	    </if>
+	    <if test="fixtureNum != null and fixtureNum != '' "> 
+	       AND f.fixture_num like concat(concat('%',#{fixtureNum}),'%')   
+	    </if>
+	    <if test="partNum != null and partNum != '' ">  
+	       AND f.part_num = #{partNum}  
+	    </if>
+	    <if test="workOrderNum != null and workOrderNum != '' ">  
+	       AND f.work_order_num = #{workOrderNum}  
+	    </if>
+	    <if test="remark != null and remark != '' ">  
+	       AND f.remark = #{remark}  
+	    </if>
+	    <if test="filterTrayLotNum != null and filterTrayLotNum == 'true' ">  
+	       AND not exists(select 1 from t_ums_workflow_biocoating d,t_ums_workflow_biocoating_relation h where d.cr_id=h.cr_id and h.tray_lot_num=f.tray_lot_num) 
+	    </if>
+ 	</select>
+ 	
+    <insert id="addAssembly" parameterType="com.pall.wdpts.repository.entity.workflow.AssemblyEntity">
+    	<selectKey keyProperty="assemblyID" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_ums_workflow_assembly(delivery_time,tray_lot_num,input_lot_num,input_qty,fixture_num,hub_lot_num,output_lot_num,output_qty,scrap_qty,part_num,work_order_num,assembly_bom,clamping_cp,clamp_down_the_cp,operatorid,input_time,update_time)
+        values(#{deliveryTime},#{trayLotNum},#{inputLotNum},#{inputQty},#{fixtureNum},#{hubLotNum},#{outputLotNum},#{outputQty},#{scrapQty},#{partNum},#{workOrderNum},#{assemblyBoms},#{clampingCP},#{clampDownTheCP},#{operatorid},now(),now())
+    </insert>
+    <update id="modifyAssembly" parameterType="com.pall.wdpts.repository.entity.workflow.AssemblyEntity">
+        update  t_ums_workflow_assembly f set f.delivery_time=#{deliveryTime},f.tray_lot_num=#{trayLotNum},f.input_lot_num=#{inputLotNum},f.input_qty=#{inputQty},f.fixture_num=#{fixtureNum},f.hub_lot_num=#{hubLotNum},f.output_lot_num=#{outputLotNum},f.output_qty=#{outputQty},f.scrap_qty=#{scrapQty},f.part_num=#{partNum},f.work_order_num=#{workOrderNum}
+        ,f.assembly_bom=#{assemblyBoms},f.clamping_cp=#{clampingCP},f.clamp_down_the_cp=#{clampDownTheCP},f.operatorid=#{operatorid},f.update_time=now()
+        where f.assembly_id=#{assemblyID}
+    </update>
+    <delete id="delAssembly"  parameterType="java.util.List">  
+        DELETE FROM t_ums_workflow_assembly WHERE assembly_id in 
+        <foreach collection="assemblyIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+</mapper> 

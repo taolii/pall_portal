@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.wdpts.repository.mapper.workflow.DefectDao"> 
+ 	<select id="queryDefectList" resultType="com.pall.wdpts.repository.entity.workflow.DefectEntity" parameterType="java.util.List"> 
+ 		select f.defect_id defectID,f.defect_type defectType,f.defect_value defectValue,g.DATAID dataid,CONCAT(h.TABLENAME,h.MENUID,f.dataid) fieldname,g.configname defectname from t_ums_data_config g 
+		left join t_ums_workflow_defect f  on f.dataid=g.DATAID left JOIN t_ums_th_config h on h.DATATYPE=f.defect_type where  f.defect_id in
+        <foreach collection="defectids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach>
+    	and f.defect_type in
+    	 <foreach collection="defectidTypes" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach>
+    	order by defect_type,defect_value
+ 	</select>
+ 	<select id="queryDefectsByDefectID" resultType="com.pall.wdpts.repository.entity.workflow.DefectEntity" parameterType="java.util.List"> 
+ 		select distinct f.defect_id defectID,f.defect_type defectType,f.defect_value defectValue,f.dataid,g.configname defectname from t_ums_workflow_defect f left join t_ums_data_config g on f.dataid=g.DATAID where  f.defect_id in
+        <foreach collection="defectids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach>
+    	order by defect_type,defect_value
+ 	</select>
+	<insert id="addDefectResult" parameterType="java.util.List">
+		 insert into t_ums_workflow_defect(defect_id,defect_type,dataid,defect_value)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.defectID},#{item.defectType},#{item.dataid},#{item.defectValue})
+    	</foreach> 
+    </insert>
+    <update id="modifyDefectResult" parameterType="com.pall.wdpts.repository.entity.workflow.DefectEntity">
+        update  t_ums_workflow_defect f set f.defect_type=#{defectType},f.dataid=#{dataid},f.defect_value=#{defectValue}
+        where f.defect_id=#{defectID} and  and f.defect_type=#{defectType}
+    </update>
+    <delete id="delDefectResult"  parameterType="java.util.List">  
+        DELETE FROM t_ums_workflow_defect WHERE defect_id in 
+        <foreach collection="defectIDs" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach>
+    	 <if test="defectidTypes != null  and defectidTypes.size>0 ">  
+	       and defect_type in 
+	    	<foreach collection="defectidTypes" item="item" index="index" open="(" close=")" separator=",">  
+	        	#{item}  
+	    	</foreach> 
+	    </if>
+	</delete>
+</mapper> 
