@@ -419,7 +419,7 @@ public class AssemblyManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME), assemblyEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME)), assemblyEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

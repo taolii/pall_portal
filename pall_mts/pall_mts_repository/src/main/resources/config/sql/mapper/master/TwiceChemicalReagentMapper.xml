@@ -34,8 +34,18 @@
 	     <if test="oldBioPatNum != null and oldBioPatNum != '' ">  
 	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_bio_pat_num=#{oldBioPatNum})  
 	    </if>
-	    <if test="chemicalLotNum != null and chemicalLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_twicebiocoating_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
+	    <if test="chemicalLotNum != null or chemicalsubPartNum != null or chemicalMainPartNum != null">
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_reagents c where c.cr_id=f.cr_id 
+	       <if test="chemicalLotNum != null and chemicalLotNum != ''">  
+	       		and c.reagents_sn=#{chemicalLotNum} 
+	       </if>
+	       <if test="chemicalsubPartNum != null and chemicalsubPartNum != ''"> 
+	       		and c.reagents_name=#{chemicalsubPartNum}  
+	       </if>
+	       <if test="chemicalMainPartNum != null and chemicalMainPartNum != ''"> 
+	       		and c.main_reagent=#{chemicalMainPartNum}   
+	       </if>
+	       )
 	    </if>
 	     order by f.update_time desc limit #{startPageNum},#{pageSize}
  	</select> 
@@ -68,8 +78,18 @@
 	     <if test="oldBioPatNum != null and oldBioPatNum != '' ">  
 	       AND exists(select 1 from t_ums_workflow_twicebiocoating_relation b where b.cr_id=f.cr_id and b.old_bio_pat_num=#{oldBioPatNum})  
 	    </if>
-	    <if test="chemicalLotNum != null and chemicalLotNum != '' ">  
-	       AND exists(select 1 from t_ums_workflow_twicebiocoating_reagents c where c.cr_id=f.cr_id and c.reagents_sn=#{chemicalLotNum})  
+	    <if test="chemicalLotNum != null or chemicalsubPartNum != null or chemicalMainPartNum != null">
+	       AND exists(select 1 from t_ums_workflow_twicebiocoating_reagents c where c.cr_id=f.cr_id 
+	       <if test="chemicalLotNum != null and chemicalLotNum != ''">  
+	       		and c.reagents_sn=#{chemicalLotNum} 
+	       </if>
+	       <if test="chemicalsubPartNum != null and chemicalsubPartNum != ''"> 
+	       		and c.reagents_name=#{chemicalsubPartNum}  
+	       </if>
+	       <if test="chemicalMainPartNum != null and chemicalMainPartNum != ''"> 
+	       		and c.main_reagent=#{chemicalMainPartNum}   
+	       </if>
+	       )
 	    </if>
  	</select>
  	

@@ -1,6 +1,8 @@
 package com.pall.wdpts.service.menu;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +81,18 @@ public class MenuManageServiceImpl implements MenuManageService{
 				levelmenuMap.get(key).setSubMenuInfos(getSubMenus(leftMenus,key));
 			}
 		}
+		Collections.sort(treeMenuInfos,new Comparator<TreeMenuInfo>() {
+			@Override
+	        public int compare(TreeMenuInfo o1, TreeMenuInfo o2) {
+				if(o1.getPmenuInfo().getSort()>o2.getPmenuInfo().getSort()){
+					return 1;
+				}else if(o1.getPmenuInfo().getSort()<o2.getPmenuInfo().getSort()){
+					return -1;
+				}else{
+					return 0;
+				}
+	        }
+		});
 		return treeMenuInfos;
 	}
 	@Override

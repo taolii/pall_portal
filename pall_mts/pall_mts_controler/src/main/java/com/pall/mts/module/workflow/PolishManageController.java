@@ -433,7 +433,7 @@ public class PolishManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME), polishEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.POLISH_TABLENAME)), polishEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

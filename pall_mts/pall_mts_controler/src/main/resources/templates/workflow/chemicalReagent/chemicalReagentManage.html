@@ -57,10 +57,11 @@
 						                      		</div>
 						                      		<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.bioPatNum}"></span>
-									                        <input type="text" name="bioPatNum" class="form-control"/>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.tNum}"></span>
+									                        <input type="text" name="tNum" class="form-control"/>
 					                                	</div>
 						                      		</div>
+						                      		
 						                      		<div class="col-md-4 form-group" >
 					                                	<div class='input-group date'>  
 					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.endInPutDate}">  
@@ -73,8 +74,44 @@
 						                      		</div>
 						                      		<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.tNum}"></span>
-									                        <input type="text" name="tNum" class="form-control"/>
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.bioPatNum}"></span>
+									                        <input type="text" name="bioPatNum" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.rawMaterial}"></span>
+									                        <input type="text" name="rawMaterial" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" >
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.trayLotNum}"></span>
+									                        <input type="text" name="trayLotNum" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.apsLotNum}"></span>
+									                        <input type="text" name="apsLotNum" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.ocLotNum}"></span>
+									                        <input type="text" name="ocLotNum" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.chemicalMainPartNum}"></span>
+									                        <input type="text" name="chemicalMainPartNum" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.chemicalsubPartNum}"></span>
+									                        <input type="text" name="chemicalsubPartNum" class="form-control"/>
 					                                	</div>
 						                      		</div>
 						                      		<div class="col-md-4 form-group" style="padding-left:60px">
@@ -83,13 +120,7 @@
 									                        <input type="text" name="chemicalLotNum" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4 form-group">
-					                                	<div class="input-group">
-					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.trayLotNum}"></span>
-									                        <input type="text" name="trayLotNum" class="form-control"/>
-					                                	</div>
-						                      		</div>
-						                      		<div class="col-md-4 form-group" style="padding-left:160px">
+						                      		<div class="col-md-12 form-group center">
 								                        <button id="btn-query" class="btn btn-white btn-primary" type="button" style="display:none">
 								                        <i class="fa fa-search"></i>
 					                 						<span th:text="#{pages.workflow.chemicalReagentManage.form.query.button.tip}" th:remove="tag"></span>

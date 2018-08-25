@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.wdpts.repository.mapper.trackinglist.CisternAssembleDao"> 
+	<select id="queryCisternList" resultType="com.pall.wdpts.repository.entity.trackinglist.CisternEntity"
+	parameterType="com.pall.wdpts.repository.entity.trackinglist.CisternFormQueryEntity"> 
+ 		select assemble_time assembleTime,production_time productionTime,cistern_pn cisternPn,serial_no serialNo,workorder_no workorderNo,cistern_model cisternModel,exception_record exceptionRecord,assemble_Operator assembleOperator,f.input_time inputTime,f.update_time updateTime,
+f.operatorid,g.account operatorName from t_trackinglist_cistern f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="cisternID != null and cisternID != '' ">  
+	       AND f.cistern_id=#{cisternID}  
+	    </if>
+	    <if test="cisternPn != null and cisternPn != '' ">  
+	       AND f.cistern_pn =#{cisternPn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="cisternModel != null and cisternModel != '' ">  
+	       AND f.cistern_model = #{cisternModel}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryCisternTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.CisternFormQueryEntity"> 
+ 		select count(1) from t_trackinglist_cistern f  where 1=1
+		 <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="cisternID != null and cisternID != '' ">  
+	       AND f.cistern_id=#{cisternID}  
+	    </if>
+	    <if test="cisternPn != null and cisternPn != '' ">  
+	       AND f.cistern_pn =#{cisternPn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="cisternModel != null and cisternModel != '' ">  
+	       AND f.cistern_model = #{cisternModel}  
+	    </if>
+ 	</select>
+    <insert id="addCistern" parameterType="com.pall.wdpts.repository.entity.trackinglist.CisternEntity">
+    	<selectKey keyProperty="cisternID" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_trackinglist_cistern(assemble_time,production_time,cistern_pn,serial_no,workorder_no,cistern_model,exception_record,assemble_Operator,operatorid,input_time,update_time)
+        values(#{assembleTime},#{productionTime},#{cisternPn},#{serialNo},#{workorderNo},#{cisternModel},#{exceptionRecord},#{assembleOperator},#{operatorid},now(),now())
+    </insert>
+    <update id="modifyCistern" parameterType="com.pall.wdpts.repository.entity.trackinglist.CisternEntity">
+        update  t_trackinglist_cistern f set f.assemble_time=#{assembleTime},f.production_time=#{productionTime},f.cistern_pn=#{cisternPn},f.serial_no=#{serialNo},f.workorder_no=#{workorderNo},f.cistern_model=#{cisternModel},f.exception_record=#{exceptionRecord},
+        f.assemble_Operator=#{assembleOperator},f.operatorid=#{operatorid},f.update_time=now()
+        where f.cistern_id=#{cisternID}
+    </update>
+    <delete id="delCistern"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_cistern WHERE cistern_id in 
+        <foreach collection="cisternIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<delete id="delCisternAssemble"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_cistern_assemble WHERE cistern_id in 
+        <foreach collection="cisternIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryCisternAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.CisternAssembleEntity"> 
+ 		select cistern_id,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_trackinglist_cistern_assemble f where f.cistern_id=#{cisternID} 
+ 	</select> 
+</mapper> 

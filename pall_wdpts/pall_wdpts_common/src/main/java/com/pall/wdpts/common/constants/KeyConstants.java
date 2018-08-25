@@ -362,4 +362,46 @@ public class KeyConstants {
 	 * 产出数量追踪配置表名
 	 */
 	public static final String REPORT_PRODUCTTRACKING_TABLENAME="report/productTracking/tablename";
+	
+	/*
+	 * DSP装配流程跟踪单流程菜单id
+	 */
+	public static final String TRACKINGLIST_DSP_MENUID="tracklinglist/dsp/menuid";
+	/*
+	 * DSP装配流程跟踪单流程配置表名
+	 */
+	public static final String TRACKINGLIST_DSP_TABLENAME="tracklinglist/dsp/tablename";
+	/*
+	 * 水箱装配流程跟踪单流程菜单id
+	 */
+	public static final String TRACKINGLIST_CISTERN_MENUID="tracklinglist/cistern/menuid";
+	/*
+	 * 水箱装配流程跟踪单流程配置表名
+	 */
+	public static final String TRACKINGLIST_CISTERN_TABLENAME="tracklinglist/cistern/tablename";
+	/*
+	 * 预处理装配流程跟踪单流程菜单id
+	 */
+	public static final String TRACKINGLIST_PREPROCESSING_MENUID="tracklinglist/preprocessing/menuid";
+	/*
+	 * 预处理装配流程跟踪单流程配置表名
+	 */
+	public static final String TRACKINGLIST_PREPROCESSING_TABLENAME="tracklinglist/preprocessing/tablename";
+	/*
+	 * 预处理装配流程跟踪单流程下载子目录名称
+	 */
+	public static final String TRACKINGLIST_PREPROCESSING__DOWNLOAD_SUBDIRECTORY="trackinglist/preprocessing/download/subdirectory";
+	/*
+	 * 预处理装配流程跟踪单word模板assemble配置信息 起始行_属性key|属性key 属性key数量和table表格列数相同
+	 */
+	public static final String TRACKINGLIST_PREPROCESSING__WORD_ASSEMBLECONFIG="trackinglist/preprocessing/word/assembleConfig";
+	/*
+	 * 主机装配流程跟踪单流程菜单id
+	 */
+	public static final String TRACKINGLIST_MAINFRAME_MENUID="tracklinglist/mainFrame/menuid";
+	/*
+	 * 主机装配流程跟踪单流程配置表名
+	 */
+	public static final String TRACKINGLIST_MAINFRAME_TABLENAME="tracklinglist/mainFrame/tablename";
+	
 }

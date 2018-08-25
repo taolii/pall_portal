@@ -438,7 +438,7 @@ public class OpticalFilmingManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME), opticalCoatingEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_TABLENAME)), opticalCoatingEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

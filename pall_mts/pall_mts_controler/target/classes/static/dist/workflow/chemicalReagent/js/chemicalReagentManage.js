@@ -227,6 +227,11 @@ $(document).ready(function() {
 			    },
 			    exportItem:function(){
 			    	$wrapper.spinModal();
+			    	if($("#queryForm [name=bioPatNum]").val()==''){
+			    		$wrapper.spinModal(false);
+			    		showNotice('Error','<span style="padding-top:5px">BIO PN#不能为空','error',1000*10);
+			    		return;
+			    	};
 			         $.post(contextPath+"/workflow/exportChemicalReagent",$queryForm.serializeArray(), function(result) {
 			        	 if(result.resultCode==0){
 			        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
@@ -241,7 +246,7 @@ $(document).ready(function() {
 			    showReagentMixtureDetail: function(item) {
 			    	$("#queryModalForm [name=crID]").val(item.crID);
 			    	$reagentMixtureDetailModal=$("#reagentMixtureDetailModal");
-			        $reagentMixtureDetailModal.draggable({ 
+			        $reagentMixtureDetailModal.draggable({ handle:".table-header",
 			    		scroll: true, scrollSensitivity: 100,
 			    		cursor: "move"});
 			        $reagentMixtureDetailModal.css("overflow", "hidden");

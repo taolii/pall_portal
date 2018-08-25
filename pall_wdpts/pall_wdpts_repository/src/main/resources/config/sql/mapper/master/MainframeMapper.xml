@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.wdpts.repository.mapper.trackinglist.MainframeAssembleDao"> 
+	<select id="queryMainframeList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity"
+	parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeFormQueryEntity"> 
+ 		select assemble_time assembleTime,production_time productionTime,mainframe_pn mainframePn,serial_no serialNo,workorder_no workorderNo,mainframe_model mainframeModel,exception_record exceptionRecord,assemble_Operator assembleOperator,f.input_time inputTime,f.update_time updateTime,
+f.operatorid,g.account operatorName from t_trackinglist_mainframe f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="mainframeID != null and mainframeID != '' ">  
+	       AND f.mainframe_id=#{mainframeID}  
+	    </if>
+	    <if test="mainframePn != null and mainframePn != '' ">  
+	       AND f.mainframe_pn =#{mainframePn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="mainframeModel != null and mainframeModel != '' ">  
+	       AND f.mainframe_model = #{mainframeModel}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryMainframeTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeFormQueryEntity"> 
+ 		select count(1) from t_trackinglist_mainframe f  where 1=1
+		 <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="mainframeID != null and mainframeID != '' ">  
+	       AND f.mainframe_id=#{mainframeID}  
+	    </if>
+	    <if test="mainframePn != null and mainframePn != '' ">  
+	       AND f.mainframe_pn =#{mainframePn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="mainframeModel != null and mainframeModel != '' ">  
+	       AND f.mainframe_model = #{mainframeModel}  
+	    </if>
+ 	</select>
+    <insert id="addMainframe" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity">
+    	<selectKey keyProperty="mainframeID" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_trackinglist_mainframe(assemble_time,production_time,mainframe_pn,serial_no,workorder_no,mainframe_model,exception_record,assemble_Operator,operatorid,input_time,update_time)
+        values(#{assembleTime},#{productionTime},#{mainframePn},#{serialNo},#{workorderNo},#{mainframeModel},#{exceptionRecord},#{assembleOperator},#{operatorid},now(),now())
+    </insert>
+    <update id="modifyMainframe" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity">
+        update  t_trackinglist_mainframe f set f.assemble_time=#{assembleTime},f.production_time=#{productionTime},f.mainframe_pn=#{mainframePn},f.serial_no=#{serialNo},f.workorder_no=#{workorderNo},f.mainframe_model=#{mainframeModel},f.exception_record=#{exceptionRecord},
+        f.assemble_Operator=#{assembleOperator},f.operatorid=#{operatorid},f.update_time=now()
+        where f.mainframe_id=#{mainframeID}
+    </update>
+    <delete id="delMainframe"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_mainframe WHERE mainframe_id in 
+        <foreach collection="mainframeIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<delete id="delMainframeAssemble"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_mainframe_assemble WHERE mainframe_id in 
+        <foreach collection="mainframeIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryMainframeAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeAssembleEntity"> 
+ 		select mainframe_id,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_trackinglist_mainframe_assemble f where f.mainframe_id=#{mainframeID} 
+ 	</select> 
+</mapper> 

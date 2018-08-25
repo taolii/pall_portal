@@ -14,9 +14,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -477,9 +479,14 @@ public class TwiceChemicalReagentManageController{
 		}
 		//数据查询成功，将文件写入下载目录以便下载
 		if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
-	        Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_TABLENAME));
+			Map<String,ExcelHeaderNode> fieldNameBindMap=TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_TABLENAME));
+			String reagentMixture=UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_THCONFIG_REAGENTMIXTURE);
+			Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_TABLENAME));
+			Map<Integer,List<ExcelHeaderNode>> chemicalheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(chemicalReagentQueryFormEntity.getBioPatNum()+UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_MENUID));
+			Map<String,Map<?,?>> excelHeaderMap=ExcelTools.getExcelHeaders(fieldNameBindMap,excelheadlinesMap,chemicalheadlinesMap,reagentMixture);
+			excelheadlinesMap=(Map<Integer,List<ExcelHeaderNode>>)excelHeaderMap.get("excelheadlines");
+			fieldNameBindMap=(Map<String,ExcelHeaderNode>)excelHeaderMap.get("fieldNameBind");
 	        List<ChemicalReagentEntity> chemicalReagentEntitys=(List<ChemicalReagentEntity>)baseResponse.getReturnObjects();
-	        
 	        int currentRowNum=excelheadlinesMap.size();
 	        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
 	        if(null!=chemicalReagentEntitys && chemicalReagentEntitys.size()>0){
@@ -491,7 +498,7 @@ public class TwiceChemicalReagentManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.TWICE_CHEMICALREAGENT_TABLENAME), chemicalReagentEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(fieldNameBindMap, chemicalReagentEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

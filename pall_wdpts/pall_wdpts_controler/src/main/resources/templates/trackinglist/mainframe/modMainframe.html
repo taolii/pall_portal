@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title th:text="#{pages.system.name}+'-'+#{pages.workflow.clean.modClean.title}"></title>
+<script type="text/javascript" th:src="@{{path}/dist/workflow/clean/js/modifyCleanInfo.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/dist/workflow/clean/js/selectPolish.js(path=${contextPath})}"></script>
+</head>
+<body>
+	<div th:fragment="content">
+		 <div th:fragment="content">
+        	<div class="breadcrumbs" id="breadcrumbs">
+			<ul class="breadcrumb">
+				<li>
+					<i class="ace-icon fa fa-home home-icon"></i>
+					<a href="javascript:void(0)"  class="homemenu" ></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" class="submenumenu"></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/workflow/modClean?cleanid='+${cleanEntity.cleanID}+'&operator=\');'" th:text="#{pages.workflow.clean.modClean.title}"></a>
+				</li>
+			</ul>
+		</div>
+		<div class="page-content">
+			<div class="page-content-area">
+				<div class="row">
+					<div class="col-xs-12">
+						<form method="POST" id="modDataForm" class="form-horizontal">
+							<input type='hidden' id="updateForm" name="updateForm" value="#modDataForm" />
+							<div class="form-group"  style="display: none;">
+                    			<div class="col-md-4" style="margin-bottom:20px" id="modTemplate">
+                    				<div class="rowGroup">
+	                    				<span class="col-md-3 control-label defect">
+										</span>
+										<div class="col-md-6">
+											<input type='text' class="form-control" />
+										</div>
+										<span class="col-md-2 removeButton btn btn-sm btn-danger">
+											 <i class="glyphicon glyphicon-remove"></i>
+								         </span>
+							         </div>
+								 </div>
+                			</div>
+                			<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.cleanTime}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
+										<input type='hidden' name="cleanID" th:value="${cleanEntity.cleanID}"/>
+										<input type='text' name="cleanTime" id='modFormCleanTime' class="form-control form_datetime" th:value="${cleanEntity.cleanTime}"/>
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.inputLotNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-3">
+										<input type='text' id="inputLotNum" name="inputLotNum"  class="form-control" readonly="readonly" th:value="${cleanEntity.inputLotNum}"/>
+									</div>
+									<div class="col-md-1">
+										<span class=" btn btn-white btn-info" id="addInputLotNum">  
+		                     				<label th:text="#{pages.workflow.clean.modClean.button.inputLotNum.add}" th:remove="tag"></label>
+		                     			</span>
+									</div>
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.fixtureNumber}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' id="fixtureNumber" name="fixtureNumber" readonly="readonly" class="form-control"  th:value="${cleanEntity.fixtureNumber}"/>
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.inputQty}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' id="inputQty" name="inputQty"  class="form-control" readonly="readonly" th:value="${cleanEntity.inputQty}"/>
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group" style="display:none">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.outputQty}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="outputQty" class="form-control" readonly="readonly" th:value="${cleanEntity.outputQty}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label" >
+										<label th:text="#{pages.workflow.clean.modClean.form.scrapQty}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="scrapQty" class="form-control" readonly="readonly" th:value="${cleanEntity.scrapQty}"/>  
+									</div>
+								</div>
+							</div>
+							<div class="form-group" style="margin-bottom:0px;padding-bottom:0px;">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.defectinfo}" th:remove="tag"></label> 
+									</span>
+									<div class="col-md-10">
+										<div class='col-sm-10'> 
+											<div class="col-md-5 form-group " style="padding-left:0px;">
+						                        <select name="workingfaceType" id="modWorkingfaceType" class="form-control">
+								                   <option  th:each="workingfaceType:${workingfaceTypes}" th:text="${workingfaceType.dataTypeName}" th:value="${workingfaceType.dataType}">
+								                   </option>
+		                                    	</select> 
+	                      					</div>
+											<div class="col-md-5  form-group" style="padding-left:20px;">
+						                        <select id="modDefect" name="modDefect" class="form-control">
+								                   <option  th:each="cleanDefectConfig:${workingfaceDefectConfigs}" th:text="${cleanDefectConfig.configName}" th:value="${cleanTableName}+${cleanDefectConfig.dataid}">
+								                   </option>
+		                                    	</select>
+	                      					</div>
+										   	<select id="modAllDefect" style="display:none">
+								                <option  th:each="cleanDefectConfig:${defectConfigs}" th:text="${cleanDefectConfig.configName}" th:attr="dataType=${cleanDefectConfig.dataType}" dataType="$dataType" th:value="${cleanTableName}+${cleanDefectConfig.dataid}">
+								                </option>
+		                                    </select>
+		                                    <div class="col-md-1 form-group has-feedback" style="padding-left:20px;">
+						                        <span class="btn btn-white btn-info" id="modDefectButton">  
+		                     						<label th:text="#{pages.workflow.clean.modClean.button.defect.mod}" th:remove="tag"></label>
+		                     					</span>
+	                      					</div>
+            							</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-10 col-md-offset-1" id="modDefectPanel" role="tablist" aria-multiselectable="true" style="margin-top:10px;padding-left:0px;">
+				                      <div class="panel defect-panel" th:each="workingfaceType:${workingfaceTypes}" th:id="modWorkingface+${workingfaceType.dataType}" >
+				                        <div class="panel-heading collapsed defect-panel-heading" style="cursor: pointer;"  role="tab" th:id="modHead+${workingfaceType.dataType}" data-toggle="collapse"  th:href="'#modCollapse'+${workingfaceType.dataType}" aria-expanded="true" 
+				                         th:attr="aria-controls='modCollapse'+${workingfaceType.dataType}"  aria-controls="$aria-controls">
+				                          <h4 class="panel-title" th:text="${workingfaceType.dataTypeName}"></h4>
+				                        </div>
+				                        <div  th:id="modCollapse+${workingfaceType.dataType}" class="panel-collapse collapse in" role="tabpanel" 
+				                        th:attr="aria-labelledby='modHead'+${workingfaceType.dataType}"  aria-labelledby="$aria-labelledby" aria-expanded="true">
+				                          <div class="panel-body">
+				                          		<div th:each="defect:${cleanEntity.defects}" th:remove="tag">
+				                          			<div class="col-md-4" style="margin-bottom:20px" th:if="${defect.defectType}==${workingfaceType.dataType}">
+					                    				<div class="rowGroup">
+						                    				<span class="col-md-3 control-label defect" th:text="${defect.defectName}">
+															</span>
+															<div class="col-md-6">
+																<input type='text' class="form-control" th:attr='name=${cleanTableName}+${defect.dataid}'  th:value="${defect.defectValue}"/>
+															</div>
+															<span class="col-md-2 removeButton btn btn-sm btn-danger">
+																 <i class="glyphicon glyphicon-remove"></i>
+													         </span>
+												         </div>
+									 				</div>
+				                          		</div>
+				                          </div>
+				                        </div>
+				                      </div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.cleanLotNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="cleanLotNum" class="form-control" th:value="${cleanEntity.cleanLotNum}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.toOtherQty}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="toOtherQty" class="form-control"  th:value="${cleanEntity.toOtherQty}" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.partNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<select name="partNum" class="form-control">
+							              <option  th:each="dataConfig:${pnDataConfigs}" th:selected="${cleanEntity.partNum==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                	</select>    
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.clean.modClean.form.workOrderNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="workOrderNum" class="form-control" th:value="${cleanEntity.workOrderNum}"/>  
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
+										<fieldset>
+	    								<legend>
+	    									<label class="blue control-label" th:text="#{pages.workflow.clean.modClean.form.cleanBom}"></label>
+	    								</legend>
+											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${cleanBomConfigs}">
+												<label>
+													<input name="cleanBoms" class="ace" type="checkbox"  th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
+													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
+												</label>
+											</div>
+	  									</fieldset>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="text-center">
+									<button class="btn btn-white btn-primary">
+										<i class="fa fa-check"></i> 
+										<span th:text="#{pages.workflow.clean.modClean.form.button.mod}" th:remove="tag"></span>
+									</button>
+									<button id="modBackButton"  type="button" class="btn btn-white btn-primary" data-dismiss="modal">
+										<i class="fa fa-close"></i> 
+										<span th:text="#{pages.workflow.clean.modClean.form.button.shut}" th:remove="tag"></span>
+									</button> 
+								</div>
+							</div>
+						</form>
+                	</div>
+                </div>
+               </div>
+            </div>
+        </div>
+		<div class="clearfix"></div>
+		<div id="selectPolish">
+			<div th:replace="workflow/clean/selectPolishModal:: content"></div>
+		</div>
+	</div>
+</body>
+</html>

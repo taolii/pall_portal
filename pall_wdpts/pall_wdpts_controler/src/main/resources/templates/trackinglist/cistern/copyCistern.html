@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title th:text="#{pages.system.name}+'-'+#{pages.workflow.polish.addPolish.title}"></title>
+<script type="text/javascript" th:src="@{{path}/dist/workflow/polish/js/modifyPolishInfo.js(path=${contextPath})}"></script>
+</head>
+<body>
+	<div th:fragment="content">
+		 <div th:fragment="content">
+        	<div class="breadcrumbs" id="breadcrumbs">
+			<ul class="breadcrumb">
+				<li>
+					<i class="ace-icon fa fa-home home-icon"></i>
+					<a href="javascript:void(0)"  class="homemenu" ></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" class="submenumenu"></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/workflow/modPolish?polishid='+${polishEntity.polishID}+'&operator=copy\');'" th:text="#{pages.workflow.polish.addPolish.title}"></a>
+				</li>
+			</ul>
+		</div>
+		<div class="page-content">
+			<div class="page-content-area">
+				<div class="row">
+					<div class="col-xs-12">
+						<form method="POST" id="modDataForm" class="form-horizontal">
+							<input type="text" id="defectFieldNameSuffix" name="defectFieldNameSuffix" style="display:none" th:value="${defectFieldNameSuffix}"/>
+							<div class="form-group"  style="display: none;">
+                    			<div class="col-md-4" style="margin-bottom:20px" id="modTemplate">
+                    				<div class="rowGroup">
+	                    				<span class="col-md-3 control-label defect">
+										</span>
+										<div class="col-md-6">
+											<input type='text' class="form-control" />
+										</div>
+										<span class="col-md-2 removeButton btn btn-sm btn-danger">
+											 <i class="glyphicon glyphicon-remove"></i>
+								         </span>
+							         </div>
+								 </div>
+                			</div>
+                			<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.pickingTime}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='hidden'  name="outputQty" class="form-control" th:value="${polishEntity.outputQty}"/> 
+										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
+										<input type='hidden' name="polishID" th:value="${polishEntity.polishID}"/>
+										<input type='text' name="pickingTime" id='modFormPickingTime' class="form-control form_datetime" th:value="${polishEntity.pickingTime}"/>
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.polishTime}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="polishTime"  id='modFormpolishTime' class="form-control form_datetime" th:value="${polishEntity.polishTime}"/>  
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.fixtureNumber}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="fixtureNumber" class="form-control" th:value="${polishEntity.fixtureNumber}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.throwMillstoneNum}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="throwMillstoneNum" class="form-control" th:value="${polishEntity.throwMillstoneNum}"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.throwMillstonePosition}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<select name="throwMillstonePosition" class="form-control">
+							              <option  th:each="dataConfig:${tmpDataConfigs}" th:selected="${polishEntity.throwMillstonePosition==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                </select>
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.inputLotNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="inputLotNum" class="form-control" th:value="${polishEntity.inputLotNum}"/>  
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.inputQty}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="inputQty" class="form-control" th:value="${polishEntity.inputQty}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									
+								</div>
+							</div>
+							<div class="form-group" style="margin-bottom:0px;padding-bottom:0px;">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.defectinfo}" th:remove="tag"></label> 
+									</span>
+									<div class="col-md-10">
+										<div class='col-sm-10'> 
+											<div class="col-md-5 form-group " style="padding-left:0px;">
+						                        <select name="workingfaceType" id="modWorkingfaceType" class="form-control">
+								                   <option  th:each="workingfaceType:${workingfaceTypes}" th:text="${workingfaceType.dataTypeName}" th:value="${workingfaceType.dataType}">
+								                   </option>
+		                                    	</select> 
+	                      					</div>
+											<div class="col-md-5  form-group" style="padding-left:20px;">
+						                        <select id="modDefect" name="modDefect" class="form-control">
+								                   <option  th:each="polishDefectConfig:${workingfaceDefectConfigs}" th:text="${polishDefectConfig.configName}" th:value="${polishTableName}+${polishDefectConfig.dataid}">
+								                   </option>
+		                                    	</select>
+	                      					</div>
+										   	<select id="modAllDefect" style="display:none">
+								                <option  th:each="polishDefectConfig:${defectConfigs}" th:text="${polishDefectConfig.configName}" th:attr="dataType=${polishDefectConfig.dataType}" dataType="$dataType" th:value="${polishTableName}+${polishDefectConfig.dataid}">
+								                </option>
+		                                    </select>
+		                                    <div class="col-md-1 form-group has-feedback" style="padding-left:20px;">
+						                        <span class="btn btn-white btn-info" id="modDefectButton">  
+		                     						<label th:text="#{pages.workflow.polish.modPolish.form.button.defect.mod}" th:remove="tag"></label>
+		                     					</span>
+	                      					</div>
+            							</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-10 col-md-offset-1" id="modDefectPanel" role="tablist" aria-multiselectable="true" style="margin-top:10px;padding-left:0px;">
+				                      <div class="panel defect-panel" th:each="workingfaceType:${workingfaceTypes}" th:id="modWorkingface+${workingfaceType.dataType}" >
+				                        <div class="panel-heading collapsed defect-panel-heading" style="cursor: pointer;"  role="tab" th:id="modHead+${workingfaceType.dataType}" data-toggle="collapse"  th:href="'#modCollapse'+${workingfaceType.dataType}" aria-expanded="true" 
+				                         th:attr="aria-controls='modCollapse'+${workingfaceType.dataType}"  aria-controls="$aria-controls">
+				                          <h4 class="panel-title" th:text="${workingfaceType.dataTypeName}"></h4>
+				                        </div>
+				                        <div  th:id="modCollapse+${workingfaceType.dataType}" class="panel-collapse collapse in" role="tabpanel" 
+				                        th:attr="aria-labelledby='modHead'+${workingfaceType.dataType}"  aria-labelledby="$aria-labelledby" aria-expanded="true">
+				                          <div class="panel-body">
+				                          		<div th:each="defect:${polishEntity.defects}" th:remove="tag">
+				                          			<div class="col-md-4" style="margin-bottom:20px" th:if="${defect.defectType}==${workingfaceType.dataType}">
+					                    				<div class="rowGroup">
+						                    				<span class="col-md-3 control-label defect" th:text="${defect.defectName}">
+															</span>
+															<div class="col-md-6">
+																<input type='text' class="form-control" th:attr='name=${polishTableName}+${defect.dataid}'  th:value="${defect.defectValue}"/>
+															</div>
+															<span class="col-md-2 removeButton btn btn-sm btn-danger">
+																 <i class="glyphicon glyphicon-remove"></i>
+													         </span>
+												         </div>
+									 				</div>
+				                          		</div>
+				                          </div>
+				                        </div>
+				                      </div>
+								</div>
+							</div>
+							<!-- div class="form-group">
+								<div class="group col-md-11" id="defectPanel" style="display:none;margin-top:10px">
+                     				<div class="panel-group col-md-offset-1" style="margin-bottom:0px">
+		                        			<div class="panel panel-primary" style="border-color:#917c59;">
+		                            			<div  class="panel-collapse collapse in  ">
+					                                <div class="panel-body"  id="defect_panel_body">
+						                               
+					                                </div>
+		                            			</div>
+		                        			</div>
+		                    			</div>  
+								</div>
+							</div -->
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.casualInspectionNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="casualInspectionNum" class="form-control"  th:value="${polishEntity.casualInspectionNum}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.polishLotNum}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="polishLotNum" class="form-control" th:value="${polishEntity.polishLotNum}"/>  
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.measuredValues}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="measuredValues" class="form-control"  th:value="${polishEntity.measuredValues}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.partNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<select name="partNum" class="select2_single form-control">
+							              <option  th:each="dataConfig:${pnDataConfigs}" th:selected="${polishEntity.partNum==dataConfig.configName}"  th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+							              </option>
+	                                	</select>   
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.workOrderNum}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type="hidden" name="token" />
+										<input type='text' name="workOrderNum" class="form-control" th:value="${polishEntity.workOrderNum}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-11 col-md-offset-1">
+										<fieldset>
+	    								<legend>
+	    									<label class="blue control-label" th:text="#{pages.workflow.polish.modPolish.form.polishBom}"></label>
+	    								</legend>
+											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${polishBomConfigs}">
+												<label>
+													<input name="polishBoms" class="ace" type="checkbox"  th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
+													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
+												</label>
+											</div>
+	  									</fieldset>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="text-center">
+									<button class="btn btn-white btn-primary">
+										<i class="fa fa-check"></i> 
+										<span th:text="#{pages.workflow.polish.addPolish.form.button.add}" th:remove="tag"></span>
+									</button>
+									<button id="modBackButton"  type="button" class="btn btn-white btn-primary" data-dismiss="modal">
+										<i class="fa fa-close"></i> 
+										<span th:text="#{pages.workflow.polish.addPolish.form.button.shut}" th:remove="tag"></span>
+									</button> 
+								</div>
+							</div>
+						</form>
+                	</div>
+                </div>
+               </div>
+            </div>
+        </div>
+		<div class="clearfix"></div>
+	</div>
+</body>
+</html>

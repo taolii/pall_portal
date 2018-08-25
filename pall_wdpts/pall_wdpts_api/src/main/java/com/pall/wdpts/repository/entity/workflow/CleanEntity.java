@@ -6,9 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.pall.wdpts.repository.entity.workflow.PolishEntity.ADD;
-import com.pall.wdpts.repository.entity.workflow.PolishEntity.SAVE;
-
 /*
  * 清洁信息
  */

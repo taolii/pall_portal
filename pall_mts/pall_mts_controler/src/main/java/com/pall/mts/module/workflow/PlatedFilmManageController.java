@@ -406,7 +406,7 @@ public class PlatedFilmManageController{
 	        			return JSON.toJSONString(baseResponse);
 		        	}
 	        	}
-	        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME), platedFilmEntitys,currentRowNum);
+	        	rowdatas=ExcelTools.getExcelDatas(TableDataConfigInitiator.getExcelFieldBindConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_TABLENAME)), platedFilmEntitys,currentRowNum);
 	        }
 	        //设置下载保存文件路径
         	StringBuilder downloadFileFullPath=new StringBuilder();

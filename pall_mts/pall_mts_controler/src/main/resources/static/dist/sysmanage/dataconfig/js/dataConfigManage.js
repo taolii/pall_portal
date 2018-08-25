@@ -14,11 +14,9 @@ $(document).ready(function() {
             param.startPageNum = data.start;
             param.pageSize = data.length;
             var formData = $("#queryForm").serializeArray();
-            var dataType=""
             formData.forEach(function (e) {
-            	dataType = dataType+e.value;
+                param[e.name] = e.value;
             });
-            param["dataType"] = dataType;
             $.ajax({
                     type: "post",
                     url: contextPath+"/dataconfig/dataConfigManage",
@@ -133,12 +131,7 @@ $(document).ready(function() {
 			    },
 			    addItemInit : function() {
 			    	$("#addDataForm").data('bootstrapValidator').resetForm(true);
-			    	var formData = $("#queryForm").serializeArray();
-		            var dataType=""
-		            formData.forEach(function (e) {
-		            	dataType = dataType+e.value;
-		            });
-		            $("#addDataForm [name=dataType]").val(dataType);
+		            $("#addDataForm [name=dataType]").val($("#queryForm [name=dataType]").val());
 			    },
 			    addItemShow: function() {
 			    	$addDefectModal=$("#addDefectModal");

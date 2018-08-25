@@ -39,13 +39,19 @@
 				                            </div>
 				                             <div id="stepOne" class="panel-collapse collapse in  ">
 				                                <div class="panel-body">
-								                    <div class="col-md-5">
+								                    <div class="col-md-4">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon"><label th:text="#{pages.dataConfig.dataConfigManage.form.dataConfigType.titile}" th:remove="tag"></label></span>
-									                        <select name="defectType" class="form-control">
+									                        <select name="dataType" class="form-control">
 									                        	<option  th:each="dataConfigType:${dataConfigTypes}" th:text="${dataConfigType.dataTypeName}" th:value="${dataConfigType.dataType}">
 									              				</option>
 			                                    			</select>
+					                                	</div>
+								                    </div>
+								                    <div class="col-md-4">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon"><label th:text="#{pages.dataConfig.dataConfigManage.table.title.configname}" th:remove="tag"></label></span>
+									                        <input name="configName" class="form-control" value=""/>
 					                                	</div>
 								                    </div>
 								                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">

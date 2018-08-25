@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.wdpts.repository.mapper.trackinglist.PreprocessingAssembleDao"> 
+	<select id="queryPreprocessingList" resultType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingEntity"
+	parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingFormQueryEntity"> 
+ 		select f.preprocessing_id preprocessingID,f.assemble_time assembleTime,date_format(f.production_time, '%Y-%m-%d %H:%i:%s') productionTime,f.preprocessing_pn preprocessingPn,f.serial_no serialNo,f.pt_option ptOption,f.workorder_no workorderNo,f.preprocessing_model preprocessingModel,f.exception_record exceptionRecord,f.assemble_Operator assembleOperator,f.remarks,f.inspect_operator inspectOperator,f.inspect_time inspectTime,f.input_time inputTime,f.update_time updateTime,
+f.operatorid,g.account operatorName from t_trackinglist_preprocessing f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="preprocessingID != null and preprocessingID != '' ">  
+	       AND f.preprocessing_id=#{preprocessingID}  
+	    </if>
+	    <if test="preprocessingPn != null and preprocessingPn != '' ">  
+	       AND f.preprocessing_pn =#{preprocessingPn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="preprocessingModel != null and preprocessingModel != '' ">  
+	       AND f.preprocessing_model = #{preprocessingModel}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryPreprocessingTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingFormQueryEntity"> 
+ 		select count(1) from t_trackinglist_preprocessing f  where 1=1
+		 <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="preprocessingID != null and preprocessingID != '' ">  
+	       AND f.preprocessing_id=#{preprocessingID}  
+	    </if>
+	    <if test="preprocessingPn != null and preprocessingPn != '' ">  
+	       AND f.preprocessing_pn =#{preprocessingPn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="preprocessingModel != null and preprocessingModel != '' ">  
+	       AND f.preprocessing_model = #{preprocessingModel}  
+	    </if>
+ 	</select>
+    <insert id="addPreprocessing" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingEntity">
+    	<selectKey keyProperty="preprocessingID" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_trackinglist_preprocessing(assemble_time,production_time,preprocessing_pn,serial_no,workorder_no,preprocessing_model,pt_option,exception_record,assemble_Operator,inspect_operator,inspect_time,remarks,operatorid,input_time,update_time)
+        values(#{assembleTime},#{productionTime},#{preprocessingPn},#{serialNo},#{workorderNo},#{preprocessingModel},#{ptOption},#{exceptionRecord},#{assembleOperator},#{inspectOperator},#{inspectTime},#{remarks},#{operatorid},now(),now())
+    </insert>
+    <update id="modPreprocessing" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingEntity">
+        update  t_trackinglist_preprocessing f set f.assemble_time=#{assembleTime},f.production_time=#{productionTime},f.preprocessing_pn=#{preprocessingPn},f.pt_option=#{ptOption},f.serial_no=#{serialNo},f.workorder_no=#{workorderNo},
+        f.inspect_time=#{inspectTime},f.inspect_operator=#{inspectOperator},f.remarks=#{remarks},f.preprocessing_model=#{preprocessingModel},f.exception_record=#{exceptionRecord},
+        f.assemble_Operator=#{assembleOperator},f.operatorid=#{operatorid},f.update_time=now()
+        where f.preprocessing_id=#{preprocessingID}
+    </update>
+    <delete id="delPreprocessing"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_preprocessing WHERE preprocessing_id in 
+        <foreach collection="preprocessingIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<delete id="delPreprocessingAssembles"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_preprocessing_assemble WHERE preprocessing_id in 
+        <foreach collection="preprocessingIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryPreprocessingAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingAssembleEntity"> 
+ 		select preprocessing_id preprocessingID,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_trackinglist_preprocessing_assemble f where f.preprocessing_id=#{preprocessingID} 
+ 	</select>
+ 	<select id="queryPreprocessingInspectList" resultType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingInspectEntity"> 
+ 		select preprocessing_id preprocessingID,selfcheck_name selfcheckName,selfcheck_content selfcheckContent,selfcheck_result selfcheckResult,remarks from t_trackinglist_preprocessing_inspect f where f.preprocessing_id=#{preprocessingID}
+ 	</select> 
+ 	<insert id="addPreprocessingInspects" parameterType="java.util.List">
+		 insert into t_trackinglist_preprocessing_inspect(preprocessing_id,selfcheck_name,selfcheck_content,selfcheck_result,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.preprocessingID},#{item.selfcheckName},#{item.selfcheckContent},#{item.selfcheckResult},#{item.remarks})
+    	</foreach> 
+    </insert>
+    <insert id="addPreprocessingAssembles" parameterType="java.util.List">
+		insert into t_trackinglist_preprocessing_assemble(preprocessing_id,component_name,component_no,serial_no_record,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.preprocessingID},#{item.componentName},#{item.componentNo},#{item.serialNoRecord},#{item.remarks})
+    	</foreach> 
+    </insert>
+	<delete id="delPreprocessingInspects"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_preprocessing_inspect WHERE preprocessing_id in 
+        <foreach collection="preprocessingIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+ 	<select id="queryPreprocessingSettingList" resultType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingEntity"
+	parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingFormQueryEntity"> 
+ 		select psid,preprocessing_pn preprocessingPn,f.input_time inputTime,f.update_time updateTime,f.operatorid,g.account operatorName from t_ums_setting_preprocessing f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="preprocessingPn != null and preprocessingPn != '' ">  
+	       AND f.preprocessing_pn = #{preprocessingPn}  
+	    </if>
+	    <if test="psid != null and psid != '' ">  
+	       AND f.psid = #{psid}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryPreprocessingSettingTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingFormQueryEntity"> 
+ 		select count(1) from t_ums_setting_preprocessing f  where 1=1
+		<if test="preprocessingPn != null and preprocessingPn != '' ">  
+	       AND f.preprocessing_pn = #{preprocessingPn}  
+	    </if>
+	    <if test="psid != null and psid != '' ">  
+	       AND f.psid = #{psid}  
+	    </if>
+ 	</select>
+ 	<insert id="addPreprocessingSetting" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingEntity">
+    	<selectKey keyProperty="psid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_ums_setting_preprocessing(preprocessing_pn,operatorid,input_time,update_time)values(#{preprocessingPn},#{operatorid},now(),now())
+    </insert>
+    <update id="modPreprocessingSetting" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingEntity">
+        update  t_ums_setting_preprocessing f set f.preprocessing_pn=#{preprocessingPn},f.operatorid=#{operatorid},f.update_time=now() where f.psid=#{psid}
+    </update>
+    <delete id="delPreprocessingSetting"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_preprocessing WHERE psid in 
+        <foreach collection="psids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<insert id="addPreprocessingSettingAssembles" parameterType="java.util.List">
+		insert into t_ums_setting_preprocessing_assemble(psid,component_name,component_no,serial_no_record,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.psid},#{item.componentName},#{item.componentNo},#{item.serialNoRecord},#{item.remarks})
+    	</foreach> 
+    </insert>
+    <delete id="delPreprocessingSettingAssembles"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_preprocessing_assemble WHERE psid in 
+        <foreach collection="psids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+    <insert id="addPreprocessingSettingInspects" parameterType="java.util.List">
+		 insert into t_ums_setting_preprocessing_inspect(psid,selfcheck_name,selfcheck_content,selfcheck_result,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.psid},#{item.selfcheckName},#{item.selfcheckContent},#{item.selfcheckResult},#{item.remarks})
+    	</foreach> 
+    </insert>
+	<delete id="delPreprocessingSettingInspects"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_preprocessing_inspect WHERE psid in 
+        <foreach collection="psids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryPreprocessingSettingAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingAssembleEntity"> 
+ 		select psid,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_ums_setting_preprocessing_assemble f where f.psid=#{psid} 
+ 	</select>
+ 	<select id="queryPreprocessingSettingInspectList" resultType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingInspectEntity"> 
+ 		select psid,selfcheck_name selfcheckName,selfcheck_content selfcheckContent,selfcheck_result selfcheckResult,remarks from t_ums_setting_preprocessing_inspect f where f.psid=#{psid} 
+ 	</select>  
+</mapper> 

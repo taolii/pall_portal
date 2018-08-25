@@ -4,11 +4,11 @@
 	<select id="queryDataConfigList" resultType="com.pall.mts.repository.entity.dataconfig.DataConfigEntity"
 	parameterType="com.pall.mts.repository.entity.dataconfig.DataConfigQueryFormEntity"> 
  		select dataid,datatype,configname,createtime,updatetime,operatorid,DESCRIPTION from t_ums_data_config where 1=1
- 		 <if test="dataType !=0">  
+ 		 <if test="dataType != null and dataType != '' ">  
 	       AND datatype= #{dataType}  
 	    </if>
 	    <if test="configName != null and configName != '' ">  
-	       AND configname = #{configName}  
+	       AND configname  like concat(concat('%',#{configName}),'%') 
 	    </if>
 	     order by datatype,ifnull(updatetime,now()) desc limit #{startPageNum},#{pageSize}
  	</select> 
@@ -19,7 +19,7 @@
 	       AND datatype= #{dataType}
 	    </if>
 	    <if test="configName != null and configName != '' ">  
-	       AND configname = #{configName}  
+	       AND configname  like concat(concat('%',#{configName}),'%') 
 	    </if>
  	</select>
  	<update id="modDataConfig" parameterType="com.pall.mts.repository.entity.dataconfig.DataConfigEntity">

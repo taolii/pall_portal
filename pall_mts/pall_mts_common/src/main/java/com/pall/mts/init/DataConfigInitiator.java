@@ -40,10 +40,10 @@ public class DataConfigInitiator {
 			List<DataConfigEntity> dataConfigEntitys=dataConfigManageService.queryDataConfigList();
 			if(dataConfigEntitys!=null && dataConfigEntitys.size()>0){
 				for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
-					if(null==tempDataConfigMap.get(String.valueOf(dataConfigEntity.getDataType()))){
-						tempDataConfigMap.put(String.valueOf(dataConfigEntity.getDataType()),new ArrayList<DataConfigEntity>());
+					if(null==tempDataConfigMap.get(dataConfigEntity.getDataType())){
+						tempDataConfigMap.put(dataConfigEntity.getDataType(),new ArrayList<DataConfigEntity>());
 					};
-					tempDataConfigMap.get(String.valueOf(dataConfigEntity.getDataType())).add(dataConfigEntity);
+					tempDataConfigMap.get(dataConfigEntity.getDataType()).add(dataConfigEntity);
 				}
 			}
 		} catch (Exception e) {

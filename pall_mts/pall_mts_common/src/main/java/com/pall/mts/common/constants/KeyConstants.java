@@ -315,6 +315,10 @@ public class KeyConstants {
 	 */
 	public static final String CHEMICALREAGENT_DATACONFIG_TYPE_COATINGSTATION="chemicalReagent/dataconfig/type/coatingStation";
 	/*
+	 * t_ums_th_config表中生化镀膜配置汇合试剂属性名
+	 */
+	public static final String CHEMICALREAGENT_THCONFIG_REAGENTMIXTURE="chemicalReagent/thConfig/reagentMixture";
+	/*
 	 * 生物镀膜BIO流程配置表名
 	 */
 	public static final String TWICE_CHEMICALREAGENT_TABLENAME="twicechemicalReagent/tablename";
@@ -355,6 +359,10 @@ public class KeyConstants {
 	 */
 	public static final String TWICE_CHEMICALREAGENT_DATACONFIG_TYPE_COATINGSTATION="twicechemicalReagent/dataconfig/type/coatingStation";
 	/*
+	 * t_ums_th_config表中二次生化镀膜配置汇合试剂属性名
+	 */
+	public static final String TWICE_CHEMICALREAGENT_THCONFIG_REAGENTMIXTURE="twicechemicalReagent/thConfig/reagentMixture";
+	/*
 	 * 组装报废汇总配置表名
 	 */
 	public static final String REPORT_ASSEMBLY_SCRAP_SUMMARY_TABLENAME="report/assemblyScrapSummary/tablename";
@@ -362,4 +370,8 @@ public class KeyConstants {
 	 * 产出数量追踪配置表名
 	 */
 	public static final String REPORT_PRODUCTTRACKING_TABLENAME="report/productTracking/tablename";
+	/*
+	 * 组装报废汇总页面excel下载子目录名称
+	 */
+	public static final String REPORT_ASSEMBLY_SCRAP_SUMMARY_DOWNLOAD_SUBDIRECTORY="report/assemblyScrapSummary/download/subdirectory";
 }

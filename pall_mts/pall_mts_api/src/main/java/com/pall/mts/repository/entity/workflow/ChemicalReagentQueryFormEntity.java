@@ -23,7 +23,15 @@ public class ChemicalReagentQueryFormEntity {
 	private String tNum;
 	private String trayLotNum;
 	private String chemicalLotNum;
+	private String chemicalsubPartNum;
+	private String chemicalMainPartNum;
 	private String bioPatNum;
+	private String assemblyLotNum;
+	private String apsLotNum;
+	private String ocLotNum;
+	private String cleanLotNum;
+	private String polishLotNum;
+	private String rawMaterial;
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -89,6 +97,54 @@ public class ChemicalReagentQueryFormEntity {
 	}
 	public void setBioPatNum(String bioPatNum) {
 		this.bioPatNum = bioPatNum;
+	}
+	public String getAssemblyLotNum() {
+		return assemblyLotNum;
+	}
+	public void setAssemblyLotNum(String assemblyLotNum) {
+		this.assemblyLotNum = assemblyLotNum;
+	}
+	public String getApsLotNum() {
+		return apsLotNum;
+	}
+	public void setApsLotNum(String apsLotNum) {
+		this.apsLotNum = apsLotNum;
+	}
+	public String getOcLotNum() {
+		return ocLotNum;
+	}
+	public void setOcLotNum(String ocLotNum) {
+		this.ocLotNum = ocLotNum;
+	}
+	public String getRawMaterial() {
+		return rawMaterial;
+	}
+	public void setRawMaterial(String rawMaterial) {
+		this.rawMaterial = rawMaterial;
+	}
+	public String getCleanLotNum() {
+		return cleanLotNum;
+	}
+	public void setCleanLotNum(String cleanLotNum) {
+		this.cleanLotNum = cleanLotNum;
+	}
+	public String getPolishLotNum() {
+		return polishLotNum;
+	}
+	public void setPolishLotNum(String polishLotNum) {
+		this.polishLotNum = polishLotNum;
+	}
+	public String getChemicalsubPartNum() {
+		return chemicalsubPartNum;
+	}
+	public void setChemicalsubPartNum(String chemicalsubPartNum) {
+		this.chemicalsubPartNum = chemicalsubPartNum;
+	}
+	public String getChemicalMainPartNum() {
+		return chemicalMainPartNum;
+	}
+	public void setChemicalMainPartNum(String chemicalMainPartNum) {
+		this.chemicalMainPartNum = chemicalMainPartNum;
 	}
 	
 }

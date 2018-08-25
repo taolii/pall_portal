@@ -86,6 +86,16 @@
 				                    </div>
 		                		</form>
 	                		</div>
+	                		<div class="row">
+	                			<div class="pull-right">
+							        <div class="btn-group">
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-export">
+							                <i class="fa fa-download"></i>
+							                <span th:text="#{pages.report.assemblyScrapSummary.table.button.export}" th:remove="tag"></span>
+							            </a>
+							        </div>
+	    						</div>
+	                		</div>
 		                 	<div class="row" id="div-table-container">
 		                 		<div class="table-responsive" style="overflow-x:hidden">
 		                 			<input id="tableFieldBinds" name="tableFieldBinds" type="hidden" th:value="${tableFieldBinds}"/>

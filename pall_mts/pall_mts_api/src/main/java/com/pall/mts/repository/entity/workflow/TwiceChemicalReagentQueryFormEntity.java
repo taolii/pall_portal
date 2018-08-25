@@ -25,6 +25,8 @@ public class TwiceChemicalReagentQueryFormEntity {
 	private String oldBioPatNum;
 	private String trayNum;
 	private String chemicalLotNum;
+	private String chemicalsubPartNum;
+	private String chemicalMainPartNum;
 	private String bioPatNum;
 	public int getStartPageNum() {
 		return startPageNum;
@@ -103,6 +105,18 @@ public class TwiceChemicalReagentQueryFormEntity {
 	}
 	public void setStartPageNum(int startPageNum) {
 		this.startPageNum = startPageNum;
+	}
+	public String getChemicalsubPartNum() {
+		return chemicalsubPartNum;
+	}
+	public void setChemicalsubPartNum(String chemicalsubPartNum) {
+		this.chemicalsubPartNum = chemicalsubPartNum;
+	}
+	public String getChemicalMainPartNum() {
+		return chemicalMainPartNum;
+	}
+	public void setChemicalMainPartNum(String chemicalMainPartNum) {
+		this.chemicalMainPartNum = chemicalMainPartNum;
 	}
 	
 }

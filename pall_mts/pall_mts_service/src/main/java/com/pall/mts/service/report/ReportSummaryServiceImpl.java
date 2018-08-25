@@ -106,4 +106,20 @@ public class ReportSummaryServiceImpl implements ReportSummaryService{
 		}
 		return baseResponse;
 	}
+	@Override
+	public List<AssemblyScrapSummaryEntity> queryAssemblyScrapSummaryList(
+			AssemblyScrapSummaryQueryFormEntity assemblyScrapSummaryQueryFormEntity) throws Exception {
+		List<AssemblyScrapSummaryEntity> assemblyScrapSummaryEntitys=null;
+		try{
+			assemblyScrapSummaryEntitys=reportSummaryDao.queryAssemblyScrapSummary(assemblyScrapSummaryQueryFormEntity);
+			DatatablesView datatablesViews=new DatatablesView();
+			datatablesViews.setDraw(assemblyScrapSummaryQueryFormEntity.getDraw());
+			if(assemblyScrapSummaryEntitys!=null){
+				assemblyScrapSummaryEntitys=getDefectRecords(assemblyScrapSummaryEntitys);
+			}
+		}catch(Exception e){
+			throw e;
+		}
+		return assemblyScrapSummaryEntitys;
+	}
 }

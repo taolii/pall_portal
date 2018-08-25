@@ -19,25 +19,12 @@ public class DataConfigQueryFormEntity {
 	/*
 	 * 数据类型 1 抛光缺损信息
 	 */
-	private int dataType;
+	private String dataType;
 	public int getStartPageNum() {
 		return startPageNum;
 	}
 	public void setStartPageNum(int startPageNum) {
 		this.startPageNum = startPageNum;
-	}
-	public int getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-	
-	public int getDataType() {
-		return dataType;
-	}
-	public void setDataType(int dataType) {
-		this.dataType = dataType;
 	}
 	public int getDraw() {
 		return draw;
@@ -45,11 +32,24 @@ public class DataConfigQueryFormEntity {
 	public void setDraw(int draw) {
 		this.draw = draw;
 	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
 	public String getConfigName() {
 		return configName;
 	}
 	public void setConfigName(String configName) {
 		this.configName = configName;
 	}
+	public String getDataType() {
+		return dataType;
+	}
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
+	
 	
 }

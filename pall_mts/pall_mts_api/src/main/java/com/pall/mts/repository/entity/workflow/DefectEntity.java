@@ -10,7 +10,7 @@ public class DefectEntity {
 	/*
 	 * 缺损类型 1:polish 2:clean
 	 */
-	private int defectType;
+	private String defectType;
 	/*
 	 * 数据字典表唯一标示
 	 */
@@ -33,10 +33,10 @@ public class DefectEntity {
 	public void setDefectID(int defectID) {
 		this.defectID = defectID;
 	}
-	public int getDefectType() {
+	public String getDefectType() {
 		return defectType;
 	}
-	public void setDefectType(int defectType) {
+	public void setDefectType(String defectType) {
 		this.defectType = defectType;
 	}
 	public int getDataid() {
@@ -51,17 +51,17 @@ public class DefectEntity {
 	public void setDefectName(String defectName) {
 		this.defectName = defectName;
 	}
-	public int getDefectValue() {
-		return defectValue;
-	}
-	public void setDefectValue(int defectValue) {
-		this.defectValue = defectValue;
-	}
 	public String getFieldName() {
 		return fieldName;
 	}
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
+	}
+	public int getDefectValue() {
+		return defectValue;
+	}
+	public void setDefectValue(int defectValue) {
+		this.defectValue = defectValue;
 	}
 	
 }
