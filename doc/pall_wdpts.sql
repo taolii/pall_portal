@@ -4,16 +4,827 @@ Navicat MySQL Data Transfer
 Source Server         : localhost_3306
 Source Server Version : 50717
 Source Host           : 127.0.0.1:3306
-Source Database       : mcompetence
+Source Database       : pall_wdpts
 
 Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-09-06 19:38:01
+Date: 2018-09-06 19:37:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_trackinglist_cistern
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_cistern`;
+CREATE TABLE `t_trackinglist_cistern` (
+  `cistern_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
+  `assemble_time` date DEFAULT NULL COMMENT '装配日期',
+  `production_time` datetime DEFAULT NULL COMMENT '生产时间',
+  `cistern_pn` varchar(20) DEFAULT NULL COMMENT '料号/PN',
+  `serial_no` varchar(20) DEFAULT NULL COMMENT '序列号/Serial NO',
+  `workorder_no` varchar(20) NOT NULL COMMENT '工单号/WO',
+  `cistern_model` varchar(20) DEFAULT NULL COMMENT '水箱型号/Model',
+  `exception_record` varchar(200) DEFAULT NULL COMMENT '异常记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注',
+  `assemble_Operator` varchar(20) DEFAULT NULL COMMENT '装配人员',
+  `operatorid` int(11) DEFAULT NULL,
+  `input_time` datetime NOT NULL COMMENT '录入时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`cistern_id`,`input_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='水箱装配流程跟踪单表'
+/*!50100 PARTITION BY RANGE (to_days(input_time))
+(PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
+ PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
+ PARTITION p201803 VALUES LESS THAN (737119) ENGINE = InnoDB,
+ PARTITION p201804 VALUES LESS THAN (737150) ENGINE = InnoDB,
+ PARTITION p201805 VALUES LESS THAN (737180) ENGINE = InnoDB,
+ PARTITION p201806 VALUES LESS THAN (737211) ENGINE = InnoDB,
+ PARTITION p201807 VALUES LESS THAN (737241) ENGINE = InnoDB,
+ PARTITION p201808 VALUES LESS THAN (737272) ENGINE = InnoDB,
+ PARTITION p201809 VALUES LESS THAN (737303) ENGINE = InnoDB,
+ PARTITION p201810 VALUES LESS THAN (737333) ENGINE = InnoDB,
+ PARTITION p201811 VALUES LESS THAN (737364) ENGINE = InnoDB,
+ PARTITION p201812 VALUES LESS THAN (737394) ENGINE = InnoDB,
+ PARTITION p201901 VALUES LESS THAN (737425) ENGINE = InnoDB,
+ PARTITION p201902 VALUES LESS THAN (737456) ENGINE = InnoDB,
+ PARTITION p201903 VALUES LESS THAN (737484) ENGINE = InnoDB,
+ PARTITION p201904 VALUES LESS THAN (737515) ENGINE = InnoDB,
+ PARTITION p201905 VALUES LESS THAN (737545) ENGINE = InnoDB,
+ PARTITION p201906 VALUES LESS THAN (737576) ENGINE = InnoDB,
+ PARTITION p201907 VALUES LESS THAN (737606) ENGINE = InnoDB,
+ PARTITION p201908 VALUES LESS THAN (737637) ENGINE = InnoDB,
+ PARTITION p201909 VALUES LESS THAN (737668) ENGINE = InnoDB,
+ PARTITION p201910 VALUES LESS THAN (737698) ENGINE = InnoDB,
+ PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
+ PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB,
+ PARTITION p202001 VALUES LESS THAN (737790) ENGINE = InnoDB,
+ PARTITION p202002 VALUES LESS THAN (737821) ENGINE = InnoDB,
+ PARTITION p202003 VALUES LESS THAN (737850) ENGINE = InnoDB,
+ PARTITION p202004 VALUES LESS THAN (737881) ENGINE = InnoDB,
+ PARTITION p202005 VALUES LESS THAN (737911) ENGINE = InnoDB,
+ PARTITION p202006 VALUES LESS THAN (737942) ENGINE = InnoDB,
+ PARTITION p202007 VALUES LESS THAN (737972) ENGINE = InnoDB,
+ PARTITION p202008 VALUES LESS THAN (738003) ENGINE = InnoDB,
+ PARTITION p202009 VALUES LESS THAN (738034) ENGINE = InnoDB,
+ PARTITION p202010 VALUES LESS THAN (738064) ENGINE = InnoDB,
+ PARTITION p202011 VALUES LESS THAN (738095) ENGINE = InnoDB,
+ PARTITION p202012 VALUES LESS THAN (738125) ENGINE = InnoDB,
+ PARTITION p202101 VALUES LESS THAN (738156) ENGINE = InnoDB,
+ PARTITION p202102 VALUES LESS THAN (738187) ENGINE = InnoDB,
+ PARTITION p202103 VALUES LESS THAN (738215) ENGINE = InnoDB,
+ PARTITION p202104 VALUES LESS THAN (738246) ENGINE = InnoDB,
+ PARTITION p202105 VALUES LESS THAN (738276) ENGINE = InnoDB,
+ PARTITION p202106 VALUES LESS THAN (738307) ENGINE = InnoDB,
+ PARTITION p202107 VALUES LESS THAN (738337) ENGINE = InnoDB,
+ PARTITION p202108 VALUES LESS THAN (738368) ENGINE = InnoDB,
+ PARTITION p202109 VALUES LESS THAN (738399) ENGINE = InnoDB,
+ PARTITION p202110 VALUES LESS THAN (738429) ENGINE = InnoDB,
+ PARTITION p202111 VALUES LESS THAN (738460) ENGINE = InnoDB,
+ PARTITION p202112 VALUES LESS THAN (738490) ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_cistern
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_trackinglist_cistern_assemble
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_cistern_assemble`;
+CREATE TABLE `t_trackinglist_cistern_assemble` (
+  `cistern_id` int(11) NOT NULL COMMENT '水箱装配流程跟踪单唯一标示',
+  `component_name` varchar(50) DEFAULT NULL COMMENT '组件名称',
+  `component_no` varchar(20) DEFAULT NULL COMMENT '组件型号',
+  `serial_no_record` varchar(20) DEFAULT NULL COMMENT '序列号记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='水箱装配流程跟踪单装配记录表'
+/*!50100 PARTITION BY HASH (cistern_id)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_cistern_assemble
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_trackinglist_dsp
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_dsp`;
+CREATE TABLE `t_trackinglist_dsp` (
+  `dsp_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
+  `assemble_time` date DEFAULT NULL COMMENT '装配日期',
+  `production_time` datetime DEFAULT NULL COMMENT '生产时间',
+  `dsp_pn` varchar(20) DEFAULT NULL COMMENT '型号/PN',
+  `serial_no` varchar(20) DEFAULT NULL COMMENT '序列号/Serial NO',
+  `workorder_no` varchar(20) NOT NULL COMMENT '工单号/WO',
+  `dsp_model` varchar(20) DEFAULT NULL COMMENT 'DSP型号/Model',
+  `exception_record` varchar(200) DEFAULT NULL COMMENT '异常记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注',
+  `assemble_Operator` varchar(20) DEFAULT NULL COMMENT '装配人员',
+  `operatorid` int(11) DEFAULT NULL,
+  `input_time` datetime NOT NULL COMMENT '录入时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`dsp_id`,`input_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='DSP装配流程跟踪单表'
+/*!50100 PARTITION BY RANGE (to_days(input_time))
+(PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
+ PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
+ PARTITION p201803 VALUES LESS THAN (737119) ENGINE = InnoDB,
+ PARTITION p201804 VALUES LESS THAN (737150) ENGINE = InnoDB,
+ PARTITION p201805 VALUES LESS THAN (737180) ENGINE = InnoDB,
+ PARTITION p201806 VALUES LESS THAN (737211) ENGINE = InnoDB,
+ PARTITION p201807 VALUES LESS THAN (737241) ENGINE = InnoDB,
+ PARTITION p201808 VALUES LESS THAN (737272) ENGINE = InnoDB,
+ PARTITION p201809 VALUES LESS THAN (737303) ENGINE = InnoDB,
+ PARTITION p201810 VALUES LESS THAN (737333) ENGINE = InnoDB,
+ PARTITION p201811 VALUES LESS THAN (737364) ENGINE = InnoDB,
+ PARTITION p201812 VALUES LESS THAN (737394) ENGINE = InnoDB,
+ PARTITION p201901 VALUES LESS THAN (737425) ENGINE = InnoDB,
+ PARTITION p201902 VALUES LESS THAN (737456) ENGINE = InnoDB,
+ PARTITION p201903 VALUES LESS THAN (737484) ENGINE = InnoDB,
+ PARTITION p201904 VALUES LESS THAN (737515) ENGINE = InnoDB,
+ PARTITION p201905 VALUES LESS THAN (737545) ENGINE = InnoDB,
+ PARTITION p201906 VALUES LESS THAN (737576) ENGINE = InnoDB,
+ PARTITION p201907 VALUES LESS THAN (737606) ENGINE = InnoDB,
+ PARTITION p201908 VALUES LESS THAN (737637) ENGINE = InnoDB,
+ PARTITION p201909 VALUES LESS THAN (737668) ENGINE = InnoDB,
+ PARTITION p201910 VALUES LESS THAN (737698) ENGINE = InnoDB,
+ PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
+ PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB,
+ PARTITION p202001 VALUES LESS THAN (737790) ENGINE = InnoDB,
+ PARTITION p202002 VALUES LESS THAN (737821) ENGINE = InnoDB,
+ PARTITION p202003 VALUES LESS THAN (737850) ENGINE = InnoDB,
+ PARTITION p202004 VALUES LESS THAN (737881) ENGINE = InnoDB,
+ PARTITION p202005 VALUES LESS THAN (737911) ENGINE = InnoDB,
+ PARTITION p202006 VALUES LESS THAN (737942) ENGINE = InnoDB,
+ PARTITION p202007 VALUES LESS THAN (737972) ENGINE = InnoDB,
+ PARTITION p202008 VALUES LESS THAN (738003) ENGINE = InnoDB,
+ PARTITION p202009 VALUES LESS THAN (738034) ENGINE = InnoDB,
+ PARTITION p202010 VALUES LESS THAN (738064) ENGINE = InnoDB,
+ PARTITION p202011 VALUES LESS THAN (738095) ENGINE = InnoDB,
+ PARTITION p202012 VALUES LESS THAN (738125) ENGINE = InnoDB,
+ PARTITION p202101 VALUES LESS THAN (738156) ENGINE = InnoDB,
+ PARTITION p202102 VALUES LESS THAN (738187) ENGINE = InnoDB,
+ PARTITION p202103 VALUES LESS THAN (738215) ENGINE = InnoDB,
+ PARTITION p202104 VALUES LESS THAN (738246) ENGINE = InnoDB,
+ PARTITION p202105 VALUES LESS THAN (738276) ENGINE = InnoDB,
+ PARTITION p202106 VALUES LESS THAN (738307) ENGINE = InnoDB,
+ PARTITION p202107 VALUES LESS THAN (738337) ENGINE = InnoDB,
+ PARTITION p202108 VALUES LESS THAN (738368) ENGINE = InnoDB,
+ PARTITION p202109 VALUES LESS THAN (738399) ENGINE = InnoDB,
+ PARTITION p202110 VALUES LESS THAN (738429) ENGINE = InnoDB,
+ PARTITION p202111 VALUES LESS THAN (738460) ENGINE = InnoDB,
+ PARTITION p202112 VALUES LESS THAN (738490) ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_dsp
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_trackinglist_dsp_assemble
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_dsp_assemble`;
+CREATE TABLE `t_trackinglist_dsp_assemble` (
+  `mainframe_id` int(11) NOT NULL COMMENT '主机装配流程跟踪单唯一标示',
+  `component_name` varchar(50) DEFAULT NULL COMMENT '组件名称',
+  `component_no` varchar(20) DEFAULT NULL COMMENT '组件型号',
+  `serial_no_record` varchar(20) DEFAULT NULL COMMENT '序列号记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主机装配流程跟踪单装配记录表'
+/*!50100 PARTITION BY HASH (mainframe_id)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_dsp_assemble
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_trackinglist_mainframe
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_mainframe`;
+CREATE TABLE `t_trackinglist_mainframe` (
+  `mainframe_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
+  `assemble_time` date DEFAULT NULL COMMENT '装配日期',
+  `production_time` datetime DEFAULT NULL COMMENT '生产时间',
+  `mainframe_pn` varchar(20) DEFAULT NULL COMMENT '型号/PN',
+  `serial_no` varchar(20) DEFAULT NULL COMMENT '序列号/Serial NO',
+  `workorder_no` varchar(20) NOT NULL COMMENT '工单号/WO',
+  `mainframe_model` varchar(20) DEFAULT NULL COMMENT '主机型号/Model',
+  `mainframe_option` varchar(20) DEFAULT NULL COMMENT '主机选配件/Option',
+  `exception_record` varchar(200) DEFAULT NULL COMMENT '异常记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注',
+  `assemble_Operator` varchar(20) DEFAULT NULL COMMENT '装配人员',
+  `inspect_operator` varchar(20) DEFAULT NULL COMMENT '送检人员',
+  `inspect_time` date DEFAULT NULL COMMENT '送检日期',
+  `operatorid` int(11) DEFAULT NULL,
+  `input_time` datetime NOT NULL COMMENT '录入时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`mainframe_id`,`input_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主机装配流程跟踪单表'
+/*!50100 PARTITION BY RANGE (to_days(input_time))
+(PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
+ PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
+ PARTITION p201803 VALUES LESS THAN (737119) ENGINE = InnoDB,
+ PARTITION p201804 VALUES LESS THAN (737150) ENGINE = InnoDB,
+ PARTITION p201805 VALUES LESS THAN (737180) ENGINE = InnoDB,
+ PARTITION p201806 VALUES LESS THAN (737211) ENGINE = InnoDB,
+ PARTITION p201807 VALUES LESS THAN (737241) ENGINE = InnoDB,
+ PARTITION p201808 VALUES LESS THAN (737272) ENGINE = InnoDB,
+ PARTITION p201809 VALUES LESS THAN (737303) ENGINE = InnoDB,
+ PARTITION p201810 VALUES LESS THAN (737333) ENGINE = InnoDB,
+ PARTITION p201811 VALUES LESS THAN (737364) ENGINE = InnoDB,
+ PARTITION p201812 VALUES LESS THAN (737394) ENGINE = InnoDB,
+ PARTITION p201901 VALUES LESS THAN (737425) ENGINE = InnoDB,
+ PARTITION p201902 VALUES LESS THAN (737456) ENGINE = InnoDB,
+ PARTITION p201903 VALUES LESS THAN (737484) ENGINE = InnoDB,
+ PARTITION p201904 VALUES LESS THAN (737515) ENGINE = InnoDB,
+ PARTITION p201905 VALUES LESS THAN (737545) ENGINE = InnoDB,
+ PARTITION p201906 VALUES LESS THAN (737576) ENGINE = InnoDB,
+ PARTITION p201907 VALUES LESS THAN (737606) ENGINE = InnoDB,
+ PARTITION p201908 VALUES LESS THAN (737637) ENGINE = InnoDB,
+ PARTITION p201909 VALUES LESS THAN (737668) ENGINE = InnoDB,
+ PARTITION p201910 VALUES LESS THAN (737698) ENGINE = InnoDB,
+ PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
+ PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB,
+ PARTITION p202001 VALUES LESS THAN (737790) ENGINE = InnoDB,
+ PARTITION p202002 VALUES LESS THAN (737821) ENGINE = InnoDB,
+ PARTITION p202003 VALUES LESS THAN (737850) ENGINE = InnoDB,
+ PARTITION p202004 VALUES LESS THAN (737881) ENGINE = InnoDB,
+ PARTITION p202005 VALUES LESS THAN (737911) ENGINE = InnoDB,
+ PARTITION p202006 VALUES LESS THAN (737942) ENGINE = InnoDB,
+ PARTITION p202007 VALUES LESS THAN (737972) ENGINE = InnoDB,
+ PARTITION p202008 VALUES LESS THAN (738003) ENGINE = InnoDB,
+ PARTITION p202009 VALUES LESS THAN (738034) ENGINE = InnoDB,
+ PARTITION p202010 VALUES LESS THAN (738064) ENGINE = InnoDB,
+ PARTITION p202011 VALUES LESS THAN (738095) ENGINE = InnoDB,
+ PARTITION p202012 VALUES LESS THAN (738125) ENGINE = InnoDB,
+ PARTITION p202101 VALUES LESS THAN (738156) ENGINE = InnoDB,
+ PARTITION p202102 VALUES LESS THAN (738187) ENGINE = InnoDB,
+ PARTITION p202103 VALUES LESS THAN (738215) ENGINE = InnoDB,
+ PARTITION p202104 VALUES LESS THAN (738246) ENGINE = InnoDB,
+ PARTITION p202105 VALUES LESS THAN (738276) ENGINE = InnoDB,
+ PARTITION p202106 VALUES LESS THAN (738307) ENGINE = InnoDB,
+ PARTITION p202107 VALUES LESS THAN (738337) ENGINE = InnoDB,
+ PARTITION p202108 VALUES LESS THAN (738368) ENGINE = InnoDB,
+ PARTITION p202109 VALUES LESS THAN (738399) ENGINE = InnoDB,
+ PARTITION p202110 VALUES LESS THAN (738429) ENGINE = InnoDB,
+ PARTITION p202111 VALUES LESS THAN (738460) ENGINE = InnoDB,
+ PARTITION p202112 VALUES LESS THAN (738490) ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_mainframe
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_trackinglist_mainframe_assemble
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_mainframe_assemble`;
+CREATE TABLE `t_trackinglist_mainframe_assemble` (
+  `mainframe_id` int(11) NOT NULL COMMENT '主机装配流程跟踪单唯一标示',
+  `component_name` varchar(200) DEFAULT NULL COMMENT '组件名称',
+  `component_no` varchar(200) DEFAULT NULL COMMENT '组件型号',
+  `serial_no_record` varchar(100) DEFAULT NULL COMMENT '序列号记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主机装配流程跟踪单装配记录表'
+/*!50100 PARTITION BY HASH (mainframe_id)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_mainframe_assemble
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_trackinglist_mainframe_inspect
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_mainframe_inspect`;
+CREATE TABLE `t_trackinglist_mainframe_inspect` (
+  `mainframe_id` int(11) NOT NULL COMMENT '主机装配流程跟踪单唯一标示',
+  `selfcheck_name` varchar(200) DEFAULT NULL COMMENT '自检名称',
+  `selfcheck_content` varchar(200) DEFAULT NULL COMMENT '自检内容',
+  `selfcheck_result` varchar(100) DEFAULT NULL COMMENT '自检结果',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主机装配流程跟踪单送检记录表'
+/*!50100 PARTITION BY HASH (mainframe_id)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_mainframe_inspect
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_trackinglist_preprocessing
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_preprocessing`;
+CREATE TABLE `t_trackinglist_preprocessing` (
+  `preprocessing_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标示',
+  `assemble_time` date DEFAULT NULL COMMENT '装配日期',
+  `production_time` datetime DEFAULT NULL COMMENT '生产时间',
+  `preprocessing_pn` varchar(20) DEFAULT NULL COMMENT '型号/PN',
+  `serial_no` varchar(20) DEFAULT NULL COMMENT '序列号/Serial NO',
+  `workorder_no` varchar(20) NOT NULL COMMENT '工单号/WO',
+  `preprocessing_model` varchar(20) DEFAULT NULL COMMENT '名称/Model',
+  `pt_option2` varchar(20) DEFAULT NULL COMMENT 'PT选配件/Option',
+  `pt_option` varchar(20) DEFAULT NULL COMMENT 'PT选配件/Option',
+  `exception_record` varchar(200) DEFAULT NULL COMMENT '异常记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注',
+  `assemble_Operator` varchar(20) DEFAULT NULL COMMENT '装配人员',
+  `inspect_operator` varchar(20) DEFAULT NULL COMMENT '送检人员',
+  `inspect_time` date DEFAULT NULL COMMENT '送检日期',
+  `operatorid` int(11) DEFAULT NULL,
+  `input_time` datetime NOT NULL COMMENT '录入时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`preprocessing_id`,`input_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=1282 DEFAULT CHARSET=utf8 COMMENT='预处理装配流程跟踪单表'
+/*!50100 PARTITION BY RANGE (to_days(input_time))
+(PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
+ PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
+ PARTITION p201803 VALUES LESS THAN (737119) ENGINE = InnoDB,
+ PARTITION p201804 VALUES LESS THAN (737150) ENGINE = InnoDB,
+ PARTITION p201805 VALUES LESS THAN (737180) ENGINE = InnoDB,
+ PARTITION p201806 VALUES LESS THAN (737211) ENGINE = InnoDB,
+ PARTITION p201807 VALUES LESS THAN (737241) ENGINE = InnoDB,
+ PARTITION p201808 VALUES LESS THAN (737272) ENGINE = InnoDB,
+ PARTITION p201809 VALUES LESS THAN (737303) ENGINE = InnoDB,
+ PARTITION p201810 VALUES LESS THAN (737333) ENGINE = InnoDB,
+ PARTITION p201811 VALUES LESS THAN (737364) ENGINE = InnoDB,
+ PARTITION p201812 VALUES LESS THAN (737394) ENGINE = InnoDB,
+ PARTITION p201901 VALUES LESS THAN (737425) ENGINE = InnoDB,
+ PARTITION p201902 VALUES LESS THAN (737456) ENGINE = InnoDB,
+ PARTITION p201903 VALUES LESS THAN (737484) ENGINE = InnoDB,
+ PARTITION p201904 VALUES LESS THAN (737515) ENGINE = InnoDB,
+ PARTITION p201905 VALUES LESS THAN (737545) ENGINE = InnoDB,
+ PARTITION p201906 VALUES LESS THAN (737576) ENGINE = InnoDB,
+ PARTITION p201907 VALUES LESS THAN (737606) ENGINE = InnoDB,
+ PARTITION p201908 VALUES LESS THAN (737637) ENGINE = InnoDB,
+ PARTITION p201909 VALUES LESS THAN (737668) ENGINE = InnoDB,
+ PARTITION p201910 VALUES LESS THAN (737698) ENGINE = InnoDB,
+ PARTITION p201911 VALUES LESS THAN (737729) ENGINE = InnoDB,
+ PARTITION p201912 VALUES LESS THAN (737759) ENGINE = InnoDB,
+ PARTITION p202001 VALUES LESS THAN (737790) ENGINE = InnoDB,
+ PARTITION p202002 VALUES LESS THAN (737821) ENGINE = InnoDB,
+ PARTITION p202003 VALUES LESS THAN (737850) ENGINE = InnoDB,
+ PARTITION p202004 VALUES LESS THAN (737881) ENGINE = InnoDB,
+ PARTITION p202005 VALUES LESS THAN (737911) ENGINE = InnoDB,
+ PARTITION p202006 VALUES LESS THAN (737942) ENGINE = InnoDB,
+ PARTITION p202007 VALUES LESS THAN (737972) ENGINE = InnoDB,
+ PARTITION p202008 VALUES LESS THAN (738003) ENGINE = InnoDB,
+ PARTITION p202009 VALUES LESS THAN (738034) ENGINE = InnoDB,
+ PARTITION p202010 VALUES LESS THAN (738064) ENGINE = InnoDB,
+ PARTITION p202011 VALUES LESS THAN (738095) ENGINE = InnoDB,
+ PARTITION p202012 VALUES LESS THAN (738125) ENGINE = InnoDB,
+ PARTITION p202101 VALUES LESS THAN (738156) ENGINE = InnoDB,
+ PARTITION p202102 VALUES LESS THAN (738187) ENGINE = InnoDB,
+ PARTITION p202103 VALUES LESS THAN (738215) ENGINE = InnoDB,
+ PARTITION p202104 VALUES LESS THAN (738246) ENGINE = InnoDB,
+ PARTITION p202105 VALUES LESS THAN (738276) ENGINE = InnoDB,
+ PARTITION p202106 VALUES LESS THAN (738307) ENGINE = InnoDB,
+ PARTITION p202107 VALUES LESS THAN (738337) ENGINE = InnoDB,
+ PARTITION p202108 VALUES LESS THAN (738368) ENGINE = InnoDB,
+ PARTITION p202109 VALUES LESS THAN (738399) ENGINE = InnoDB,
+ PARTITION p202110 VALUES LESS THAN (738429) ENGINE = InnoDB,
+ PARTITION p202111 VALUES LESS THAN (738460) ENGINE = InnoDB,
+ PARTITION p202112 VALUES LESS THAN (738490) ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_preprocessing
+-- ----------------------------
+INSERT INTO `t_trackinglist_preprocessing` VALUES ('1280', '2018-09-23', '2018-09-06 03:29:33', 'LWFS32701PC', '4444444', '5677886', '2342432', '2. -C CM1', '1. -P Raw Pump', '', '若无特别说明，装配跟踪单记录人员即为装配人员，若非记录者装配设备请于备注处注明。', 'sdas', 'asdas', '2018-09-17', '9', '2018-09-06 03:30:37', '2018-09-06 03:30:37');
+INSERT INTO `t_trackinglist_preprocessing` VALUES ('1281', '2018-09-23', '2018-09-06 03:29:33', 'LWFS32701PC', '4444444', '5677886', '2342432', '2. -C CM1', '1. -P Raw Pump', '', '若无特别说明，装配跟踪单记录人员即为装配人员，若非记录者装配设备请于备注处注明。', 'sdas', 'asdas', '2018-09-17', '9', '2018-09-06 03:30:42', '2018-09-06 03:30:42');
+
+-- ----------------------------
+-- Table structure for t_trackinglist_preprocessing_assemble
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_preprocessing_assemble`;
+CREATE TABLE `t_trackinglist_preprocessing_assemble` (
+  `preprocessing_id` int(11) NOT NULL COMMENT '预处理装配流程跟踪单唯一标示',
+  `component_name` varchar(200) DEFAULT NULL COMMENT '组件名称',
+  `component_no` varchar(200) DEFAULT NULL COMMENT '组件型号',
+  `serial_no_record` varchar(100) DEFAULT NULL COMMENT '序列号记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预处理装配流程跟踪单装配记录表'
+/*!50100 PARTITION BY HASH (preprocessing_id)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_preprocessing_assemble
+-- ----------------------------
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '开关电源（预处理）|Power module (PT)', 'SP-75-24', null, 'ddfd');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '源水增压泵|Raw water boost pump', 'EC-203-300ARS', null, '');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '水质变送器|Water quality transducer', 'CM1源水电导仪|CM1 Raw water sensor', null, 'dfdsf');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '水质变送器|Water quality transducer', '1#电导变送器|1# Conductivity transducer', null, '');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '预处理IO主板|PT module IO PCB', 'PT-IO PCB board', null, '');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '预处理显示板|PT module display PCB', 'PT LCD PCB with LCD', null, 'sdfs');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', 'PT减压阀|Pressure Regulator (feed water)', 'PRV-3-SH', null, 'sdfs');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '常闭电磁阀_水平流|Solenoid Valve（horizontal,NC）', '-', null, 'sdfs');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1280', '低压开关|Pressure switch (feed water)', '-', null, '');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '开关电源（预处理）|Power module (PT)', 'SP-75-24', null, 'ddfd');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '源水增压泵|Raw water boost pump', 'EC-203-300ARS', null, '');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '水质变送器|Water quality transducer', 'CM1源水电导仪|CM1 Raw water sensor', null, 'dfdsf');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '水质变送器|Water quality transducer', '1#电导变送器|1# Conductivity transducer', null, '');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '预处理IO主板|PT module IO PCB', 'PT-IO PCB board', null, '');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '预处理显示板|PT module display PCB', 'PT LCD PCB with LCD', null, 'sdfs');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', 'PT减压阀|Pressure Regulator (feed water)', 'PRV-3-SH', null, 'sdfs');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '常闭电磁阀_水平流|Solenoid Valve（horizontal,NC）', '-', null, 'sdfs');
+INSERT INTO `t_trackinglist_preprocessing_assemble` VALUES ('1281', '低压开关|Pressure switch (feed water)', '-', null, '');
+
+-- ----------------------------
+-- Table structure for t_trackinglist_preprocessing_inspect
+-- ----------------------------
+DROP TABLE IF EXISTS `t_trackinglist_preprocessing_inspect`;
+CREATE TABLE `t_trackinglist_preprocessing_inspect` (
+  `preprocessing_id` int(11) NOT NULL COMMENT '预处理装配流程跟踪单唯一标示',
+  `selfcheck_name` varchar(200) DEFAULT NULL COMMENT '自检名称',
+  `selfcheck_content` varchar(200) DEFAULT NULL COMMENT '自检内容',
+  `selfcheck_result` varchar(100) DEFAULT NULL COMMENT '自检结果',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预处理装配流程跟踪单送检记录表'
+/*!50100 PARTITION BY HASH (preprocessing_id)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_trackinglist_preprocessing_inspect
+-- ----------------------------
+INSERT INTO `t_trackinglist_preprocessing_inspect` VALUES ('1280', '流路及组件检查/Inspection', null, null, 'ddfd');
+INSERT INTO `t_trackinglist_preprocessing_inspect` VALUES ('1281', '流路及组件检查/Inspection', null, null, 'ddfd');
 
 -- ----------------------------
 -- Table structure for t_ums_accountloginlog
@@ -177,9 +988,17 @@ INSERT INTO `t_ums_config` VALUES ('74', 'chemicalReagent/menuid', '1', '206', n
 INSERT INTO `t_ums_config` VALUES ('75', 'twicechemicalReagent/menuid', '1', '207', null, '2', '二次生物镀膜BIO流程菜单id');
 INSERT INTO `t_ums_config` VALUES ('76', 'report/assemblyScrapSummary/tablename', '1', 'assemblyScrapSummarytable301', null, '2', '组装报废汇总配置表名');
 INSERT INTO `t_ums_config` VALUES ('77', 'report/productTracking/tablename', '1', 'productTrackingtable302', null, '2', '产出数量追踪配置表名');
-INSERT INTO `t_ums_config` VALUES ('78', 'report/assemblyScrapSummary/download/subdirectory', '1', 'assemblyScrapSummary', null, '2', '组装报废汇总页面excel下载子目录名称');
-INSERT INTO `t_ums_config` VALUES ('79', 'chemicalReagent/thConfig/reagentMixture', '1', 'reagentMixture', null, '2', 't_ums_th_config表中生化镀膜配置汇合试剂属性名');
-INSERT INTO `t_ums_config` VALUES ('80', 'twicechemicalReagent/thConfig/reagentMixture', '1', 'reagentMixture', null, '2', 't_ums_th_config表中二次生化镀膜配置汇合试剂属性名');
+INSERT INTO `t_ums_config` VALUES ('100', 'tracklinglist/dsp/menuid', '1', '401', null, '2', 'DSP装配流程跟踪单流程菜单id');
+INSERT INTO `t_ums_config` VALUES ('101', 'tracklinglist/cistern/menuid', '1', '402', null, '2', ' 水箱装配流程跟踪单流程菜单id');
+INSERT INTO `t_ums_config` VALUES ('102', 'tracklinglist/preprocessing/menuid', '1', '403', null, '2', '预处理装配流程跟踪单流程菜单id');
+INSERT INTO `t_ums_config` VALUES ('103', 'tracklinglist/mainFrame/menuid', '1', '404', null, '2', '主机装配流程跟踪单流程菜单id');
+INSERT INTO `t_ums_config` VALUES ('104', 'tracklinglist/dsp/tablename', '1', 'dspTable401', null, '2', 'DSP装配流程跟踪单流程配置表名');
+INSERT INTO `t_ums_config` VALUES ('105', 'tracklinglist/cistern/tablename', '1', 'cisternTable402', null, '2', '水箱装配流程跟踪单流程配置表名');
+INSERT INTO `t_ums_config` VALUES ('106', 'tracklinglist/preprocessing/tablename', '1', 'preprocessingTable403', null, '2', '预处理装配流程跟踪单流程配置表名');
+INSERT INTO `t_ums_config` VALUES ('107', 'tracklinglist/mainFrame/tablename', '1', 'mainframeTable404', null, '2', '主机装配流程跟踪单流程配置表名');
+INSERT INTO `t_ums_config` VALUES ('108', 'trackinglist/preprocessing/download/subdirectory', '1', 'preprocessing', null, '2', '预处理装配流程跟踪单流程下载子目录名称');
+INSERT INTO `t_ums_config` VALUES ('78', 'report/assemblyScrapSummary/download/subdirectory', '1', 'assemblyScrapSummary', '', '2', '组装报废汇总页面excel下载子目录名称');
+INSERT INTO `t_ums_config` VALUES ('109', 'tracklinglist/preprocessing/templatename', '1', 'preprocessingTemplate403', null, '2', ' 预处理装配流程跟踪单流程导出模板');
 
 -- ----------------------------
 -- Table structure for t_ums_data_button
@@ -283,7 +1102,7 @@ CREATE TABLE `t_ums_data_config` (
   `UPDATETIME` datetime DEFAULT NULL,
   PRIMARY KEY (`DATAID`),
   KEY `idx_udc_config_datatype_configname` (`DATATYPE`,`configname`)
-) ENGINE=InnoDB AUTO_INCREMENT=838 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=830 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
 
 -- ----------------------------
 -- Records of t_ums_data_config
@@ -414,8 +1233,6 @@ INSERT INTO `t_ums_data_config` VALUES ('328', '181', '异物', '', '9', '2018-0
 INSERT INTO `t_ums_data_config` VALUES ('332', '22', '缝隙', '', '9', '2018-05-12 06:30:35', '2018-05-12 06:30:35');
 INSERT INTO `t_ums_data_config` VALUES ('348', '12', '09-0071', '', '9', '2018-05-12 06:43:26', '2018-05-12 06:43:26');
 INSERT INTO `t_ums_data_config` VALUES ('349', '12', '12-0003', '', '9', '2018-05-12 07:50:06', '2018-05-12 07:50:06');
-INSERT INTO `t_ums_data_config` VALUES ('350', '37', 'Q', '', '9', '2018-05-13 22:40:23', '2018-05-13 22:40:23');
-INSERT INTO `t_ums_data_config` VALUES ('351', '37', 'K', '', '9', '2018-05-13 22:40:29', '2018-05-13 22:40:29');
 INSERT INTO `t_ums_data_config` VALUES ('358', '203', '其它', '', '9', '2018-05-14 21:49:53', '2018-05-14 21:49:53');
 INSERT INTO `t_ums_data_config` VALUES ('359', '204', '其它', '', '9', '2018-05-14 21:50:10', '2018-05-14 21:50:10');
 INSERT INTO `t_ums_data_config` VALUES ('360', '205', '其它', '', '9', '2018-05-14 21:50:34', '2018-05-14 21:50:34');
@@ -472,13 +1289,6 @@ INSERT INTO `t_ums_data_config` VALUES ('447', '14', '71-0000', '乐泰胶417（
 INSERT INTO `t_ums_data_config` VALUES ('448', '21', '71-0000', '丙酮', '9', '2018-06-13 15:10:37', '2018-06-13 15:10:37');
 INSERT INTO `t_ums_data_config` VALUES ('449', '21', '09-0080', '抛磨后光钎\r\nFIBER,OPTICAL,POLISHED&BEFORE CLEAN', '9', '2018-06-13 15:12:36', '2018-06-13 15:12:36');
 INSERT INTO `t_ums_data_config` VALUES ('450', '25', '09-0071', '玻璃光纤，抛光，检验合格，20mm', '9', '2018-06-13 15:12:48', '2018-06-13 15:12:48');
-INSERT INTO `t_ums_data_config` VALUES ('451', '35', '12-0003', '光学镀膜光钎，20mm', '9', '2018-06-13 15:14:19', '2018-06-13 15:14:19');
-INSERT INTO `t_ums_data_config` VALUES ('452', '35', '09-0078', '100ml APS溶液', '9', '2018-06-13 15:14:59', '2018-08-01 17:28:43');
-INSERT INTO `t_ums_data_config` VALUES ('453', '38', '13-0005', 'K-玻璃光钎', '9', '2018-06-13 15:16:59', '2018-06-13 15:16:59');
-INSERT INTO `t_ums_data_config` VALUES ('454', '38', '13-0004', 'Q-玻璃光钎', '9', '2018-06-13 15:17:19', '2018-06-13 15:17:19');
-INSERT INTO `t_ums_data_config` VALUES ('455', '38', '09-0079', 'Assembly Tip Tray EMPTY', '9', '2018-06-13 15:18:13', '2018-06-13 15:18:13');
-INSERT INTO `t_ums_data_config` VALUES ('456', '38', '09-0076', 'HUB ABS透明hub', '9', '2018-06-13 15:18:54', '2018-06-13 15:18:54');
-INSERT INTO `t_ums_data_config` VALUES ('457', '38', '71-0015', '胶水 160ml', '9', '2018-06-13 15:19:25', '2018-06-13 15:19:25');
 INSERT INTO `t_ums_data_config` VALUES ('458', '11', '1#机器', '', '9', '2018-06-13 16:03:25', '2018-06-13 16:03:25');
 INSERT INTO `t_ums_data_config` VALUES ('459', '11', '2#机器', '', '9', '2018-06-13 16:03:41', '2018-06-13 16:03:41');
 INSERT INTO `t_ums_data_config` VALUES ('460', '11', '3#机器', '', '9', '2018-06-13 16:03:50', '2018-06-13 16:03:50');
@@ -780,9 +1590,6 @@ INSERT INTO `t_ums_data_config` VALUES ('763', '29', '18-0027', 'GST', '9', '201
 INSERT INTO `t_ums_data_config` VALUES ('764', '29', '18-0034', 'HIS2', '9', '2018-07-12 12:30:16', '2018-07-12 12:30:16');
 INSERT INTO `t_ums_data_config` VALUES ('765', '29', '18-0038', 'HIS1K', '9', '2018-07-12 12:30:28', '2018-07-12 12:30:28');
 INSERT INTO `t_ums_data_config` VALUES ('766', '29', '18-0039', 'FAB2G', '9', '2018-07-12 12:30:37', '2018-07-12 12:30:37');
-INSERT INTO `t_ums_data_config` VALUES ('767', '47', '请选择', '', '9', '2018-07-12 14:07:47', '2018-07-12 14:07:47');
-INSERT INTO `t_ums_data_config` VALUES ('768', '47', 'K', '', '9', '2018-07-12 14:07:58', '2018-07-12 14:07:58');
-INSERT INTO `t_ums_data_config` VALUES ('769', '47', 'Q', '', '9', '2018-07-12 14:08:12', '2018-07-12 14:08:12');
 INSERT INTO `t_ums_data_config` VALUES ('770', '34', '04-0001', '双长链生物素偶联牛血清白蛋白', '9', '2018-07-17 12:55:50', '2018-07-17 12:55:50');
 INSERT INTO `t_ums_data_config` VALUES ('771', '34', '04-0002', '链霉亲和素偶联抗人免疫球蛋白抗体', '9', '2018-07-17 12:56:02', '2018-07-17 12:56:02');
 INSERT INTO `t_ums_data_config` VALUES ('772', '34', '04-0003', '短链生物素偶联牛血清白蛋白', '9', '2018-07-17 12:56:16', '2018-07-17 12:56:16');
@@ -843,14 +1650,6 @@ INSERT INTO `t_ums_data_config` VALUES ('826', '31', 'N/A', '', '9', '2018-07-19
 INSERT INTO `t_ums_data_config` VALUES ('827', '43', 'N/A', '', '9', '2018-07-19 15:45:14', '2018-07-19 15:45:14');
 INSERT INTO `t_ums_data_config` VALUES ('828', '44', 'N/A', '', '9', '2018-07-19 15:45:23', '2018-07-19 15:45:23');
 INSERT INTO `t_ums_data_config` VALUES ('829', '45', 'XC171120', '', '9', '2018-07-19 16:04:06', '2018-07-19 16:04:06');
-INSERT INTO `t_ums_data_config` VALUES ('830', '27', '05-0041', '', '9', '2018-08-23 12:39:22', '2018-08-23 12:39:22');
-INSERT INTO `t_ums_data_config` VALUES ('831', '27', '05-0043', '', '9', '2018-08-23 12:40:28', '2018-08-23 12:40:28');
-INSERT INTO `t_ums_data_config` VALUES ('832', '27', '05-0044', '', '9', '2018-08-23 12:40:42', '2018-08-23 12:40:42');
-INSERT INTO `t_ums_data_config` VALUES ('833', '27', '05-0045', '', '9', '2018-08-23 12:40:58', '2018-08-23 12:40:58');
-INSERT INTO `t_ums_data_config` VALUES ('834', '27', '05-0047', '', '9', '2018-08-23 12:41:09', '2018-08-23 12:41:09');
-INSERT INTO `t_ums_data_config` VALUES ('835', '34', '03-0006', '', '9', '2018-08-23 12:45:36', '2018-08-23 12:45:36');
-INSERT INTO `t_ums_data_config` VALUES ('836', '34', '05-5003', '', '9', '2018-08-23 12:48:55', '2018-08-23 12:48:55');
-INSERT INTO `t_ums_data_config` VALUES ('837', '34', '03-0008', '', '9', '2018-08-23 13:43:00', '2018-08-23 13:43:00');
 
 -- ----------------------------
 -- Table structure for t_ums_deptinfo
@@ -903,7 +1702,7 @@ CREATE TABLE `t_ums_menuinfo` (
   `SORT` int(4) NOT NULL COMMENT '同级菜单顺序',
   `DESCRIPTION` varchar(300) DEFAULT '' COMMENT '描述信息',
   PRIMARY KEY (`MENUID`)
-) ENGINE=InnoDB AUTO_INCREMENT=303 DEFAULT CHARSET=utf8 COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=505 DEFAULT CHARSET=utf8 COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of t_ums_menuinfo
@@ -911,6 +1710,8 @@ CREATE TABLE `t_ums_menuinfo` (
 INSERT INTO `t_ums_menuinfo` VALUES ('1', '基础管理', 'menu-icon glyphicon glyphicon-cog', null, '0', '0', '-1', '1', null);
 INSERT INTO `t_ums_menuinfo` VALUES ('2', '工作流管理', 'menu-icon glyphicon glyphicon-globe', '', '0', '0', '-1', '2', '');
 INSERT INTO `t_ums_menuinfo` VALUES ('3', '报表管理', 'menu-icon glyphicon glyphicon-th-list', null, '0', '0', '-1', '3', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('4', '饮水机跟踪管理', 'menu-icon glyphicon glyphicon-tint', null, '0', '0', '-1', '5', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('5', '饮水机配置管理', 'menu-icon glyphicons\r\nglyphicon glyphicon-asterisk', null, '0', '0', '-1', '4', '');
 INSERT INTO `t_ums_menuinfo` VALUES ('101', '权限管理', '胜多负少', null, '1', '1', '1', '1', '');
 INSERT INTO `t_ums_menuinfo` VALUES ('102', '用户管理', '\r\nmenu-icon glyphicon glyphicon-user', '/user/userManage', '1', '0', '1', '2', null);
 INSERT INTO `t_ums_menuinfo` VALUES ('103', '角色管理', 'menu-icon glyphicon glyphicon-asterisk', '/role/roleManage', '1', '1', '1', '3', null);
@@ -929,6 +1730,14 @@ INSERT INTO `t_ums_menuinfo` VALUES ('206', '生化镀膜', 'menu-icon glyphicon
 INSERT INTO `t_ums_menuinfo` VALUES ('207', '二次生化镀膜', 'menu-icon glyphicons glyphicons-hand-right', '/workflow/twiceChemicalReagentManage', '1', '0', '2', '8', '');
 INSERT INTO `t_ums_menuinfo` VALUES ('301', '组装报废汇总', 'menu-icon glyphicons glyphicons-hand-right', '/report/assemblyScrapSummary', '1', '0', '3', '1', '');
 INSERT INTO `t_ums_menuinfo` VALUES ('302', '产出数量追踪', 'menu-icon glyphicons glyphicons-hand-right', '/report/productTracking', '1', '0', '3', '2', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('401', 'DSP装配流程跟踪单', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/trackinglist/dspManage', '1', '0', '4', '1', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('402', '水箱装配流程跟踪单', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/trackinglist/cisternManage', '1', '0', '4', '2', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('403', '预处理装配流程跟踪单', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/trackinglist/preprocessingManage', '1', '0', '4', '3', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('404', '主机装配流程跟踪单', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/trackinglist/mainframeManage', '1', '0', '4', '4', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('501', 'DSP配置', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/trackinglist/setting/dspAssemble', '1', '0', '5', '1', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('502', '水箱配置', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/trackinglist/setting/cisternAssemble', '1', '0', '5', '2', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('503', '预处理配置', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/setting/preprocessingSetting', '1', '0', '5', '3', '');
+INSERT INTO `t_ums_menuinfo` VALUES ('504', '主机配置', 'menu-icon glyphicons\r\nglyphicons-hand-right', '/trackinglist/setting/preprocessingInspect', '1', '0', '5', '4', '');
 
 -- ----------------------------
 -- Table structure for t_ums_menu_button
@@ -1059,7 +1868,7 @@ CREATE TABLE `t_ums_reagentmixture` (
   KEY `idx_ur_reagentmiture_reagentmixture` (`lot_num`) USING BTREE,
   KEY `idx_ur_reagentmiture_mainreagent` (`main_reagent`) USING BTREE,
   KEY `idx_ur_reagentmiture_configtime` (`config_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='试剂混合表';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='试剂混合表';
 
 -- ----------------------------
 -- Records of t_ums_reagentmixture
@@ -1082,9 +1891,6 @@ INSERT INTO `t_ums_reagentmixture` VALUES ('21', '2018-04-12 10:44:24', '04-0013
 INSERT INTO `t_ums_reagentmixture` VALUES ('22', '2018-04-12 10:46:37', '04-0013', 'NA', 'MP180412C', 'NA', '0.0000', null, null, null, null, '', 'NA', '', '', '', '2018-07-19 10:47:16', '2018-07-19 10:47:16', '9');
 INSERT INTO `t_ums_reagentmixture` VALUES ('23', '2018-05-21 10:48:08', '01-0030', 'NA', 'SI180521', 'NA', '0.0000', null, null, null, null, '', 'NA', '', '', '', '2018-07-19 10:48:28', '2018-07-19 10:48:28', '9');
 INSERT INTO `t_ums_reagentmixture` VALUES ('24', '2018-05-29 10:49:28', '01-0026', 'NA', 'FI180529', 'NA', '0.0000', null, null, null, null, '', 'NA', '', '', '', '2018-07-19 10:50:21', '2018-07-19 10:50:21', '9');
-INSERT INTO `t_ums_reagentmixture` VALUES ('25', '2018-08-23 12:41:26', '05-0041', 'jjhhgfd', 'kkkkkkkjjgd', '', '2.5000', null, null, null, null, '', '', '', '', '', '2018-08-23 12:44:19', '2018-08-23 12:44:19', '9');
-INSERT INTO `t_ums_reagentmixture` VALUES ('26', '2018-08-23 12:46:13', '05-0041', '', 'kjhfdf', '', '0.0000', null, null, null, null, '', '', '', '', '', '2018-08-23 12:46:59', '2018-08-23 12:46:59', '9');
-INSERT INTO `t_ums_reagentmixture` VALUES ('27', '2018-08-23 12:46:13', '05-0043', '', 'kjhfdfsdfsdfs', '', '0.0000', null, null, null, null, '', '', '', '', '', '2018-08-23 12:47:32', '2018-08-23 12:47:32', '9');
 
 -- ----------------------------
 -- Table structure for t_ums_reagentmixture_sns
@@ -1099,7 +1905,7 @@ CREATE TABLE `t_ums_reagentmixture_sns` (
   `reagents_sn` varchar(100) DEFAULT NULL COMMENT '试剂编号',
   PRIMARY KEY (`srmid`),
   KEY `idx_urs_sns_rmid` (`rmid`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='试剂编号表';
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COMMENT='试剂编号表';
 
 -- ----------------------------
 -- Records of t_ums_reagentmixture_sns
@@ -1135,8 +1941,6 @@ INSERT INTO `t_ums_reagentmixture_sns` VALUES ('46', '22', 'reagentmixturetable2
 INSERT INTO `t_ums_reagentmixture_sns` VALUES ('47', '23', 'reagentmixturetable209440', '01-0030', '01-0030', 'SI180521');
 INSERT INTO `t_ums_reagentmixture_sns` VALUES ('48', '24', 'reagentmixturetable209436', '01-0026', '01-0026', 'FI180529');
 INSERT INTO `t_ums_reagentmixture_sns` VALUES ('49', '10', 'reagentmixturetable209781', '04-0013', '04-0013', 'MP180117C');
-INSERT INTO `t_ums_reagentmixture_sns` VALUES ('50', '26', 'reagentmixturetable209835', '05-0041', '03-0006', 'qqadadadadsa');
-INSERT INTO `t_ums_reagentmixture_sns` VALUES ('51', '27', 'reagentmixturetable209835', '05-0043', '03-0006', 'qdfrrte');
 
 -- ----------------------------
 -- Table structure for t_ums_right
@@ -1149,7 +1953,7 @@ CREATE TABLE `t_ums_right` (
   `DESCRIPTION` text COMMENT '浏览按钮权限描述',
   PRIMARY KEY (`RIGHTID`),
   KEY `idx_ur_right_righttype_dataid` (`RIGHTTYPE`,`DATAID`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8 COMMENT='权限信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8 COMMENT='权限信息表';
 
 -- ----------------------------
 -- Records of t_ums_right
@@ -1244,6 +2048,16 @@ INSERT INTO `t_ums_right` VALUES ('90', '2', '1066', null);
 INSERT INTO `t_ums_right` VALUES ('91', '2', '1067', null);
 INSERT INTO `t_ums_right` VALUES ('92', '2', '1068', null);
 INSERT INTO `t_ums_right` VALUES ('93', '2', '1069', null);
+INSERT INTO `t_ums_right` VALUES ('100', '1', '4', null);
+INSERT INTO `t_ums_right` VALUES ('101', '1', '401', null);
+INSERT INTO `t_ums_right` VALUES ('102', '1', '402', null);
+INSERT INTO `t_ums_right` VALUES ('103', '1', '403', null);
+INSERT INTO `t_ums_right` VALUES ('104', '1', '404', null);
+INSERT INTO `t_ums_right` VALUES ('110', '1', '5', null);
+INSERT INTO `t_ums_right` VALUES ('111', '1', '501', null);
+INSERT INTO `t_ums_right` VALUES ('112', '1', '502', null);
+INSERT INTO `t_ums_right` VALUES ('113', '1', '503', null);
+INSERT INTO `t_ums_right` VALUES ('114', '1', '504', null);
 
 -- ----------------------------
 -- Table structure for t_ums_role
@@ -1646,6 +2460,298 @@ INSERT INTO `t_ums_rolepermission` VALUES ('20', '3');
 INSERT INTO `t_ums_rolepermission` VALUES ('21', '1');
 INSERT INTO `t_ums_rolepermission` VALUES ('21', '3');
 INSERT INTO `t_ums_rolepermission` VALUES ('2', '2');
+INSERT INTO `t_ums_rolepermission` VALUES ('100', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('101', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('102', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('103', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('104', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('110', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('111', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('112', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('113', '1');
+INSERT INTO `t_ums_rolepermission` VALUES ('114', '1');
+
+-- ----------------------------
+-- Table structure for t_ums_setting_preprocessing
+-- ----------------------------
+DROP TABLE IF EXISTS `t_ums_setting_preprocessing`;
+CREATE TABLE `t_ums_setting_preprocessing` (
+  `psid` int(11) NOT NULL AUTO_INCREMENT COMMENT '预处理配置表唯一标示',
+  `preprocessing_pn` varchar(20) DEFAULT NULL COMMENT '料号/PN',
+  `operatorid` int(11) DEFAULT NULL,
+  `input_time` datetime NOT NULL COMMENT '录入时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`psid`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='预处理装配流程跟踪单装配记录表'
+/*!50100 PARTITION BY HASH (psid)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_ums_setting_preprocessing
+-- ----------------------------
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('13', 'LWFS32701C', '9', '2018-09-05 23:22:26', '2018-09-06 00:10:04');
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('14', 'LWFS32701', '9', '2018-09-05 23:35:59', '2018-09-05 23:59:20');
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('15', 'LWFS32701P', '9', '2018-09-05 23:39:34', '2018-09-06 00:09:20');
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('16', 'LWFS32701PC', '9', '2018-09-05 23:43:38', '2018-09-06 00:06:41');
+
+-- ----------------------------
+-- Table structure for t_ums_setting_preprocessing_assemble
+-- ----------------------------
+DROP TABLE IF EXISTS `t_ums_setting_preprocessing_assemble`;
+CREATE TABLE `t_ums_setting_preprocessing_assemble` (
+  `psid` int(11) NOT NULL COMMENT '预处理配置表唯一标示',
+  `component_name` varchar(200) DEFAULT NULL COMMENT '组件名称',
+  `component_no` varchar(200) DEFAULT NULL COMMENT '组件型号',
+  `serial_no_record` varchar(100) DEFAULT NULL COMMENT '序列号记录',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预处理装配配置表'
+/*!50100 PARTITION BY HASH (psid)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_ums_setting_preprocessing_assemble
+-- ----------------------------
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', '开关电源（预处理）|Power module (PT)', 'SP-75-24', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', '水质变送器|Water quality transducer', 'CM1源水电导仪|CM1 Raw water sensor', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', '水质变送器|Water quality transducer', '1#电导变送器 |1# Conductivity transducer', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', '预处理IO主板|PT module IO PCB', 'PT-IO PCB board', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', '预处理显示板|PT module display PCB', 'PT LCD PCB with LCD', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', 'PT减压阀|Pressure Regulator', 'PRV-3-SH', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', '常闭电磁阀_水平流|Solenoid Valve（horizontal,NC）', '-', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('13', '低压开关|Pressure switch (feed water)', '-', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('14', '开关电源（预处理）|Power module (PT)', 'SP-75-24', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('14', '预处理IO主板|PT module IO PCB', 'PT-IO PCB board', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('14', '预处理显示板|PT module display PCB', 'PT LCD PCB with LCD', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('14', 'PT减压阀|Pressure Regulator', 'PRV-3-SH', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('14', '常闭电磁阀_水平流|Solenoid Valve（horizontal,NC）', '-', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('14', '低压开关|Pressure switch (feed water)', '-', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('15', '开关电源（预处理）|Power module (PT)', 'SP-75-24', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('15', '源水增压泵|Raw water boost pump', 'EC-203-300ARS', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('15', '预处理IO主板|PT module IO PCB', 'PT-IO PCB board', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('15', '预处理显示板|PT module display PCB', 'PT LCD PCB with LCD', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('15', 'PT减压阀|Pressure Regulator', 'PRV-3-SH', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('15', '常闭电磁阀_水平流|Solenoid Valve（horizontal,NC）', '-', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('15', '低压开关|Pressure switch (feed water)', '-', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '开关电源（预处理）|Power module (PT)', 'SP-75-24', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '源水增压泵|Raw water boost pump', 'EC-203-300ARS', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '水质变送器|Water quality transducer', 'CM1源水电导仪|CM1 Raw water sensor', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '水质变送器|Water quality transducer', '1#电导变送器|1# Conductivity transducer', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '预处理IO主板|PT module IO PCB', 'PT-IO PCB board', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '预处理显示板|PT module display PCB', 'PT LCD PCB with LCD', '', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', 'PT减压阀|Pressure Regulator (feed water)', 'PRV-3-SH', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '常闭电磁阀_水平流|Solenoid Valve（horizontal,NC）', '-', '正确Yes|不正确No', '');
+INSERT INTO `t_ums_setting_preprocessing_assemble` VALUES ('16', '低压开关|Pressure switch (feed water)', '-', '正确Yes|不正确No', '');
+
+-- ----------------------------
+-- Table structure for t_ums_setting_preprocessing_inspect
+-- ----------------------------
+DROP TABLE IF EXISTS `t_ums_setting_preprocessing_inspect`;
+CREATE TABLE `t_ums_setting_preprocessing_inspect` (
+  `psid` int(11) NOT NULL COMMENT '预处理配置表唯一标示',
+  `selfcheck_name` varchar(200) DEFAULT NULL COMMENT '自检名称',
+  `selfcheck_content` varchar(200) DEFAULT NULL COMMENT '自检内容',
+  `selfcheck_result` varchar(100) DEFAULT NULL COMMENT '自检结果',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预处理送检记录配置表'
+/*!50100 PARTITION BY HASH (psid)
+(PARTITION p1 ENGINE = InnoDB,
+ PARTITION p2 ENGINE = InnoDB,
+ PARTITION p3 ENGINE = InnoDB,
+ PARTITION p4 ENGINE = InnoDB,
+ PARTITION p5 ENGINE = InnoDB,
+ PARTITION p6 ENGINE = InnoDB,
+ PARTITION p7 ENGINE = InnoDB,
+ PARTITION p8 ENGINE = InnoDB,
+ PARTITION p9 ENGINE = InnoDB,
+ PARTITION p10 ENGINE = InnoDB,
+ PARTITION p11 ENGINE = InnoDB,
+ PARTITION p12 ENGINE = InnoDB,
+ PARTITION p13 ENGINE = InnoDB,
+ PARTITION p14 ENGINE = InnoDB,
+ PARTITION p15 ENGINE = InnoDB,
+ PARTITION p16 ENGINE = InnoDB,
+ PARTITION p17 ENGINE = InnoDB,
+ PARTITION p18 ENGINE = InnoDB,
+ PARTITION p19 ENGINE = InnoDB,
+ PARTITION p20 ENGINE = InnoDB,
+ PARTITION p21 ENGINE = InnoDB,
+ PARTITION p22 ENGINE = InnoDB,
+ PARTITION p23 ENGINE = InnoDB,
+ PARTITION p24 ENGINE = InnoDB,
+ PARTITION p25 ENGINE = InnoDB,
+ PARTITION p26 ENGINE = InnoDB,
+ PARTITION p27 ENGINE = InnoDB,
+ PARTITION p28 ENGINE = InnoDB,
+ PARTITION p29 ENGINE = InnoDB,
+ PARTITION p30 ENGINE = InnoDB,
+ PARTITION p31 ENGINE = InnoDB,
+ PARTITION p32 ENGINE = InnoDB,
+ PARTITION p33 ENGINE = InnoDB,
+ PARTITION p34 ENGINE = InnoDB,
+ PARTITION p35 ENGINE = InnoDB,
+ PARTITION p36 ENGINE = InnoDB,
+ PARTITION p37 ENGINE = InnoDB,
+ PARTITION p38 ENGINE = InnoDB,
+ PARTITION p39 ENGINE = InnoDB,
+ PARTITION p40 ENGINE = InnoDB,
+ PARTITION p41 ENGINE = InnoDB,
+ PARTITION p42 ENGINE = InnoDB,
+ PARTITION p43 ENGINE = InnoDB,
+ PARTITION p44 ENGINE = InnoDB,
+ PARTITION p45 ENGINE = InnoDB,
+ PARTITION p46 ENGINE = InnoDB,
+ PARTITION p47 ENGINE = InnoDB,
+ PARTITION p48 ENGINE = InnoDB,
+ PARTITION p49 ENGINE = InnoDB,
+ PARTITION p50 ENGINE = InnoDB,
+ PARTITION p51 ENGINE = InnoDB,
+ PARTITION p52 ENGINE = InnoDB,
+ PARTITION p53 ENGINE = InnoDB,
+ PARTITION p54 ENGINE = InnoDB,
+ PARTITION p55 ENGINE = InnoDB,
+ PARTITION p56 ENGINE = InnoDB,
+ PARTITION p57 ENGINE = InnoDB,
+ PARTITION p58 ENGINE = InnoDB,
+ PARTITION p59 ENGINE = InnoDB,
+ PARTITION p60 ENGINE = InnoDB,
+ PARTITION p61 ENGINE = InnoDB,
+ PARTITION p62 ENGINE = InnoDB,
+ PARTITION p63 ENGINE = InnoDB,
+ PARTITION p64 ENGINE = InnoDB) */;
+
+-- ----------------------------
+-- Records of t_ums_setting_preprocessing_inspect
+-- ----------------------------
+INSERT INTO `t_ums_setting_preprocessing_inspect` VALUES ('13', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '合格/Pass|不合格/Fail', '');
+INSERT INTO `t_ums_setting_preprocessing_inspect` VALUES ('14', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '合格/Pass|不合格/Fail', '');
+INSERT INTO `t_ums_setting_preprocessing_inspect` VALUES ('15', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '合格/Pass|不合格/Fail', '');
+INSERT INTO `t_ums_setting_preprocessing_inspect` VALUES ('16', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '合格/Pass|不合格/Fail', '');
 
 -- ----------------------------
 -- Table structure for t_ums_th_config
@@ -1871,12 +2977,12 @@ INSERT INTO `t_ums_th_config` VALUES ('209', 'reagentmixturetable', '1', '19', n
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '1', null, '2', '1', null, null, '2', null, null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '2', null, '2', '1', null, 'crID', '1', 'crID', null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '3', null, '2', '1', null, 'lot', '0', 'New Lot#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '4', null, '2', '1', null, 'bioPatNum', '0', 'NEW BIO PN#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '4', null, '2', '1', null, 'bioPatNum', '0', 'NEW PN#', null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '5', null, '2', '1', null, 'trayNums', '0', 'NEW TRAY#', null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '6', null, '2', '1', null, 'oldLotNums', '0', 'Old Lot#', null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '7', null, '2', '1', null, 'oldTrayNums', '0', 'Old Tray#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '8', null, '2', '1', null, 'oldBioPatNums', '0', 'OLD BIO PN#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '9', null, '2', '1', null, 'reagentMixture', '0', '混合试剂', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '8', null, '2', '1', null, 'oldBioPatNums', '0', 'OLD PN#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '9', null, '2', '1', null, 'reagentMixture', '2', '混合试剂', null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '10', null, '1', '2', null, null, '0', 'Fiber', null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '12', null, '2', '1', null, 'coatingStation', '0', 'Coating Station', null);
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '13', null, '2', '1', null, 'crOperator1', '0', '生化镀膜作业人员1', null);
@@ -1897,13 +3003,13 @@ INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '2', '
 INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '2', '11', null, '1', '1', null, 'inPutDate', '0', 'In Put Date', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '1', null, '2', '1', null, null, '2', null, null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '2', null, '2', '1', null, 'crID', '1', 'crID', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '3', null, '2', '1', null, 'bioPatNum', '0', 'BIO PN#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '3', null, '2', '1', null, 'bioPatNum', '0', 'BIO Pat Number', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '4', null, '2', '1', null, 'lot', '0', 'Lot', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '5', null, '2', '1', null, 'reagentMixture', '0', '混合试剂', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '5', null, '2', '1', null, 'reagentMixture', '2', '混合试剂', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '6', null, '2', '1', null, 'trayLotNums', '0', '14-####Lot', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '7', null, '2', '1', null, 'tLotNums', '0', 'T#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '8', null, '2', '1', null, 'apsLotNums', '0', 'APSLOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '9', null, '2', '1', null, 'ocLotNums', '0', 'OP LOT#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '8', null, '2', '1', null, 'apsLotNums', '0', 'APS Lot', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '9', null, '2', '1', null, 'ocLotNums', '0', 'OP.Lot', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '10', null, '2', '1', null, 'cleanLotNums', '0', 'Clean Lot#', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '11', null, '2', '1', null, 'polishLotNums', '0', 'Polish Lot#', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '12', null, '1', '2', null, null, '0', 'Fiber', null);
@@ -1930,441 +3036,111 @@ INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '33', 
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '34', null, '2', '1', null, null, '2', '操作', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '2', '12', null, '1', '1', null, 'rawMaterial', '0', 'Raw Material', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '2', '13', null, '1', '1', null, 'inPutDate', '0', 'In Put Date', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '6', null, '1', '2', null, '', '0', '05-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '8', null, '1', '3', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '5', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '6', null, '1', '1', null, '05-0047|01-0030', '0', '01-0030', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '7', null, '1', '1', null, '05-0047|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '8', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '9', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '2', '10', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '1', '6', null, '1', '2', null, '', '0', '05-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '1', '8', null, '1', '3', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '5', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '6', null, '1', '1', null, '05-0047|01-0030', '0', '01-0030', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '7', null, '1', '1', null, '05-0047|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '8', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '9', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0009', '2', '10', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0039', '1', '1', null, '1', '2', null, '', '0', '05-0115', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0039', '1', '3', null, '1', '1', null, '', '0', '05-0116', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0039', '1', '4', null, '1', '1', null, '', '0', '05-0109', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0039', '2', '1', null, '1', '1', null, '05-0115|04-0029', '0', '04-0029', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0039', '2', '2', null, '1', '1', null, '05-0115|03-0083', '0', '03-0083', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0039', '2', '3', null, '1', '1', null, '05-0116|03-0083', '0', '03-0083', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0039', '2', '4', null, '1', '1', null, '05-0109|03-0005', '0', '03-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0039', '1', '1', null, '1', '2', null, '', '0', '05-0115', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0039', '1', '3', null, '1', '1', null, '', '0', '05-0116', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0039', '1', '4', null, '1', '1', null, '', '0', '05-0109', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0039', '2', '1', null, '1', '1', null, '05-0115|04-0029', '0', '04-0029', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0039', '2', '2', null, '1', '1', null, '05-0115|03-0083', '0', '03-0083', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0039', '2', '3', null, '1', '1', null, '05-0116|03-0083', '0', '03-0083', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0039', '2', '4', null, '1', '1', null, '05-0109|03-0005', '0', '03-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '1', '6', null, '1', '2', null, '', '0', '05-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '1', '8', null, '1', '2', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '5', null, '1', '1', null, '05-0045|03-0008 ', '0', '03-0008 ', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '6', null, '1', '1', null, '05-0047|01-0030', '0', '01-0030', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '7', null, '1', '1', null, '05-0047|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '8', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9008', '2', '9', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '1', '6', null, '1', '2', null, '', '0', '05-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '1', '8', null, '1', '2', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '5', null, '1', '1', null, '05-0045|03-0008 ', '0', '03-0008 ', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '6', null, '1', '1', null, '05-0047|01-0030', '0', '01-0030', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '7', null, '1', '1', null, '05-0047|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '8', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9008', '2', '9', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '6', null, '1', '2', null, '', '0', '05-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '8', null, '1', '2', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '5', null, '1', '1', null, '05-0045|03-0008 ', '0', '03-0008 ', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '6', null, '1', '1', null, '05-0047|01-0030', '0', '01-0030', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '7', null, '1', '1', null, '05-0047|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '8', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '9', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '1', null, '1', '1', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '2', null, '1', '1', null, '', '0', '05-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '3', null, '1', '3', null, '', '0', '05-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '6', null, '1', '3', null, '', '0', '05-0010', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '1', '9', null, '1', '1', null, '', '0', '05-0040', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '1', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '2', null, '1', '1', null, '05-0006|04-0003', '0', '04-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '3', null, '1', '1', null, '05-0008|04-0006', '0', '04-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '4', null, '1', '1', null, '05-0008|04-0006', '0', '04-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '5', null, '1', '1', null, '05-0008|05-0051', '0', '05-0051', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '6', null, '1', '1', null, '05-0010|04-0009', '0', '04-0009', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '7', null, '1', '1', null, '05-0010|04-0009', '0', '04-0009', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '8', null, '1', '1', null, '05-0010|05-0051', '0', '05-0051', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0004', '2', '9', null, '1', '1', null, '05-0040|03-0005', '0', '03-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '1', '1', null, '1', '1', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '1', '2', null, '1', '1', null, '', '0', '05-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '1', '3', null, '1', '3', null, '', '0', '05-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '1', '6', null, '1', '3', null, '', '0', '05-0010', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '1', '9', null, '1', '1', null, '', '0', '05-0040', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '1', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '2', null, '1', '1', null, '05-0006|04-0003', '0', '04-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '3', null, '1', '1', null, '05-0008|04-0006', '0', '04-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '4', null, '1', '1', null, '05-0008|04-0006', '0', '04-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '5', null, '1', '1', null, '05-0008|05-0051', '0', '05-0051', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '6', null, '1', '1', null, '05-0010|04-0009', '0', '04-0009', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '7', null, '1', '1', null, '05-0010|04-0009', '0', '04-0009', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '8', null, '1', '1', null, '05-0010|05-0051', '0', '05-0051', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0004', '2', '9', null, '1', '1', null, '05-0040|03-0005', '0', '03-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '1', '6', null, '1', '3', null, '', '0', '05-0046', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '1', '9', null, '1', '4', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '5', null, '1', '1', null, '05-0045|03-0008 ', '0', '03-0008 ', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '6', null, '1', '1', null, '05-0046|04-0008', '0', '04-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '7', null, '1', '1', null, '05-0046|04-0008', '0', '04-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '8', null, '1', '1', null, '05-0046|03-0007', '0', '03-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '9', null, '1', '1', null, '05-0065|04-0007', '0', '04-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '10', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '11', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0007', '2', '12', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '1', '6', null, '1', '3', null, '', '0', '05-0046', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '1', '9', null, '1', '4', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '5', null, '1', '1', null, '05-0045|03-0008 ', '0', '03-0008 ', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '6', null, '1', '1', null, '05-0046|04-0008', '0', '04-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '7', null, '1', '1', null, '05-0046|04-0008', '0', '04-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '8', null, '1', '1', null, '05-0046|03-0007', '0', '03-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '9', null, '1', '1', null, '05-0065|04-0007', '0', '04-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '10', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '11', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0007', '2', '12', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '1', '6', null, '1', '2', null, '', '0', '05-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '1', '8', null, '1', '3', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '5', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '6', null, '1', '1', null, '05-0047|01-0030', '0', '01-0030', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '7', null, '1', '1', null, '05-0047|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '8', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '9', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0037', '2', '10', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '1', '5', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '1', '6', null, '1', '2', null, '', '0', '05-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '1', '8', null, '1', '3', null, '', '0', '05-0065', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '1', null, '1', '1', null, '05-0041|01-0026', '0', '01-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '2', null, '1', '1', null, '05-0041|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '3', null, '1', '1', null, '05-0043|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '4', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '5', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '6', null, '1', '1', null, '05-0047|01-0030', '0', '01-0030', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '7', null, '1', '1', null, '05-0047|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '8', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '9', null, '1', '1', null, '05-0065|04-0013', '0', '04-0013', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0037', '2', '10', null, '1', '1', null, '05-0065|03-0006', '0', '03-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '1', '1', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '1', '2', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '1', '3', null, '1', '1', null, '', '0', '05-0053', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '1', '4', null, '1', '3', null, '', '0', '05-0054', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '1', '7', null, '1', '3', null, '', '0', '05-0055', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '1', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '2', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '3', null, '1', '1', null, '05-0053|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '4', null, '1', '1', null, '05-0054|01-0023', '0', '01-0023', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '5', null, '1', '1', null, '05-0054|01-0024', '0', '01-0024', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '6', null, '1', '1', null, '05-0054|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '7', null, '1', '1', null, '05-0055|04-0015', '0', '04-0015', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '8', null, '1', '1', null, '05-0055|04-0015', '0', '04-0015', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0011', '2', '9', null, '1', '1', null, '05-0055|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '1', '1', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '1', '2', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '1', '3', null, '1', '1', null, '', '0', '05-0053', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '1', '4', null, '1', '3', null, '', '0', '05-0054', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '1', '7', null, '1', '3', null, '', '0', '05-0055', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '1', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '2', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '3', null, '1', '1', null, '05-0053|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '4', null, '1', '1', null, '05-0054|01-0023', '0', '01-0023', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '5', null, '1', '1', null, '05-0054|01-0024', '0', '01-0024', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '6', null, '1', '1', null, '05-0054|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '7', null, '1', '1', null, '05-0055|04-0015', '0', '04-0015', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '8', null, '1', '1', null, '05-0055|04-0015', '0', '04-0015', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0011', '2', '9', null, '1', '1', null, '05-0055|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '1', '1', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '1', '2', null, '1', '3', null, '', '0', '05-0059', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '1', '5', null, '1', '1', null, '', '0', '05-0060', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '2', '1', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '2', '2', null, '1', '1', null, '05-0059|04-0011', '0', '04-0011', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '2', '3', null, '1', '1', null, '05-0059|04-0011', '0', '04-0011', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '2', '4', null, '1', '1', null, '05-0059|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0015', '2', '5', null, '1', '1', null, '05-0060|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '1', '1', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '1', '2', null, '1', '3', null, '', '0', '05-0059', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '1', '5', null, '1', '1', null, '', '0', '05-0060', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '2', '1', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '2', '2', null, '1', '1', null, '05-0059|04-0011', '0', '04-0011', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '2', '3', null, '1', '1', null, '05-0059|04-0011', '0', '04-0011', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '2', '4', null, '1', '1', null, '05-0059|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0015', '2', '5', null, '1', '1', null, '05-0060|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '1', '1', null, '1', '1', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '1', '2', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '1', '3', null, '1', '1', null, '', '0', '05-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '1', '4', null, '1', '3', null, '', '0', '05-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '1', '7', null, '1', '3', null, '', '0', '05-0090', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '1', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '2', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '3', null, '1', '1', null, '05-0006|04-0003', '0', '04-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '4', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '5', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '6', null, '1', '1', null, '05-0007|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '7', null, '1', '1', null, '05-0090|04-0019', '0', '04-0019', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '8', null, '1', '1', null, '05-0090|04-0019', '0', '04-0019', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0022', '2', '9', null, '1', '1', null, '05-0090|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '1', '1', null, '1', '1', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '1', '2', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '1', '3', null, '1', '1', null, '', '0', '05-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '1', '4', null, '1', '3', null, '', '0', '05-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '1', '7', null, '1', '3', null, '', '0', '05-0090', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '1', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '2', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '3', null, '1', '1', null, '05-0006|04-0003', '0', '04-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '4', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '5', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '6', null, '1', '1', null, '05-0007|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '7', null, '1', '1', null, '05-0090|04-0019', '0', '04-0019', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '8', null, '1', '1', null, '05-0090|04-0019', '0', '04-0019', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0022', '2', '9', null, '1', '1', null, '05-0090|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '1', '1', null, '1', '1', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '1', '2', null, '1', '1', null, '', '0', '05-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '1', '3', null, '1', '1', null, '', '0', '05-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '1', '4', null, '1', '3', null, '', '0', '05-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '1', '7', null, '1', '3', null, '', '0', '05-0095', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '1', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '2', null, '1', '1', null, '05-0004|03-0002', '0', '03-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '3', null, '1', '1', null, '05-0006|04-0003', '0', '04-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '4', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '5', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '6', null, '1', '1', null, '05-0007|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '7', null, '1', '1', null, '05-0095|04-0020', '0', '04-0020', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '8', null, '1', '1', null, '05-0095|04-0020', '0', '04-0020', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0023', '2', '9', null, '1', '1', null, '05-0095|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '1', '1', null, '1', '1', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '1', '2', null, '1', '1', null, '', '0', '05-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '1', '3', null, '1', '1', null, '', '0', '05-0006', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '1', '4', null, '1', '3', null, '', '0', '05-0007', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '1', '7', null, '1', '3', null, '', '0', '05-0095', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '1', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '2', null, '1', '1', null, '05-0004|03-0002', '0', '03-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '3', null, '1', '1', null, '05-0006|04-0003', '0', '04-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '4', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '5', null, '1', '1', null, '05-0007|04-0004', '0', '04-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '6', null, '1', '1', null, '05-0007|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '7', null, '1', '1', null, '05-0095|04-0020', '0', '04-0020', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '8', null, '1', '1', null, '05-0095|04-0020', '0', '04-0020', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0023', '2', '9', null, '1', '1', null, '05-0095|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '1', '2', null, '1', '1', null, '', '0', '05-0060', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '1', '3', null, '1', '3', null, '', '0', '05-0099', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '2', '2', null, '1', '1', null, '05-0060|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '2', '3', null, '1', '1', null, '05-0099|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '2', '4', null, '1', '1', null, '05-0099|04-0021', '0', '04-0021', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0025', '2', '5', null, '1', '1', null, '05-0099|04-0021', '0', '04-0021', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '1', '2', null, '1', '1', null, '', '0', '05-0060', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '1', '3', null, '1', '3', null, '', '0', '05-0099', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '2', '2', null, '1', '1', null, '05-0060|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '2', '3', null, '1', '1', null, '05-0099|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '2', '4', null, '1', '1', null, '05-0099|04-0021', '0', '04-0021', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0025', '2', '5', null, '1', '1', null, '05-0099|04-0021', '0', '04-0021', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '1', '1', null, '1', '2', null, '', '0', '03-0042', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '1', '3', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '1', '4', null, '1', '2', null, '', '0', '05-0101', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '1', '6', null, '1', '1', null, '', '0', '05-0102', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '1', '7', null, '1', '1', null, '', '0', '05-0105', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '2', '1', null, '1', '1', null, '03-0042|02-0035', '0', '02-0035', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '2', '2', null, '1', '1', null, '03-0042|03-0041', '0', '03-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '2', '3', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '2', '4', null, '1', '1', null, '05-0101|01-0055', '0', '01-0055', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '2', '5', null, '1', '1', null, '05-0101|01-0058', '0', '01-0058', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '2', '6', null, '1', '1', null, '05-0102|01-0058', '0', '01-0058', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0026', '2', '7', null, '1', '1', null, '05-0105|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '1', '1', null, '1', '2', null, '', '0', '03-0042', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '1', '3', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '1', '4', null, '1', '2', null, '', '0', '05-0101', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '1', '6', null, '1', '1', null, '', '0', '05-0102', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '1', '7', null, '1', '1', null, '', '0', '05-0105', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '2', '1', null, '1', '1', null, '03-0042|02-0035', '0', '02-0035', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '2', '2', null, '1', '1', null, '03-0042|03-0041', '0', '03-0041', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '2', '3', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '2', '4', null, '1', '1', null, '05-0101|01-0055', '0', '01-0055', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '2', '5', null, '1', '1', null, '05-0101|01-0058', '0', '01-0058', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '2', '6', null, '1', '1', null, '05-0102|01-0058', '0', '01-0058', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0026', '2', '7', null, '1', '1', null, '05-0105|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '1', '1', null, '1', '3', null, '', '0', '05-0107', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '1', '4', null, '1', '1', null, '', '0', '05-0108', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '1', '5', null, '1', '1', null, '', '0', '05-0109', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '2', '1', null, '1', '1', null, '05-0107|03-0046', '0', '03-0046', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '2', '2', null, '1', '1', null, '05-0107|03-0047', '0', '03-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '2', '3', null, '1', '1', null, '05-0107|04-0023', '0', '04-0023', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '2', '4', null, '1', '1', null, '05-0108|03-0047', '0', '03-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0029', '2', '5', null, '1', '1', null, '05-0109|03-0005', '0', '03-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '1', '1', null, '1', '3', null, '', '0', '05-0107', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '1', '4', null, '1', '1', null, '', '0', '05-0108', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '1', '5', null, '1', '1', null, '', '0', '05-0109', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '2', '1', null, '1', '1', null, '05-0107|03-0046', '0', '03-0046', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '2', '2', null, '1', '1', null, '05-0107|03-0047', '0', '03-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '2', '3', null, '1', '1', null, '05-0107|04-0023', '0', '04-0023', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '2', '4', null, '1', '1', null, '05-0108|03-0047', '0', '03-0047', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0029', '2', '5', null, '1', '1', null, '05-0109|03-0005', '0', '03-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '1', '2', null, '1', '1', null, '', '0', '05-0082', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '1', '3', null, '1', '3', null, '', '0', '05-0112', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '2', '2', null, '1', '1', null, '05-0082|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '2', '3', null, '1', '1', null, '05-0112|04-0026', '0', '04-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '2', '4', null, '1', '1', null, '05-0112|04-0026', '0', '04-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0034', '2', '5', null, '1', '1', null, '05-0112|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '1', '2', null, '1', '1', null, '', '0', '05-0082', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '1', '3', null, '1', '3', null, '', '0', '05-0112', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '2', '2', null, '1', '1', null, '05-0082|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '2', '3', null, '1', '1', null, '05-0112|04-0026', '0', '04-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '2', '4', null, '1', '1', null, '05-0112|04-0026', '0', '04-0026', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0034', '2', '5', null, '1', '1', null, '05-0112|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '1', '2', null, '1', '1', null, '', '0', '05-0089', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '1', '3', null, '1', '3', null, '', '0', '05-0114', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '2', '2', null, '1', '1', null, '05-0089|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '2', '3', null, '1', '1', null, '05-0114|04-0028', '0', '04-0028', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '2', '4', null, '1', '1', null, '05-0114|04-0028', '0', '04-0028', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0038', '2', '5', null, '1', '1', null, '05-0114|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '1', '2', null, '1', '1', null, '', '0', '05-0089', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '1', '3', null, '1', '3', null, '', '0', '05-0114', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '2', '2', null, '1', '1', null, '05-0089|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '2', '3', null, '1', '1', null, '05-0114|04-0028', '0', '04-0028', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '2', '4', null, '1', '1', null, '05-0114|04-0028', '0', '04-0028', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0038', '2', '5', null, '1', '1', null, '05-0114|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '1', '1', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '1', '2', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '1', '3', null, '1', '1', null, '', '0', '05-0053', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '1', '4', null, '1', '3', null, '', '0', '05-0054', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '1', '7', null, '1', '2', null, '', '0', '05-0055', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '1', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '2', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '3', null, '1', '1', null, '05-0053|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '4', null, '1', '1', null, '05-0054|01-0023', '0', '01-0023', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '5', null, '1', '1', null, '05-0054|01-0024', '0', '01-0024', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '6', null, '1', '1', null, '05-0054|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '7', null, '1', '1', null, '05-0055|04-0015', '0', '04-0015', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '15-9002', '2', '8', null, '1', '1', null, '05-0055|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '1', '1', null, '1', '1', null, '', '0', '05-0044', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '1', '2', null, '1', '1', null, '', '0', '05-0045', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '1', '3', null, '1', '1', null, '', '0', '05-0053', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '1', '4', null, '1', '3', null, '', '0', '05-0054', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '1', '7', null, '1', '2', null, '', '0', '05-0055', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '1', null, '1', '1', null, '05-0044|05-5003', '0', '05-5003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '2', null, '1', '1', null, '05-0045|03-0008', '0', '03-0008', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '3', null, '1', '1', null, '05-0053|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '4', null, '1', '1', null, '05-0054|01-0023', '0', '01-0023', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '5', null, '1', '1', null, '05-0054|01-0024', '0', '01-0024', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '6', null, '1', '1', null, '05-0054|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '7', null, '1', '1', null, '05-0055|04-0015', '0', '04-0015', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '15-9002', '2', '8', null, '1', '1', null, '05-0055|03-0012', '0', '03-0012', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '1', '1', null, '1', '1', null, '', '0', '05-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '1', '2', null, '1', '4', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '1', '6', null, '1', '1', null, '', '0', '05-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '2', '1', null, '1', '1', null, '05-0001|04-0001', '0', '04-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '2', '2', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '2', '3', null, '1', '1', null, '05-0003|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '2', '4', null, '1', '1', null, '05-0003|04-0002', '0', '04-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '2', '5', null, '1', '1', null, '05-0003|04-0002', '0', '04-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0001', '2', '6', null, '1', '1', null, '05-0004|03-0002', '0', '03-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '1', '1', null, '1', '1', null, '', '0', '05-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '1', '2', null, '1', '4', null, '', '0', '05-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '1', '6', null, '1', '1', null, '', '0', '05-0004', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '2', '1', null, '1', '1', null, '05-0001|04-0001', '0', '04-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '2', '2', null, '1', '1', null, '05-0003|03-0001', '0', '03-0001', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '2', '3', null, '1', '1', null, '05-0003|05-0067', '0', '05-0067', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '2', '4', null, '1', '1', null, '05-0003|04-0002', '0', '04-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '2', '5', null, '1', '1', null, '05-0003|04-0002', '0', '04-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0001', '2', '6', null, '1', '1', null, '05-0004|03-0002', '0', '03-0002', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '1', '2', null, '1', '1', null, '', '0', '05-0060', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '1', '3', null, '1', '3', null, '', '0', '05-0106', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '2', '2', null, '1', '1', null, '05-0060|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '2', '3', null, '1', '1', null, '05-0106|04-0022', '0', '04-0022', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '2', '4', null, '1', '1', null, '05-0106|04-0022', '0', '04-0022', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', '18-0027', '2', '5', null, '1', '1', null, '05-0106|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '1', '1', null, '1', '1', null, '', '0', '05-0005', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '1', '2', null, '1', '1', null, '', '0', '05-0060', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '1', '3', null, '1', '3', null, '', '0', '05-0106', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '1', null, '1', '1', null, '05-0005|03-0003', '0', '03-0003', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '2', null, '1', '1', null, '05-0060|03-0018', '0', '03-0018', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '3', null, '1', '1', null, '05-0106|04-0022', '0', '04-0022', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '4', null, '1', '1', null, '05-0106|04-0022', '0', '04-0022', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '5', null, '1', '1', null, '05-0106|03-0018', '0', '03-0018', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '1', null, '1', '1', null, '', '2', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '2', null, '1', '1', null, 'dspID', '1', 'id', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '3', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '4', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '5', null, '1', '1', null, 'dspPn', '0', '型号/PN', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '6', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '7', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '8', null, '1', '1', null, 'dspModel', '0', 'DSP型号/Model', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '9', null, '1', '1', null, 'assembleRecords', '0', '装配记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '10', null, '1', '1', null, 'exceptionRecord', '0', '异常记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '11', null, '1', '1', null, 'remarks', '0', '备注', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '12', null, '1', '1', null, 'assembleOperator', '0', '装配人员', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '13', null, '1', '1', null, 'operatorName', '0', '操作员', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '14', null, '1', '1', null, '', '2', '操作', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '1', null, '1', '1', null, '', '2', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '2', null, '1', '1', null, 'cisternID', '1', 'id', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '3', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '4', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '5', null, '1', '1', null, 'cisternPn', '0', '料号/PN', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '6', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '7', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '8', null, '1', '1', null, 'cisternModel', '0', '水箱型号/Model', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '9', null, '1', '1', null, 'assembleRecords', '0', '装配记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '10', null, '1', '1', null, 'exceptionRecord', '0', '异常记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '11', null, '1', '1', null, 'remarks', '0', '备注', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '12', null, '1', '1', null, 'assembleOperator', '0', '装配人员', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '13', null, '1', '1', null, 'operatorName', '0', '操作员', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '14', null, '1', '1', null, '', '2', '操作', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '1', null, '1', '1', null, '', '2', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '2', null, '1', '1', null, 'preprocessingID', '1', 'id', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '3', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '4', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '5', null, '1', '1', null, 'preprocessingPn', '0', '料号/PN', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '6', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '7', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '8', null, '1', '1', null, 'preprocessingModel', '0', '名称/Model', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '9', null, '1', '1', null, 'ptOptions', '0', 'PT选配件/Option', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '10', null, '1', '1', null, 'assembleRecords', '0', '装配记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '11', null, '1', '1', null, 'inspectRecords', '0', '送检人员记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '12', null, '1', '1', null, 'exceptionRecord', '0', '异常记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '13', null, '1', '1', null, 'remarks', '0', '备注', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '14', null, '1', '1', null, 'assembleOperator', '0', '装配人员', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '15', null, '1', '1', null, 'inspectOperator', '0', '送检人员', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '16', null, '1', '1', null, 'inspectTime', '0', '送检日期', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '17', null, '1', '1', null, 'operatorName', '0', '操作员', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '18', null, '1', '1', null, '', '2', '操作', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '1', null, '1', '1', null, '', '2', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '2', null, '1', '1', null, 'mainframeID', '1', 'id', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '3', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '4', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '5', null, '1', '1', null, 'mainframePn', '0', '料号/PN', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '6', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '7', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '8', null, '1', '1', null, 'mainframeModel', '0', '主机型号/Model', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '9', null, '1', '1', null, 'mainframeOption', '0', '主机选配件/Option', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '10', null, '1', '1', null, 'assembleRecords', '0', '装配记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '11', null, '1', '1', null, 'inspectRecords', '0', '送检人员记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '12', null, '1', '1', null, 'exceptionRecord', '0', '异常记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '13', null, '1', '1', null, 'remarks', '0', '备注', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '14', null, '1', '1', null, 'assembleOperator', '0', '装配人员', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '15', null, '1', '1', null, 'inspectOperator', '0', '送检人员', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '16', null, '1', '1', null, 'inspectTime', '0', '送检日期', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '17', null, '1', '1', null, 'operatorName', '0', '操作员', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '18', null, '1', '1', null, '', '2', '操作', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '1', '1', null, '1', '9', null, '', '0', '预处理装配流程跟踪单/PT Assembly Record', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '1', null, '1', '2', null, '', '0', '料号/PN:', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '3', null, '1', '2', null, 'preprocessingPn', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '5', null, '1', '1', null, '', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '6', null, '1', '2', null, '', '0', '序列号/Serial No:', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '8', null, '1', '2', null, 'serialNo', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '1', null, '1', '2', null, '', '0', '工单号/WO：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '3', null, '1', '2', null, 'workorderNo', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '5', null, '1', '1', null, '', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '6', null, '1', '2', null, '', '0', 'PT选配件/Options：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '8', null, '1', '2', null, 'ptOption', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '1', null, '1', '2', null, '', '0', '名称/Modle：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '3', null, '1', '2', null, 'preprocessingModel', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '5', null, '1', '1', null, '', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '6', null, '1', '2', null, '', '0', '生产时间：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '8', null, '1', '2', null, 'productionTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '5', '1', null, '1', '9', null, '', '0', '装配记录/Manufacture Record', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '6', '1', null, '1', '1', null, 'assembleRecords:preprocessingID', '0', '序号\r\nNO', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '6', '2', null, '1', '2', null, 'assembleRecords:componentName', '0', '组件名称\r\nComponent Name', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '6', '4', null, '1', '2', null, 'assembleRecords:componentNo', '0', '组件型号\r\nComponent Module', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '6', '6', null, '1', '2', null, 'assembleRecords:serialNoRecord', '0', '序列号记录\r\nSerial No', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '6', '8', null, '1', '2', null, 'assembleRecords:remarks', '0', '备注\r\nRemarks', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '7', '1', null, '1', '9', null, '', '0', '送检人员记录/Self Inspection Records', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '8', '1', null, '1', '1', null, 'inspectRecords:preprocessingID', '0', '序号\r\nNO', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '8', '2', null, '1', '2', null, 'inspectRecords:selfcheckName', '0', '自检名称\r\nInspection Item', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '8', '4', null, '1', '2', null, 'inspectRecords:selfcheckContent', '0', '自检内容\r\nSelf Inspection Content', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '8', '6', null, '1', '2', null, 'inspectRecords:selfcheckResult', '0', '自检结果\r\nSelf Inspection Result', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '8', '8', null, '1', '2', null, 'inspectRecords:remarks', '0', '备注\r\nRemarks', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '9', '1', null, '1', '1', null, '', '0', '异常记录：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '9', '2', null, '1', '8', null, 'exceptionRecord', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '10', '1', null, '1', '1', null, '', '0', '备注：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '10', '2', null, '1', '8', null, 'remarks', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '1', null, '1', '1', null, '', '0', '装配人员：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '2', null, '1', '1', null, 'assembleOperator', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '3', null, '1', '1', null, '', '0', '装配日期：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '4', null, '1', '1', null, 'assembleTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '5', null, '1', '1', null, '', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '6', null, '1', '1', null, '', '0', '送检人员：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '7', null, '1', '1', null, 'inspectOperator', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '8', null, '1', '1', null, '', '0', '送检日期：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '11', '9', null, '1', '1', null, 'inspectTime', '0', '', null);
 
 -- ----------------------------
 -- Table structure for t_ums_userpermission
@@ -3661,7 +4437,7 @@ CREATE TABLE `t_ums_workflow_biocoating` (
   KEY `idx_uwb_biocoating_biopatnum` (`bio_pat_num`),
   KEY `idx_uwb_biocoating_inputdate` (`in_put_date`),
   KEY `idx_uwb_biocoating_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='生化镀膜表'
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='生化镀膜表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -3719,8 +4495,6 @@ INSERT INTO `t_ums_workflow_biocoating` VALUES ('5', '1806071', null, '18-0009',
 INSERT INTO `t_ums_workflow_biocoating` VALUES ('6', '1806011', null, '18-0009', 'B10', 'C11', 'XC171120', '2018-06-01', 'B-0280', '17', '10752', '', '', '', '11520', '2', '0', '84', '626', '56', 'T12 T14 T20 T63 T64 T88 T102 T111', null, '99.98', '93.33', '93.35', '9', '2018-07-19 15:40:25', '2018-07-19 15:44:05');
 INSERT INTO `t_ums_workflow_biocoating` VALUES ('7', '18060713', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-19 16:31:14', '2018-08-01 17:30:41');
 INSERT INTO `t_ums_workflow_biocoating` VALUES ('8', '18060714', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-23 16:36:24', '2018-07-23 16:36:24');
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('9', '18060713', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '0', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '0', null, null, '9', '2018-08-23 13:52:37', '2018-08-23 13:52:37');
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('10', '18060713', null, '18-0004', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '0', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '0', null, null, '9', '2018-08-24 10:15:25', '2018-08-24 10:15:25');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_biocoating_reagents
@@ -3840,10 +4614,6 @@ INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('8', 'reagentmixturetab
 INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('8', 'reagentmixturetable209781_46', '04-0013', '04-0013', 'MP180412C');
 INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('8', 'reagentmixturetable209781_45', '04-0013', '04-0013', 'MP180412A');
 INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('8', 'reagentmixturetable209437_44', '03-0006', '01-0029', 'SI180328');
-INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('9', 'reagentmixturetable209835_50', '05-0041', '03-0006', 'qqadadadadsa');
-INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('9', 'reagentmixturetable209835_51', '05-0043', '03-0006', 'qdfrrte');
-INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('10', 'reagentmixturetable209835_50', '05-0041', '03-0006', 'qqadadadadsa');
-INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('10', 'reagentmixturetable209835_51', '05-0043', '03-0006', 'qdfrrte');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_biocoating_relation
