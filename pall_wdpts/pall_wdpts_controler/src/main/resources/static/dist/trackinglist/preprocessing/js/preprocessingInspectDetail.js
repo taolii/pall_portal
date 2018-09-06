@@ -2,7 +2,7 @@ $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
 	var $wrapper = $('#div-table-container');
 	var $detailTable = $("#preprocessingInspectDetailTable").dataTable($.extend(true,
-		{"dom": '<"toolbar">frtip',paging:false,scrollX: false,ordering: false,searching: false,"info":false},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
+		{"dom": '<"toolbar">frtip',"bAutoWidth": false,paging:false,scrollX: false,ordering: false,searching: false,"info":false},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 		{
         ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
             //手动控制遮罩
@@ -50,20 +50,32 @@ $(document).ready(function() {
                 });
         },
         columns: [
-	        {className : "ellipsis",data:"selfcheckName",title:"自检名称",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"},
-	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"},
+	        {className : "ellipsis",data:"selfcheckName",title:"自检名称",render : function(data,type, row, meta) {
+        		var component="";
+  	          	if(data){//不为空
+  	        	  $.each(data.split("|"), function(index, selfcheckName){
+  	        		  component=component+selfcheckName+"<br>";
+  	        		});
+  	        	}
+  	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
+            },"width": "200px"},
+	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
+        		var component="";
+  	          	if(data){//不为空
+  	        	  $.each(data.split("|"), function(index, selfcheckContent){
+  	        		  component=component+selfcheckContent+"<br>";
+  	        		});
+  	        	}
+  	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
+            },"width": "200px"},
 	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
-		          var component="";
-		          if(data){//不为空
-		        	  component=component+"<div class='form-group text-left'>";
-		        	  $.each(data.split("|"), function(index, selfcheckResult){
-		        		  component=component+"<input type='radio' class='form-control'  name='selfcheckResult"+meta.index+"' value='"+selfcheckResult+"'>"+selfcheckResult+"</input></br>";
-		        		});
-		        	  component=component+"</div>";
-		        	}else{
-		        		component=component+"<input type='text' readonly='readonly' class='form-control' name='selfcheckResult"+meta.index+"' value=''/>";
-		        	}
-	          	  return component;
+	        	var component="";
+  	          	if(data){//不为空
+  	        	  $.each(data.split("|"), function(index, selfcheckResult){
+  	        		  component=component+selfcheckResult+"<br>";
+  	        		});
+  	        	}
+  	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
 	            },"width": "200px"},
 	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"}
 	     ]

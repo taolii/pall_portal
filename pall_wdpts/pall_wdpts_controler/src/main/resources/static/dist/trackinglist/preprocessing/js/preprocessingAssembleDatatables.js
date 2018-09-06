@@ -13,22 +13,36 @@ var PreprocessingAssembleTable=function(contextPath,ids){
 			language:TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION.language,
 			columns: [
 	        	{className : "ellipsis",data:"componentName",title:"组件名称",render : function(data,type, row, meta) {
-	            	return "<input type='text' class='form-control' readonly='readonly' name='componentName_"+meta.row+"' value='"+data+"'></input>"+
-	           	 "<input type='hidden' name='assembleid'  value='"+meta.row+"'></input>";;
+	        		var component="<input type='hidden'  name='componentName_"+meta.row+"' value='"+data+"'></input>"+
+	           	 "<input type='hidden' name='assembleid'  value='"+meta.row+"'></input>";
+			          if(data){//不为空
+			        	  $.each(data.split("|"), function(index, componentName){
+			        		  component=component+componentName+"<br>";
+			        		});
+			        	}
+			          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
 	           },width:"100px"},
 		        {className : "ellipsis",data:"componentNo",title:"组件型号",render : function(data,type, row, meta) {
-	            	return "<input type='text' class='form-control' readonly='readonly' name='componentNo_"+meta.row+"' value='"+data+"'></input>";
+		        	var component="<input type='hidden'  name='componentNo_"+meta.row+"' value='"+data+"'></input>";
+	            	if(data){//不为空
+			        	 
+			        	  $.each(data.split("|"), function(index, componentNo){
+			        		  component=component+componentNo+"<br>";
+			        		});
+			        	 
+			        	}
+	            	return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
 	            },width:"100px"},
 		        {className : "ellipsis",data:"serialNoRecord",title:"序列号记录",render : function(data,type, row, meta) {
 		          var component="";
 		          if(data){//不为空
-		        	  component=component+"<div class='form-group text-left'>";
+		        	 
 		        	  $.each(data.split("|"), function(index, serialNoRecord){
-		        		  component=component+"<input type='radio' checked='checked' class='form-control'  name='serialNoRecord"+meta.index+"' value='"+serialNoRecord+"'>&nbsp;&nbsp;"+serialNoRecord+"</input>&nbsp;&nbsp;";
+		        		  component=component+"<label class='radio-inline'><input type='radio' checked='checked' name='serialNoRecord"+meta.row+"' value='"+serialNoRecord+"'>&nbsp;&nbsp;"+serialNoRecord+"</input></label>";
 		        		});
-		        	  component=component+"</div>";
+		        	  
 		        	}else{
-		        		component=component+"<input type='text' class='form-control' name='serialNoRecord"+meta.index+"' value=''/>";
+		        		component=component+"<input type='text' class='form-control' name='serialNoRecord"+meta.row+"' value=''/>";
 		        	}
 	          	  return component;
 	            },"width": "200px"},

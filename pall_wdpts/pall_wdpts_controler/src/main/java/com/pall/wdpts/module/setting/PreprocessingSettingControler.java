@@ -1,10 +1,7 @@
 package com.pall.wdpts.module.setting;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,10 +27,7 @@ import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
-import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
-import com.pall.wdpts.common.tools.JSONTools;
 import com.pall.wdpts.context.HolderContext;
-import com.pall.wdpts.init.TableDataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
@@ -84,8 +78,9 @@ public class PreprocessingSettingControler {
 					buttonEntitys=(List<ButtonEntity>)buttonResonse.getReturnObjects();
 				}else{
 					buttonEntitys=new ArrayList<ButtonEntity>();
-				}
-				model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));*/
+				}*/
+				buttonEntitys=new ArrayList<ButtonEntity>();
+				model.addAttribute("buttonEntitys", JSON.toJSONString(buttonEntitys,SerializerFeature.WriteMapNullValue));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

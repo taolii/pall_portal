@@ -5,12 +5,13 @@
 }
 /* 超长文字单元格省略号显示 */
 .ellipsis{
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	-o-text-overflow: ellipsis;
+	text-overflow:ellipsis;/*超长部分以...代替*/
+	white-space: nowrap;/*文本不换行*/
+	max-width:100px;/*最大宽度*/
+	overflow: hidden;/*超长部分隐藏掉*/
 	text-align:center;
 }
+
 /* spin遮罩层 */
 .overlay{
     width: 100%;

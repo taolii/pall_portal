@@ -2,7 +2,7 @@ $(document).ready(function() {
 	var contextPath=$("#contextPath").val();
 	var $wrapper = $('#div-table-container');
 	var $detailTable = $("#preprocessingAssembleDetailTable").dataTable($.extend(true,
-		{"dom": '<"toolbar">frtip',paging:false,scrollX: false,ordering: false,searching: false,"info":false},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
+		{"dom": '<"toolbar">frtip',"bAutoWidth": false,paging:false,scrollX: false,ordering: false,searching: false,"info":false},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 		{
         ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
             //手动控制遮罩
@@ -50,20 +50,32 @@ $(document).ready(function() {
                 });
         },
         columns: [
-        	{className : "ellipsis",data:"componentName",title:"组件名称",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"},
-	        {className : "ellipsis",data:"componentNo",title:"组件型号",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"},
+        	{className : "ellipsis",data:"componentName",title:"组件名称",render : function(data,type, row, meta) {
+        		var component="";
+  	          	if(data){//不为空
+  	        	  $.each(data.split("|"), function(index, componentName){
+  	        		  component=component+componentName+"<br>";
+  	        		});
+  	        	}
+  	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
+            },"width": "200px"},
+	        {className : "ellipsis",data:"componentNo",title:"组件型号",render : function(data,type, row, meta) {
+	        	var component="";
+  	          	if(data){//不为空
+  	        	  $.each(data.split("|"), function(index, componentNo){
+  	        		  component=component+componentNo+"<br>";
+  	        		});
+  	        	}
+  	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
+	            },"width": "200px"},
 	        {className : "ellipsis",data:"serialNoRecord",title:"序列号记录",render : function(data,type, row, meta) {
-	          var component="";
-	          if(data){//不为空
-	        	  component=component+"<div class='form-group text-left'>";
-	        	  $.each(data.split("|"), function(index, serialNoRecord){
-	        		  component=component+"<input type='radio' class='form-control'  name='serialNoRecord"+meta.index+"' value='"+serialNoRecord+"'>"+serialNoRecord+"</input></br>";
-	        		});
-	        	  component=component+"</div>";
-	        	}else{
-	        		component=component+"<input type='text' readonly='readonly' class='form-control' name='serialNoRecord"+meta.index+"' value=''/>";
-	        	}
-          	  return component;
+	        	var component="";
+  	          	if(data){//不为空
+  	        	  $.each(data.split("|"), function(index, serialNoRecord){
+  	        		  component=component+serialNoRecord+"<br>";
+  	        		});
+  	        	}
+  	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
             },"width": "200px"},
 	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"}
 	     ]

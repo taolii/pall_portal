@@ -7,7 +7,7 @@ var PreprocessingSettingModal=function(contextPath,ids){
 		var $table = $(ids.preprocessingSettingDatatable);
 		$queryForm=$(ids.queryForm);
 		var datatables = $table.dataTable($.extend(true,
-			{pageLength: 10,scrollX: true,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
+			{pageLength: 10,"bAutoWidth": false,scrollX: true,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 			{
 	        ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
 	            //手动控制遮罩

@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	/*$('#addDataForm [name=ptOption]').select2({
+		minimumResultsForSearch: -1
+		});*/
+	
 	var contextPath=$("#contextPath").val();
 	var ids={"dataForm":"#addDataForm","contextPath":contextPath,"preprocessingAssembleTable":"#preprocessingAssemblesDatatable","preprocessingInspectTable":"#preprocessingInspectsDatatable"};
 	//装配记录

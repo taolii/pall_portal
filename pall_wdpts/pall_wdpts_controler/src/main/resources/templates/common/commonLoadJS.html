@@ -20,6 +20,7 @@
 		<script type="text/javascript" th:src="@{{path}/vendors/ace/js/ace.min.js(path=${contextPath})}"></script>
 		<script type="text/javascript">
 		 $(document).ready(function() {
+			 $("[data-toggle='tooltip']").tooltip();
 	        	//时间设置
 		      setInterval(function(){$('#time').html(currentTime)},1000);
 	        });

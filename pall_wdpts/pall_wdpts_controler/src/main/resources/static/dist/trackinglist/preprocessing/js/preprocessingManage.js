@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	 
 	var contextPath=$("#contextPath").val();
 	$('#queryStartAssembleTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
@@ -35,20 +36,20 @@ $(document).ready(function() {
 						"<i class='ace-icon fa fa-angle-double-down'></i>"+
 						"<span class='sr-only'>Details</span>"
 						"</a></div>";
-			},width:"60px","visible":v_visible }) ;  
+			},width:"60px","visible":v_visible }) ;
 		}else{
 			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
 		}
 	});
 	var columns_settingfoot=[
-        {className : "ellipsis",data: null,title:"操作",render : function(data,type, row, meta) {
+        {className : "center",data: null,title:"操作",render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
         	"<button id='copyRow' class='btn btn-xs btn-success' type='button' ><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
             "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "<button id='exportRow' class='btn btn-warning btn-xs' type='button'><i class='ace-icon fa fa-download bigger-120'></i></button>"+
             "</div>";
-          }, width : "140px"}
+          }, width : "200px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
 	var $wrapper = $('#div-table-container');

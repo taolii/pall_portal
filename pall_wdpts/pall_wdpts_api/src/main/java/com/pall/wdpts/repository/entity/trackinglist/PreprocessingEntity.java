@@ -37,7 +37,15 @@ public class PreprocessingEntity {
 	/*
 	 * PT选配件/Option
 	 */
+	private String ptOptions;
+	/*
+	 * PT选配件/Option
+	 */
 	private String ptOption;
+	/*
+	 * PT选配件/Option
+	 */
+	private String ptOption2;
 	/*
 	 * 装配记录
 	 */
@@ -198,6 +206,17 @@ public class PreprocessingEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	public String getPtOption2() {
+		return ptOption2;
+	}
+	public void setPtOption2(String ptOption2) {
+		this.ptOption2 = ptOption2;
+	}
+	public String getPtOptions() {
+		return ptOptions;
+	}
+	public void setPtOptions(String ptOptions) {
+		this.ptOptions = ptOptions;
+	}
 	
-
 }

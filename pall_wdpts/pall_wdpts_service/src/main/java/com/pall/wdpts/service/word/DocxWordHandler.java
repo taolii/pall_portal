@@ -78,7 +78,6 @@ public class DocxWordHandler implements IWordHandler{
 	private  void addTableRows(String addrowLable,List<XWPFTable> tables, List<Map<String, String>> replacements){
 		if(CollectionUtils.isEmpty(tables))return;
 		for (int i = 0; i < tables.size(); i++) {
-			//只处理行数大于等于2的表格，且不循环表头
 			XWPFTable table = tables.get(i);
 			List<XWPFTableRow> rows = table.getRows();
 			if(CollectionUtils.isEmpty(rows))continue;

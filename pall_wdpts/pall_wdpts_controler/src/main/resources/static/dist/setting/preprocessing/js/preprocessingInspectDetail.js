@@ -55,11 +55,9 @@ $(document).ready(function() {
 	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
 		          var component="";
 		          if(data){//不为空
-		        	  component=component+"<div class='form-group text-left'>";
 		        	  $.each(data.split("|"), function(index, selfcheckResult){
-		        		  component=component+"<input type='radio' class='form-control'  name='selfcheckResult"+meta.index+"' value='"+selfcheckResult+"'>"+selfcheckResult+"</input></br>";
+		        		  component=component+"<label class='radio-inline'><input type='radio'  name='selfcheckResult"+meta.index+"' value='"+selfcheckResult+"'>"+selfcheckResult+"</input></label>";
 		        		});
-		        	  component=component+"</div>";
 		        	}else{
 		        		component=component+"<input type='text' class='form-control' name='selfcheckResult"+meta.index+"' value=''/>";
 		        	}

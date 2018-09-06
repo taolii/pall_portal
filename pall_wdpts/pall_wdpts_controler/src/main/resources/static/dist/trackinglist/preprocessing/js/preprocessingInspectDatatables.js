@@ -13,28 +13,39 @@ var PreprocessingInspectTable=function(contextPath,ids){
 			language:TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION.language,
 			columns: [
 	        	 {className : "ellipsis",data:"selfcheckName",title:"自检名称",render : function(data,type, row, meta) {
-	        		return "<input type='text' readonly='readonly' class='form-control' name='selfcheckName_"+meta.row+"' value='"+data+"'></input>"+
+	        		 var component="<input type='hidden'  name='selfcheckName_"+meta.row+"' value='"+data+"'></input>"+
 	        		"<input type='hidden' name='inspectid'  value='"+meta.row+"'></input>";
+			          if(data){//不为空
+			        	  $.each(data.split("|"), function(index, selfcheckName){
+			        		  component=component+selfcheckName+"<br>";
+			        		});
+			        	}
+			          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
 	            },width:"100px"},
 	 	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
-	            	return "<input type='text' readonly='readonly' class='form-control' name='selfcheckContent_"+meta.row+"' value='"+data+"'></input>";
+	 	        	var component="<input type='hidden'  name='selfcheckContent_"+meta.row+"' value='"+data+"'></input>";
+	            	 var component="";
+			          if(data){//不为空
+			        	  $.each(data.split("|"), function(index, selfcheckContent){
+			        		  component=component+selfcheckContent+"<br>";
+			        		});
+			        	}
+			          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
 	            },width:"100px"},
 	 	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
 	 		          var component="";
 	 		          if(data){//不为空
-	 		        	  component=component+"<div class='form-group text-left'>";
 	 		        	  $.each(data.split("|"), function(index, selfcheckResult){
-	 		        		  component=component+"<input type='radio' checked='checked' class='form-control'  name='selfcheckResult"+meta.index+"' value='"+selfcheckResult+"'>&nbsp;&nbsp;"+selfcheckResult+"</input>&nbsp;&nbsp;";
+	 		        		  component=component+"<label class='radio-inline'> <input type='radio' checked='checked' name='selfcheckResult"+meta.row+"' value='"+selfcheckResult+"'>&nbsp;&nbsp;"+selfcheckResult+"</input></label>";
 	 		        		});
-	 		        	  component=component+"</div>";
 	 		        	}else{
-	 		        		component=component+"<input type='text' class='form-control' name='selfcheckResult"+meta.index+"' value=''/>";
+	 		        		component=component+"<input type='text' class='form-control' name='selfcheckResult"+meta.row+"' value=''/>";
 	 		        	}
 	 	          	  return component;
-	 	            },"width": "200px"},
+	 	            },"width": "100px"},
 	 	        {className : "ellipsis",data:"remarks",title:"备注",render : function(data,type, row, meta) {
 	          	  return "<input type='text' class='form-control' name='remarks_"+meta.row+"' value='"+data+"'></input>";
-	            },"width": "200px"}
+	            },"width": "100px"}
 		     ]
 	    }).api();
 		return datatable;

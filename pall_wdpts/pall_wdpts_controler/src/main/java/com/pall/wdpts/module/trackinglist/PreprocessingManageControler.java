@@ -16,10 +16,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
@@ -44,8 +46,10 @@ import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
+import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
-import com.pall.wdpts.common.support.word.WordDataNode;
+import com.pall.wdpts.common.support.excel.ExcelTempalteDataNode;
+import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
 import com.pall.wdpts.common.tools.ReflectUtils;
 import com.pall.wdpts.context.HolderContext;
@@ -60,10 +64,12 @@ import com.pall.wdpts.repository.entity.trackinglist.PreprocessingFormQueryEntit
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingInspectEntity;
 import com.pall.wdpts.repository.entity.user.UserEntity.ADD;
 import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
+import com.pall.wdpts.repository.entity.workflow.ChemicalCompoundReagentsEntity;
+import com.pall.wdpts.repository.entity.workflow.DefectEntity;
 import com.pall.wdpts.repository.entity.workflow.ExcelSaveEntity;
+import com.pall.wdpts.service.excel.IExcelTemplateHandler;
 import com.pall.wdpts.service.menu.ButtonManageService;
 import com.pall.wdpts.service.trackinglist.PreprocessingAssembleService;
-import com.pall.wdpts.service.word.IWordHandler;
 
 /*
  * 预处理装配流程跟踪单
@@ -81,7 +87,8 @@ public class PreprocessingManageControler{
 	@Autowired
 	private PreprocessingAssembleService preprocessingAssembleService;
 	@Autowired
-	private IWordHandler iWordHandler;
+	@Qualifier("xlsxTemplateHandler")
+	private IExcelTemplateHandler iExcelTemplateHandler;
 	/*
 	 * 下载文件路径
 	 */
@@ -353,7 +360,6 @@ public class PreprocessingManageControler{
     	downloadFileFullPath.append(File.separator);
     	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING__DOWNLOAD_SUBDIRECTORY));
     	downloadFileFullPath.append(File.separator);
-    	
     	//设置下载保存文件路径名称
     	StringBuilder fileName=new StringBuilder();
     	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
@@ -363,15 +369,31 @@ public class PreprocessingManageControler{
     	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
     	fileName.append(sf.format(new Date()));
     	fileName.append(".");
-    	fileName.append(Files.getFileExtension(templateFilePath.toString()));
+    	fileName.append(KeyConstants.EXCEL_SUFFIX_XLSX);
     	OutputStream out =null;
         try {
         	Files.createParentDirs(new File(downloadFileFullPath.toString()+fileName.toString()));
         	out=new FileSystemResource(downloadFileFullPath.toString()+fileName.toString()).getOutputStream();
-        	File targeFile=iWordHandler.getTargeFileByTemplateFile(templateFilePath, downloadFileFullPath.toString(), fileName.toString());
-        	XWPFDocument xwpFDocument=iWordHandler.getXWPFDocument(targeFile);
-			//进行数据替换
-        	iWordHandler.replaceDocument(xwpFDocument, getDocumentParamMap(preprocessingEntity),targeFile);
+        	//File targeFile=iExcelTemplateHandler.copyExcelTemplate(templateFilePath, downloadFileFullPath.toString(), fileName.toString());
+        	int i=1;
+        	if(!CollectionUtils.isEmpty(preprocessingEntity.getAssembleRecords())){
+        		for(PreprocessingAssembleEntity preprocessingAssembleEntity:preprocessingEntity.getAssembleRecords()){
+        			preprocessingAssembleEntity.setPreprocessingID(i++);
+        		}
+        	}
+        	i=1;
+        	if(!CollectionUtils.isEmpty(preprocessingEntity.getInspectRecords())){
+        		for(PreprocessingInspectEntity preprocessingInspectEntity:preprocessingEntity.getInspectRecords()){
+        			preprocessingInspectEntity.setPreprocessingID(i++);
+        		}
+        	}
+        	Map<Integer,List<ExcelHeaderNode>> excelTemplateMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_TEMPLATENAME));
+        	if(excelTemplateMap!=null){
+        		excelTemplateMap=ExcelTools.getExcelTempateDatas(excelTemplateMap,preprocessingEntity,0);
+        	}
+        	
+        	Workbook workbook=iExcelTemplateHandler.getExcelWorkbook(preprocessingEntity.getPreprocessingPn(), excelTemplateMap);
+			workbook.write(out);
 			List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
 			ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
 			excelSaveEntity.setFileName(fileName.toString());
@@ -388,69 +410,6 @@ public class PreprocessingManageControler{
 		}
 		return JSON.toJSONString(baseResponse);
     }
-	/*
-	 * 将对象转化为document参数
-	 * @param preprocessingEntity 预处理对象
-	 * @return 
-	 */
-	private WordDataNode getDocumentParamMap(PreprocessingEntity preprocessingEntity){
-		WordDataNode wordDataNode=new WordDataNode();
-		Map<String,String> documentDatas=new HashMap<String, String>();
-		wordDataNode.setDocumentDatas(documentDatas);
-		Map<String,List<Map<String, String>>> tableRowsDatas=new HashMap<String,List<Map<String, String>>>();
-		wordDataNode.setTableRowsDatas(tableRowsDatas);
-		Map<String,Field> fieldMap=ReflectUtils.getBeanPropertyFields(preprocessingEntity.getClass());
-		if(fieldMap!=null && fieldMap.size()>0){
-  			 for(String fieldName:fieldMap.keySet()){
-  				fieldMap.get(fieldName).setAccessible(true); 
-  				if(ReflectUtils.isPrimitive(fieldMap.get(fieldName).getType())){
-  					Object obj=ReflectionUtils.getField(fieldMap.get(fieldName), preprocessingEntity);
-  					documentDatas.put(fieldName, obj==null?"":String.valueOf(obj));
-	   			 }else if(fieldMap.get(fieldName).getType() == java.util.List.class){
-	   				 //word 行数据
-	   				 if(tableRowsDatas.get(fieldName)==null)tableRowsDatas.put(fieldName, new ArrayList<Map<String, String>>());
-	   				 if(fieldMap.get(fieldName).getGenericType() instanceof ParameterizedType){
-	   					ParameterizedType pt = (ParameterizedType)fieldMap.get(fieldName).getGenericType();
-	   					if(pt!=null &&  pt.getActualTypeArguments()!=null && pt.getActualTypeArguments().length>0){
-	   						if(pt.getActualTypeArguments()[0]==PreprocessingAssembleEntity.class){
-	   							List<PreprocessingAssembleEntity> preprocessingAssembleEntitys=(List<PreprocessingAssembleEntity>)ReflectionUtils.getField(fieldMap.get(fieldName), preprocessingEntity);
-	   							if(!CollectionUtils.isEmpty(preprocessingAssembleEntitys)){
-	   								for(PreprocessingAssembleEntity preprocessingAssembleEntity:preprocessingAssembleEntitys){
-	   									Map<String,String> subDocumentParamMap=new HashMap<String, String>();
-			   							Map<String,Field> subFieldMap=ReflectUtils.getBeanPropertyFields(preprocessingAssembleEntity.getClass());
-			   							if(subFieldMap!=null && subFieldMap.size()>0){
-			   								for(String subFieldName:subFieldMap.keySet()){
-			   									Object obj=ReflectionUtils.getField(subFieldMap.get(subFieldName), preprocessingAssembleEntity);
-			   									subDocumentParamMap.put(subFieldName, obj==null?"":String.valueOf(obj));
-			   								}
-			   							}
-			   							tableRowsDatas.get(fieldName).add(subDocumentParamMap);
-	   								}
-	   							}
-	   							
-	   						}else if(pt.getActualTypeArguments()[0]==PreprocessingInspectEntity.class){
-	   							List<PreprocessingInspectEntity> preprocessingInspectEntitys=(List<PreprocessingInspectEntity>)ReflectionUtils.getField(fieldMap.get(fieldName), preprocessingEntity);
-	   							if(!CollectionUtils.isEmpty(preprocessingInspectEntitys)){
-	   								for(PreprocessingInspectEntity preprocessingInspectEntity:preprocessingInspectEntitys){
-	   									Map<String,String> subDocumentParamMap=new HashMap<String, String>();
-			   							Map<String,Field> subFieldMap=ReflectUtils.getBeanPropertyFields(preprocessingInspectEntity.getClass());
-			   							if(subFieldMap!=null && subFieldMap.size()>0){
-			   								for(String subFieldName:subFieldMap.keySet()){
-			   									Object obj=ReflectionUtils.getField(subFieldMap.get(subFieldName), preprocessingInspectEntity);
-			   									subDocumentParamMap.put(subFieldName, obj==null?"":String.valueOf(obj));
-			   								}
-			   							}
-			   							tableRowsDatas.get(fieldName).add(subDocumentParamMap);
-	   								}
-	   							}
-	   						}
-	   					}
-	   				 }
-	   			 }
-  			 }
-  		 }
-		return wordDataNode;
-	}
 	@RequestMapping(value="/trackinglist/preprocessingInspectDetail", method= RequestMethod.POST)
     public @ResponseBody String preprocessingInspectDetail(Model model,@RequestParam("preprocessingID") String  preprocessingID, HttpServletRequest request) {
         BaseTablesResponse baseResponse=new BaseTablesResponse();

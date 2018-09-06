@@ -388,6 +388,10 @@ public class KeyConstants {
 	 */
 	public static final String TRACKINGLIST_PREPROCESSING_TABLENAME="tracklinglist/preprocessing/tablename";
 	/*
+	 * 预处理装配流程跟踪单流程导出模板
+	 */
+	public static final String TRACKINGLIST_PREPROCESSING_TEMPLATENAME="tracklinglist/preprocessing/templatename";
+	/*
 	 * 预处理装配流程跟踪单流程下载子目录名称
 	 */
 	public static final String TRACKINGLIST_PREPROCESSING__DOWNLOAD_SUBDIRECTORY="trackinglist/preprocessing/download/subdirectory";

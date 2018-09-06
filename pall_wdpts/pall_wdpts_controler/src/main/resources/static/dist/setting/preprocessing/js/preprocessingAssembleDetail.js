@@ -50,18 +50,32 @@ $(document).ready(function() {
                 });
         },
         columns: [
-        	{className : "ellipsis",data:"componentName",title:"组件名称",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"},
-	        {className : "ellipsis",data:"componentNo",title:"组件型号",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"},
+        	{className : "ellipsis",data:"componentName",title:"组件名称",render : function(data,type, row, meta) {
+	          var component="";
+	          if(data){//不为空
+	        	  $.each(data.split("|"), function(index, componentName){
+	        		  component=component+componentName+"<br>";
+	        		});
+	        	}
+          	  return component;
+            },"width": "200px"},
+	        {className : "ellipsis",data:"componentNo",title:"组件型号",render : function(data,type, row, meta) {
+		          var component="";
+		          if(data){//不为空
+		        	  $.each(data.split("|"), function(index, componentNo){
+		        		  component=component+componentNo+"<br>";
+		        		});
+		        	}
+	          	  return component;
+	            },"width": "200px"},
 	        {className : "ellipsis",data:"serialNoRecord",title:"序列号记录",render : function(data,type, row, meta) {
 	          var component="";
 	          if(data){//不为空
-	        	  component=component+"<div class='form-group text-left'>";
 	        	  $.each(data.split("|"), function(index, serialNoRecord){
-	        		  component=component+"<input type='radio' class='form-control'  name='serialNoRecord"+meta.index+"' value='"+serialNoRecord+"'>"+serialNoRecord+"</input></br>";
+	        		  component=component+"<label class='radio-inline'><input type='radio' name='serialNoRecord"+meta.index+"' value='"+serialNoRecord+"'>"+serialNoRecord+"</input></label>";
 	        		});
-	        	  component=component+"</div>";
 	        	}else{
-	        		component=component+"<input type='text' class='form-control' name='serialNoRecord"+meta.index+"' value=''/>";
+	        		//component=component+"<input type='text'  name='serialNoRecord"+meta.index+"' value=''/>";
 	        	}
           	  return component;
             },"width": "200px"},
