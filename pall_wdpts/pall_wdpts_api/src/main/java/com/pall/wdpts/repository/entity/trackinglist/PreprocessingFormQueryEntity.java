@@ -37,6 +37,22 @@ public class PreprocessingFormQueryEntity {
 	 */
 	private String preprocessingModel;
 	/*
+	 * 组件名称
+	 */
+	private String componentName;
+	/*
+	 * 组件型号
+	 */
+	private String componentNo;
+	/*
+	 * 自检名称
+	 */
+	private String selfcheckName;
+	/*
+	 * 自检内容
+	 */
+	private String selfcheckContent;
+	/*
 	 * 每页记录数
 	 */
 	private int pageSize;
@@ -99,6 +115,30 @@ public class PreprocessingFormQueryEntity {
 	}
 	public void setPreprocessingModel(String preprocessingModel) {
 		this.preprocessingModel = preprocessingModel;
+	}
+	public String getComponentName() {
+		return componentName;
+	}
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+	public String getComponentNo() {
+		return componentNo;
+	}
+	public void setComponentNo(String componentNo) {
+		this.componentNo = componentNo;
+	}
+	public String getSelfcheckName() {
+		return selfcheckName;
+	}
+	public void setSelfcheckName(String selfcheckName) {
+		this.selfcheckName = selfcheckName;
+	}
+	public String getSelfcheckContent() {
+		return selfcheckContent;
+	}
+	public void setSelfcheckContent(String selfcheckContent) {
+		this.selfcheckContent = selfcheckContent;
 	}
 	
 }

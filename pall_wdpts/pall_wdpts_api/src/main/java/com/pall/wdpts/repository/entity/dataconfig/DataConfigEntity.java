@@ -13,7 +13,7 @@ public class DataConfigEntity {
 	/*
 	 * 数据类型
 	 */
-	private int dataType;
+	private String dataType;
 	private boolean checked;
 	/*
 	 * 操作员id
@@ -42,23 +42,17 @@ public class DataConfigEntity {
 	public void setDataid(int dataid) {
 		this.dataid = dataid;
 	}
-	public int getDataType() {
+	public String getDataType() {
 		return dataType;
 	}
-	public void setDataType(int dataType) {
+	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-	public String getConfigName() {
-		return configName;
+	public boolean isChecked() {
+		return checked;
 	}
-	public void setConfigName(String configName) {
-		this.configName = configName;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 	public int getOperatorid() {
 		return operatorid;
@@ -78,11 +72,17 @@ public class DataConfigEntity {
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
-	public boolean isChecked() {
-		return checked;
+	public String getConfigName() {
+		return configName;
 	}
-	public void setChecked(boolean checked) {
-		this.checked = checked;
+	public void setConfigName(String configName) {
+		this.configName = configName;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

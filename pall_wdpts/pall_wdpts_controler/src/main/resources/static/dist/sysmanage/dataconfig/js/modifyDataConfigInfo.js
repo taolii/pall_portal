@@ -15,6 +15,13 @@ $(document).ready(function() {
                     }
                 }
             },
+            dataType: {
+                validators: {
+                    notEmpty: {
+                        message: '数据配置类型不能为空'
+                    }
+                }
+            },
             description: {
                 validators: {
                     stringLength: {

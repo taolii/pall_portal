@@ -55,25 +55,6 @@ public class DataConfigManageController{
 	private TableDataConfigInitiator tableDataConfigInitiator;
 	@Autowired
 	private DataConfigInitiator initSysDataConfig;
-	/*
-	 * 缺损管理
-	 */
-	@RequestMapping(value="defect/defectManage", method= RequestMethod.GET)
-    public  String defectManage(Model model, HttpServletRequest request) {
-		List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_WORKFLOW));
-		List<DataConfigTypeEntity> dataConfigTypes=new ArrayList<DataConfigTypeEntity>();
-		if(dataConfigEntitys!=null && dataConfigEntitys.size()>0){
-			for(DataConfigEntity dataConfigEntity:dataConfigEntitys){
-				DataConfigTypeEntity dataConfigTypeEntity=new DataConfigTypeEntity();
-				dataConfigTypeEntity.setDataType(String.valueOf(dataConfigEntity.getDataid()));
-				dataConfigTypeEntity.setDataTypeName(dataConfigEntity.getConfigName());
-				dataConfigTypes.add(dataConfigTypeEntity);
-			}
-		}
-		model.addAttribute("dataConfigTypes", dataConfigTypes);
-		model.addAttribute("sinfoDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_SCRAP_INFO)));
-	   return "sysmanage/defect/defectManage";
-    }
 	@RequestMapping(value="dataconfig/dataConfigManage", method= RequestMethod.GET)
     public  String dataConfigManage(Model model, HttpServletRequest request) {
 		List<DataConfigEntity> dataConfigEntitys=DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.DATACONFIG_TYPE_LIST));

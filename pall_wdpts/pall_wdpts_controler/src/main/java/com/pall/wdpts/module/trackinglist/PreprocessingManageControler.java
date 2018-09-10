@@ -2,14 +2,11 @@ package com.pall.wdpts.module.trackinglist;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,12 +41,9 @@ import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
-import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
-import com.pall.wdpts.common.support.excel.ExcelTempalteDataNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
-import com.pall.wdpts.common.tools.ReflectUtils;
 import com.pall.wdpts.context.HolderContext;
 import com.pall.wdpts.init.TableDataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
@@ -64,8 +56,6 @@ import com.pall.wdpts.repository.entity.trackinglist.PreprocessingFormQueryEntit
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingInspectEntity;
 import com.pall.wdpts.repository.entity.user.UserEntity.ADD;
 import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
-import com.pall.wdpts.repository.entity.workflow.ChemicalCompoundReagentsEntity;
-import com.pall.wdpts.repository.entity.workflow.DefectEntity;
 import com.pall.wdpts.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.wdpts.service.excel.IExcelTemplateHandler;
 import com.pall.wdpts.service.menu.ButtonManageService;
@@ -224,9 +214,7 @@ public class PreprocessingManageControler{
 				preprocessingInspectEntity.setSelfcheckContent(request.getParameter("selfcheckContent_"+inspectid));
 				preprocessingInspectEntity.setSelfcheckName(request.getParameter("selfcheckName_"+inspectid));
 				preprocessingInspectEntity.setSelfcheckResult(request.getParameter("selfcheckResult_"+inspectid));
-				if(!StringUtils.isEmpty(preprocessingInspectEntity.getSelfcheckContent())||!StringUtils.isEmpty(preprocessingInspectEntity.getSelfcheckName())||!StringUtils.isEmpty(preprocessingInspectEntity.getSelfcheckResult())||!StringUtils.isEmpty(preprocessingInspectEntity.getRemarks())){
-					preprocessingInspects.add(preprocessingInspectEntity);
-				}
+				preprocessingInspects.add(preprocessingInspectEntity);
 				
 			}
 		}
@@ -243,7 +231,7 @@ public class PreprocessingManageControler{
 		if(!ArrayUtils.isEmpty(assembleids)){
 			for(String assembleid:assembleids){
 				if(StringUtils.isEmpty(request.getParameter("remarks_"+assembleid)) && StringUtils.isEmpty(request.getParameter("componentName_"+assembleid))
-						&& StringUtils.isEmpty(request.getParameter("componentNo_"+assembleid)) && StringUtils.isEmpty(request.getParameter("selfcheckResult_"+assembleid))){
+						&& StringUtils.isEmpty(request.getParameter("componentNo_"+assembleid)) && StringUtils.isEmpty(request.getParameter("serialNoRecord_"+assembleid))){
 					continue;
 				}
 				PreprocessingAssembleEntity preprocessingAssembleEntity=new PreprocessingAssembleEntity();
@@ -251,9 +239,7 @@ public class PreprocessingManageControler{
 				preprocessingAssembleEntity.setComponentName(request.getParameter("componentName_"+assembleid));
 				preprocessingAssembleEntity.setComponentNo(request.getParameter("componentNo_"+assembleid));
 				preprocessingAssembleEntity.setSerialNoRecord(request.getParameter("serialNoRecord_"+assembleid));
-				if(!StringUtils.isEmpty(preprocessingAssembleEntity.getComponentName())||!StringUtils.isEmpty(preprocessingAssembleEntity.getComponentNo())||!StringUtils.isEmpty(preprocessingAssembleEntity.getSerialNoRecord())||!StringUtils.isEmpty(preprocessingAssembleEntity.getRemarks())){
-					preprocessingAssembles.add(preprocessingAssembleEntity);
-				}
+				preprocessingAssembles.add(preprocessingAssembleEntity);
 			}
 		}
 		return preprocessingAssembles;

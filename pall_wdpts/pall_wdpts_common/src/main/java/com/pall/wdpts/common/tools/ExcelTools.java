@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.ReflectionUtils;
 
 import com.alibaba.druid.util.StringUtils;
+import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.init.TableDataConfigInitiator;
@@ -168,6 +169,33 @@ public class ExcelTools {
 			 					BeanUtils.copyProperties(excelHeaderNode, tempExcelHeaderNode);
 			 					tempExcelHeaderNode.setRowNum(initRowNum);
 		 						tempExcelHeaderNode.setHeadline(obj==null?"":String.valueOf(obj));
+		 						if(!StringUtils.isEmpty(tempExcelHeaderNode.getHeadline()) && KeyConstants.EXCEL_INSERT_SYMBOL_TYPE==tempExcelHeaderNode.getInvisible()){
+		 							String[] datas=tempExcelHeaderNode.getHeadline().split("\\|");
+		 							int checked=0;
+		 							if(datas.length>=2 && !StringUtils.isEmpty(datas[0])){
+		 								String tempData=datas[0];
+		 								if(datas[0].indexOf("_")!=-1){
+		 									String temp=datas[0].substring(0, datas[0].indexOf("_"));
+		 									if(StringUtils.isNumber(temp)){
+		 										checked=Integer.parseInt(temp);
+		 										tempData=datas[0].substring(datas[0].indexOf("_")+1,datas[0].length());
+		 									}
+		 								}
+		 								String headLine="";
+		 								for(int i=0;i<datas.length;i++){
+		 									if(i==0 && i==checked){
+		 										headLine=headLine+new String(KeyConstants.EXCEL_INSERT_SYMBOL_TYPE_CHECK,0,1)+"  "+tempData+"  ";
+		 									}else if(i==0 && i!=checked){
+		 										headLine=headLine+new String(KeyConstants.EXCEL_INSERT_SYMBOL_TYPE_CHECK,1,1)+"  "+tempData+"  ";
+		 									}else if(i==checked){
+		 										headLine=headLine+new String(KeyConstants.EXCEL_INSERT_SYMBOL_TYPE_CHECK,0,1)+"  "+datas[i]+"  ";
+		 									}else{
+		 										headLine=headLine+new String(KeyConstants.EXCEL_INSERT_SYMBOL_TYPE_CHECK,1,1)+"  "+datas[i]+"  ";
+		 									}
+		 								}
+		 								tempExcelHeaderNode.setHeadline(headLine);
+		 							}
+		 						}
 		 						templateDatas.get(initRowNum).add(tempExcelHeaderNode);
 		 					}
 		 				}

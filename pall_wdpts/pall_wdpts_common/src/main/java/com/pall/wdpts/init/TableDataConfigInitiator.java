@@ -275,7 +275,7 @@ public class TableDataConfigInitiator {
 		        			excelHeaderNode.setRowNum(headLineConfigEntity.getLineNum());
 		        			excelHeaderNode.setRowspan(headLineConfigEntity.getRows());
 		        			excelHeaderNode.setFieldName(headLineConfigEntity.getFieldName());
-		        			
+		        			excelHeaderNode.setInvisible(headLineConfigEntity.getInvisible());
 		        			if(excelRowHeaderMap.get(rownum)==null){
 		        				excelRowHeaderMap.put(rownum, new ArrayList<ExcelHeaderNode>());
 		        			}

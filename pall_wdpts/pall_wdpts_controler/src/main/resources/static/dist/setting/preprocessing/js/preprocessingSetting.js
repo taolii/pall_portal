@@ -4,7 +4,7 @@ $(document).ready(function() {
 	var $table = $('#datatable');
 	$queryForm=$("#queryForm");
 	var _table = $table.dataTable($.extend(true,
-		{pageLength: 10,scrollX: true,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
+		{pageLength: 10,scrollX: true,"bAutoWidth": false,ordering: false,"sPaginationType":"full_numbers"},TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION,
 		{
         ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
             //手动控制遮罩

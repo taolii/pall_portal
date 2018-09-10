@@ -58,10 +58,9 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
 		}else{
 			sheet=(XSSFSheet)workbook.createSheet();
 		}
-		CellStyle configCellStyle=workbook.createCellStyle();
-		Map<String,Integer> tempMap=createExcelTemplate(workbook,sheet,configCellStyle,excelTemplateMap);
+		Map<String,Integer> tempMap=createExcelTemplate(workbook,sheet,excelTemplateMap);
 		if(null!=tempMap && tempMap.size()>0){
-			setExcelStyle(excelTemplateMap,workbook,sheet,configCellStyle,tempMap.get("startColNum"),tempMap.get("lastColNum"));
+			setExcelStyle(excelTemplateMap,workbook,sheet,tempMap.get("startColNum"),tempMap.get("lastColNum"));
 		}
 		return workbook;
 	}
@@ -79,7 +78,7 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
 	 * @param excelTemplateMap excel模板对象信息
 	 * @return 
 	 */
-	private Map<String,Integer> createExcelTemplate(Workbook workbook,XSSFSheet sheet,CellStyle configCellStyle,Map<Integer,List<ExcelHeaderNode>> excelTemplateMap){
+	private Map<String,Integer> createExcelTemplate(Workbook workbook,XSSFSheet sheet,Map<Integer,List<ExcelHeaderNode>> excelTemplateMap){
 		int startColNum=1000;
     	int lastColNum=0;
     	if(excelTemplateMap==null) return null;
@@ -96,15 +95,15 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
    			 	XSSFCell cell=row.createCell(excelHeaderNode.getColNum()-1);
                 cell.setCellValue(excelHeaderNode.getHeadline());
                 if(StringUtils.isEmpty(excelHeaderNode.getFieldName())){
-                	//setTemplateCellStyle(workbook,configCellStyle,cell);
+                	//setTemplateCellStyle(workbook,cell);
                 }else{
-                	//setCommonCellStyle(workbook,configCellStyle,cell);
+                	//setCommonCellStyle(workbook,cell);
                 }
        			if(excelHeaderNode.getCellspan()>1){
        				for(int j=0;j<excelHeaderNode.getCellspan()-1;j++){
        					cell=row.createCell(excelHeaderNode.getColNum()+j);
        	                cell.setCellValue("");
-       	             //setCommonCellStyle(workbook,configCellStyle,cell);
+       	                //setCommonCellStyle(workbook,cell);
        				}
        			}
        			if(excelHeaderNode.getCellspan()>1 || excelHeaderNode.getRowspan()>1){
@@ -124,14 +123,16 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
 	 * @param cell 单元格对象
 	 * @return 
 	 */
-	private CellStyle setTemplateCellStyle(Workbook workbook,CellStyle configCellStyle,XSSFCell cell) {
-		
+	private CellStyle setTemplateCellStyle(Workbook workbook,XSSFCell cell) {
+		CellStyle configCellStyle=cell.getCellStyle();
+		if(configCellStyle==null){
+			configCellStyle=workbook.createCellStyle();
+		}
 		configCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 	    configCellStyle.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
 		configCellStyle.setFillBackgroundColor(HSSFColor.SKY_BLUE.index);
-		configCellStyle.setBottomBorderColor(HSSFColor.GREEN.index);
 		setTemplateFont(workbook,configCellStyle);
-		setCommonCellStyle(workbook,configCellStyle,cell);
+		cell.setCellStyle(configCellStyle);
 		return configCellStyle;
 	}
 	/*
@@ -153,8 +154,8 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
 	 * @param cell 单元格对象
 	 * @return 
 	 */
-	private CellStyle setCommonCellStyle(Workbook workbook,CellStyle configCellStyle,XSSFCell cell) {
-		configCellStyle=workbook.createCellStyle();
+	private CellStyle setCommonCellStyle(Workbook workbook,XSSFCell cell) {
+		CellStyle configCellStyle=workbook.createCellStyle();
 		configCellStyle.setBorderBottom(BorderStyle.valueOf((short)1));
 		configCellStyle.setBorderTop(BorderStyle.valueOf((short)1));  
 		configCellStyle.setBorderRight(BorderStyle.valueOf((short)1));  
@@ -176,9 +177,8 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
 	 * @param lastColNum excel模板最后列
 	 * @return 
 	 */
-	private void setExcelStyle(Map<Integer,List<ExcelHeaderNode>> excelTemplateMap,Workbook workbook,XSSFSheet sheet,CellStyle configCellStyle, int startColNum,int lastColNum) {
+	private void setExcelStyle(Map<Integer,List<ExcelHeaderNode>> excelTemplateMap,Workbook workbook,XSSFSheet sheet, int startColNum,int lastColNum) {
 		if(excelTemplateMap==null || sheet==null)return ;
-		sheet.setColumnWidth(0, (int)35.7*100);
 		//设置单元格样式
     	for(Integer rownum:excelTemplateMap.keySet()){
     		//创建行对象
@@ -191,9 +191,12 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
    			 		cell=row.createCell(j);
 	                cell.setCellValue("");
    			 	}
-   			 	cell.setCellStyle(setCommonCellStyle(workbook,configCellStyle,cell));
+   			 	cell.setCellStyle(setCommonCellStyle(workbook,cell));
             }
     	}
+    	for (int j=startColNum-1;j<lastColNum;j++) {
+    		sheet.setColumnWidth(j, 3766);
+        }
 	}
 	
 }

@@ -4,7 +4,7 @@
 	<select id="queryDataConfigList" resultType="com.pall.wdpts.repository.entity.dataconfig.DataConfigEntity"
 	parameterType="com.pall.wdpts.repository.entity.dataconfig.DataConfigQueryFormEntity"> 
  		select dataid,datatype,configname,createtime,updatetime,operatorid,DESCRIPTION from t_ums_data_config where 1=1
- 		 <if test="dataType !=0">  
+ 		 <if test="dataType != null and dataType != '' ">  
 	       AND datatype= #{dataType}  
 	    </if>
 	    <if test="configName != null and configName != '' ">  

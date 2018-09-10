@@ -26,6 +26,18 @@ f.operatorid,g.account operatorName from t_trackinglist_preprocessing f left joi
 	    <if test="preprocessingModel != null and preprocessingModel != '' ">  
 	       AND f.preprocessing_model = #{preprocessingModel}  
 	    </if>
+	    <if test="componentName != null and componentName != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_assemble g where f.preprocessing_id=g.preprocessing_id and g.component_name like concat('%',#{componentName},'%')) 
+	    </if>
+	    <if test="componentNo != null and componentNo != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_assemble g where f.preprocessing_id=g.preprocessing_id and g.component_no like concat('%',#{componentNo},'%')) 
+	    </if>
+	    <if test="selfcheckName != null and selfcheckName != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_inspect g where f.preprocessing_id=g.preprocessing_id and g.selfcheck_name like concat('%',#{selfcheckName},'%'))  
+	    </if>
+	    <if test="selfcheckContent != null and selfcheckContent != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_inspect g where f.preprocessing_id=g.preprocessing_id and g.selfcheck_content like concat('%',#{selfcheckContent},'%'))  
+	    </if>
 	     order by f.update_time desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryPreprocessingTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingFormQueryEntity"> 
@@ -50,6 +62,18 @@ f.operatorid,g.account operatorName from t_trackinglist_preprocessing f left joi
 	    </if>
 	    <if test="preprocessingModel != null and preprocessingModel != '' ">  
 	       AND f.preprocessing_model = #{preprocessingModel}  
+	    </if>
+	    <if test="componentName != null and componentName != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_assemble g where f.preprocessing_id=g.preprocessing_id and g.component_name like concat('%',#{componentName},'%'))  
+	    </if>
+	    <if test="componentNo != null and componentNo != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_assemble g where f.preprocessing_id=g.preprocessing_id and g.component_no like concat('%',#{componentNo},'%')) 
+	    </if>
+	    <if test="selfcheckName != null and selfcheckName != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_inspect g where f.preprocessing_id=g.preprocessing_id and g.selfcheck_name like concat('%',#{selfcheckName},'%')) 
+	    </if>
+	    <if test="selfcheckContent != null and selfcheckContent != '' ">  
+	       AND exists(select 1 from t_trackinglist_preprocessing_inspect g where f.preprocessing_id=g.preprocessing_id and g.selfcheck_content like concat('%',#{selfcheckContent},'%')) 
 	    </if>
  	</select>
     <insert id="addPreprocessing" parameterType="com.pall.wdpts.repository.entity.trackinglist.PreprocessingEntity">
