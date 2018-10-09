@@ -8,6 +8,7 @@
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.trackinglist.dsp.title}"></title>
         <script type="text/javascript" th:src="@{{path}/dist/trackinglist/dsp/js/dspManage.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/trackinglist/dsp/js/dspAssembleDetail.js(path=${contextPath})}"></script>
     	
     </head>
     <body>
@@ -48,6 +49,7 @@
 											                </span>  
 		            									</div> 
 						                      		</div>
+						                      		
 						                      		<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.dsp.form.dspPn}"></span>
@@ -82,11 +84,26 @@
 									                        <input type="text" name="dspModel" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4 form-group" style="padding-left:60px">
-					                                	
+						                      		<div class="col-md-4 form-group">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.dsp.form.assembleRecords.componentName}"></span>
+									                        <input type="text" name="componentName" class="form-control"/>
+					                                	</div>
 						                      		</div>
-								                    <div class="col-md-4 form-group" style="padding-left:160px">
-								                        <button id="btn-query" class="btn btn-white btn-primary" type="button">
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.dsp.form.assembleRecords.componentNo}"></span>
+									                        <input type="text" name="componentNo" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.dsp.form.cOrderID}"></span>
+									                        <input type="text" name="cOrderID" class="form-control"/>
+					                                	</div>
+						                      		</div>
+								                    <div class="col-md-12 form-group center">
+								                        <button id="btn-query" class="btn btn-white btn-primary" type="button" style="display:none">
 								                        <i class="fa fa-search"></i>
 					                 						<span th:text="#{pages.trackinglist.dsp.form.query.button.tip}" th:remove="tag"></span>
 														</button> 
@@ -101,19 +118,19 @@
 	                		<div class="row">
 	                			<div class="pull-right">
 							        <div class="btn-group">
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add" >
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add" style="display:none">
 							                <i class="fa fa-plus"></i>
 							                <span th:text="#{pages.trackinglist.dsp.table.button.add}" th:remove="tag"></span>
 							            </a>
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll" >
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll" style="display:none">
 							                <i class="fa fa-remove"></i>
 							                <span th:text="#{pages.trackinglist.dsp.table.button.batchdel}" th:remove="tag"></span>
 							            </a>
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-export" >
+							            <!--a type="button" class="btn btn-white btn-primary btn-sm" id="btn-export" >
 							                <i class="fa fa-download"></i>
 							                <span th:text="#{pages.trackinglist.dsp.table.button.export}" th:remove="tag"></span>
-							            </a>
-							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm">
+							            </a-->
+							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm" style="display:none">
 							                <i class="fa fa-refresh"></i>
 							                <span th:text="#{pages.trackinglist.dsp.table.button.refresh}" th:remove="tag"></span>
 							            </a>
@@ -136,6 +153,10 @@
 				<input type="hidden" id="buttonRights" name="buttonEntitys" th:value="${buttonEntitys}">
 			</div>
 			<div class="clearfix"></div>
+			
+			<div id="dspAssembleDetail">
+				<div th:replace="trackinglist/dsp/dspAssembleDetailModal:: content"></div>
+			</div>
         </div>
     </body>
 </html>

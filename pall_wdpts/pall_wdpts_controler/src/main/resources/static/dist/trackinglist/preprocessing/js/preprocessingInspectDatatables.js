@@ -60,10 +60,10 @@ var PreprocessingInspectTable=function(contextPath,ids){
 			        		component=component+"<input type='text' class='form-control' name='selfcheckResult_"+meta.row+"' value=''/>";
 			        	}
 		          	  return component;
-	 	            },"width": "100px"},
+	 	            },"width": "200px"},
 	 	        {className : "ellipsis",data:"remarks",title:"备注",render : function(data,type, row, meta) {
 	          	  return "<input type='text' class='form-control' name='remarks_"+meta.row+"' value='"+data+"'></input>";
-	            },"width": "100px"}
+	            },"width": "200px"}
 		     ]
 	    }).api();
 		return datatable;

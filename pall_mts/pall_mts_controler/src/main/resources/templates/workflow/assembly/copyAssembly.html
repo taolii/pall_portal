@@ -68,10 +68,10 @@
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
-										<select name="fixtureAttribute" class="form-control" disabled="disabled">
-							              	<option   value="K">K</option>
-							              	<option   value="Q">Q</option>
-	                                	</select>
+										<select name="fixtureAttribute" class="form-control">
+								              <option  th:each="dataConfig:${fixtureAttrDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+								              </option>
+		                                </select>  
 									</div>
 								</div>
 							</div>

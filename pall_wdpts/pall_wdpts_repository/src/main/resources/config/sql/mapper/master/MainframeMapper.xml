@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
-<mapper namespace="com.pall.wdpts.repository.mapper.trackinglist.MainframeAssembleDao"> 
+<mapper namespace="com.pall.wdpts.repository.mapper.trackinglist.MainframeDao"> 
 	<select id="queryMainframeList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity"
 	parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeFormQueryEntity"> 
- 		select assemble_time assembleTime,production_time productionTime,mainframe_pn mainframePn,serial_no serialNo,workorder_no workorderNo,mainframe_model mainframeModel,exception_record exceptionRecord,assemble_Operator assembleOperator,f.input_time inputTime,f.update_time updateTime,
+ 		select f.c_orderid cOrderID,mainframe_id mainframeID,assemble_time assembleTime,production_time productionTime,mainframe_pn mainframePn,serial_no serialNo,workorder_no workorderNo,mainframe_model mainframeModel,f.mainframe_option mainframeOption,f.mainframe_option2 mainframeOption2,CONCAT(f.mainframe_option,'|',f.mainframe_option2) mainframeOptions,exception_record exceptionRecord,assemble_Operator assembleOperator,f.remarks,f.inspect_operator inspectOperator,f.inspect_time inspectTime,f.input_time inputTime,f.update_time updateTime,
 f.operatorid,g.account operatorName from t_trackinglist_mainframe f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
 	     <if test="startAssembleTime != null and startAssembleTime != '' ">  
 	       AND f.assemble_time &gt;= #{startAssembleTime}  
@@ -25,6 +25,21 @@ f.operatorid,g.account operatorName from t_trackinglist_mainframe f left join t_
 	    </if>
 	    <if test="mainframeModel != null and mainframeModel != '' ">  
 	       AND f.mainframe_model = #{mainframeModel}  
+	    </if>
+	    <if test="cOrderID != null and cOrderID != '' ">  
+	       AND f.c_orderid = #{cOrderID}  
+	    </if>
+	    <if test="componentName != null and componentName != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_assemble g where f.mainframe_id=g.mainframe_id and g.component_name like concat('%',#{componentName},'%')) 
+	    </if>
+	    <if test="componentNo != null and componentNo != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_assemble g where f.mainframe_id=g.mainframe_id and g.component_no like concat('%',#{componentNo},'%')) 
+	    </if>
+	    <if test="selfcheckName != null and selfcheckName != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_inspect g where f.mainframe_id=g.mainframe_id and g.selfcheck_name like concat('%',#{selfcheckName},'%'))  
+	    </if>
+	    <if test="selfcheckContent != null and selfcheckContent != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_inspect g where f.mainframe_id=g.mainframe_id and g.selfcheck_content like concat('%',#{selfcheckContent},'%'))  
 	    </if>
 	     order by f.update_time desc limit #{startPageNum},#{pageSize}
  	</select> 
@@ -51,17 +66,32 @@ f.operatorid,g.account operatorName from t_trackinglist_mainframe f left join t_
 	    <if test="mainframeModel != null and mainframeModel != '' ">  
 	       AND f.mainframe_model = #{mainframeModel}  
 	    </if>
+	    <if test="cOrderID != null and cOrderID != '' ">  
+	       AND f.c_orderid = #{cOrderID}  
+	    </if>
+	     <if test="componentName != null and componentName != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_assemble g where f.mainframe_id=g.mainframe_id and g.component_name like concat('%',#{componentName},'%')) 
+	    </if>
+	    <if test="componentNo != null and componentNo != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_assemble g where f.mainframe_id=g.mainframe_id and g.component_no like concat('%',#{componentNo},'%')) 
+	    </if>
+	    <if test="selfcheckName != null and selfcheckName != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_inspect g where f.mainframe_id=g.mainframe_id and g.selfcheck_name like concat('%',#{selfcheckName},'%'))  
+	    </if>
+	    <if test="selfcheckContent != null and selfcheckContent != '' ">  
+	       AND exists(select 1 from t_trackinglist_mainframe_inspect g where f.mainframe_id=g.mainframe_id and g.selfcheck_content like concat('%',#{selfcheckContent},'%'))  
+	    </if>
  	</select>
     <insert id="addMainframe" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity">
     	<selectKey keyProperty="mainframeID" order="AFTER" resultType="java.lang.Integer">
             select LAST_INSERT_ID()
         </selectKey>
-    	insert into  t_trackinglist_mainframe(assemble_time,production_time,mainframe_pn,serial_no,workorder_no,mainframe_model,exception_record,assemble_Operator,operatorid,input_time,update_time)
-        values(#{assembleTime},#{productionTime},#{mainframePn},#{serialNo},#{workorderNo},#{mainframeModel},#{exceptionRecord},#{assembleOperator},#{operatorid},now(),now())
+    	insert into  t_trackinglist_mainframe(c_orderid,assemble_time,production_time,mainframe_pn,serial_no,workorder_no,mainframe_model,mainframe_option,mainframe_option2,exception_record,assemble_Operator,inspect_operator,inspect_time,remarks,operatorid,input_time,update_time)
+        values(#{cOrderID},#{assembleTime},#{productionTime},#{mainframePn},#{serialNo},#{workorderNo},#{mainframeModel},#{mainframeOption},#{mainframeOption2},#{exceptionRecord},#{assembleOperator},#{inspectOperator},#{inspectTime},#{remarks},#{operatorid},now(),now())
     </insert>
-    <update id="modifyMainframe" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity">
-        update  t_trackinglist_mainframe f set f.assemble_time=#{assembleTime},f.production_time=#{productionTime},f.mainframe_pn=#{mainframePn},f.serial_no=#{serialNo},f.workorder_no=#{workorderNo},f.mainframe_model=#{mainframeModel},f.exception_record=#{exceptionRecord},
-        f.assemble_Operator=#{assembleOperator},f.operatorid=#{operatorid},f.update_time=now()
+    <update id="modMainframe" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity">
+        update  t_trackinglist_mainframe f set f.c_orderid=#{cOrderID},f.assemble_time=#{assembleTime},f.production_time=#{productionTime},f.mainframe_pn=#{mainframePn},f.serial_no=#{serialNo},f.workorder_no=#{workorderNo},f.mainframe_model=#{mainframeModel},f.mainframe_option=#{mainframeOption},f.mainframe_option2=#{mainframeOption2},f.exception_record=#{exceptionRecord},
+        f.assemble_Operator=#{assembleOperator},f.inspect_time=#{inspectTime},f.inspect_operator=#{inspectOperator},f.remarks=#{remarks},f.operatorid=#{operatorid},f.update_time=now()
         where f.mainframe_id=#{mainframeID}
     </update>
     <delete id="delMainframe"  parameterType="java.util.List">  
@@ -76,7 +106,100 @@ f.operatorid,g.account operatorName from t_trackinglist_mainframe f left join t_
         	#{item}  
     	</foreach> 
 	</delete>
+	
+ 	<delete id="delMainframeAssembles"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_mainframe_assemble WHERE mainframe_id in 
+        <foreach collection="mainframeIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
 	<select id="queryMainframeAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeAssembleEntity"> 
  		select mainframe_id,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_trackinglist_mainframe_assemble f where f.mainframe_id=#{mainframeID} 
+ 	</select>
+ 	<select id="queryMainframeInspectList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeInspectEntity"> 
+ 		select mainframe_id mainframeID,selfcheck_name selfcheckName,selfcheck_content selfcheckContent,selfcheck_result selfcheckResult,remarks from t_trackinglist_mainframe_inspect f where f.mainframe_id=#{mainframeID}
  	</select> 
+ 	<insert id="addMainframeInspects" parameterType="java.util.List">
+		 insert into t_trackinglist_mainframe_inspect(mainframe_id,selfcheck_name,selfcheck_content,selfcheck_result,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.mainframeID},#{item.selfcheckName},#{item.selfcheckContent},#{item.selfcheckResult},#{item.remarks})
+    	</foreach> 
+    </insert>
+    <insert id="addMainframeAssembles" parameterType="java.util.List">
+		insert into t_trackinglist_mainframe_assemble(mainframe_id,component_name,component_no,serial_no_record,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.mainframeID},#{item.componentName},#{item.componentNo},#{item.serialNoRecord},#{item.remarks})
+    	</foreach> 
+    </insert>
+	<delete id="delMainframeInspects"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_mainframe_inspect WHERE mainframe_id in 
+        <foreach collection="mainframeIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+ 	<select id="queryMainframeSettingList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingEntity"
+	parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingFormQueryEntity"> 
+ 		select msid,mainframe_pn mainframePn,f.input_time inputTime,f.update_time updateTime,f.operatorid,g.account operatorName from t_ums_setting_mainframe f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="mainframePn != null and mainframePn != '' ">  
+	       AND f.mainframe_pn = #{mainframePn}  
+	    </if>
+	    <if test="msid != null and msid != '' ">  
+	       AND f.msid = #{msid}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryMainframeSettingTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingFormQueryEntity"> 
+ 		select count(1) from t_ums_setting_mainframe f  where 1=1
+		<if test="mainframePn != null and mainframePn != '' ">  
+	       AND f.mainframe_pn = #{mainframePn}  
+	    </if>
+	    <if test="msid != null and msid != '' ">  
+	       AND f.msid = #{msid}  
+	    </if>
+ 	</select>
+ 	<insert id="addMainframeSetting" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingEntity">
+    	<selectKey keyProperty="msid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_ums_setting_mainframe(mainframe_pn,operatorid,input_time,update_time)values(#{mainframePn},#{operatorid},now(),now())
+    </insert>
+    <update id="modMainframeSetting" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity">
+        update  t_ums_setting_mainframe f set f.mainframe_pn=#{mainframePn},f.operatorid=#{operatorid},f.update_time=now() where f.msid=#{msid}
+    </update>
+    <delete id="delMainframeSetting"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_mainframe WHERE msid in 
+        <foreach collection="msids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<insert id="addMainframeSettingAssembles" parameterType="java.util.List">
+		insert into t_ums_setting_mainframe_assemble(msid,component_name,component_no,serial_no_record,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.msid},#{item.componentName},#{item.componentNo},#{item.serialNoRecord},#{item.remarks})
+    	</foreach> 
+    </insert>
+    <delete id="delMainframeSettingAssembles"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_mainframe_assemble WHERE msid in 
+        <foreach collection="msids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+    <insert id="addMainframeSettingInspects" parameterType="java.util.List">
+		 insert into t_ums_setting_mainframe_inspect(msid,selfcheck_name,selfcheck_content,selfcheck_result,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.msid},#{item.selfcheckName},#{item.selfcheckContent},#{item.selfcheckResult},#{item.remarks})
+    	</foreach> 
+    </insert>
+	<delete id="delMainframeSettingInspects"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_mainframe_inspect WHERE msid in 
+        <foreach collection="msids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryMainframeSettingAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingAssembleEntity"> 
+ 		select msid,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_ums_setting_mainframe_assemble f where f.msid=#{msid} 
+ 	</select>
+ 	<select id="queryMainframeSettingInspectList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingInspectEntity"> 
+ 		select msid,selfcheck_name selfcheckName,selfcheck_content selfcheckContent,selfcheck_result selfcheckResult,remarks from t_ums_setting_mainframe_inspect f where f.msid=#{msid} 
+ 	</select>  
 </mapper> 

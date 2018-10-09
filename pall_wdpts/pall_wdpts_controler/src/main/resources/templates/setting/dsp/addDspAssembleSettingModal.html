@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title th:text="#{pages.system.name}+'-'+#{pages.setting.dspSetting.addDspAssembleSettingModal.title}"></title>
+    </head>
+    <body>
+	    <div th:fragment="content">
+			<div id="addDspAssembleModal" class="modal fade" tabindex="-1">
+				<div class="modal-dialog modal-sm" style="width:700px;">
+					<div class="modal-content">
+						<div class="modal-header no-padding">
+							<div class="table-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+									<span class="white">&times;</span>
+								</button>
+								<i class="fa fa-plus"></i>&nbsp;&nbsp;
+								<label th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.title}" th:remove="tag"></label>
+							</div>
+						</div>
+						<div class="modal-body no-padding" style="height:400px;">
+							<div class="modal-body">
+								<div class="form-group">
+									<div class="rowGroup">
+										<span class=" col-md-2 control-label">
+											<label th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.property}" th:remove="tag"></label> 
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-md-10">
+											<label class="radio-inline">
+												<input type='radio'   name='property' value="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.text}" th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.text}"></input>
+											</label>
+											<label class="radio-inline">
+												<input type='radio'   name='property' value="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.radio}" th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.radio}"></input>
+											</label>
+											<label class="radio-inline">
+												<input type='radio'   name='property' value="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.checkbox}" th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.checkbox}"></input>
+											</label> 
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="rowGroup">
+										<div class="col-md-12">
+											<fieldset style="margin-top:0px">
+			    								<legend>
+			    									<label class="blue control-label" th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.info}"></label>
+			    									<span class="blue control-label" id="assemblynum"></span>
+			    									<span class="btn btn-white btn-primary btn-sm" id="addAssemblyOutputLotNumButton">  
+						                     			<label th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.property.info.add}" th:remove="tag"></label>
+						                     		</span>
+			    								</legend>
+												<div class="col-md-10" id="addAssemblyPanel">
+								                      
+												</div>
+		  									</fieldset>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer no-margin-top">
+							<button id="seldspSettingButton" class="btn btn-white btn-primary">
+								<i class="fa fa-check"></i> 
+								<span th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.button.add}" th:remove="tag"></span>
+							</button>
+							<button type="button" class="btn btn-white btn-primary" data-dismiss="modal">
+								<i class="fa fa-close"></i> 
+								<span th:text="#{pages.setting.dspSetting.addDspAssembleSettingModal.button.shut}" th:remove="tag"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </body>
+</html>

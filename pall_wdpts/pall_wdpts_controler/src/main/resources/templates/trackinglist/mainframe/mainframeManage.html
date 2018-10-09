@@ -8,7 +8,8 @@
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title th:text="#{pages.system.name}+'-'+#{pages.trackinglist.mainframe.title}"></title>
         <script type="text/javascript" th:src="@{{path}/dist/trackinglist/mainframe/js/mainframeManage.js(path=${contextPath})}"></script>
-    	
+    	<script type="text/javascript" th:src="@{{path}/dist/trackinglist/mainframe/js/mainframeAssembleDetail.js(path=${contextPath})}"></script>
+    	<script type="text/javascript" th:src="@{{path}/dist/trackinglist/mainframe/js/mainframeInspectDetail.js(path=${contextPath})}"></script>
     </head>
     <body>
         <div th:fragment="content">
@@ -33,7 +34,7 @@
 				                        <div class="panel panel-primary">
 				                            <div class="panel-heading">
 				                                <h4 class="panel-title">
-				                                	<i class="fa fa-search"></i>&nbsp;&nbsp;<a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.workflow.assembly.title}"></a>
+				                                	<i class="fa fa-search"></i>&nbsp;&nbsp;<a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.trackinglist.mainframe.form.title}"></a>
 				                              	</h4>
 				                            </div>
 				                            <div id="stepOne" class="panel-collapse collapse in  ">
@@ -48,6 +49,7 @@
 											                </span>  
 		            									</div> 
 						                      		</div>
+						                      		
 						                      		<div class="col-md-4 form-group" style="padding-left:60px">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.mainframe.form.mainframePn}"></span>
@@ -82,11 +84,38 @@
 									                        <input type="text" name="mainframeModel" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4 form-group" style="padding-left:60px">
-					                                	
+						                      		<div class="col-md-4 form-group">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.mainframe.form.assembleRecords.componentName}"></span>
+									                        <input type="text" name="componentName" class="form-control"/>
+					                                	</div>
 						                      		</div>
-								                    <div class="col-md-4 form-group" style="padding-left:160px">
-								                        <button id="btn-query" class="btn btn-white btn-primary" type="button">
+						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.mainframe.form.assembleRecords.componentNo}"></span>
+									                        <input type="text" name="componentNo" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="padding-left:60px" style="display:none">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.mainframe.form.inspectRecords.selfcheckName}"></span>
+									                        <input type="text" name="selfcheckName" class="form-control"/>
+					                                	</div>
+						                      		</div>
+						                      		<div class="col-md-4 form-group" style="display:none">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.mainframe.form.inspectRecords.selfcheckContent}"></span>
+									                        <input type="text" name="selfcheckContent" class="form-control"/>
+					                                	</div>
+						                      		</div>
+								                    <div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.mainframe.form.cOrderID}"></span>
+									                        <input type="text" name="cOrderID" class="form-control"/>
+					                                	</div>
+						                      		</div>
+								                    <div class="col-md-12 form-group center">
+								                        <button id="btn-query" class="btn btn-white btn-primary" type="button" style="display:none">
 								                        <i class="fa fa-search"></i>
 					                 						<span th:text="#{pages.trackinglist.mainframe.form.query.button.tip}" th:remove="tag"></span>
 														</button> 
@@ -101,19 +130,19 @@
 	                		<div class="row">
 	                			<div class="pull-right">
 							        <div class="btn-group">
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add" >
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add" style="display:none">
 							                <i class="fa fa-plus"></i>
 							                <span th:text="#{pages.trackinglist.mainframe.table.button.add}" th:remove="tag"></span>
 							            </a>
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll" >
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll" style="display:none">
 							                <i class="fa fa-remove"></i>
 							                <span th:text="#{pages.trackinglist.mainframe.table.button.batchdel}" th:remove="tag"></span>
 							            </a>
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-export" >
+							            <!--a type="button" class="btn btn-white btn-primary btn-sm" id="btn-export" >
 							                <i class="fa fa-download"></i>
 							                <span th:text="#{pages.trackinglist.mainframe.table.button.export}" th:remove="tag"></span>
-							            </a>
-							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm">
+							            </a-->
+							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm" style="display:none">
 							                <i class="fa fa-refresh"></i>
 							                <span th:text="#{pages.trackinglist.mainframe.table.button.refresh}" th:remove="tag"></span>
 							            </a>
@@ -136,6 +165,12 @@
 				<input type="hidden" id="buttonRights" name="buttonEntitys" th:value="${buttonEntitys}">
 			</div>
 			<div class="clearfix"></div>
+			<div id="mainframeInspectDetail">
+				<div th:replace="trackinglist/mainframe/mainframeInspectDetailModal:: content"></div>
+			</div>
+			<div id="mainframeAssembleDetail">
+				<div th:replace="trackinglist/mainframe/mainframeAssembleDetailModal:: content"></div>
+			</div>
         </div>
     </body>
 </html>

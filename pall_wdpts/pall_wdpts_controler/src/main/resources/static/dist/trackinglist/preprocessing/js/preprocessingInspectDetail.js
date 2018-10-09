@@ -58,7 +58,7 @@ $(document).ready(function() {
   	        		});
   	        	}
   	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-            },"width": "200px"},
+            },"width": "100px"},
 	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
         		var component="";
   	          	if(data){//不为空
@@ -67,7 +67,7 @@ $(document).ready(function() {
   	        		});
   	        	}
   	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-            },"width": "200px"},
+            },"width": "100px"},
 	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
 	        	var component="";
 		          if(data){//不为空
@@ -98,7 +98,7 @@ $(document).ready(function() {
 		        	}
   	          return component;
 	            },"width": "200px"},
-	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"}
+	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "100px"}
 	     ]
     })).api();
 	$("#preprocessingInspectDetailButton").click(function(){

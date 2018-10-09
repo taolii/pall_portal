@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	 
 	var contextPath=$("#contextPath").val();
 	$('#queryStartAssembleTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
@@ -11,7 +12,9 @@ $(document).ready(function() {
 	$('#queryStartAssembleTime').val(currentDate(30));
 	$('#queryEndAssembleTime').val(currentDate(0));
 	var columns_setting=[
-    	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
+		{className: "ellipsis",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
+            return '<input  type="checkbox" class="ace"><span class="lbl"></span>';
+   	 }}
     ];
 	var tableFieldBinds=$("#tableFieldBinds").val();
 	tableFieldBinds=eval("(" + tableFieldBinds + ")");
@@ -20,16 +23,33 @@ $(document).ready(function() {
 		if(tableField.invisible==1){
 			v_visible=false;
 		}
-		columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
+		if(tableField.fieldName=='assembleRecords'){
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:null,render : function(data,type, row, meta) {
+				return "<div id='showAssembleRecordsDetail' class='action-buttons'><a  href='javascript:void(0)' class='green bigger-140 show-details-btn' title='Show Details'>"+
+						"<i class='ace-icon fa fa-angle-double-down'></i>"+
+						"<span class='sr-only'>Details</span>"
+						"</a></div>";
+			},width:"60px","visible":v_visible }) ;  
+		}else if(tableField.fieldName=='inspectRecords'){
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:null,render : function(data,type, row, meta) {
+				return "<div id='showInspectRecordsDetail' class='action-buttons'><a  href='javascript:void(0)' class='green bigger-140 show-details-btn' title='Show Details'>"+
+						"<i class='ace-icon fa fa-angle-double-down'></i>"+
+						"<span class='sr-only'>Details</span>"
+						"</a></div>";
+			},width:"60px","visible":v_visible }) ;
+		}else{
+			columns_setting.push({className : "ellipsis","title":tableField.headline,"defaultContent":"",data:tableField.fieldName,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px","visible":v_visible }) ;  
+		}
 	});
 	var columns_settingfoot=[
-        {className : "td-operation",data: null,render : function(data,type, row, meta) {
+        {className : "center",data: null,title:"操作",render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
         	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
             "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
             "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+            "<button id='exportRow' class='btn btn-warning btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-download bigger-120'></i></button>"+
             "</div>";
-          }, width : "100px"}
+          }, width : "200px"}
     ];
 	columns_setting=columns_setting.concat(columns_settingfoot);
 	var $wrapper = $('#div-table-container');
@@ -91,7 +111,7 @@ $(document).ready(function() {
         	manage.initButtonRight();
         }
     })).api();
-	$("#datatable_wrapper").find("#datatable_length").parent().parent().hide();
+	$("#datatable_wrapper").find(".dataTables_length").parent().parent().hide();
 	$("#btn-query").click(function(){
 		_table.draw();
 	});
@@ -101,9 +121,9 @@ $(document).ready(function() {
 	$("#btn-add").click(function(){
 		manage.addItem();
 	});
-	$("#btn-export").click(function(){
+	/*$("#btn-export").click(function(){
 		manage.exportItem();
-	});
+	});*/
 	$("#btn-delAll").click(function(){
 		var arrItemId = [];
         $("tbody :checkbox:checked",$table).each(function(i) {
@@ -144,7 +164,18 @@ $(document).ready(function() {
         var item = _table.row($(this).closest('tr')).data();
         $(this).closest('tr').addClass("active").siblings().removeClass("active");
         manage.deleteItem([item]);
-    });
+    }).on("click","#exportRow",function() {
+        //点击导出按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        manage.exportItem(item);
+    }).on("click","#showAssembleRecordsDetail",function() {
+    	var item = _table.row($(this).closest('tr')).data();
+        manage.showAssemblesDetail(item);
+	}).on("click","#showInspectRecordsDetail",function() {
+    	var item = _table.row($(this).closest('tr')).data();
+        manage.showInspectsDetail(item);
+	});
 	 var manage = {
 	    currentItem : null,
 	    fuzzySearch : true,
@@ -152,10 +183,10 @@ $(document).ready(function() {
 	    	LoadPage(contextPath+"/trackinglist/addMainframe");
 	    },
 	    editItem: function(item) {
-	    	LoadPage(contextPath+"/trackinglist/modMainframe?cleanid="+item.cleanID+"&operator=");
+	    	LoadPage(contextPath+"/trackinglist/modMainframe?mainframeID="+item.mainframeID+"&operator=");
 	    },
 	    copyItem: function(item) {
-	    	LoadPage(contextPath+"/trackinglist/modMainframe?cleanid="+item.cleanID+"&operator=copy");
+	    	LoadPage(contextPath+"/trackinglist/modMainframe?mainframeID="+item.mainframeID+"&operator=copy");
 	    },
 	    initButtonRight:function(){
 	    	var buttonRights=$("#buttonRights").val();
@@ -167,8 +198,10 @@ $(document).ready(function() {
 	    		if("btn-delAll"==buttonRight.btnEName){
 	    			$("#btn-delAll").show();
 	    		}
-	    		if("btn-export"==buttonRight.btnEName){
-	    			$("#btn-export").show();
+	    		if("exportRow"==buttonRight.btnEName){
+	    			$("#datatable #exportRow").each(function(){
+	    				$(this).show();
+	    			});
 	    		}
 	    		if("btn_refresh"==buttonRight.btnEName){
 	    			$("#btn_refresh").show();
@@ -193,18 +226,42 @@ $(document).ready(function() {
 	    		}
 	    	});
 	    },
-	    exportItem:function(){
+	    exportItem:function(item){
 	    	$wrapper.spinModal();
-	         $.post(contextPath+"/trackinglist/exportMainframe",$queryForm.serializeArray(), function(result) {
+	         $.post(contextPath+"/trackinglist/exportMainframe",{"mainframeID":item.mainframeID}, function(result) {
 	        	 if(result.resultCode==0){
 	        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
-    	    		 var downUrl = contextPath+'/trackinglist/wordfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
     	    		 window.location.href = downUrl;
             		}else{
             			showNotice('Error','<span style="padding-top:5px">数据导出失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
             		}
 	        	 $wrapper.spinModal(false);
              },'json'); 
+	    },
+	    showAssemblesDetail: function(item) {
+	    	$("#mainframeAssembleDetailForm [name=mainframeID]").val(item.mainframeID);
+	    	$mainframeAssembleDetailModal=$("#mainframeAssembleDetailModal");
+	        $mainframeAssembleDetailModal.draggable({ handle:".table-header",
+	    		scroll: true, scrollSensitivity: 100,
+	    		cursor: "move"});
+	        $mainframeAssembleDetailModal.css("overflow", "hidden");
+	        $mainframeAssembleDetailModal.css("overflow-y", "auto");
+	        $mainframeAssembleDetailModal.modal("show");
+	        $("#mainframeAssembleDetailButton").click();
+	        
+	    },
+	    showInspectsDetail: function(item) {
+	    	$("#mainframeInspectDetailForm [name=mainframeID]").val(item.mainframeID);
+	    	$mainframeInspectDetailModal=$("#mainframeInspectDetailModal");
+	        $mainframeInspectDetailModal.draggable({ handle:".table-header",
+	    		scroll: true, scrollSensitivity: 100,
+	    		cursor: "move"});
+	        $mainframeInspectDetailModal.css("overflow", "hidden");
+	        $mainframeInspectDetailModal.css("overflow-y", "auto");
+	        $mainframeInspectDetailModal.modal("show");
+	        $("#mainframeInspectDetailButton").click();
+	        
 	    },
 	    deleteItem : function(selectedItems) {
 	        var message;
@@ -220,12 +277,12 @@ $(document).ready(function() {
 	                title:Lobibox.base.OPTIONS.title.info,
 	                callback: function ($this, type) {
 	                    if (type === 'yes') {
-	                    	var cleanIDs="";
+	                    	var mainframeIDs="";
 	                    	$(selectedItems).each(function(i) {
-	                    		cleanIDs=cleanIDs+selectedItems[i].cleanID+",";
+	                    		mainframeIDs=mainframeIDs+selectedItems[i].mainframeID+",";
 	                        });
-	                    	cleanIDs=cleanIDs.substr(cleanIDs,cleanIDs.length-1);
-	                    	$.post(contextPath+"/trackinglist/delMainframe",{"cleanIDs":cleanIDs}, function(result) {
+	                    	mainframeIDs=mainframeIDs.substr(mainframeIDs,mainframeIDs.length-1);
+	                    	$.post(contextPath+"/trackinglist/delMainframe",{"mainframeIDs":mainframeIDs}, function(result) {
 	                    		if(result.resultCode==0){
 	                    			showNotice('Success',"主机装配流程跟踪单删除成功",'success',1000*5);
 	                    			$("#btn_refresh").click();

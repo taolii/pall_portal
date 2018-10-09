@@ -195,7 +195,7 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
             }
     	}
     	for (int j=startColNum-1;j<lastColNum;j++) {
-    		sheet.setColumnWidth(j, 3766);
+    		sheet.setColumnWidth(j, 4766);
         }
 	}
 	

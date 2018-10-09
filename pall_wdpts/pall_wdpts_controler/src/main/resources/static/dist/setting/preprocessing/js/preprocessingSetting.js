@@ -63,7 +63,7 @@ $(document).ready(function() {
 				"<span class='sr-only'>Details</span>"
 				"</a></div>";
             },width:"160px"},
-            {className : "ellipsis",data: null,title:"送检人员记录/Self Inspection Records",render : function(data,type, row, meta) {
+            {className : "ellipsis",data: null,visible:false,title:"送检人员记录/Self Inspection Records",render : function(data,type, row, meta) {
             	  return "<div id='showInspectsDetail' class='action-buttons'><a  href='javascript:void(0)' class='green bigger-140 show-details-btn' title='Show Details'>"+
 					"<i class='ace-icon fa fa-angle-double-down'></i>"+
 					"<span class='sr-only'>Details</span>"
@@ -72,6 +72,7 @@ $(document).ready(function() {
              {className : "ellipsis",data: "operatorName",title:"操作员",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"160px"},
              {className : "ellipsis",data: null,title:"操作",render : function(data,type, row, meta) {
                 	return "<div class='btn-group'>"+
+                	"<button id='copyRow' class='btn btn-primary btn-xs' type='button' ><i class='glyphicon glyphicon-copy'></i></button>"+
                     "<button id='editRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-edit'></i></button>"+
                     "<button id='delRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
                     "</div>";
@@ -117,6 +118,12 @@ $(document).ready(function() {
     }).on("click",".td-checkbox",function(event) {
         //点击单元格即点击复选框
         !$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click");
+    }).on("click","#copyRow",function() {
+        //点击编辑按钮
+        var item = _table.row($(this).closest('tr')).data();
+        $(this).closest('tr').addClass("active").siblings().removeClass("active");
+        
+        manage.copyItem(item);
     }).on("click","#editRow",function() {
         //点击编辑按钮
         var item = _table.row($(this).closest('tr')).data();
@@ -140,6 +147,9 @@ $(document).ready(function() {
 	    fuzzySearch : true,
 	    addItem: function() {
 	    	LoadPage(contextPath+"/setting/addPreprocessingSetting");
+	    },
+	    copyItem: function(item) {
+	    	LoadPage(contextPath+"/setting/modPreprocessingSetting?psid="+item.psid+"&operator=copy");
 	    },
 	    editItem: function(item) {
 	    	LoadPage(contextPath+"/setting/modPreprocessingSetting?psid="+item.psid+"&operator=");

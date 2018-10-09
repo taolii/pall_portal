@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title th:text="#{pages.system.name}+'-'+#{pages.setting.dspSetting.modDspSetting.title}"></title>
+<script type="text/javascript" th:src="@{{path}/dist/setting/dsp/js/modDspSetting.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/dist/setting/dsp/js/dspAssembleDatatables.js(path=${contextPath})}"></script>
+</head>
+<body>
+	<div th:fragment="content">
+		 <div th:fragment="content">
+        	<div class="breadcrumbs" id="breadcrumbs">
+			<ul class="breadcrumb">
+				<li>
+					<i class="ace-icon fa fa-home home-icon"></i>
+					<a href="javascript:void(0)"  class="homemenu" ></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" class="submenumenu"></a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/setting/modDspSetting?dsid='+${dspSettingEntity.dsid}+'&operator=\');'" th:text="#{pages.setting.dspSetting.modDspSetting.title}"></a>
+				</li>
+			</ul>
+		</div>
+		<div class="page-content">
+			<div class="page-content-area">
+				<div class="row">
+					<div class="col-xs-12">
+						<form method="POST" id="modDataForm" class="form-horizontal">
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class=" col-md-2 control-label">
+										<label th:text="#{pages.setting.dspSetting.modDspSetting.form.dspPn}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='hidden' id="detailPsid" name="dsid" class="form-control" th:value="${dspSettingEntity.dsid}"/> 
+										<input type='text' name="dspPn" class="form-control" th:value="${dspSettingEntity.dspPn}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-10 col-md-offset-1">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="pull-left text-info">
+													
+														<label th:text="#{pages.setting.dspSetting.modDspSetting.form.dspSettingAssembles}" th:remove="tag"></label>
+													
+												</div>
+												<div class="pull-right">
+											        <div class="btn-group">
+											            <a type="button" class="btn btn-white btn-primary btn-sm" id="addDspSettingAssembles">
+											                <i class="fa fa-plus"></i>
+											                <span th:text="#{pages.setting.dspSetting.modDspSetting.addDspSettingAssembles.button}" th:remove="tag"></span>
+											            </a>
+											        </div>
+					    						</div>
+										 	</div>
+										</div>
+										<div class="row" id="div-table-container">
+											<input type="hidden" id="dspSettingAssembles" th:value="${dspSettingAssembles}"/>
+											<table id="dspSettingAssemblesDatatable" class="table table-striped table-bordered table-hover" >
+												<!--  thead>
+													<tr>
+														<th class="center" style="color:#307ecc" th:text="#{pages.trackinglist.dsp.assemble.componentName}">
+															
+														</th>
+														<th class="center" style="color:#307ecc" th:text="#{pages.trackinglist.dsp.assemble.componentNo}">
+															
+														</th>
+														<th class="center" style="color:#307ecc" th:text="#{pages.trackinglist.dsp.assemble.serialNoRecord}">
+															
+														</th>
+														<th class="center" style="color:#307ecc" th:text="#{pages.trackinglist.dsp.assemble.remarks}">
+															
+														</th>
+														<th class="center" style="color:#307ecc" th:text="#{pages.trackinglist.dsp.assemble.operator}">
+															
+														</th>
+													</tr>
+												</thead-->
+												<!--  tbody>
+													<tr th:each="dspSettingAssemble,iterStat:${dspSettingEntity.dspSettingAssembles}">
+					                          			<td>
+						                          			<input type='text' class='form-control' th:name='componentName_+${iterStat.index}' th:value='${dspSettingAssemble.componentName}'></input>
+						                          			<input type='hidden' name='assembleid'  th:value='o_+${iterStat.index}'></input>
+					                          			</td>
+					                          			<td>
+					                          				<input type='text' class='form-control' th:name='componentNo_+${iterStat.index}' th:value='${dspSettingAssemble.componentNo}'></input>
+					                          			</td>
+					                          			<td>
+					                          				<input type='text' class='form-control' th:name='serialNoRecord_+${iterStat.index}' th:value='${dspSettingAssemble.serialNoRecord}'></input>
+					                          			</td>
+					                          			<td>
+					                          				<input type='text' class='form-control' th:name='remarks_+${iterStat.index}' th:value='${dspSettingAssemble.remarks}'></input>
+					                          			</td>
+					                          			<td>
+					                          				<div class='btn-group'>
+					                          					<button id='delDspSettingAssembles' class='btn btn-white btn-primary ' type='button'>
+					                          						<i class='fa fa-trash-o'></i>
+					                          					</button>
+					                          				</div>
+					                          			</td>
+					                          		</tr>
+												</tbody-->
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="text-center">
+									<button class="btn btn-white btn-primary">
+										<i class="fa fa-check"></i> 
+										<span th:text="#{pages.setting.dspSetting.modDspSetting.form.button.mod}" th:remove="tag"></span>
+									</button>
+									<button id="addBackButton"  type="button" class="btn btn-white btn-primary" data-dismiss="modal">
+										<i class="fa fa-close"></i> 
+										<span th:text="#{pages.setting.dspSetting.modDspSetting.form.button.shut}" th:remove="tag"></span>
+									</button> 
+								</div>
+							</div>
+						</form>
+                	</div>
+                </div>
+               </div>
+            </div>
+        </div>
+		<div class="clearfix"></div>
+	</div>
+</body>
+</html>

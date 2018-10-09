@@ -13,18 +13,18 @@ $(document).ready(function() {
 		language:TABLE_CONSTANT.DATA_TABLES.DEFAULT_OPTION.language,
 		columns: [
         	{className : "ellipsis",data:"selfcheckName",title:"自检名称",render : function(data,type, row, meta) {
-        		return "<input type='text' class='form-control' name='selfcheckName_"+meta.row+"' value='"+data+"'></input>"+
-        		"<input type='hidden' name='inspectid'  value='"+meta.row+"'></input>";
-            },width:"100px"},
+        		return "<div  class='form-group'><input type='text' class='form-control' name='selfcheckName_"+meta.row+"' value='"+data+"'></input>"+
+        		"<input type='hidden' name='inspectid'  value='"+meta.row+"'></input></div>";
+            },width:"300px"},
             {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
-            	return "<input type='text' class='form-control' name='selfcheckContent_"+meta.row+"' value='"+data+"'></input>";
-            },width:"100px"},
+            	return "<div  class='form-group'><input type='text' class='form-control' name='selfcheckContent_"+meta.row+"' value='"+data+"'></input></div>";
+            },width:"300px"},
             {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
-            	return "<input type='text' class='form-control' name='selfcheckResult_"+meta.row+"' value='"+data+"'></input>";
-            },width:"100px"},
+            	return "<div  class='form-group'><input type='text' class='form-control' name='selfcheckResult_"+meta.row+"' value='"+data+"'></input></div>";
+            },width:"300px"},
             {className : "ellipsis",data:"remarks",title:"备注",render : function(data,type, row, meta) {
-            	  return "<input type='text' class='form-control' name='remarks_"+meta.row+"' value='"+data+"'></input>";
-             },width:"100px"},
+            	  return "<div  class='form-group'><input type='text' class='form-control' name='remarks_"+meta.row+"' value='"+data+"'></input></div>";
+             },width:"300px"},
              {className : "ellipsis",data:"operator",title:"操作",render : function(data,type, row, meta) {
                 	return "<div class='btn-group'>"+
                     "<button id='delPreprocessingSettingInspects' class='btn btn-white btn-primary' type='button'><i class='fa fa-trash-o'></i></button>"+

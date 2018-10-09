@@ -96,20 +96,26 @@
 									                        <input type="text" name="componentNo" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4 form-group" style="padding-left:60px">
+						                      		<div class="col-md-4 form-group" style="padding-left:60px" style="display:none">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.preprocessing.form.inspectRecords.selfcheckName}"></span>
 									                        <input type="text" name="selfcheckName" class="form-control"/>
 					                                	</div>
 						                      		</div>
-						                      		<div class="col-md-4 form-group">
+						                      		<div class="col-md-4 form-group" style="display:none">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.preprocessing.form.inspectRecords.selfcheckContent}"></span>
 									                        <input type="text" name="selfcheckContent" class="form-control"/>
 					                                	</div>
 						                      		</div>
-								                    <div class="col-md-4 form-group" style="padding-left:160px">
-								                        <button id="btn-query" class="btn btn-white btn-primary" type="button">
+								                    <div class="col-md-4 form-group" style="padding-left:60px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.trackinglist.preprocessing.form.cOrderID}"></span>
+									                        <input type="text" name="cOrderID" class="form-control"/>
+					                                	</div>
+						                      		</div>
+								                    <div class="col-md-12 form-group center">
+								                        <button id="btn-query" class="btn btn-white btn-primary" type="button" style="display:none">
 								                        <i class="fa fa-search"></i>
 					                 						<span th:text="#{pages.trackinglist.preprocessing.form.query.button.tip}" th:remove="tag"></span>
 														</button> 
@@ -124,11 +130,11 @@
 	                		<div class="row">
 	                			<div class="pull-right">
 							        <div class="btn-group">
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add" >
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-add" style="display:none">
 							                <i class="fa fa-plus"></i>
 							                <span th:text="#{pages.trackinglist.preprocessing.table.button.add}" th:remove="tag"></span>
 							            </a>
-							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll" >
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="btn-delAll" style="display:none">
 							                <i class="fa fa-remove"></i>
 							                <span th:text="#{pages.trackinglist.preprocessing.table.button.batchdel}" th:remove="tag"></span>
 							            </a>
@@ -136,7 +142,7 @@
 							                <i class="fa fa-download"></i>
 							                <span th:text="#{pages.trackinglist.preprocessing.table.button.export}" th:remove="tag"></span>
 							            </a-->
-							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm">
+							            <a id="btn_refresh" type="button" class="btn btn-white btn-primary btn-sm" style="display:none">
 							                <i class="fa fa-refresh"></i>
 							                <span th:text="#{pages.trackinglist.preprocessing.table.button.refresh}" th:remove="tag"></span>
 							            </a>

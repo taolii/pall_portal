@@ -19,6 +19,10 @@ public class PreprocessingEntity {
 	 */
 	private String productionTime;
 	/*
+	 * 客户订单信息
+	 */
+	private String cOrderID;
+	/*
 	 * 料号/PN
 	 */
 	private String preprocessingPn;
@@ -217,6 +221,12 @@ public class PreprocessingEntity {
 	}
 	public void setPtOptions(String ptOptions) {
 		this.ptOptions = ptOptions;
+	}
+	public String getcOrderID() {
+		return cOrderID;
+	}
+	public void setcOrderID(String cOrderID) {
+		this.cOrderID = cOrderID;
 	}
 	
 }

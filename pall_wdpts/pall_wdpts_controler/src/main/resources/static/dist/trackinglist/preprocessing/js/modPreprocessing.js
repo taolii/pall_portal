@@ -10,7 +10,7 @@ $(document).ready(function() {
 	var preprocessingInspectDatatables=preprocessingInspectTable.initTable();
 	preprocessingInspectTable.addPreprocessingInspectsPassAjax(preprocessingInspectDatatables,$(ids.dataForm+" [name=preprocessingID]").val());
 	//初始化preprocessingSetting Modal
-	var modalids={"dataForm":"#modDataForm","modal":"#selpreprocessingSettingModal","wrapper":"#preprocessingSettingDatatableContainer","preprocessingSettingDatatable":"#preprocessingSettingDatatable","queryForm":"queryPreprocessingSettingForm","assemblesDetail":"#showAssemblesDetail","inspectsDetail":"#showInspectsDetail","shutModalButton":"#selpreprocessingSettingButton","contextPath":contextPath};
+	var modalids={"dataForm":"#modDataForm","modal":"#selpreprocessingSettingModal","wrapper":"#preprocessingSettingDatatableContainer","preprocessingSettingDatatable":"#preprocessingSettingDatatable","queryForm":"#queryPreprocessingSettingForm","assemblesDetail":"#showAssemblesDetail","inspectsDetail":"#showInspectsDetail","shutModalButton":"#selpreprocessingSettingButton","contextPath":contextPath,"queryModalButton":"#btn-modal-query"};
 	var preprocessingSettingModal=new PreprocessingSettingModal(contextPath,modalids);
 	var modalTables=preprocessingSettingModal.initModalTable();
 	preprocessingSettingModal.initModalShut(modalTables,preprocessingAssembleTable,preprocessingAssembleDatatables,preprocessingInspectTable,preprocessingInspectDatatables);
@@ -92,13 +92,13 @@ $(document).ready(function() {
                     }
                 }
             },
-            inspectOperator: {
+           /* inspectOperator: {
                 validators: {
                     notEmpty: {
                         message: '送检人员不能为空'
                     }
                 }
-            },
+            },*/
             workorderNo: {
                 validators: {
                     notEmpty: {

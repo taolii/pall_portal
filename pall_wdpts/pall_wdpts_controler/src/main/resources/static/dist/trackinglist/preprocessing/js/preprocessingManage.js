@@ -44,10 +44,10 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "center",data: null,title:"操作",render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
-        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' ><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
-            "<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
-            "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
-            "<button id='exportRow' class='btn btn-warning btn-xs' type='button'><i class='ace-icon fa fa-download bigger-120'></i></button>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
+            "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+            "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+            "<button id='exportRow' class='btn btn-warning btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-download bigger-120'></i></button>"+
             "</div>";
           }, width : "200px"}
     ];
@@ -198,8 +198,10 @@ $(document).ready(function() {
 	    		if("btn-delAll"==buttonRight.btnEName){
 	    			$("#btn-delAll").show();
 	    		}
-	    		if("btn-export"==buttonRight.btnEName){
-	    			$("#btn-export").show();
+	    		if("exportRow"==buttonRight.btnEName){
+	    			$("#datatable #exportRow").each(function(){
+	    				$(this).show();
+	    			});
 	    		}
 	    		if("btn_refresh"==buttonRight.btnEName){
 	    			$("#btn_refresh").show();

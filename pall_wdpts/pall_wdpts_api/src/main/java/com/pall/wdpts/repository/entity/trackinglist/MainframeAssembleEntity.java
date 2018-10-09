@@ -6,7 +6,7 @@ public class MainframeAssembleEntity {
 	/*
 	 * 主机装配流程跟踪单唯一标示
 	 */
-	private String mainframeID;
+	private Integer mainframeID;
 	/*
 	 * 组件名称
 	 */
@@ -23,10 +23,11 @@ public class MainframeAssembleEntity {
 	 * 备注
 	 */
 	private String remarks;
-	public String getMainframeID() {
+	
+	public Integer getMainframeID() {
 		return mainframeID;
 	}
-	public void setMainframeID(String mainframeID) {
+	public void setMainframeID(Integer mainframeID) {
 		this.mainframeID = mainframeID;
 	}
 	public String getComponentName() {

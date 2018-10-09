@@ -40,6 +40,18 @@ public class CisternFormQueryEntity {
 	 * 水箱型号/Model
 	 */
 	private String cisternModel;
+	/*
+	 * 组件名称
+	 */
+	private String componentName;
+	/*
+	 * 组件型号
+	 */
+	private String componentNo;
+	/*
+	 * 客户订单信息
+	 */
+	private String cOrderID;
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -99,6 +111,24 @@ public class CisternFormQueryEntity {
 	}
 	public void setCisternModel(String cisternModel) {
 		this.cisternModel = cisternModel;
+	}
+	public String getComponentName() {
+		return componentName;
+	}
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+	public String getComponentNo() {
+		return componentNo;
+	}
+	public void setComponentNo(String componentNo) {
+		this.componentNo = componentNo;
+	}
+	public String getcOrderID() {
+		return cOrderID;
+	}
+	public void setcOrderID(String cOrderID) {
+		this.cOrderID = cOrderID;
 	}
 	
 }

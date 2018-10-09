@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title th:text="#{pages.system.name}+'-'+#{pages.setting.cisternSetting.title}"></title>
+    </head>
+    <body>
+		<div th:fragment="content">
+			<div id="selcisternSettingModal" class="modal fade" tabindex="-1">
+				<div class="modal-dialog modal-sm" style="width:700px;">
+					<div class="modal-content">
+						<div class="modal-header no-padding">
+							<div class="table-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+									<span class="white">&times;</span>
+								</button>
+								<i class="fa fa-search"></i>&nbsp;&nbsp;
+								<label th:text="#{pages.setting.cisternSetting.form.title}" th:remove="tag"></label>
+							</div>
+						</div>
+						<div class="modal-body no-padding" style="height:400px;">
+							<div class="modal-body">
+								<div class="col-xs-12">
+									 <form id="queryCisternSettingForm" method="post" class="form-horizontal">
+					                   <div class="panel-group" id="steps">
+					                        <div class="panel panel-primary">
+					                            <div class="panel-heading">
+					                                <h4 class="panel-title">
+					                                	<i class="fa fa-search"></i>&nbsp;&nbsp;<a data-toggle="collapse" data-parent="#steps" href="#stepOne" th:text="#{pages.setting.cisternSetting.form.title}"></a>
+					                              	</h4>
+					                            </div>
+					                            <div id="stepOne" class="panel-collapse collapse in  ">
+					                                <div class="panel-body">
+							                      		<div class="col-md-8 form-group">
+						                                	<div class="input-group">
+						                                		<span class="input-group-addon" th:text="#{pages.setting.cisternSetting.form.cisternPn}"></span>
+										                        <input type="text" name="cisternPn" class="form-control"/>
+						                                	</div>
+							                      		</div>
+									                    <div class="col-md-4 form-group" style="padding-left:60px">
+									                        <button id="btn-modal-query" class="btn btn-white btn-primary" type="button">
+									                        <i class="fa fa-search"></i>
+						                 						<span th:text="#{pages.setting.cisternSetting.form.query.button.tip}" th:remove="tag"></span>
+															</button> 
+									                    </div>
+									                    
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </div>
+			                		</form>
+	                			</div>
+								<div class="col-xs-12" id="cisternSettingDatatableContainer">
+			                 		<div class="table-responsive"  >
+			                 			<table id="cisternSettingDatatable" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top" >
+										</table>
+									</div>
+			                 	</div>
+			                 </div>
+						</div>
+						<div class="modal-footer no-margin-top">
+							<button id="selcisternSettingButton" class="btn btn-white btn-primary">
+								<i class="fa fa-check"></i> 
+								<span th:text="#{pages.trackinglist.cistern.selCisternSetting.form.button.sel}" th:remove="tag"></span>
+							</button>
+							<button type="button" class="btn btn-white btn-primary" data-dismiss="modal">
+								<i class="fa fa-close"></i> 
+								<span th:text="#{pages.trackinglist.cistern.selCisternSetting.form.button.shut}" th:remove="tag"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </body>
+</html>

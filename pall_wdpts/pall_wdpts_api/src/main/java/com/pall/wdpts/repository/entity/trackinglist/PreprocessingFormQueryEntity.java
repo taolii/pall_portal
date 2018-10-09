@@ -53,6 +53,10 @@ public class PreprocessingFormQueryEntity {
 	 */
 	private String selfcheckContent;
 	/*
+	 * 客户订单信息
+	 */
+	private String cOrderID;
+	/*
 	 * 每页记录数
 	 */
 	private int pageSize;
@@ -139,6 +143,12 @@ public class PreprocessingFormQueryEntity {
 	}
 	public void setSelfcheckContent(String selfcheckContent) {
 		this.selfcheckContent = selfcheckContent;
+	}
+	public String getcOrderID() {
+		return cOrderID;
+	}
+	public void setcOrderID(String cOrderID) {
+		this.cOrderID = cOrderID;
 	}
 	
 }

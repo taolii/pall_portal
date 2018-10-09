@@ -37,6 +37,26 @@ public class MainframeFormQueryEntity {
 	 */
 	private String mainframeModel;
 	/*
+	 * 组件名称
+	 */
+	private String componentName;
+	/*
+	 * 组件型号
+	 */
+	private String componentNo;
+	/*
+	 * 自检名称
+	 */
+	private String selfcheckName;
+	/*
+	 * 自检内容
+	 */
+	private String selfcheckContent;
+	/*
+	 * 客户订单信息
+	 */
+	private String cOrderID;
+	/*
 	 * 每页记录数
 	 */
 	private int pageSize;
@@ -99,6 +119,36 @@ public class MainframeFormQueryEntity {
 	}
 	public void setMainframeModel(String mainframeModel) {
 		this.mainframeModel = mainframeModel;
+	}
+	public String getComponentName() {
+		return componentName;
+	}
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+	public String getComponentNo() {
+		return componentNo;
+	}
+	public void setComponentNo(String componentNo) {
+		this.componentNo = componentNo;
+	}
+	public String getSelfcheckName() {
+		return selfcheckName;
+	}
+	public void setSelfcheckName(String selfcheckName) {
+		this.selfcheckName = selfcheckName;
+	}
+	public String getSelfcheckContent() {
+		return selfcheckContent;
+	}
+	public void setSelfcheckContent(String selfcheckContent) {
+		this.selfcheckContent = selfcheckContent;
+	}
+	public String getcOrderID() {
+		return cOrderID;
+	}
+	public void setcOrderID(String cOrderID) {
+		this.cOrderID = cOrderID;
 	}
 	
 	

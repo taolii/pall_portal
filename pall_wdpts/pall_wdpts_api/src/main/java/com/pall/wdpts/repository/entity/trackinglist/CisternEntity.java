@@ -9,7 +9,7 @@ public class CisternEntity {
 	/*
 	 * 水箱装配流程跟踪单唯一标示
 	 */
-	private String cisternID;
+	private Integer cisternID;
 	/*
 	 * 装配日期
 	 */
@@ -18,6 +18,10 @@ public class CisternEntity {
 	 * 生产时间
 	 */
 	private String productionTime;
+	/*
+	 * 客户订单信息
+	 */
+	private String cOrderID;
 	/*
 	 * 料号/PN
 	 */
@@ -34,6 +38,15 @@ public class CisternEntity {
 	 * 水箱型号/Model
 	 */
 	private String cisternModel;
+	/*
+	 * 水箱选配件/Options
+	 */
+	private String cisternOption;
+	/*
+	 * 水箱选配件/Options
+	 */
+	private String cisternOption2;
+	private String cisternOptions;
 	/*
 	 * 装配记录
 	 */
@@ -66,10 +79,11 @@ public class CisternEntity {
 	 * 操作员名称
 	 */
 	private String operatorName;
-	public String getCisternID() {
+	
+	public Integer getCisternID() {
 		return cisternID;
 	}
-	public void setCisternID(String cisternID) {
+	public void setCisternID(Integer cisternID) {
 		this.cisternID = cisternID;
 	}
 	public String getAssembleTime() {
@@ -156,6 +170,30 @@ public class CisternEntity {
 	}
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
+	}
+	public String getcOrderID() {
+		return cOrderID;
+	}
+	public void setcOrderID(String cOrderID) {
+		this.cOrderID = cOrderID;
+	}
+	public String getCisternOption() {
+		return cisternOption;
+	}
+	public void setCisternOption(String cisternOption) {
+		this.cisternOption = cisternOption;
+	}
+	public String getCisternOption2() {
+		return cisternOption2;
+	}
+	public void setCisternOption2(String cisternOption2) {
+		this.cisternOption2 = cisternOption2;
+	}
+	public String getCisternOptions() {
+		return cisternOptions;
+	}
+	public void setCisternOptions(String cisternOptions) {
+		this.cisternOptions = cisternOptions;
 	}
 	
 }

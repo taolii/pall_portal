@@ -58,7 +58,7 @@ $(document).ready(function() {
 	        		});
 	        	}
 	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-            },"width": "200px"},
+            },"width": "100px"},
 	        {className : "ellipsis",data:"componentNo",title:"组件型号",render : function(data,type, row, meta) {
 		          var component="";
 		          if(data){//不为空
@@ -67,17 +67,38 @@ $(document).ready(function() {
 		        		});
 		        	}
 		          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-	            },"width": "200px"},
+	            },"width": "100px"},
 	        {className : "ellipsis",data:"serialNoRecord",title:"序列号记录",render : function(data,type, row, meta) {
-	          var component="";
-	          if(data){//不为空
-	        	  $.each(data.split("|"), function(index, serialNoRecord){
-	        		  component=component+"<label class='radio-inline'><input type='radio' name='serialNoRecord"+meta.index+"' value='"+serialNoRecord+"'>"+serialNoRecord+"</input></label>";
-	        		});
-	        	}
-	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
+	        	var component="";
+		          if(data){//不为空
+		        	  var datas=data.split("|");
+		        	  if(datas && datas.length>=2){
+		        		 var checkedIndex=0;
+		        		 $.each(datas, function(index, serialNoRecord){
+		        			 if(index==0){
+		        				var temps=serialNoRecord.split('_');
+		        				if(temps.length>=2){
+	 		        				 checkedIndex=temps[0];
+	 		        				data=data.substr(temps[0].length+1,data.length);
+	 		        				serialNoRecord=serialNoRecord.substr(temps[0].length+1,serialNoRecord.length);
+	 		        			 }
+		        			  }
+		        			 var tempVaule=index+"_"+data;
+		        			 if(checkedIndex==index){
+		        				component=component+"<label class='radio-inline' title='"+serialNoRecord+"'><input type='radio'  checked='checked' name='serialNoRecord_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+serialNoRecord+"</input></label>";
+		        			 }else{
+		        				component=component+"<label class='radio-inline' title='"+serialNoRecord+"'><input type='radio'   name='serialNoRecord_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+serialNoRecord+"</input></label>"; 
+		        			 }
+	 		        	});
+		        	  }else{
+		        		  component="<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+data+"</span>"
+		        	  }
+		        	}else{
+		        		component="<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+data+"</span>"
+		        	}
+		          return component;
             },"width": "200px"},
-	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"}
+	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "100px"}
 	     ]
     })).api();
 	$("#preprocessingAssembleDetailButton").click(function(){

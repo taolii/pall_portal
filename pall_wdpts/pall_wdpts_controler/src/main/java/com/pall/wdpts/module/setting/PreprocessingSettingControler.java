@@ -38,7 +38,7 @@ import com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingInspect
 import com.pall.wdpts.repository.entity.user.UserEntity.ADD;
 import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
 import com.pall.wdpts.service.menu.ButtonManageService;
-import com.pall.wdpts.service.trackinglist.PreprocessingAssembleService;
+import com.pall.wdpts.service.trackinglist.PreprocessingService;
 
 /*
  * 预处理装配配置
@@ -54,7 +54,7 @@ public class PreprocessingSettingControler {
 	@Autowired
 	private ButtonManageService buttonManageService;
 	@Autowired
-	private PreprocessingAssembleService preprocessingAssembleService;
+	private PreprocessingService preprocessingService;
 	/*
 	 * 初始化配置数据
 	 */
@@ -88,19 +88,19 @@ public class PreprocessingSettingControler {
 	   return "setting/preprocessing/preprocessingSetting";
     }
 	@RequestMapping(value="/setting/preprocessingSetting", method= RequestMethod.POST)
-    public @ResponseBody String preprocessingAssembleSetting(Model model,PreprocessingSettingFormQueryEntity  preprocessingSettingFormQueryEntity, HttpServletRequest request) {
+    public @ResponseBody String preprocessingSetting(Model model,PreprocessingSettingFormQueryEntity  preprocessingSettingFormQueryEntity, HttpServletRequest request) {
         if(preprocessingSettingFormQueryEntity.getPageSize()==0){
         	preprocessingSettingFormQueryEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
         }
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingAssembleService.queryPreprocessingSettingList(preprocessingSettingFormQueryEntity);
+			baseResponse=preprocessingService.queryPreprocessingSettingList(preprocessingSettingFormQueryEntity);
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssembleSetting.Controler.preprocessingAssembleSetting.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.preprocessingSetting.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssembleSetting.Controler.preprocessingAssembleSetting.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingSetting.Controler.preprocessingSetting.exception"));
 			
 		}
 		 return jsonData;
@@ -130,7 +130,7 @@ public class PreprocessingSettingControler {
 				}
 				preprocessingSettingEntity.setPreprocessingSettingAssembles(getPreprocessingSettingAssembles(request));
 				preprocessingSettingEntity.setPreprocessingSettingInspects(getPreprocessingSettingInspects(request));
-				baseResponse=preprocessingAssembleService.addPreprocessingSetting(preprocessingSettingEntity);
+				baseResponse=preprocessingService.addPreprocessingSetting(preprocessingSettingEntity);
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.addPreprocessingSetting.exception"),e);
@@ -203,7 +203,7 @@ public class PreprocessingSettingControler {
 		BaseResponse baseResponse=new BaseResponse();
 		PreprocessingSettingEntity preprocessingSettingEntity=null;
 		try {
-			preprocessingSettingEntity=preprocessingAssembleService.queryPreprocessingSetting(psid);
+			preprocessingSettingEntity=preprocessingService.queryPreprocessingSetting(psid);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingAssemble.service.queryPreprocessingSetting.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -215,7 +215,12 @@ public class PreprocessingSettingControler {
 		model.addAttribute("preprocessingSettingAssembles", JSON.toJSONString(preprocessingSettingEntity.getPreprocessingSettingAssembles()));
 		model.addAttribute("preprocessingSettingInspects", JSON.toJSONString(preprocessingSettingEntity.getPreprocessingSettingInspects()));
 		model.addAttribute("preprocessingSettingEntity", preprocessingSettingEntity);
-		return "setting/preprocessing/modPreprocessingSetting";
+		if("copy".equals(operator)){
+			model.addAttribute("operator", "copy");
+			return "setting/preprocessing/copyPreprocessingSetting";
+		}else{
+			return "setting/preprocessing/modPreprocessingSetting";
+		}
     }
 	/*
 	 * 修改预处理装配配置信息
@@ -233,7 +238,7 @@ public class PreprocessingSettingControler {
 				}
 				preprocessingSettingEntity.setPreprocessingSettingAssembles(getPreprocessingSettingAssembles(request));
 				preprocessingSettingEntity.setPreprocessingSettingInspects(getPreprocessingSettingInspects(request));
-				baseResponse=preprocessingAssembleService.modPreprocessingSetting(preprocessingSettingEntity);
+				baseResponse=preprocessingService.modPreprocessingSetting(preprocessingSettingEntity);
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.modPreprocessingSetting.exception"),e);
@@ -255,7 +260,7 @@ public class PreprocessingSettingControler {
 			for(String psid:aopsid){
 				tempPsids.add(Integer.parseInt(psid));
 			}
-			baseResponse=preprocessingAssembleService.delPreprocessingSetting(tempPsids);
+			baseResponse=preprocessingService.delPreprocessingSetting(tempPsids);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.delPreprocessingSetting.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -269,7 +274,7 @@ public class PreprocessingSettingControler {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingAssembleService.queryPreprocessingSettingInspectList(psid);
+			baseResponse=preprocessingService.queryPreprocessingSettingInspectList(psid);
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.preprocessingInspectDetail.exception"),e);
@@ -284,7 +289,7 @@ public class PreprocessingSettingControler {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingAssembleService.queryPreprocessingSettingAssembleList(psid);
+			baseResponse=preprocessingService.queryPreprocessingSettingAssembleList(psid);
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.preprocessingAssembleDetail.exception"),e);

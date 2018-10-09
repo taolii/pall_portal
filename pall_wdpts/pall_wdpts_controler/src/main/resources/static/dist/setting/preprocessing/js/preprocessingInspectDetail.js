@@ -58,7 +58,7 @@ $(document).ready(function() {
   	        		});
   	        	}
   	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-            },"width": "200px"},
+            },"width": "100px"},
 	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
         		var component="";
   	          	if(data){//不为空
@@ -67,19 +67,38 @@ $(document).ready(function() {
   	        		});
   	        	}
   	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-            },"width": "200px"},
+            },"width": "100px"},
 	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
-		          var component="";
+	        	var component="";
 		          if(data){//不为空
-		        	  $.each(data.split("|"), function(index, selfcheckResult){
-		        		  component=component+"<label class='radio-inline'><input type='radio'  name='selfcheckResult"+meta.index+"' value='"+selfcheckResult+"'>"+selfcheckResult+"</input></label>";
-		        		});
+		        	  var datas=data.split("|");
+		        	  if(datas && datas.length>=2){
+		        		 var checkedIndex=0;
+		        		 $.each(datas, function(index, selfcheckResult){
+		        			 if(index==0){
+		        				var temps=selfcheckResult.split('_');
+		        				if(temps.length>=2){
+	 		        				 checkedIndex=temps[0];
+	 		        				data=data.substr(temps[0].length+1,data.length);
+	 		        				selfcheckResult=selfcheckResult.substr(temps[0].length+1,selfcheckResult.length);
+	 		        			 }
+		        			  }
+		        			 var tempVaule=index+"_"+data;
+		        			 if(checkedIndex==index){
+		        				component=component+"<label class='radio-inline' title='"+selfcheckResult+"' ><input type='radio' checked='checked'  name='selfcheckResult_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+selfcheckResult+"</input></label>";
+		        			 }else{
+		        				component=component+"<label class='radio-inline' title='"+selfcheckResult+"'><input type='radio'   name='selfcheckResult_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+selfcheckResult+"</input></label>"; 
+		        			 }
+	 		        	});
+		        	  }else{
+		        		 component="<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+data+"</span>"
+		        	  }
 		        	}else{
-		        		component=component+"<input type='text' class='form-control' name='selfcheckResult"+meta.index+"' value=''/>";
+		        		component="<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+data+"</span>"
 		        	}
-	          	  return component;
+	          return component;
 	            },"width": "200px"},
-	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "200px"}
+	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "100px"}
 	     ]
     })).api();
 	$("#preprocessingInspectDetailButton").click(function(){

@@ -30,14 +30,26 @@ $(document).ready(function() {
     	e.preventDefault();
     	var $form = $(e.target);
     	var bv = $form.data('bootstrapValidator');
-    	$.post(contextPath+"/setting/modPreprocessingSetting",  $form.serialize(), function(result) {
-    		if(result.resultCode==0){
-    			showNotice('Success',"更新预处理配置成功",'success',1000*5);
-    		}else{
-    			showNotice('Error','<span style="padding-top:5px">更新预处理配置失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
-    		}
-    		$form.bootstrapValidator('disableSubmitButtons', false);
-        },'json');
+    	var operator=$("#operator").val();
+    	if("copy"==operator){
+    		$.post(contextPath+"/setting/addPreprocessingSetting",  $form.serialize(), function(result) {
+        		if(result.resultCode==0){
+        			showNotice('Success',"添加预处理配置成功",'success',1000*5);
+        		}else{
+        			showNotice('Error','<span style="padding-top:5px">添加预处理配置失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+        		}
+        		$form.bootstrapValidator('disableSubmitButtons', false);
+            },'json'); 
+    	}else{
+    		$.post(contextPath+"/setting/modPreprocessingSetting",  $form.serialize(), function(result) {
+        		if(result.resultCode==0){
+        			showNotice('Success',"更新预处理配置成功",'success',1000*5);
+        		}else{
+        			showNotice('Error','<span style="padding-top:5px">更新预处理配置失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+        		}
+        		$form.bootstrapValidator('disableSubmitButtons', false);
+            },'json'); 
+    	}
     });
 	$("#addBackButton").on("click",function(){
     	window.location.href=contextPath+"/setting/preprocessingSetting";

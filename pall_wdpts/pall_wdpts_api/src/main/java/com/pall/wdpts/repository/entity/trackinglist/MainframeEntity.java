@@ -9,7 +9,7 @@ public class MainframeEntity {
 	/*
 	 * 主机装配流程跟踪单唯一标示
 	 */
-	private String mainframeID;
+	private Integer mainframeID;
 	/*
 	 * 装配日期
 	 */
@@ -18,6 +18,10 @@ public class MainframeEntity {
 	 * 生产时间
 	 */
 	private String productionTime;
+	/*
+	 * 客户订单信息
+	 */
+	private String cOrderID;
 	/*
 	 * 料号/PN
 	 */
@@ -38,6 +42,14 @@ public class MainframeEntity {
 	 * 主机选配件/Option
 	 */
 	private String mainframeOption;
+	/*
+	 * 主机选配件/Option
+	 */
+	private String mainframeOption2;
+	/*
+	 * 主机选配件/Option
+	 */
+	private String mainframeOptions;
 	/*
 	 * 装配记录
 	 */
@@ -82,10 +94,11 @@ public class MainframeEntity {
 	 * 操作员名称
 	 */
 	private String operatorName;
-	public String getMainframeID() {
+	
+	public Integer getMainframeID() {
 		return mainframeID;
 	}
-	public void setMainframeID(String mainframeID) {
+	public void setMainframeID(Integer mainframeID) {
 		this.mainframeID = mainframeID;
 	}
 	public String getAssembleTime() {
@@ -100,6 +113,7 @@ public class MainframeEntity {
 	public void setProductionTime(String productionTime) {
 		this.productionTime = productionTime;
 	}
+	
 	public String getMainframePn() {
 		return mainframePn;
 	}
@@ -196,5 +210,23 @@ public class MainframeEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
-
+	public String getMainframeOption2() {
+		return mainframeOption2;
+	}
+	public void setMainframeOption2(String mainframeOption2) {
+		this.mainframeOption2 = mainframeOption2;
+	}
+	public String getMainframeOptions() {
+		return mainframeOptions;
+	}
+	public void setMainframeOptions(String mainframeOptions) {
+		this.mainframeOptions = mainframeOptions;
+	}
+	public String getcOrderID() {
+		return cOrderID;
+	}
+	public void setcOrderID(String cOrderID) {
+		this.cOrderID = cOrderID;
+	}
+	
 }

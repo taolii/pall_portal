@@ -78,7 +78,10 @@
 											
 										</span>
 										<div class="col-md-4">
-											<input type='text' name="preprocessingModel" class="form-control" th:value="${preprocessingEntity.preprocessingModel}"/>  
+											<select name="preprocessingModel" class="form-control">
+								                <option  th:each="preprocessingModelDataConfig:${preprocessingModelDataConfigs}" th:selected="${preprocessingEntity.preprocessingModel==preprocessingModelDataConfig.configName}" th:text="${preprocessingModelDataConfig.configName}" th:value="${preprocessingModelDataConfig.configName}">
+								                </option>
+		                                    </select> 
 										</div>
 									</div>
 								</div>
@@ -104,6 +107,20 @@
 									<div class="col-md-2">
 										<input type='text' name="ptOption2"  class="form-control" th:value="${preprocessingEntity.ptOption2}"/>  
 									</div>
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.preprocessing.modPreprocessing.form.cOrderID}" th:remove="tag"></label> 
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="cOrderID"  class="form-control" th:value="${preprocessingEntity.cOrderID}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									
 									
 								</div>
 							</div>
@@ -140,12 +157,12 @@
 								</div>
 							</div>
 							
-							<div class="form-group">
+							<div class="form-group" style="display:none">
 								<span class="col-sm-12 control-label center">
 									<label th:text="#{pages.trackinglist.preprocessing.modPreprocessing.form.inspectRecords}" th:remove="tag"></label>
 								</span>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display:none">
 								<div class="rowGroup">
 									<div class="col-md-10 col-md-offset-1">
 										<div class="row" id="preprocessingInspectsDatatableContainer">
@@ -199,7 +216,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display:none">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.trackinglist.preprocessing.modPreprocessing.form.inspectOperator}" th:remove="tag"></label>

@@ -122,6 +122,9 @@ var PreprocessingSettingModal=function(contextPath,ids){
 		        });
 			}
 		});
+		$(ids.queryModalButton).click(function(){
+			modalDataTables.draw();
+		});
 	}
 	return preprocessingSettingModal;
 }

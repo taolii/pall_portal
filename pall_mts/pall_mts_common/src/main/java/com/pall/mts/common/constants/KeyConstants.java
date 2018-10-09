@@ -257,6 +257,10 @@ public class KeyConstants {
 	 */
 	public static final String ASSEMBLY_DATACONFIG_TYPE_ASSEMBLY_BOMS="assembly/dataconfig/type/assemblyBoms";
 	/*
+	 * 组装数据配置表代表fixture属性的配置类型 
+	 */
+	public static final String ASSEMBLY_DATACONFIG_TYPE_FIXTUREATTRIBUTE="assembly/dataconfig/type/fixtureAttribute";
+	/*
 	 * 组装管理页面excel下载子目录名称
 	 */
 	public static final String ASSEMBLY_DOWNLOAD_SUBDIRECTORY="assembly/download/subdirectory";

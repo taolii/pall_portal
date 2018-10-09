@@ -3,9 +3,13 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{pages.system.name}+'-'+#{pages.workflow.clean.addClean.title}"></title>
-<script type="text/javascript" th:src="@{{path}/dist/workflow/clean/js/modifyCleanInfo.js(path=${contextPath})}"></script>
-<script type="text/javascript" th:src="@{{path}/dist/workflow/clean/js/selectPolish.js(path=${contextPath})}"></script>
+<title th:text="#{pages.system.name}+'-'+#{pages.trackinglist.mainframe.modMainframe.title}"></title>
+<script type="text/javascript" th:src="@{{path}/dist/trackinglist/mainframe/js/mainframeAssembleDatatables.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/dist/trackinglist/mainframe/js/mainframeInspectDatatables.js(path=${contextPath})}"></script>
+<script type="text/javascript" th:src="@{{path}/dist/trackinglist/mainframe/js/selMainframeSetting.js(path=${contextPath})}"></script>
+<!--  script type="text/javascript" th:src="@{{path}/dist/setting/mainframe/js/mainframeAssembleDetail.js(path=${contextPath})}"></script-->
+<!-- script type="text/javascript" th:src="@{{path}/dist/setting/mainframe/js/mainframeInspectDetail.js(path=${contextPath})}"></script-->
+<script type="text/javascript" th:src="@{{path}/dist/trackinglist/mainframe/js/modMainframe.js(path=${contextPath})}"></script>
 </head>
 <body>
 	<div th:fragment="content">
@@ -20,7 +24,7 @@
 					<a href="javascript:void(0)" class="submenumenu"></a>
 				</li>
 				<li>
-					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/workflow/modClean?cleanid='+${cleanEntity.cleanID}+'&operator=copy\');'" th:text="#{pages.workflow.clean.addClean.title}"></a>
+					<a href="javascript:void(0)" th:onclick="'javascript:LoadPage(\''+${#httpServletRequest.getContextPath()}+'/trackinglist/modMainframe?mainframeID='+${mainframeEntity.mainframeID}+'&operator=copy\');'" th:text="#{pages.trackinglist.mainframe.addMainframe.title}"></a>
 				</li>
 			</ul>
 		</div>
@@ -29,44 +33,78 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<form method="POST" id="modDataForm" class="form-horizontal">
-							<input type='hidden' id="updateForm" name="updateForm" value="#modDataForm" />
-							<div class="form-group"  style="display: none;">
-                    			<div class="col-md-4" style="margin-bottom:20px" id="modTemplate">
-                    				<div class="rowGroup">
-	                    				<span class="col-md-3 control-label defect">
-										</span>
-										<div class="col-md-6">
-											<input type='text' class="form-control" />
-										</div>
-										<span class="col-md-2 removeButton btn btn-sm btn-danger">
-											 <i class="glyphicon glyphicon-remove"></i>
-								         </span>
-							         </div>
-								 </div>
-                			</div>
-                			<div class="form-group">
+							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.cleanTime}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
-										<input type='text' name="cleanTime" id='modFormCleanTime' class="form-control form_datetime" th:value="${cleanEntity.cleanTime}"/>
-									</div>
-								</div>
-								<div class="rowGroup">
-									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.inputLotNum}" th:remove="tag"></label>
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.mainframePn}" th:remove="tag"></label> 
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-3">
-										<input type='text' id="inputLotNum" name="inputLotNum"  class="form-control" readonly="readonly" th:value="${cleanEntity.inputLotNum}"/>
+										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
+										<input type='hidden' id="mainframeSettingPsid" name="psid"  class="form-control" value="-1"/>
+										<input type='hidden' name="mainframeID"  class="form-control" th:value="${mainframeEntity.mainframeID}"/>
+										<input type='text' id="mainframeSettingMainframePn" name="mainframePn" readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframePn}"/>  
 									</div>
 									<div class="col-md-1">
-										<span class=" btn btn-white btn-info" id="addInputLotNum">  
-			                     			<label th:text="#{pages.workflow.clean.modClean.button.inputLotNum.add}" th:remove="tag"></label>
-			                     		</span>
+										<span class=" btn btn-white btn-info" id="addMainframePn">  
+		                     				<label th:text="#{pages.trackinglist.mainframe.modMainframe.addMainframePn.button}" th:remove="tag"></label>
+		                     			</span> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.serialNo}" th:remove="tag"></label> 
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="serialNo" class="form-control" th:value="${mainframeEntity.serialNo}"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.workorderNo}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font>
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="workorderNo" class="form-control"  th:value="${mainframeEntity.workorderNo}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.mainframeModel}" th:remove="tag"></label>
+										</span>
+										<div class="col-md-4">
+											<select name="mainframeModel" class="form-control">
+								                <option  th:each="mainframeModelDataConfig:${mainframeModelDataConfigs}" th:selected="${mainframeEntity.mainframeModel==mainframeModelDataConfig.configName}" th:text="${mainframeModelDataConfig.configName}" th:value="${mainframeModelDataConfig.configName}">
+								                </option>
+		                                    </select> 
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.productionTime}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="productionTime"  id='addFormProductionTime' class="form-control form_datetime" th:value="${mainframeEntity.productionTime}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.mainframeOption}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-2">
+										<input type='text' name="mainframeOption"  class="form-control" th:value="${mainframeEntity.mainframeOption}"/>  
+									</div>
+									<div class="col-md-2">
+										<input type='text' name="mainframeOption2"  class="form-control" th:value="${mainframeEntity.mainframeOption2}"/>  
 									</div>
 									
 								</div>
@@ -74,160 +112,128 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.fixtureNumber}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.cOrderID}" th:remove="tag"></label> 
 									</span>
 									<div class="col-md-4">
-										<input type='text' id="fixtureNumber" name="fixtureNumber"  class="form-control" readonly="readonly" th:value="${cleanEntity.fixtureNumber}"/>
+										<input type='text' name="cOrderID"  class="form-control" th:value="${mainframeEntity.cOrderID}"/>  
 									</div>
 								</div>
 								<div class="rowGroup">
+									
+									
+								</div>
+							</div>
+							<div class="row" style="display:none">
+	                			<div class="pull-right">
+							        <div class="btn-group">
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="setMainframeAssembleButton" >
+							                <i class="fa fa-plus"></i>
+							                <span th:text="#{pages.trackinglist.mainframe.table.button.add}" th:remove="tag"></span>
+							            </a>
+							            <a type="button" class="btn btn-white btn-primary btn-sm" id="setMainframeInspectButton" >
+							                <i class="fa fa-plus"></i>
+							                <span th:text="#{pages.trackinglist.mainframe.table.button.add}" th:remove="tag"></span>
+							            </a>
+							            
+							        </div>
+	    						</div>
+	                		</div>
+							<div class="form-group">
+								<span class="col-sm-12 control-label center">
+									<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.assembleRecords}" th:remove="tag"></label>
+								</span>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="col-md-10 col-md-offset-1">
+										<div class="row" id="mainframeAssemblesDatatableContainer">
+											<input type="hidden" id="mainframeAssembles" th:value="${mainframeAssembles}"/>
+											<table id="mainframeAssemblesDatatable" class="table table-striped table-bordered table-hover" >
+					
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group"  style="display:none">
+								<span class="col-sm-12 control-label center">
+									<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.inspectRecords}" th:remove="tag"></label>
+								</span>
+							</div>
+							<div class="form-group"  style="display:none">
+								<div class="rowGroup">
+									<div class="col-md-10 col-md-offset-1">
+										<div class="row" id="mainframeInspectsDatatableContainer">
+											<input type="hidden" id="mainframeInspects" th:value="${mainframeInspects}"/>
+											<table id="mainframeInspectsDatatable" class="table table-striped table-bordered table-hover" >
+					
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.inputQty}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.exceptionRecord}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-10">
+										<input name="exceptionRecord" class="form-control" th:value="${mainframeEntity.exceptionRecord}"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.remarks}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-10">
+										<input name="remarks"  class="form-control" th:value="${mainframeEntity.remarks}"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.assembleOperator}" th:remove="tag"></label>
+										<font style="color:#a94442">*</font> 
 									</span>
 									<div class="col-md-4">
-										<input type='text' id="inputQty" name="inputQty"  class="form-control" readonly="readonly" th:value="${cleanEntity.inputQty}"/>
+										<input type='text' name="assembleOperator" class="form-control"  th:value="${mainframeEntity.assembleOperator}"/> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.assembleTime}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-md-4">
+											<input type='text' name="assembleTime" id='addFormAssembleTime' class="form-control form_datetime" th:value="${mainframeEntity.assembleTime}"/>
+										</div>
 									</div>
 								</div>
 							</div>
 							<div class="form-group" style="display:none">
 								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.outputQty}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="outputQty" class="form-control" readonly="readonly" th:value="${cleanEntity.outputQty}"/>  
-									</div>
-								</div>
-								<div class="rowGroup" >
-									<span class="col-md-2 control-label" >
-										<label th:text="#{pages.workflow.clean.modClean.form.scrapQty}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="scrapQty" class="form-control" readonly="readonly" th:value="${cleanEntity.scrapQty}"/>  
-									</div>
-								</div>
-							</div>
-							<div class="form-group" style="margin-bottom:0px;padding-bottom:0px;">
-								<div class="rowGroup">
 									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.defectinfo}" th:remove="tag"></label> 
-									</span>
-									<div class="col-md-10">
-										<div class='col-sm-10'> 
-											<div class="col-md-5 form-group " style="padding-left:0px;">
-						                        <select name="workingfaceType" id="modWorkingfaceType" class="form-control">
-								                   <option  th:each="workingfaceType:${workingfaceTypes}" th:text="${workingfaceType.dataTypeName}" th:value="${workingfaceType.dataType}">
-								                   </option>
-		                                    	</select> 
-	                      					</div>
-											<div class="col-md-5  form-group" style="padding-left:20px;">
-						                        <select id="modDefect" name="modDefect" class="form-control">
-								                   <option  th:each="cleanDefectConfig:${workingfaceDefectConfigs}" th:text="${cleanDefectConfig.configName}" th:value="${cleanTableName}+${cleanDefectConfig.dataid}">
-								                   </option>
-		                                    	</select>
-	                      					</div>
-										   	<select id="modAllDefect" style="display:none">
-								                <option  th:each="cleanDefectConfig:${defectConfigs}" th:text="${cleanDefectConfig.configName}" th:attr="dataType=${cleanDefectConfig.dataType}" dataType="$dataType" th:value="${cleanTableName}+${cleanDefectConfig.dataid}">
-								                </option>
-		                                    </select>
-		                                    <div class="col-md-1 form-group has-feedback" style="padding-left:20px;">
-						                        <span class="btn btn-white btn-info" id="modDefectButton">  
-		                     						<label th:text="#{pages.workflow.clean.modClean.button.defect.mod}" th:remove="tag"></label>
-		                     					</span>
-	                      					</div>
-            							</div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-md-10 col-md-offset-1" id="modDefectPanel" role="tablist" aria-multiselectable="true" style="margin-top:10px;padding-left:0px;">
-				                      <div class="panel defect-panel" th:each="workingfaceType:${workingfaceTypes}" th:id="modWorkingface+${workingfaceType.dataType}" >
-				                        <div class="panel-heading collapsed defect-panel-heading" style="cursor: pointer;"  role="tab" th:id="modHead+${workingfaceType.dataType}" data-toggle="collapse"  th:href="'#modCollapse'+${workingfaceType.dataType}" aria-expanded="true" 
-				                         th:attr="aria-controls='modCollapse'+${workingfaceType.dataType}"  aria-controls="$aria-controls">
-				                          <h4 class="panel-title" th:text="${workingfaceType.dataTypeName}"></h4>
-				                        </div>
-				                        <div  th:id="modCollapse+${workingfaceType.dataType}" class="panel-collapse collapse in" role="tabpanel" 
-				                        th:attr="aria-labelledby='modHead'+${workingfaceType.dataType}"  aria-labelledby="$aria-labelledby" aria-expanded="true">
-				                          <div class="panel-body">
-				                          		<div th:each="defect:${cleanEntity.defects}" th:remove="tag">
-				                          			<div class="col-md-4" style="margin-bottom:20px" th:if="${defect.defectType}==${workingfaceType.dataType}">
-					                    				<div class="rowGroup">
-						                    				<span class="col-md-3 control-label defect" th:text="${defect.defectName}">
-															</span>
-															<div class="col-md-6">
-																<input type='text' class="form-control" th:attr='name=${cleanTableName}+${defect.dataid}'  th:value="${defect.defectValue}"/>
-															</div>
-															<span class="col-md-2 removeButton btn btn-sm btn-danger">
-																 <i class="glyphicon glyphicon-remove"></i>
-													         </span>
-												         </div>
-									 				</div>
-				                          		</div>
-				                          </div>
-				                        </div>
-				                      </div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.cleanLotNum}" th:remove="tag"></label> 
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.inspectOperator}" th:remove="tag"></label>
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
-										<input type='text' name="cleanLotNum" class="form-control" th:value="${cleanEntity.cleanLotNum}"/> 
+										<input type='text' name="inspectOperator" class="form-control"  th:value="${mainframeEntity.inspectOperator}"/> 
 									</div>
 								</div>
 								<div class="rowGroup">
-									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.toOtherQty}" th:remove="tag"></label>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="toOtherQty" class="form-control"  th:value="${cleanEntity.toOtherQty}" />
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.partNum}" th:remove="tag"></label> 
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<select name="partNum" class="form-control">
-							              <option  th:each="dataConfig:${pnDataConfigs}" th:selected="${cleanEntity.partNum==dataConfig.configName}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-							              </option>
-	                                	</select>    
-									</div>
-								</div>
-								<div class="rowGroup">
-									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.clean.modClean.form.workOrderNum}" th:remove="tag"></label>
-										<font style="color:#a94442">*</font>
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="workOrderNum" class="form-control" th:value="${cleanEntity.workOrderNum}"/>  
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<div class="col-md-11 col-md-offset-1">
-										<fieldset>
-	    								<legend>
-	    									<label class="blue control-label" th:text="#{pages.workflow.clean.modClean.form.cleanBom}"></label>
-	    								</legend>
-											<div class="col-md-3 checkbox" style="padding-bottom:10px" th:each="dataConfig,iterStat:${cleanBomConfigs}">
-												<label>
-													<input name="cleanBoms" class="ace" type="checkbox"  th:checked="${dataConfig.checked==true}" th:value="${dataConfig.configName}">
-													<span class="lbl">&nbsp;&nbsp;<span th:text="${dataConfig.configName}" th:remove="tag"></span></span>
-												</label>
-											</div>
-	  									</fieldset>
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.inspectTime}" th:remove="tag"></label>
+											<font style="color:#a94442">*</font>
+										</span>
+										<div class="col-md-4">
+											<input type='text' name="inspectTime" id='addFormInspectTime' class="form-control form_datetime" th:value="${mainframeEntity.inspectTime}"/>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -235,11 +241,11 @@
 								<div class="text-center">
 									<button class="btn btn-white btn-primary">
 										<i class="fa fa-check"></i> 
-										<span th:text="#{pages.workflow.clean.addClean.form.button.add}" th:remove="tag"></span>
+										<span th:text="#{pages.trackinglist.mainframe.addMainframe.form.button.add}" th:remove="tag"></span>
 									</button>
-									<button id="modBackButton"  type="button" class="btn btn-white btn-primary" data-dismiss="modal">
+									<button id="addBackButton"  type="button" class="btn btn-white btn-primary" data-dismiss="modal">
 										<i class="fa fa-close"></i> 
-										<span th:text="#{pages.workflow.clean.addClean.form.button.shut}" th:remove="tag"></span>
+										<span th:text="#{pages.trackinglist.mainframe.addMainframe.form.button.shut}" th:remove="tag"></span>
 									</button> 
 								</div>
 							</div>
@@ -250,8 +256,14 @@
             </div>
         </div>
 		<div class="clearfix"></div>
-		<div id="addInputLotNumModal">
-			<div th:replace="workflow/clean/selectPolishModal:: content"></div>
+		<div id="selMainframeSetting">
+			<div th:replace="trackinglist/mainframe/selMainframeSettingModal:: content"></div>
+		</div>
+		<div id="mainframeInspectDetail">
+			<!-- div th:replace="setting/mainframe/mainframeInspectDetailModal:: content"></div-->
+		</div>
+		<div id="mainframeAssembleDetail">
+			<!-- div th:replace="setting/mainframe/mainframeAssembleDetailModal:: content"></div-->
 		</div>
 	</div>
 </body>

@@ -45,6 +45,7 @@ import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
 import com.pall.wdpts.context.HolderContext;
+import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.TableDataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
@@ -59,7 +60,7 @@ import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
 import com.pall.wdpts.repository.entity.workflow.ExcelSaveEntity;
 import com.pall.wdpts.service.excel.IExcelTemplateHandler;
 import com.pall.wdpts.service.menu.ButtonManageService;
-import com.pall.wdpts.service.trackinglist.PreprocessingAssembleService;
+import com.pall.wdpts.service.trackinglist.PreprocessingService;
 
 /*
  * 预处理装配流程跟踪单
@@ -75,7 +76,7 @@ public class PreprocessingManageControler{
 	@Autowired
 	private ButtonManageService buttonManageService;
 	@Autowired
-	private PreprocessingAssembleService preprocessingAssembleService;
+	private PreprocessingService preprocessingService;
 	@Autowired
 	@Qualifier("xlsxTemplateHandler")
 	private IExcelTemplateHandler iExcelTemplateHandler;
@@ -95,8 +96,20 @@ public class PreprocessingManageControler{
 	private Model initConfigData(Model model){
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
-		
+		model.addAttribute("preprocessingModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_DATACONFIG_TYPE_PREPROCESSINGMODEL)));
 		return model;
+	}
+	/*
+	 * 初始化默认值
+	 */
+	private void initDefaultEntity(PreprocessingEntity preprocessingEntity){
+		if(StringUtils.isEmpty(preprocessingEntity.getProductionTime())){
+			preprocessingEntity.setProductionTime(null);
+		}
+		if(StringUtils.isEmpty(preprocessingEntity.getAssembleTime())){
+			preprocessingEntity.setAssembleTime(null);
+		}
+		if(StringUtils.isEmpty(preprocessingEntity.getInspectTime()))preprocessingEntity.setInspectTime(null);
 	}
 	/*
 	 * 预处理装配管理
@@ -145,7 +158,7 @@ public class PreprocessingManageControler{
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingAssembleService.queryPreprocessingList(preprocessingFormQueryEntity);
+			baseResponse=preprocessingService.queryPreprocessingList(preprocessingFormQueryEntity);
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
 				List<String> defectTypes=new ArrayList<String>();
@@ -153,9 +166,9 @@ public class PreprocessingManageControler{
 				jsonData= JSONTools.defectsOverturnFiled(jsonData,defectTypes);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.Controler.preprocessingAssembleManage.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.preprocessingManage.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.Controler.preprocessingAssembleManage.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.preprocessingManage.exception"));
 			
 		}
 		 return jsonData;
@@ -179,18 +192,20 @@ public class PreprocessingManageControler{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+				initDefaultEntity(preprocessingEntity);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
 				if(at!=null && at.getUserEntity()!=null){
 					preprocessingEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
 				preprocessingEntity.setAssembleRecords(getPreprocessingAssembles(request));
 				preprocessingEntity.setInspectRecords(getPreprocessingInspects(request));
-				baseResponse=preprocessingAssembleService.addPreprocessing(preprocessingEntity);
+				if(StringUtils.isEmpty(preprocessingEntity.getInspectTime()))preprocessingEntity.setInspectTime(null);
+				baseResponse=preprocessingService.addPreprocessing(preprocessingEntity);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.Controler.addPreprocessing.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.addPreprocessing.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.Controler.addPreprocessing.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.addPreprocessing.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
@@ -254,11 +269,11 @@ public class PreprocessingManageControler{
 		BaseResponse baseResponse=new BaseResponse();
 		PreprocessingEntity preprocessingEntity=null;
 		try {
-			preprocessingEntity=preprocessingAssembleService.queryPreprocessing(preprocessingID);
+			preprocessingEntity=preprocessingService.queryPreprocessing(preprocessingID);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.service.queryPreprocessing.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.service.queryPreprocessing.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.service.queryPreprocessing.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.service.queryPreprocessing.exception"));
 		}
 		if(preprocessingEntity==null){
 			preprocessingEntity=new PreprocessingEntity();
@@ -284,18 +299,19 @@ public class PreprocessingManageControler{
 		try {
 			baseResponse=HolderContext.getBindingResult(result);
 			if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+				initDefaultEntity(preprocessingEntity);
 				AuthToken at=(AuthToken)request.getSession().getAttribute(AuthToken.SESSION_NAME);
 				if(at!=null && at.getUserEntity()!=null){
 					preprocessingEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
 				preprocessingEntity.setAssembleRecords(getPreprocessingAssembles(request));
 				preprocessingEntity.setInspectRecords(getPreprocessingInspects(request));
-				baseResponse=preprocessingAssembleService.modifyPreprocessing(preprocessingEntity);
+				baseResponse=preprocessingService.modifyPreprocessing(preprocessingEntity);
 			}
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.Controler.modPreprocessing.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.modPreprocessing.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.Controler.modPreprocessing.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.modPreprocessing.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
@@ -312,11 +328,11 @@ public class PreprocessingManageControler{
 			for(String preprocessingId:aoPreprocessingID){
 				tempPreprocessing.add(Integer.parseInt(preprocessingId));
 			}
-			baseResponse=preprocessingAssembleService.delPreprocessing(tempPreprocessing);
+			baseResponse=preprocessingService.delPreprocessing(tempPreprocessing);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.Controler.delPreprocessing.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.delPreprocessing.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.Controler.delPreprocessing.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.delPreprocessing.exception"));
 		}
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
@@ -329,11 +345,11 @@ public class PreprocessingManageControler{
 		BaseResponse baseResponse=new BaseResponse();
 		PreprocessingEntity preprocessingEntity=null;
 		try {
-			preprocessingEntity=preprocessingAssembleService.queryPreprocessing(preprocessingID);
+			preprocessingEntity=preprocessingService.queryPreprocessing(preprocessingID);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.service.queryPreprocessing.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.service.queryPreprocessing.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.service.queryPreprocessing.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.service.queryPreprocessing.exception"));
 		}
 		if(preprocessingEntity==null){
 			preprocessingEntity=new PreprocessingEntity();
@@ -344,13 +360,13 @@ public class PreprocessingManageControler{
     	downloadFileFullPath.append(File.separator);
     	downloadFileFullPath.append(downloadFilePath);
     	downloadFileFullPath.append(File.separator);
-    	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING__DOWNLOAD_SUBDIRECTORY));
+    	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_DOWNLOAD_SUBDIRECTORY));
     	downloadFileFullPath.append(File.separator);
     	//设置下载保存文件路径名称
     	StringBuilder fileName=new StringBuilder();
     	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
     	fileName.append("_");
-    	fileName.append(resourceUtils.getMessage("preprocessingAssemble.Controler.exportPreprocessing.filename"));
+    	fileName.append(resourceUtils.getMessage("preprocessing.Controler.exportPreprocessing.filename"));
     	fileName.append("_");
     	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
     	fileName.append(sf.format(new Date()));
@@ -365,12 +381,24 @@ public class PreprocessingManageControler{
         	if(!CollectionUtils.isEmpty(preprocessingEntity.getAssembleRecords())){
         		for(PreprocessingAssembleEntity preprocessingAssembleEntity:preprocessingEntity.getAssembleRecords()){
         			preprocessingAssembleEntity.setPreprocessingID(i++);
+        			if(!StringUtils.isEmpty(preprocessingAssembleEntity.getComponentName())){
+        				preprocessingAssembleEntity.setComponentName(preprocessingAssembleEntity.getComponentName().replace("|", "\n"));
+        			}
+        			if(!StringUtils.isEmpty(preprocessingAssembleEntity.getComponentNo())){
+        				preprocessingAssembleEntity.setComponentNo(preprocessingAssembleEntity.getComponentNo().replace("|", "\n"));
+        			}
         		}
         	}
         	i=1;
         	if(!CollectionUtils.isEmpty(preprocessingEntity.getInspectRecords())){
         		for(PreprocessingInspectEntity preprocessingInspectEntity:preprocessingEntity.getInspectRecords()){
         			preprocessingInspectEntity.setPreprocessingID(i++);
+        			if(!StringUtils.isEmpty(preprocessingInspectEntity.getSelfcheckName())){
+        				preprocessingInspectEntity.setSelfcheckName(preprocessingInspectEntity.getSelfcheckName().replace("|", "\n"));
+        			}
+        			if(!StringUtils.isEmpty(preprocessingInspectEntity.getSelfcheckContent())){
+        				preprocessingInspectEntity.setSelfcheckContent(preprocessingInspectEntity.getSelfcheckContent().replace("|", "\n"));
+        			}
         		}
         	}
         	Map<Integer,List<ExcelHeaderNode>> excelTemplateMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_TEMPLATENAME));
@@ -383,14 +411,14 @@ public class PreprocessingManageControler{
 			List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
 			ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
 			excelSaveEntity.setFileName(fileName.toString());
-			excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING__DOWNLOAD_SUBDIRECTORY));
+			excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_DOWNLOAD_SUBDIRECTORY));
 			excelSaveEntitys.add(excelSaveEntity);
 			baseResponse.setReturnObjects(excelSaveEntitys);
 			return JSON.toJSONString(baseResponse);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.Controler.exportPreprocessing.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.exportPreprocessing.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.Controler.exportPreprocessing.exception")+":"+e.toString());
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.exportPreprocessing.exception")+":"+e.toString());
 		}finally{
 			IOUtils.close(out);
 		}
@@ -401,12 +429,12 @@ public class PreprocessingManageControler{
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingAssembleService.queryPreprocessingInspectList(preprocessingID);
+			baseResponse=preprocessingService.queryPreprocessingInspectList(preprocessingID);
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.Controler.preprocessingInspectDetail.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.preprocessingInspectDetail.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.Controler.preprocessingInspectDetail.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.preprocessingInspectDetail.exception"));
 			
 		}
 		 return jsonData;
@@ -416,12 +444,12 @@ public class PreprocessingManageControler{
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingAssembleService.queryPreprocessingAssembleList(preprocessingID);
+			baseResponse=preprocessingService.queryPreprocessingAssembleList(preprocessingID);
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
-			logger.error(resourceUtils.getMessage("preprocessingAssemble.Controler.preprocessingAssembleDetail.exception"),e);
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.preprocessingAssembleDetail.exception"),e);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
-			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingAssemble.Controler.preprocessingAssembleDetail.exception"));
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.preprocessingAssembleDetail.exception"));
 			
 		}
 		 return jsonData;

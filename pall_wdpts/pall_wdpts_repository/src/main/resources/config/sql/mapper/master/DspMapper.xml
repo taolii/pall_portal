@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.pall.wdpts.repository.mapper.trackinglist.DspDao"> 
+	<select id="queryDspList" resultType="com.pall.wdpts.repository.entity.trackinglist.DspEntity"
+	parameterType="com.pall.wdpts.repository.entity.trackinglist.DspFormQueryEntity"> 
+ 		select f.c_orderid cOrderID,dsp_id dspID,assemble_time assembleTime,production_time productionTime,dsp_pn dspPn,serial_no serialNo,workorder_no workorderNo,dsp_model dspModel,exception_record exceptionRecord,assemble_Operator assembleOperator,f.remarks,f.input_time inputTime,f.update_time updateTime,
+f.operatorid,g.account operatorName from t_trackinglist_dsp f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="dspID != null and dspID != '' ">  
+	       AND f.dsp_id=#{dspID}  
+	    </if>
+	    <if test="dspPn != null and dspPn != '' ">  
+	       AND f.dsp_pn =#{dspPn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="dspModel != null and dspModel != '' ">  
+	       AND f.dsp_model = #{dspModel}  
+	    </if>
+	    <if test="cOrderID != null and cOrderID != '' ">  
+	       AND f.c_orderid = #{cOrderID}  
+	    </if>
+	    <if test="componentName != null and componentName != '' ">  
+	       AND exists(select 1 from t_trackinglist_dsp_assemble g where f.dsp_id=g.dsp_id and g.component_name like concat('%',#{componentName},'%')) 
+	    </if>
+	    <if test="componentNo != null and componentNo != '' ">  
+	       AND exists(select 1 from t_trackinglist_dsp_assemble g where f.dsp_id=g.dsp_id and g.component_no like concat('%',#{componentNo},'%')) 
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryDspTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.DspFormQueryEntity"> 
+ 		select count(1) from t_trackinglist_dsp f  where 1=1
+		 <if test="startAssembleTime != null and startAssembleTime != '' ">  
+	       AND f.assemble_time &gt;= #{startAssembleTime}  
+	    </if>
+	    <if test="endAssembleTime != null and endAssembleTime != '' ">  
+	       AND f.assemble_time &lt;= #{endAssembleTime}  
+	    </if>
+	    <if test="dspID != null and dspID != '' ">  
+	       AND f.dsp_id=#{dspID}  
+	    </if>
+	    <if test="dspPn != null and dspPn != '' ">  
+	       AND f.dsp_pn =#{dspPn}   
+	    </if>
+	    <if test="serialNo != null and serialNo != '' ">  
+	       AND f.serial_no = #{serialNo}  
+	    </if>
+	    <if test="workorderNo != null and workorderNo != '' ">  
+	       AND f.workorder_no = #{workorderNo}  
+	    </if>
+	    <if test="dspModel != null and dspModel != '' ">  
+	       AND f.dsp_model = #{dspModel}  
+	    </if>
+	    <if test="cOrderID != null and cOrderID != '' ">  
+	       AND f.c_orderid = #{cOrderID}  
+	    </if>
+	     <if test="componentName != null and componentName != '' ">  
+	       AND exists(select 1 from t_trackinglist_dsp_assemble g where f.dsp_id=g.dsp_id and g.component_name like concat('%',#{componentName},'%')) 
+	    </if>
+	    <if test="componentNo != null and componentNo != '' ">  
+	       AND exists(select 1 from t_trackinglist_dsp_assemble g where f.dsp_id=g.dsp_id and g.component_no like concat('%',#{componentNo},'%')) 
+	    </if>
+ 	</select>
+    <insert id="addDsp" parameterType="com.pall.wdpts.repository.entity.trackinglist.DspEntity">
+    	<selectKey keyProperty="dspID" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_trackinglist_dsp(c_orderid,assemble_time,production_time,dsp_pn,serial_no,workorder_no,dsp_model,exception_record,assemble_Operator,remarks,operatorid,input_time,update_time)
+        values(#{cOrderID},#{assembleTime},#{productionTime},#{dspPn},#{serialNo},#{workorderNo},#{dspModel},#{exceptionRecord},#{assembleOperator},#{remarks},#{operatorid},now(),now())
+    </insert>
+    <update id="modDsp" parameterType="com.pall.wdpts.repository.entity.trackinglist.DspEntity">
+        update  t_trackinglist_dsp f set f.c_orderid=#{cOrderID},f.assemble_time=#{assembleTime},f.production_time=#{productionTime},f.dsp_pn=#{dspPn},f.serial_no=#{serialNo},f.workorder_no=#{workorderNo},f.dsp_model=#{dspModel},f.exception_record=#{exceptionRecord},
+        f.assemble_Operator=#{assembleOperator},f.remarks=#{remarks},f.operatorid=#{operatorid},f.update_time=now()
+        where f.dsp_id=#{dspID}
+    </update>
+    <delete id="delDsp"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_dsp WHERE dsp_id in 
+        <foreach collection="dspIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<delete id="delDspAssemble"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_dsp_assemble WHERE dsp_id in 
+        <foreach collection="dspIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	
+ 	<delete id="delDspAssembles"  parameterType="java.util.List">  
+        DELETE FROM t_trackinglist_dsp_assemble WHERE dsp_id in 
+        <foreach collection="dspIDS" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryDspAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.DspAssembleEntity"> 
+ 		select dsp_id,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_trackinglist_dsp_assemble f where f.dsp_id=#{dspID} 
+ 	</select> 
+    <insert id="addDspAssembles" parameterType="java.util.List">
+		insert into t_trackinglist_dsp_assemble(dsp_id,component_name,component_no,serial_no_record,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.dspID},#{item.componentName},#{item.componentNo},#{item.serialNoRecord},#{item.remarks})
+    	</foreach> 
+    </insert>
+ 	<select id="queryDspSettingList" resultType="com.pall.wdpts.repository.entity.trackinglist.DspSettingEntity"
+	parameterType="com.pall.wdpts.repository.entity.trackinglist.DspSettingFormQueryEntity"> 
+ 		select dsid,dsp_pn dspPn,f.input_time inputTime,f.update_time updateTime,f.operatorid,g.account operatorName from t_ums_setting_dsp f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+	     <if test="dspPn != null and dspPn != '' ">  
+	       AND f.dsp_pn = #{dspPn}  
+	    </if>
+	    <if test="dsid != null and dsid != '' ">  
+	       AND f.dsid = #{dsid}  
+	    </if>
+	     order by f.update_time desc limit #{startPageNum},#{pageSize}
+ 	</select> 
+	<select id="queryDspSettingTotalRecords" resultType="int" parameterType="com.pall.wdpts.repository.entity.trackinglist.DspSettingFormQueryEntity"> 
+ 		select count(1) from t_ums_setting_dsp f  where 1=1
+		<if test="dspPn != null and dspPn != '' ">  
+	       AND f.dsp_pn = #{dspPn}  
+	    </if>
+	    <if test="dsid != null and dsid != '' ">  
+	       AND f.dsid = #{dsid}  
+	    </if>
+ 	</select>
+ 	<insert id="addDspSetting" parameterType="com.pall.wdpts.repository.entity.trackinglist.DspSettingEntity">
+    	<selectKey keyProperty="dsid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    	insert into  t_ums_setting_dsp(dsp_pn,operatorid,input_time,update_time)values(#{dspPn},#{operatorid},now(),now())
+    </insert>
+    <update id="modDspSetting" parameterType="com.pall.wdpts.repository.entity.trackinglist.DspEntity">
+        update  t_ums_setting_dsp f set f.dsp_pn=#{dspPn},f.operatorid=#{operatorid},f.update_time=now() where f.dsid=#{dsid}
+    </update>
+    <delete id="delDspSetting"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_dsp WHERE dsid in 
+        <foreach collection="dsids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<insert id="addDspSettingAssembles" parameterType="java.util.List">
+		insert into t_ums_setting_dsp_assemble(dsid,component_name,component_no,serial_no_record,remarks)VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.dsid},#{item.componentName},#{item.componentNo},#{item.serialNoRecord},#{item.remarks})
+    	</foreach> 
+    </insert>
+    <delete id="delDspSettingAssembles"  parameterType="java.util.List">  
+        DELETE FROM t_ums_setting_dsp_assemble WHERE dsid in 
+        <foreach collection="dsids" item="item" index="index" open="(" close=")" separator=",">  
+        	#{item}  
+    	</foreach> 
+	</delete>
+	<select id="queryDspSettingAssembleList" resultType="com.pall.wdpts.repository.entity.trackinglist.DspSettingAssembleEntity"> 
+ 		select dsid,component_name componentName,component_no componentNo,serial_no_record serialNoRecord,remarks from t_ums_setting_dsp_assemble f where f.dsid=#{dsid} 
+ 	</select> 
+</mapper> 

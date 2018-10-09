@@ -151,6 +151,7 @@ public class AssemblyManageController{
 		dataConfigEntitys.addAll(installHubdataConfigEntitys);
 		dataConfigEntitys.addAll(otherdataConfigEntitys);
 		model.addAttribute("defectConfigs",dataConfigEntitys);
+		model.addAttribute("fixtureAttrDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_FIXTUREATTRIBUTE)));
 		model.addAttribute("tableName", UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_TABLENAME));
 		return model;
 	}

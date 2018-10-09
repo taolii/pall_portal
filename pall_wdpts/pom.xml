@@ -53,7 +53,7 @@
                 		<goal>copy-dependencies</goal>  
             		</goals> 
 		            <configuration>
-		                <outputDirectory>${tomcat.directory}/portal/WEB-INF/lib</outputDirectory>
+		                <outputDirectory>${tomcat.directory}/portal_cascada/WEB-INF/lib</outputDirectory>
 		                <includeTypes>jar</includeTypes>
 		                <overWriteIfNewer>true</overWriteIfNewer>
                    		<overWriteSnapshots>true</overWriteSnapshots>  
@@ -76,21 +76,21 @@
                     </goals>
                        <configuration>
                         <overwrite>true</overwrite>
-                        <outputDirectory>${tomcat.directory}/portal_wdpts/WEB-INF</outputDirectory>
+                        <outputDirectory>${tomcat.directory}/portal_cascada/WEB-INF</outputDirectory>
                         <resources>  
                             <resource>  
                                 <directory>${basedir}/target/classes</directory>  
                                 <includes>  
                                     <include>**/*</include>  
                                 </includes> 
-                                <targetPath>${tomcat.directory}/portal_wdpts/WEB-INF/classes</targetPath>  
+                                <targetPath>${tomcat.directory}/portal_cascada/WEB-INF/classes</targetPath>  
                             </resource>
                             <resource>  
                                 <directory>${basedir}/src/main/webapp</directory>  
                                 <includes>  
                                     <include>**/*</include>  
                                 </includes> 
-                                <targetPath>${tomcat.directory}/portal</targetPath> 
+                                <targetPath>${tomcat.directory}/portal_cascada</targetPath> 
                             </resource>   
                         </resources>  
                    	</configuration> 

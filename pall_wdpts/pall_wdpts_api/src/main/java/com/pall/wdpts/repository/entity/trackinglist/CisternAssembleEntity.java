@@ -6,7 +6,7 @@ public class CisternAssembleEntity {
 	/*
 	 * 水箱装配流程跟踪单唯一标示
 	 */
-	private String cisternID;
+	private Integer cisternID;
 	/*
 	 * 组件名称
 	 */
@@ -23,10 +23,11 @@ public class CisternAssembleEntity {
 	 * 备注
 	 */
 	private String remarks;
-	public String getCisternID() {
+	
+	public Integer getCisternID() {
 		return cisternID;
 	}
-	public void setCisternID(String cisternID) {
+	public void setCisternID(Integer cisternID) {
 		this.cisternID = cisternID;
 	}
 	public String getComponentName() {
