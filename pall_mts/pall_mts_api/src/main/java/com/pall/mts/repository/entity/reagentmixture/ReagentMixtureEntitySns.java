@@ -18,6 +18,14 @@ public class ReagentMixtureEntitySns {
 	 */
 	private String reagentsFieldName;
 	/*
+	 * LOT#
+	 */
+	private String lotNum;
+	/*
+	 * 配置时间
+	 */
+	private String configTime;
+	/*
 	 * 试剂名称
 	 */
 	private String reagentsName;
@@ -61,6 +69,18 @@ public class ReagentMixtureEntitySns {
 	}
 	public void setSrmid(int srmid) {
 		this.srmid = srmid;
+	}
+	public String getLotNum() {
+		return lotNum;
+	}
+	public void setLotNum(String lotNum) {
+		this.lotNum = lotNum;
+	}
+	public String getConfigTime() {
+		return configTime;
+	}
+	public void setConfigTime(String configTime) {
+		this.configTime = configTime;
 	}
 	
 }

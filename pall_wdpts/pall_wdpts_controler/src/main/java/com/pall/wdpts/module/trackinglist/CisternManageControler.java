@@ -146,7 +146,7 @@ public class CisternManageControler {
 	        }
 		});
 		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
-	   return "trackingList/cistern/cisternManage";
+	   return "trackinglist/cistern/cisternManage";
     }
 	@RequestMapping(value="/trackinglist/cisternManage", method= RequestMethod.POST)
     public @ResponseBody String cisternManage(Model model,CisternFormQueryEntity  cisternFormQueryEntity, HttpServletRequest request) {

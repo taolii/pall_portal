@@ -29,7 +29,13 @@
 				                        <div class="panel panel-primary">
 				                            <div id="stepOne" class="panel-collapse collapse in  ">
 				                                <div class="panel-body">
-								                    <div class="col-md-5 form-group" >
+								                    <div class="col-md-6 form-group" style="padding-left:40px">
+					                                	<div class="input-group">
+					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.selReagentMixture.form.lotNum}"></span>
+									                        <input type="text" name="lotNum" class="form-control"/>
+					                                	</div>
+								                    </div>
+								                    <div class="col-md-6 form-group" style="padding-left:40px">
 					                                	<div class="input-group">
 					                                		<span class="input-group-addon" th:text="#{pages.workflow.chemicalReagentManage.form.mainReagent}"></span>
 									                        <select name="mainReagent" class="form-control">
@@ -45,7 +51,7 @@
 									                        <input type="text" name="reagentsName" class="form-control"/>
 					                                	</div>
 								                    </div>
-								                    <div class="col-md-1" style="padding-left:10px">
+								                    <div class="col-md-6 form-group center" >
 								                        <button id="queryMultipleReagentMixtureButton" class="btn btn-white btn-primary" type="button">
 								                        <i class="fa fa-search"></i>
 					                 						<span th:text="#{pages.workflow.polish.form.query.button.tip}" th:remove="tag"></span>

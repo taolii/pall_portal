@@ -148,7 +148,7 @@ public class PreprocessingManageControler{
 	        }
 		});
 		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
-	   return "trackingList/preprocessing/preprocessingManage";
+	   return "trackinglist/preprocessing/preprocessingManage";
     }
 	@RequestMapping(value="/trackinglist/preprocessingManage", method= RequestMethod.POST)
     public @ResponseBody String preprocessingManage(Model model,PreprocessingFormQueryEntity  preprocessingFormQueryEntity, HttpServletRequest request) {

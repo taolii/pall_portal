@@ -148,7 +148,7 @@ public class MainframeManageControler {
 	        }
 		});
 		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
-	   return "trackingList/mainframe/mainframeManage";
+	   return "trackinglist/mainframe/mainframeManage";
     }
 	@RequestMapping(value="/trackinglist/mainframeManage", method= RequestMethod.POST)
     public @ResponseBody String mainframeManage(Model model,MainframeFormQueryEntity  mainframeFormQueryEntity, HttpServletRequest request) {

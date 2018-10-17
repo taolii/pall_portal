@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-09-06 19:38:01
+Date: 2018-10-16 16:21:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -180,6 +180,9 @@ INSERT INTO `t_ums_config` VALUES ('77', 'report/productTracking/tablename', '1'
 INSERT INTO `t_ums_config` VALUES ('78', 'report/assemblyScrapSummary/download/subdirectory', '1', 'assemblyScrapSummary', null, '2', '组装报废汇总页面excel下载子目录名称');
 INSERT INTO `t_ums_config` VALUES ('79', 'chemicalReagent/thConfig/reagentMixture', '1', 'reagentMixture', null, '2', 't_ums_th_config表中生化镀膜配置汇合试剂属性名');
 INSERT INTO `t_ums_config` VALUES ('80', 'twicechemicalReagent/thConfig/reagentMixture', '1', 'reagentMixture', null, '2', 't_ums_th_config表中二次生化镀膜配置汇合试剂属性名');
+INSERT INTO `t_ums_config` VALUES ('81', 'assembly/dataconfig/type/fixtureAttribute', '1', '37', null, '2', '组装数据配置表代表fixture属性的配置类型 ');
+INSERT INTO `t_ums_config` VALUES ('83', 'right/button/righttype', '1', '2', '', '2', '权限表中button对应的righttype');
+INSERT INTO `t_ums_config` VALUES ('82', 'right/menu/righttype', '1', '1', '', '2', '权限表中menu对应的righttype');
 
 -- ----------------------------
 -- Table structure for t_ums_data_button
@@ -283,7 +286,7 @@ CREATE TABLE `t_ums_data_config` (
   `UPDATETIME` datetime DEFAULT NULL,
   PRIMARY KEY (`DATAID`),
   KEY `idx_udc_config_datatype_configname` (`DATATYPE`,`configname`)
-) ENGINE=InnoDB AUTO_INCREMENT=838 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=840 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
 
 -- ----------------------------
 -- Records of t_ums_data_config
@@ -851,6 +854,8 @@ INSERT INTO `t_ums_data_config` VALUES ('834', '27', '05-0047', '', '9', '2018-0
 INSERT INTO `t_ums_data_config` VALUES ('835', '34', '03-0006', '', '9', '2018-08-23 12:45:36', '2018-08-23 12:45:36');
 INSERT INTO `t_ums_data_config` VALUES ('836', '34', '05-5003', '', '9', '2018-08-23 12:48:55', '2018-08-23 12:48:55');
 INSERT INTO `t_ums_data_config` VALUES ('837', '34', '03-0008', '', '9', '2018-08-23 13:43:00', '2018-08-23 13:43:00');
+INSERT INTO `t_ums_data_config` VALUES ('838', '47', 'Ref', '', '9', '2018-09-19 12:16:33', '2018-09-19 12:16:33');
+INSERT INTO `t_ums_data_config` VALUES ('839', '37', 'Ref', '', '9', '2018-09-19 12:16:58', '2018-09-19 12:16:58');
 
 -- ----------------------------
 -- Table structure for t_ums_deptinfo

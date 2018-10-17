@@ -145,7 +145,7 @@ public class DspManageControler {
 	        }
 		});
 		model.addAttribute("tableFieldBinds", JSON.toJSONString(tableFieldBinds,SerializerFeature.WriteMapNullValue));
-	   return "trackingList/dsp/dspManage";
+	   return "trackinglist/dsp/dspManage";
     }
 	@RequestMapping(value="/trackinglist/dspManage", method= RequestMethod.POST)
     public @ResponseBody String dspManage(Model model,DspFormQueryEntity  dspFormQueryEntity, HttpServletRequest request) {

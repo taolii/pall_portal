@@ -29,6 +29,9 @@ f.operatorid,g.account operatorName from t_trackinglist_cistern f left join t_um
 	    <if test="cOrderID != null and cOrderID != '' ">  
 	       AND f.c_orderid = #{cOrderID}  
 	    </if>
+	    <if test="serialNoRecord != null and serialNoRecord != '' ">  
+	       AND exists(select 1 from t_trackinglist_cistern_assemble g where f.cistern_id=g.cistern_id and g.serial_no_record like concat('%',#{serialNoRecord},'%')) 
+	    </if>
 	    <if test="componentName != null and componentName != '' ">  
 	       AND exists(select 1 from t_trackinglist_cistern_assemble g where f.cistern_id=g.cistern_id and g.component_name like concat('%',#{componentName},'%')) 
 	    </if>
@@ -62,6 +65,9 @@ f.operatorid,g.account operatorName from t_trackinglist_cistern f left join t_um
 	    </if>
 	    <if test="cOrderID != null and cOrderID != '' ">  
 	       AND f.c_orderid = #{cOrderID}  
+	    </if>
+	    <if test="serialNoRecord != null and serialNoRecord != '' ">  
+	       AND exists(select 1 from t_trackinglist_cistern_assemble g where f.cistern_id=g.cistern_id and g.serial_no_record like concat('%',#{serialNoRecord},'%')) 
 	    </if>
 	    <if test="componentName != null and componentName != '' ">  
 	       AND exists(select 1 from t_trackinglist_cistern_assemble g where f.cistern_id=g.cistern_id and g.component_name like concat('%',#{componentName},'%')) 

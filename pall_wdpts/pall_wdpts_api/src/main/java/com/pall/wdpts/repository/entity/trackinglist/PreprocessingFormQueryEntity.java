@@ -45,6 +45,10 @@ public class PreprocessingFormQueryEntity {
 	 */
 	private String componentNo;
 	/*
+	 * 序列号记录
+	 */
+	private String serialNoRecord;
+	/*
 	 * 自检名称
 	 */
 	private String selfcheckName;
@@ -149,6 +153,12 @@ public class PreprocessingFormQueryEntity {
 	}
 	public void setcOrderID(String cOrderID) {
 		this.cOrderID = cOrderID;
+	}
+	public String getSerialNoRecord() {
+		return serialNoRecord;
+	}
+	public void setSerialNoRecord(String serialNoRecord) {
+		this.serialNoRecord = serialNoRecord;
 	}
 	
 }

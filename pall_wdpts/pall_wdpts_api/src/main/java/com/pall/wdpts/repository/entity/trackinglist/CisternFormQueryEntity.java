@@ -49,6 +49,10 @@ public class CisternFormQueryEntity {
 	 */
 	private String componentNo;
 	/*
+	 * 序列号记录
+	 */
+	private String serialNoRecord;
+	/*
 	 * 客户订单信息
 	 */
 	private String cOrderID;
@@ -129,6 +133,12 @@ public class CisternFormQueryEntity {
 	}
 	public void setcOrderID(String cOrderID) {
 		this.cOrderID = cOrderID;
+	}
+	public String getSerialNoRecord() {
+		return serialNoRecord;
+	}
+	public void setSerialNoRecord(String serialNoRecord) {
+		this.serialNoRecord = serialNoRecord;
 	}
 	
 }

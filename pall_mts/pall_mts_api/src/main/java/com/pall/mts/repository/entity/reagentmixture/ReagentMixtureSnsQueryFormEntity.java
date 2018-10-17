@@ -12,6 +12,10 @@ public class ReagentMixtureSnsQueryFormEntity {
 	private String mainReagent;
 	private String reagentsName;
 	/*
+	 * LOT#
+	 */
+	private String lotNum;
+	/*
 	 * 每页记录数
 	 */
 	private int pageSize;
@@ -50,6 +54,12 @@ public class ReagentMixtureSnsQueryFormEntity {
 	}
 	public void setReagentsName(String reagentsName) {
 		this.reagentsName = reagentsName;
+	}
+	public String getLotNum() {
+		return lotNum;
+	}
+	public void setLotNum(String lotNum) {
+		this.lotNum = lotNum;
 	}
 	
 }

@@ -50,14 +50,16 @@ $(document).ready(function() {
                 });
         },
         columns: [
-        	 {className: "td-reagent-checkbox",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
+        	 {className: "td-reagent-checkbox",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"15%",data: null,render: function (data, type, row, meta) {
                      return '<input name='+data.reagentsFieldName+'_'+data.srmid+' type="checkbox" class="ace"><span class="lbl"></span>';
              }},
-	        {className : "ellipsis",title:"srmid",data: "srmid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "5%"},
-	        {className : "ellipsis",title:"reagentsFieldName",data: "reagentsFieldName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "5%"},
-	        {className : "ellipsis",title:"主试剂",data: "mainReagent",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "30%"},
-	        {className : "ellipsis",title:"混合试剂",data: "reagentsName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "30%"},
-	        {className : "ellipsis",title:"试剂编号",data: "reagentsSn",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "30%"}
+	        {className : "ellipsis",title:"srmid",data: "srmid",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "15%"},
+	        {className : "ellipsis",title:"reagentsFieldName",data: "reagentsFieldName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"visible":false,"width": "15%"},
+	        {className : "ellipsis",title:"配置时间",data: "configTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "15%"},
+	        {className : "ellipsis",title:"LOT#",data: "lotNum",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "15%"},
+	        {className : "ellipsis",title:"主试剂",data: "mainReagent",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "15%"},
+	        {className : "ellipsis",title:"混合试剂",data: "reagentsName",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "15%"},
+	        {className : "ellipsis",title:"试剂编号",data: "reagentsSn",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "15%"}
 	     ],
 	     "drawCallback": function( settings ) {
 		    	$(":checkbox[name='cb-check-all']").prop('checked', false);

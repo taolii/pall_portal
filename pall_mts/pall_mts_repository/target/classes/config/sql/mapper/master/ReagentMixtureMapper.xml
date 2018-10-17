@@ -72,7 +72,7 @@ f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_
     </insert>
     <select id="queryReagentSnsMixtureList" resultType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureEntitySns"
 	parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureSnsQueryFormEntity"> 
- 		select f.srmid,f.rmid,f.reagents_name reagentsName,f.reagents_sn  reagentsSn,f.reagents_field_name reagentsFieldName,g.main_reagent mainReagent from t_ums_reagentmixture g left join t_ums_reagentmixture_sns f  on f.rmid=g.rmid where f.rmid is not null
+ 		select f.srmid,f.rmid,date_format(g.config_time, '%Y-%m-%d %H:%i:%s') configTime,g.lot_num lotNum,f.reagents_name reagentsName,f.reagents_sn  reagentsSn,f.reagents_field_name reagentsFieldName,g.main_reagent mainReagent from t_ums_reagentmixture g left join t_ums_reagentmixture_sns f  on f.rmid=g.rmid where f.rmid is not null
 	    <if test="rmid != null and rmid != '' ">  
 	       AND f.rmid = #{rmid}  
 	    </if>
@@ -81,6 +81,9 @@ f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_
 	    </if>
 	    <if test="reagentsName != null and reagentsName != '' ">  
 	       AND f.reagents_name = #{reagentsName}  
+	    </if>
+	    <if test="lotNum != null and lotNum != '' ">  
+	       AND g.lot_num = #{lotNum}  
 	    </if>
 	     limit #{startPageNum},#{pageSize}
  	</select> 
@@ -94,6 +97,9 @@ f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_
 	    </if>
 	    <if test="reagentsName != null and reagentsName != '' ">  
 	       AND f.reagents_name = #{reagentsName}  
+	    </if>
+	    <if test="lotNum != null and lotNum != '' ">  
+	       AND g.lot_num = #{lotNum}  
 	    </if>
  	</select>
 </mapper> 
