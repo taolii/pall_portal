@@ -61,13 +61,7 @@ $(document).ready(function() {
 	                }
             	}
             },
-            concentration: {
-	        	validators: {
-	        		numeric: {
-		                message: '浓度值必须为数字'
-		            }
-	        	}
-        	},
+            
 	        phValue: {
 	        	validators: {
 	        		numeric: {

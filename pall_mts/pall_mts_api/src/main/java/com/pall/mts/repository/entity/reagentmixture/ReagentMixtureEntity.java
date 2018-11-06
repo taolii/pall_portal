@@ -45,7 +45,7 @@ public class ReagentMixtureEntity {
 	/*
 	 * 浓度
 	 */
-	private Double concentration;
+	private String concentration;
 	/*
 	 * 回温开始时间
 	 */
@@ -141,10 +141,11 @@ public class ReagentMixtureEntity {
 	public void setPhValue(Double phValue) {
 		this.phValue = phValue;
 	}
-	public Double getConcentration() {
+	
+	public String getConcentration() {
 		return concentration;
 	}
-	public void setConcentration(Double concentration) {
+	public void setConcentration(String concentration) {
 		this.concentration = concentration;
 	}
 	public String getTemperatureUpStarttime() {

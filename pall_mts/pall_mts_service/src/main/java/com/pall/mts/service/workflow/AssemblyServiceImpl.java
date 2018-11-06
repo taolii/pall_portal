@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.alibaba.druid.util.StringUtils;
 import com.pall.mts.common.constants.IResponseConstants;
 import com.pall.mts.common.constants.KeyConstants;
 import com.pall.mts.common.datatables.Entity.DatatablesView;
@@ -20,11 +19,9 @@ import com.pall.mts.common.response.BaseTablesResponse;
 import com.pall.mts.init.UmsConfigInitiator;
 import com.pall.mts.repository.entity.workflow.AssemblyEntity;
 import com.pall.mts.repository.entity.workflow.AssemblyQueryFormEntity;
-import com.pall.mts.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.mts.repository.entity.workflow.DefectEntity;
 import com.pall.mts.repository.mapper.workflow.AssemblyDao;
 import com.pall.mts.repository.mapper.workflow.DefectDao;
-import com.pall.mts.service.workflow.AssemblyService;
 
 /*
  * 工作流服务实现类
@@ -130,13 +127,11 @@ public class AssemblyServiceImpl implements AssemblyService{
 			int resultNum=assemblyDao.modifyAssembly(assemblyEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=assemblyEntity.getDefects();
+				List<Integer> defectIDs=new ArrayList<Integer>();
+				defectIDs.add(assemblyEntity.getAssemblyID());
+				List<Integer> defectTypes=new ArrayList<Integer>();
+				defectDao.delDefectResult(defectIDs,defectTypes);
 				if(defects!=null && defects.size()>0){
-					List<Integer> defectIDs=new ArrayList<Integer>();
-					defectIDs.add(assemblyEntity.getAssemblyID());
-					List<Integer> defectTypes=new ArrayList<Integer>();
-					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_WF)));
-					defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMING_DATACONFIG_TYPE_DEFECT_NWF)));
-					defectDao.delDefectResult(defectIDs,defectTypes);
 					for(DefectEntity defectEntity:defects){
 						defectEntity.setDefectID(assemblyEntity.getAssemblyID());
 					}
@@ -167,8 +162,6 @@ public class AssemblyServiceImpl implements AssemblyService{
 		try{
 			assemblyDao.delAssembly(assemblyIDS);
 			List<Integer> defectTypes=new ArrayList<Integer>();
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_WF)));
-			defectTypes.add(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.ASSEMBLY_DATACONFIG_TYPE_DEFECT_NWF)));
 			defectDao.delDefectResult(assemblyIDS,defectTypes);
 			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
 		}catch(Exception e){

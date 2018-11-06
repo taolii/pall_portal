@@ -9,7 +9,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$('#queryStartCleanTime').val(currentDate(30));
-	$('#queryEndCleanTime').val(currentDate(0));
+	$('#queryEndCleanTime').val(currentDate(-1));
 	$('#addInputLotNum').click(function(){
 		manage.cleanShow();
 		$("#btn-query").click();

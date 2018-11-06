@@ -7,8 +7,8 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
-	$('#queryStartConfigTime').val(currentDate(30));
-	$('#queryEndConfigTime').val(currentDate(-1));
+	//$('#queryStartConfigTime').val(currentDate(30));
+	//$('#queryEndConfigTime').val(currentDate(-1));
 	var ids={"contextPath":"#contextPath","datatable":"#datatable","tableContainer":"#div-table-container","queryForm":"#queryForm"}
 	var contextPath=$(ids.contextPath).val();
 	var columns_setting=[
@@ -35,8 +35,8 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
-        	"<button id='editRow' class='btn btn-xs btn-info' type='button'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
-            "<button id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+        	"<button id='editRow' class='btn btn-xs btn-info' type='button' data-toggle='tooltip' data-placement='bottom' title='修改'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+            "<button id='delRow' class='btn btn-danger btn-xs' type='button' data-toggle='tooltip' data-placement='bottom' title='删除'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
           }, width : "100px"}
     ];

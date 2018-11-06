@@ -13,11 +13,9 @@ import com.pall.mts.common.datatables.Entity.DatatablesView;
 import com.pall.mts.common.i18n.ResourceUtils;
 import com.pall.mts.common.response.BaseResponse;
 import com.pall.mts.common.response.BaseTablesResponse;
-import com.pall.mts.repository.entity.workflow.OpticalCoatingEntity;
 import com.pall.mts.repository.entity.workflow.PlatedFilmEntity;
 import com.pall.mts.repository.entity.workflow.PlatedFilmQueryFormEntity;
 import com.pall.mts.repository.mapper.workflow.PlatedFilmDao;
-import com.pall.mts.service.workflow.PlatedFilmService;
 
 /*
  * 工作流服务实现类
@@ -60,6 +58,15 @@ public class PlatedFilmServiceImpl implements PlatedFilmService{
 	public BaseResponse addPlatedFilm(PlatedFilmEntity platedFilmEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			PlatedFilmQueryFormEntity platedFilmQueryFormEntity=new PlatedFilmQueryFormEntity();
+			platedFilmQueryFormEntity.setFixtureNum(platedFilmEntity.getFixtureNum());
+			platedFilmQueryFormEntity.setInputLotNum(platedFilmEntity.getInputLotNum());
+			int totalCount=platedFilmDao.queryPlatedFilmTotalRecords(platedFilmQueryFormEntity);
+			if(totalCount>=1){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("platedfilmManage.workflow.service.addPlatedFilm.fixtureandinputlotnum.exists"));
+				return baseResponse;
+			}
 			int resultNum=platedFilmDao.addPlatedFilm(platedFilmEntity);
 			if(resultNum>0){
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
@@ -78,6 +85,21 @@ public class PlatedFilmServiceImpl implements PlatedFilmService{
 	public BaseResponse  modifyPlatedFilm(PlatedFilmEntity platedFilmEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			PlatedFilmQueryFormEntity platedFilmQueryFormEntity=new PlatedFilmQueryFormEntity();
+			platedFilmQueryFormEntity.setStartPageNum(0);
+			platedFilmQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			platedFilmQueryFormEntity.setFixtureNum(platedFilmEntity.getFixtureNum());
+			platedFilmQueryFormEntity.setInputLotNum(platedFilmEntity.getInputLotNum());
+			List<PlatedFilmEntity> platedFilmEntitys=platedFilmDao.queryPlatedFilmList(platedFilmQueryFormEntity);
+			if(null!=platedFilmEntitys && platedFilmEntitys.size()>=1){
+				if(platedFilmEntitys.size()==1 && platedFilmEntitys.get(0).getPfID().intValue()==platedFilmEntity.getPfID().intValue()){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("platedfilmManage.workflow.service.modifyPlatedFilm.fixtureandinputlotnum.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=platedFilmDao.modifyPlatedFilm(platedFilmEntity);
 			if(resultNum>0){
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);

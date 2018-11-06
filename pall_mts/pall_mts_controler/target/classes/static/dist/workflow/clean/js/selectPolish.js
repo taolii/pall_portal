@@ -17,7 +17,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$('#queryStartPolishTime').val(currentDate(30));
-	$('#queryEndPolishTime').val(currentDate(0));
+	$('#queryEndPolishTime').val(currentDate(-1));
 	var columns_setting=[TABLE_CONSTANT.DATA_TABLES.COLUMN.RADIO];
 	var tableFieldBinds=$("#tableFieldBinds").val();
 	tableFieldBinds=eval("(" + tableFieldBinds + ")");
@@ -101,7 +101,9 @@ $(document).ready(function() {
 			$(radios).each(function(i) {
 				var item = _table.row($(this).closest('tr')).data();
 				var form=$('#updateForm').val();
+				
 	            $(form+' [name=inputLotNum]').val(item.polishLotNum);
+	           
 	            $(form+' [name=fixtureNumber]').val(item.fixtureNumber);
 	            $(form+' [name=inputQty]').val(item.outputQty);
 	            $("#polishModal").modal("hide");

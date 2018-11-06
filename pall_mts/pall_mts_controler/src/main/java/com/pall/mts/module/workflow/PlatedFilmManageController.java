@@ -193,7 +193,7 @@ public class PlatedFilmManageController{
 	 */
 	@Token(flag=Token.CHECK)
 	@RequestMapping(value="workflow/addPlatedFilm", method= RequestMethod.GET)
-    public String addPolish(Model model,HttpServletRequest request) {
+    public String addPlatedFilm(Model model,HttpServletRequest request) {
 		model=initConfigData(model);
 		model.addAttribute("sfDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.PLATEDFILM_DATACONFIG_TYPE_SFBOMNUM)));
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.OPTICALFILMINGSEL_TABLENAME));

@@ -94,6 +94,15 @@ public class PolishServiceImpl implements PolishService{
 	public BaseResponse addPolish(PolishEntity polishEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			PolishQueryFormEntity polishQueryFormEntity=new PolishQueryFormEntity();
+			polishQueryFormEntity.setFixtureNumber(polishEntity.getFixtureNumber());
+			polishQueryFormEntity.setInputLotNum(polishEntity.getInputLotNum());
+			int totalCount=polishDao.queryPolishTotalRecords(polishQueryFormEntity);
+			if(totalCount>=1){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("polshmanage.workflow.service.addPolish.fixtureandinputlotnum.exists"));
+				return baseResponse;
+			}
 			int resultNum=polishDao.addPolish(polishEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=polishEntity.getDefects();
@@ -126,6 +135,21 @@ public class PolishServiceImpl implements PolishService{
 	public BaseResponse modifyPolish(PolishEntity polishEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			PolishQueryFormEntity polishQueryFormEntity=new PolishQueryFormEntity();
+			polishQueryFormEntity.setStartPageNum(0);
+			polishQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			polishQueryFormEntity.setFixtureNumber(polishEntity.getFixtureNumber());
+			polishQueryFormEntity.setInputLotNum(polishEntity.getInputLotNum());
+			List<PolishEntity> polishEntitys=polishDao.queryPolishList(polishQueryFormEntity);
+			if(null!=polishEntitys && polishEntitys.size()>=1){
+				if(polishEntitys.size()==1 && polishEntitys.get(0).getPolishID().intValue()==polishEntity.getPolishID().intValue()){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("polshmanage.workflow.service.modifyPolish.fixtureandinputlotnum.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=polishDao.modifyPolish(polishEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=polishEntity.getDefects();

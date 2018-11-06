@@ -21,6 +21,8 @@ import com.pall.mts.repository.entity.workflow.AssemblyEntity;
 import com.pall.mts.repository.entity.workflow.CleanEntity;
 import com.pall.mts.repository.entity.workflow.CleanQueryFormEntity;
 import com.pall.mts.repository.entity.workflow.DefectEntity;
+import com.pall.mts.repository.entity.workflow.PolishEntity;
+import com.pall.mts.repository.entity.workflow.PolishQueryFormEntity;
 import com.pall.mts.repository.mapper.workflow.CleanDao;
 import com.pall.mts.repository.mapper.workflow.DefectDao;
 import com.pall.mts.service.workflow.CleanService;
@@ -94,6 +96,15 @@ public class CleanServiceImpl implements CleanService{
 	public BaseResponse addClean(CleanEntity cleanEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			CleanQueryFormEntity cleanQueryFormEntity=new CleanQueryFormEntity();
+			cleanQueryFormEntity.setFixtureNumber(cleanEntity.getFixtureNumber());
+			cleanQueryFormEntity.setCleanLotNum(cleanEntity.getCleanLotNum());
+			int totalCount=cleanDao.queryCleanTotalRecords(cleanQueryFormEntity);
+			if(totalCount>=1){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("cleanmanage.workflow.service.addClean.fixtureandinputlotnum.exists"));
+				return baseResponse;
+			}
 			int resultNum=cleanDao.addClean(cleanEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=cleanEntity.getDefects();
@@ -126,6 +137,21 @@ public class CleanServiceImpl implements CleanService{
 	public BaseResponse modifyClean(CleanEntity cleanEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			CleanQueryFormEntity cleanQueryFormEntity=new CleanQueryFormEntity();;
+			cleanQueryFormEntity.setStartPageNum(0);
+			cleanQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			cleanQueryFormEntity.setFixtureNumber(cleanEntity.getFixtureNumber());
+			cleanQueryFormEntity.setCleanLotNum(cleanEntity.getCleanLotNum());
+			List<CleanEntity> cleanEntitys=cleanDao.queryCleanList(cleanQueryFormEntity);
+			if(null!=cleanEntitys && cleanEntitys.size()>=1){
+				if(cleanEntitys.size()==1 && cleanEntitys.get(0).getCleanID().intValue()==cleanEntity.getCleanID().intValue()){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("cleanmanage.workflow.service.modifyClean.fixtureandinputlotnum.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=cleanDao.modifyClean(cleanEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=cleanEntity.getDefects();

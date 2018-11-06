@@ -1,11 +1,18 @@
 body, html {
     background:url("../images/bg-img.gif");
+    background-repeat:no-repeat; 
+    background-size:100% 100%;
+    -moz-background-size:100% 100%;
+    width:100%;
+    height:100%;
+    background-size:100% 100%;
+    position:absolute;
 }
 .login-icon {
     font-size:55px; color:#3b8cff;
 }
 .login-title {
-    font-size:30px; color:#3b8cff; font-family:'微软雅黑';
+    font-size:30px; color:#3b8cff; font-family:'寰蒋闆呴粦';
 }
 
 
@@ -44,7 +51,7 @@ body, html {
 }
 
 .login-main .login-box div.col-md-6 p.remind {
-    font-size:15px; margin-top:25px; text-align:left; color:#40aaef; font-family:'微软雅黑';
+    font-size:15px; margin-top:25px; text-align:left; color:#40aaef; font-family:'寰蒋闆呴粦';
 }
 .login-main .login-box div.col-md-6 p.remind:first-child {
     margin-top:35px; color:#fba848;
@@ -66,7 +73,6 @@ body, html {
 	bottom:0;
 	left:0;
     line-height:50px; color:#999;
-    background:url("../images/bg-img.gif");
 }
 .input-group-addon{
 	 border: 1px solid #917c59;

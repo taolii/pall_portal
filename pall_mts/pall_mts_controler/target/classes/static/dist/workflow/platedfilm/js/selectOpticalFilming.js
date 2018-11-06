@@ -22,7 +22,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$('#queryStartOptTime').val(currentDate(30));
-	$('#queryEndOptTime').val(currentDate(0));
+	$('#queryEndOptTime').val(currentDate(-1));
 	$('#addInputLotNum').click(function(){
 		manage.opticalFilmingShow();
 		$("#btn-query").click();

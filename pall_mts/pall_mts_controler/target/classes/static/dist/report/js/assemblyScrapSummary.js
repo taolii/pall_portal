@@ -8,7 +8,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     }); 
 	$('#queryStartDeliveryTime').val(currentDate(30));
-	$('#queryEndDliveryTime').val(currentDate(0));
+	$('#queryEndDliveryTime').val(currentDate(-1));
 	var contextPath=$("#contextPath").val();
 	var columns_setting=[
     	

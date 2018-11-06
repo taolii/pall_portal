@@ -69,7 +69,7 @@
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
-										<select name="fixtureAttribute" class="form-control">
+										<select name="fixtureAttribute" class="form-control" disabled="disabled">
 								              <option  th:each="dataConfig:${fixtureAttrDataConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
 								              </option>
 		                                </select>  
@@ -83,7 +83,7 @@
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
-										<input type='text' name="deliveryTime" id='addFormDeliveryTime' class="form-control form_datetime" th:value="${assemblyEntity.deliveryTime}"/>
+										<input type='text' name="deliveryTime" id='modFormDeliveryTime' class="form-control form_datetime" th:value="${assemblyEntity.deliveryTime}"/>
 									</div>
 								</div>
 								<div class="rowGroup">
@@ -106,9 +106,9 @@
 										<input type='text' name="inputLotNum" class="form-control" readonly="readonly" th:value="${assemblyEntity.inputLotNum}"/>
 									</div>
 	                      			<div class="col-md-1">
-										<span class=" btn btn-white btn-info" id="addInputLotNum">  
+										<a class=" btn btn-white btn-info" id="addInputLotNum">  
 		                     				<label th:text="#{pages.workflow.assembly.addAssembly.button.defect.add}" th:remove="tag"></label>
-		                     			</span> 
+		                     			</a> 
 									</div>
 								</div>
 								<div class="rowGroup" style="display:none">

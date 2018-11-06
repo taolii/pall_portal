@@ -16,12 +16,12 @@ $(document).ready(function() {
 	});
 	$("#deliveryType").change(function(){
 		if($(this).val()==2){
-			$("#addDataForm [name=inputLotNum]").removeAttr("readonly");
-			$("#addDataForm [name=fixtureNum]").removeAttr("readonly");
+			$("#modDataForm [name=inputLotNum]").removeAttr("readonly");
+			$("#modDataForm [name=fixtureNum]").removeAttr("readonly");
 			$("#addInputLotNum").addClass("disabled");
 		}else{
-			$("#addDataForm [name=inputLotNum]").attr("readonly","readonly");
-			$("#addDataForm [name=fixtureNum]").attr("readonly","readonly");
+			$("#modDataForm [name=inputLotNum]").attr("readonly","readonly");
+			$("#modDataForm [name=fixtureNum]").attr("readonly","readonly");
 			$("#addInputLotNum").removeClass("disabled");
 		}
 	});

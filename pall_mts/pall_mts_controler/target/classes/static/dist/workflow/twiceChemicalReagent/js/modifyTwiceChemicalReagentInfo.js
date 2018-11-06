@@ -64,6 +64,36 @@ $(document).ready(function() {
 		$("#addAuxiliaryReagent").val("#addAuxiliaryReagent3");
 		$("#querySingleReagentMixtureButton").click();
 	});
+	$('#addAuxiliaryReagent4').on('click', function() {
+		$singleReagentMixtureModal.draggable({ handle:".table-header",
+    		scroll: true, scrollSensitivity: 100,
+    		cursor: "move"});
+		$singleReagentMixtureModal.css("overflow", "hidden");
+		$singleReagentMixtureModal.css("overflow-y", "auto");
+		$singleReagentMixtureModal.modal("show");
+		$("#addAuxiliaryReagent").val("#addAuxiliaryReagent4");
+		$("#querySingleReagentMixtureButton").click();
+	});
+	$('#addAuxiliaryReagent5').on('click', function() {
+		$singleReagentMixtureModal.draggable({ handle:".table-header",
+    		scroll: true, scrollSensitivity: 100,
+    		cursor: "move"});
+		$singleReagentMixtureModal.css("overflow", "hidden");
+		$singleReagentMixtureModal.css("overflow-y", "auto");
+		$singleReagentMixtureModal.modal("show");
+		$("#addAuxiliaryReagent").val("#addAuxiliaryReagent5");
+		$("#querySingleReagentMixtureButton").click();
+	});
+	$('#addAuxiliaryReagent6').on('click', function() {
+		$singleReagentMixtureModal.draggable({ handle:".table-header",
+    		scroll: true, scrollSensitivity: 100,
+    		cursor: "move"});
+		$singleReagentMixtureModal.css("overflow", "hidden");
+		$singleReagentMixtureModal.css("overflow-y", "auto");
+		$singleReagentMixtureModal.modal("show");
+		$("#addAuxiliaryReagent").val("#addAuxiliaryReagent6");
+		$("#querySingleReagentMixtureButton").click();
+	});
 	$addChemicalReagentButton.on('click', function() {
 		$multipleReagentMixtureModal.draggable({handle:".table-header", 
     		scroll: true, scrollSensitivity: 100,

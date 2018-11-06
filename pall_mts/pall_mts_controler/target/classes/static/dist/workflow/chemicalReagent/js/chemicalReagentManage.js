@@ -8,7 +8,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$('#queryStartInPutDate').val(currentDate(30));
-	$('#queryEndInPutDate').val(currentDate(0));
+	$('#queryEndInPutDate').val(currentDate(-1));
 	var contextPath=$("#contextPath").val();
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
@@ -49,9 +49,9 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "td-operation",data: null,render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
-        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
-            "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
-            "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none' data-toggle='tooltip' data-placement='bottom' title='拷贝'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
+            "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none' data-toggle='tooltip' data-placement='bottom' title='修改'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+            "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none' data-toggle='tooltip' data-placement='bottom' title='删除'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
             "</div>";
           }, width : "140px"}
     ];

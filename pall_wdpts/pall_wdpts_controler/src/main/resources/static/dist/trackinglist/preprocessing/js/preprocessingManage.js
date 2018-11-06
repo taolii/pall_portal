@@ -10,7 +10,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$('#queryStartAssembleTime').val(currentDate(30));
-	$('#queryEndAssembleTime').val(currentDate(0));
+	$('#queryEndAssembleTime').val(currentDate(-1));
 	var columns_setting=[
 		{className: "ellipsis",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
             return '<input  type="checkbox" class="ace"><span class="lbl"></span>';

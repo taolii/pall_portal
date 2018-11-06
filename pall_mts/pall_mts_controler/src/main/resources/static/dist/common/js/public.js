@@ -24,7 +24,7 @@ function currentDate(num){
     var d =new Date(now.getTime() - num * 24 * 3600 * 1000);
     str=''; 
     str+=d.getFullYear()+'-';
-    if(Number(d.getMonth())<10){
+    if(Number(d.getMonth())<9){
     	str+='0'+(d.getMonth()+1)+'-'; 
     }else{
     	str+=d.getMonth() +1+'-'; 

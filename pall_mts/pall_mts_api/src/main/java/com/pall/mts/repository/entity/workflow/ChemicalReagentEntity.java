@@ -113,6 +113,18 @@ public class ChemicalReagentEntity {
 	 */
 	private String auxiliaryReagent3;
 	/*
+	 * 05-0080 6ug/ml HIgG
+	 */
+	private String auxiliaryReagent4;
+	/*
+	 * 05-0080 6ug/ml HIgG
+	 */
+	private String auxiliaryReagent5;
+	/*
+	 * 05-0080 6ug/ml HIgG
+	 */
+	private String auxiliaryReagent6;
+	/*
 	 * FIBER RAW MATERIAL
 	 */
 	
@@ -482,6 +494,25 @@ public class ChemicalReagentEntity {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getAuxiliaryReagent4() {
+		return auxiliaryReagent4;
+	}
+	public void setAuxiliaryReagent4(String auxiliaryReagent4) {
+		this.auxiliaryReagent4 = auxiliaryReagent4;
+	}
+	public String getAuxiliaryReagent5() {
+		return auxiliaryReagent5;
+	}
+	public void setAuxiliaryReagent5(String auxiliaryReagent5) {
+		this.auxiliaryReagent5 = auxiliaryReagent5;
+	}
+	public String getAuxiliaryReagent6() {
+		return auxiliaryReagent6;
+	}
+	public void setAuxiliaryReagent6(String auxiliaryReagent6) {
+		this.auxiliaryReagent6 = auxiliaryReagent6;
 	}
 
 	public interface ADD{};  

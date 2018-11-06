@@ -9,7 +9,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     }); 
 	$('#queryStartDeliveryTime').val(currentDate(30));
-	$('#queryEndDeliveryTime').val(currentDate(0));
+	$('#queryEndDeliveryTime').val(currentDate(-1));
 	var $wrapper = $('#div-table-container');
 	$assemblyQueryForm=$("#queryAssemblyModalForm");
 	var _assemblyTable = $('#assemblyTable').dataTable($.extend(true,

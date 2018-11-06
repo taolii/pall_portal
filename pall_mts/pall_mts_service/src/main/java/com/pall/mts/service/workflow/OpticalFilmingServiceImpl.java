@@ -17,13 +17,11 @@ import com.pall.mts.common.i18n.ResourceUtils;
 import com.pall.mts.common.response.BaseResponse;
 import com.pall.mts.common.response.BaseTablesResponse;
 import com.pall.mts.init.UmsConfigInitiator;
-import com.pall.mts.repository.entity.workflow.CleanEntity;
 import com.pall.mts.repository.entity.workflow.DefectEntity;
 import com.pall.mts.repository.entity.workflow.OpticalCoatingEntity;
 import com.pall.mts.repository.entity.workflow.OpticalFilmingQueryFormEntity;
 import com.pall.mts.repository.mapper.workflow.DefectDao;
 import com.pall.mts.repository.mapper.workflow.OpticalFilmingDao;
-import com.pall.mts.service.workflow.OpticalFilmingService;
 
 /*
  * 工作流服务实现类
@@ -94,6 +92,15 @@ public class OpticalFilmingServiceImpl implements OpticalFilmingService{
 	public BaseResponse addOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			OpticalFilmingQueryFormEntity opticalFilmingQueryFormEntity=new OpticalFilmingQueryFormEntity();
+			opticalFilmingQueryFormEntity.setFixtureNum(opticalCoatingEntity.getFixtureNum());
+			opticalFilmingQueryFormEntity.setInputLotNum(opticalCoatingEntity.getInputLotNum());
+			int totalCount=opticalFilmingDao.queryOpticalFilmingTotalRecords(opticalFilmingQueryFormEntity);
+			if(totalCount>=1){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.service.addOpticalFilming.fixtureandinputlotnum.exists"));
+				return baseResponse;
+			}
 			int resultNum=opticalFilmingDao.addOpticalFilming(opticalCoatingEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=opticalCoatingEntity.getDefects();
@@ -126,6 +133,21 @@ public class OpticalFilmingServiceImpl implements OpticalFilmingService{
 	public BaseResponse  modifyOpticalFilming(OpticalCoatingEntity opticalCoatingEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			OpticalFilmingQueryFormEntity opticalFilmingQueryFormEntity=new OpticalFilmingQueryFormEntity();
+			opticalFilmingQueryFormEntity.setStartPageNum(0);
+			opticalFilmingQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			opticalFilmingQueryFormEntity.setFixtureNum(opticalCoatingEntity.getFixtureNum());
+			opticalFilmingQueryFormEntity.setInputLotNum(opticalCoatingEntity.getInputLotNum());
+			List<OpticalCoatingEntity> opticalCoatingEntitys=opticalFilmingDao.queryOpticalFilmingList(opticalFilmingQueryFormEntity);
+			if(null!=opticalCoatingEntitys && opticalCoatingEntitys.size()>=1){
+				if(opticalCoatingEntitys.size()==1 && opticalCoatingEntitys.get(0).getOpfID().intValue()==opticalCoatingEntity.getOpfID().intValue()){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("opticalfilmingManage.workflow.service.modifyOpticalFilming.fixtureandinputlotnum.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=opticalFilmingDao.modifyOpticalFilming(opticalCoatingEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=opticalCoatingEntity.getDefects();

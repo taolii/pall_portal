@@ -73,9 +73,9 @@ $(document).ready(function() {
             {className : "ellipsis",data : "updateTime",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"120px"},
             {className : "td-operation",data: null,render : function(data,type, row, meta) {
             	return "<div class='btn-group'>"+
-                "<a id='editRow' class='btn btn-info btn-xs' type='button'><i class='ace-icon fa fa-pencil bigger-120'></i></a>"+
-                "<a id='editPwdRow' class='btn btn-success btn-xs' type='button'><i class='ace-icon fa fa-key bigger-120'></i></a>"+
-                "<a id='delRow' class='btn btn-danger btn-xs' type='button'><i class='ace-icon fa fa-trash-o bigger-120'></i></a>"+
+                "<a id='editRow' class='btn btn-info btn-xs' type='button' data-toggle='tooltip' data-placement='bottom' title='修改'><i class='ace-icon fa fa-pencil bigger-120'></i></a>"+
+                "<a id='editPwdRow' class='btn btn-success btn-xs' type='button' data-toggle='tooltip' data-placement='bottom' title='密码修改'><i class='ace-icon fa fa-key bigger-120'></i></a>"+
+                "<a id='delRow' class='btn btn-danger btn-xs' type='button' data-toggle='tooltip' data-placement='bottom' title='删除'><i class='ace-icon fa fa-trash-o bigger-120'></i></a>"+
                 "</div>";
               }, width : "100px"}
         ],

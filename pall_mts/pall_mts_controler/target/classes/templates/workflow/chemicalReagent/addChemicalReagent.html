@@ -161,6 +161,62 @@
 									</div>
 								</div>
 								<div class="rowGroup">
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.auxiliaryReagent4}" th:remove="tag"></label>
+										</span>
+										<div class="col-md-3">
+											 <input type='text' name="auxiliaryReagent4" class="form-control" readonly="readonly"/> 
+										</div>
+										<div class="col-md-1">
+											<span class=" btn btn-white btn-info" id="addAuxiliaryReagent4">  
+			                     				<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
+			                     			</span> 
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.auxiliaryReagent5}" th:remove="tag"></label>
+									</span>
+									<div class="col-md-3">
+										 <input type='text' name="auxiliaryReagent5" class="form-control" readonly="readonly"/> 
+									</div>
+									<div class="col-md-1">
+										<span class=" btn btn-white btn-info" id="addAuxiliaryReagent5">  
+		                     				<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
+		                     			</span> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.auxiliaryReagent6}" th:remove="tag"></label>
+										</span>
+										<div class="col-md-3">
+											 <input type='text' name="auxiliaryReagent6" class="form-control" readonly="readonly"/> 
+										</div>
+										<div class="col-md-1">
+											<span class=" btn btn-white btn-info" id="addAuxiliaryReagent6">  
+			                     				<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.auxiliaryReagent.button}" th:remove="tag"></label>
+			                     			</span> 
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group" style="display:none">
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.inPutDate}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="inPutDate" id='addFormInPutDate' class="form-control form_datetime"/>   
+									</div>
+								</div>
+								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.rawMaterial}" th:remove="tag"></label>
 									</span>
@@ -175,34 +231,11 @@
 							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2  control-label">
-										<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.inPutDate}" th:remove="tag"></label> 
-										
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="inPutDate" id='addFormInPutDate' class="form-control form_datetime"/>   
-									</div>
-								</div>
-								<div class="rowGroup">
-									<span class="col-md-2 control-label">
-										<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.coatingStation}" th:remove="tag"></label>
-										
-									</span>
-									<div class="col-md-4">
-										 <select name="coatingStation" class="form-control">
-								              <option  th:each="dataConfig:${coatingStationConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-								              </option>
-	                                	</select> 
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
 										<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.docRev}" th:remove="tag"></label> 
 										
 									</span>
 									<div class="col-md-4">
-										<input type='text' name="docRev" class="form-control" />    
+										<input type='text' name="docRev" class="form-control" th:placeholder="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.docRev.placeholder}"/>    
 									</div>
 								</div>
 								<div class="rowGroup">
@@ -346,6 +379,24 @@
 									</div>
 								</div>
 								<div class="rowGroup">
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.chemicalReagentManage.addChemicalReagent.form.coatingStation}" th:remove="tag"></label>
+										
+									</span>
+									<div class="col-md-4">
+										 <select name="coatingStation" class="form-control">
+								              <option  th:each="dataConfig:${coatingStationConfigs}" th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+								              </option>
+	                                	</select> 
+									</div>
+								</div>
+								<div class="rowGroup">
+									
 									
 								</div>
 							</div>

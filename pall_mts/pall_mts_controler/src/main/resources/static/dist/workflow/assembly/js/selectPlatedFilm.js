@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$('#addInputLotNum').click(function(){
 		manage.platedFilmShow();
 		var form=$('#updateForm').val();
-		$("#queryForm [name=fixtureAttribute]").val($(form+' [name=fixtureAttribute]').val());
+		//$("#queryForm [name=fixtureAttribute]").val($(form+' [name=fixtureAttribute]').val());
 		$("#btn-query").click();
 	});
 	var $wrapper = $('#div-table-container');
@@ -67,6 +67,7 @@ $(document).ready(function() {
    	        {className : "ellipsis",title:"Input LOT#",data: "inputLotNum",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
    	        {className : "ellipsis",title:"Input Qty(pcs)",data: "inputQty",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
    	        {className : "ellipsis",title:"Fixture#",data: "fixtureNum",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
+   	        {className : "ellipsis",title:"fixtureAttribute",data: "fixtureAttribute",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
    	        {className : "ellipsis",title:"Output LOT#",data: "outputLotNum",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
    	        {className : "ellipsis",title:"Output Qty(pcs)",data: "outputQty",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
    	        {className : "ellipsis",title:"PN#",data: "partNum",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "10%"},
@@ -96,6 +97,7 @@ $(document).ready(function() {
 				var form=$('#updateForm').val();
 	            $(form+' [name=inputLotNum]').val(item.outputLotNum);
 	            $(form+' [name=fixtureNum]').val(item.fixtureNum);
+	            $(form+' [name=fixtureAttribute]').val(item.fixtureAttribute);
 	            $(form+' [name=fixtureAttribute]').attr("disabled","disabled");
 	            $("#selectPlatedFilmModal").modal("hide");
 	        });
