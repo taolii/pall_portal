@@ -43,7 +43,7 @@
 										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
 										<input type='hidden' id="mainframeSettingPsid" name="psid"  class="form-control" value="-1"/>
 										<input type='hidden' name="mainframeID"  class="form-control" th:value="${mainframeEntity.mainframeID}"/>
-										<input type='text' id="mainframeSettingMainframePn" name="mainframePn" readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframePn}"/>  
+										<input type='text' id="mainframeSettingMainframePn" name="mainframePn" class="form-control" th:value="${mainframeEntity.mainframePn}"/>  
 									</div>
 									<div class="col-md-1">
 										<span class=" btn btn-white btn-info" id="addMainframePn">  
@@ -77,36 +77,10 @@
 											<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.mainframeModel}" th:remove="tag"></label>
 										</span>
 										<div class="col-md-4">
-											<select name="mainframeModel" class="form-control">
-								                <option  th:each="mainframeModelDataConfig:${mainframeModelDataConfigs}" th:selected="${mainframeEntity.mainframeModel==mainframeModelDataConfig.configName}" th:text="${mainframeModelDataConfig.configName}" th:value="${mainframeModelDataConfig.configName}">
-								                </option>
-		                                    </select> 
+											 <input type='text'  name="mainframeModel"  readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframeModel}"/> 
+											
 										</div>
 									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.productionTime}" th:remove="tag"></label> 
-										
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="productionTime"  id='addFormProductionTime' class="form-control form_datetime" th:value="${mainframeEntity.productionTime}"/>  
-									</div>
-								</div>
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.mainframeOption}" th:remove="tag"></label> 
-										
-									</span>
-									<div class="col-md-2">
-										<input type='text' name="mainframeOption"  class="form-control" th:value="${mainframeEntity.mainframeOption}"/>  
-									</div>
-									<div class="col-md-2">
-										<input type='text' name="mainframeOption2"  class="form-control" th:value="${mainframeEntity.mainframeOption2}"/>  
-									</div>
-									
 								</div>
 							</div>
 							<div class="form-group">
@@ -116,6 +90,31 @@
 									</span>
 									<div class="col-md-4">
 										<input type='text' name="cOrderID"  class="form-control" th:value="${mainframeEntity.cOrderID}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.mainframeOption}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-2">
+										<input type='text' name="mainframeOption"  readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframeOption}"/>  
+									</div>
+									<div class="col-md-2">
+										<input type='text' name="mainframeOption2"  readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframeOption2}"/>  
+									</div>
+									
+								</div>
+							</div>
+							<div class="form-group">
+								
+								<div class="rowGroup" style="display:none">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.productionTime}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="productionTime"  id='addFormProductionTime' class="form-control form_datetime" th:value="${mainframeEntity.productionTime}"/>  
 									</div>
 								</div>
 								<div class="rowGroup">
@@ -156,12 +155,12 @@
 								</div>
 							</div>
 							
-							<div class="form-group"  style="display:none">
+							<div class="form-group" >
 								<span class="col-sm-12 control-label center">
 									<label th:text="#{pages.trackinglist.mainframe.modMainframe.form.inspectRecords}" th:remove="tag"></label>
 								</span>
 							</div>
-							<div class="form-group"  style="display:none">
+							<div class="form-group" >
 								<div class="rowGroup">
 									<div class="col-md-10 col-md-offset-1">
 										<div class="row" id="mainframeInspectsDatatableContainer">

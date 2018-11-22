@@ -15,6 +15,22 @@ public class MainframeSettingEntity {
 	@NotEmpty(message="{mainframeSetting.form.mainframePn.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String mainframePn;
 	/*
+	 * 主机型号/Model
+	 */
+	private String mainframeModel;
+	/*
+	 * 主机选配件/Option
+	 */
+	private String mainframeOption;
+	/*
+	 * 主机选配件/Option
+	 */
+	private String mainframeOption2;
+	/*
+	 * 主机选配件/Option
+	 */
+	private String mainframeOptions;
+	/*
 	 * 主机送检配置对象
 	 */
 	private List<MainframeSettingInspectEntity> mainframeSettingInspects;
@@ -88,6 +104,32 @@ public class MainframeSettingEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	
+	public String getMainframeModel() {
+		return mainframeModel;
+	}
+	public void setMainframeModel(String mainframeModel) {
+		this.mainframeModel = mainframeModel;
+	}
+	public String getMainframeOption() {
+		return mainframeOption;
+	}
+	public void setMainframeOption(String mainframeOption) {
+		this.mainframeOption = mainframeOption;
+	}
+	public String getMainframeOption2() {
+		return mainframeOption2;
+	}
+	public void setMainframeOption2(String mainframeOption2) {
+		this.mainframeOption2 = mainframeOption2;
+	}
+	public String getMainframeOptions() {
+		return mainframeOptions;
+	}
+	public void setMainframeOptions(String mainframeOptions) {
+		this.mainframeOptions = mainframeOptions;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

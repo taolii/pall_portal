@@ -42,6 +42,34 @@
 									</div>
 								</div>
 								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.setting.mainframeSetting.modMainframeSetting.form.mainframeOption}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-2">
+										<input type='text' name="mainframeOption"  class="form-control" th:value="${mainframeSettingEntity.mainframeOption}"/>   
+									</div>
+									<div class="col-md-2">
+										<input type='text' name="mainframeOption2"  class="form-control" th:value="${mainframeSettingEntity.mainframeOption2}"/>    
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.setting.mainframeSetting.modMainframeSetting.form.mainframeModel}" th:remove="tag"></label>
+											
+										</span>
+										<div class="col-md-4">
+											<select name="mainframeModel" class="form-control">
+								                <option  th:each="mainframeModelDataConfig:${mainframeModelDataConfigs}" th:selected="${mainframeSettingEntity.mainframeModel==mainframeModelDataConfig.configName}" th:text="${mainframeModelDataConfig.configName}" th:value="${mainframeModelDataConfig.configName}">
+								                </option>
+		                                    </select> 
+										</div>
+									</div>
+								</div>
+								<div class="rowGroup">
 									
 								</div>
 							</div>
@@ -116,7 +144,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="display:none">
+							<div class="form-group" >
 								<div class="rowGroup">
 									<div class="col-md-10 col-md-offset-1">
 										<div class="row">

@@ -74,17 +74,29 @@ var CisternAssembleTable=function(contextPath,ids){
 			datatable.row.add(data).draw();
 		});
 	}
-	cisternAssembleTable.addPreprocssingSettingAssemblesPassAjax=function(datatable,csid){
+	cisternAssembleTable.addCisternSettingAssemblesPassAjax=function(datatable,csid,cisternPn,formid){
 		$.ajax({
 			type:'post',
             url:cisternAssembleTable.contextPath+"/setting/cisternAssembleDetail",
-            data:{"csid":csid},
+            data:{"csid":csid,"cisternPn":cisternPn},
             dataType:"json",
             async:true,
 	        success:function (result){
         	   	if (result.resultCode!=0) {
         	   	   showNotice('Error','<span style="padding-top:5px">信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         	   	   return;
+        	   	}
+        	   	if(result.datatablesView.recordsTotal==0){
+        	   		showNotice('提示','未查询到匹配信息','success',1000*10);
+         	   	   return;
+        	   	};
+        	   	$(formid+" [name=cisternModel]").val("");
+    	   		$(formid+" [name=cisternOption]").val("");
+    	   		$(formid+" [name=cisternOption2]").val("");
+        	   	if(result.mainRecord!=null){
+        	   		$(formid+" [name=cisternModel]").val(result.mainRecord.cisternModel);
+        	   		$(formid+" [name=cisternOption]").val(result.mainRecord.cisternOption);
+        	   		$(formid+" [name=cisternOption2]").val(result.mainRecord.cisternOption2);
         	   	}
         		var datas=JSON.stringify(result.datatablesView.data);
         	   	cisternAssembleTable.addCisternAssembles(datatable,datas);
@@ -103,6 +115,7 @@ var CisternAssembleTable=function(contextPath,ids){
             dataType:"json",
             async:true,
 	        success:function (result){
+	        	
         	   	if (result.resultCode!=0) {
         	   	   showNotice('Error','<span style="padding-top:5px">信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         	   	   return;

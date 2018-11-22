@@ -41,6 +41,35 @@
 									</div>
 								</div>
 								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.setting.cisternSetting.addCisternSetting.form.cisternOption}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-2">
+										<input type='text' name="cisternOption"  class="form-control" />  
+									</div>
+									<div class="col-md-2">
+										<input type='text' name="cisternOption2"  class="form-control" />  
+									</div>
+								</div>
+								
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.setting.cisternSetting.addCisternSetting.form.cisternModel}" th:remove="tag"></label>
+											
+										</span>
+										<div class="col-md-4">
+											<select name="cisternModel" class="form-control">
+								                <option  th:each="cisternModelDataConfig:${cisternModelDataConfigs}"  th:text="${cisternModelDataConfig.configName}" th:value="${cisternModelDataConfig.configName}">
+								                </option>
+		                                    </select> 
+										</div>
+									</div>
+								</div>
+								<div class="rowGroup">
 									
 								</div>
 							</div>

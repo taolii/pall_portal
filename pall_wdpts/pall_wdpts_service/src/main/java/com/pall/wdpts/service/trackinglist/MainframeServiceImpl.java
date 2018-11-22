@@ -367,10 +367,10 @@ public class MainframeServiceImpl implements MainframeService{
 	}
 
 	@Override
-	public BaseTablesResponse queryMainframeSettingInspectList(String psid) throws Exception {
+	public BaseTablesResponse queryMainframeSettingInspectList(String  msid) throws Exception {
 		BaseTablesResponse baseResponse=new BaseTablesResponse();
 		try{
-			List<MainframeSettingInspectEntity> mainframeSettingInspects=mainframeDao.queryMainframeSettingInspectList(psid);
+			List<MainframeSettingInspectEntity> mainframeSettingInspects=mainframeDao.queryMainframeSettingInspectList(msid);
 			DatatablesView datatablesViews=new DatatablesView();
 			if(mainframeSettingInspects!=null){
 				datatablesViews.setiTotalDisplayRecords(mainframeSettingInspects.size());

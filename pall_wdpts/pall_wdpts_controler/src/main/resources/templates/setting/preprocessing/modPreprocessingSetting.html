@@ -42,6 +42,34 @@
 									</div>
 								</div>
 								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.setting.preprocessingSetting.modPreprocessingSetting.form.ptOption}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-2">
+										<input type='text' name="ptOption"  class="form-control" th:value="${preprocessingSettingEntity.ptOption}"/>   
+									</div>
+									<div class="col-md-2">
+										<input type='text' name="ptOption2"  class="form-control" th:value="${preprocessingSettingEntity.ptOption2}"/>    
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<div class="rowGroup">
+										<span class="col-md-2 control-label">
+											<label th:text="#{pages.setting.preprocessingSetting.modPreprocessingSetting.form.preprocessingModel}" th:remove="tag"></label>
+											
+										</span>
+										<div class="col-md-4">
+											<select name="preprocessingModel" class="form-control">
+								                <option  th:each="preprocessingModelDataConfig:${preprocessingModelDataConfigs}" th:selected="${preprocessingSettingEntity.preprocessingModel==preprocessingModelDataConfig.configName}" th:text="${preprocessingModelDataConfig.configName}" th:value="${preprocessingModelDataConfig.configName}">
+								                </option>
+		                                    </select> 
+										</div>
+									</div>
+								</div>
+								<div class="rowGroup">
 									
 								</div>
 							</div>

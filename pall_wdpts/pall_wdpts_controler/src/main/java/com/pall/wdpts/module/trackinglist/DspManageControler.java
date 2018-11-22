@@ -44,7 +44,6 @@ import com.pall.wdpts.common.response.BaseTablesResponse;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.context.HolderContext;
-import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.TableDataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
@@ -94,7 +93,7 @@ public class DspManageControler {
 	private Model initConfigData(Model model){
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_DSP_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
-		model.addAttribute("dspModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_DSP_DATACONFIG_TYPE_DSPMODEL)));
+		
 		return model;
 	}
 	/*
@@ -189,8 +188,11 @@ public class DspManageControler {
 				if(at!=null && at.getUserEntity()!=null){
 					dspEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				dspEntity.setAssembleRecords(getDspAssembles(request));
-				baseResponse=dspService.addDsp(dspEntity);
+				baseResponse=getDspAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					dspEntity.setAssembleRecords((List<DspAssembleEntity>)baseResponse.getReturnObjects());
+					baseResponse=dspService.addDsp(dspEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("dsp.Controler.addDsp.exception"),e);
@@ -205,7 +207,8 @@ public class DspManageControler {
 	 * @param request 请求对象
 	 * @return
 	 */
-	private List<DspAssembleEntity> getDspAssembles(HttpServletRequest request){
+	private BaseResponse getDspAssembles(HttpServletRequest request){
+		BaseResponse baseResponse=new BaseResponse();
 		String[] assembleids=request.getParameterValues("assembleid");
 		List<DspAssembleEntity> dspAssembles=new ArrayList<DspAssembleEntity>();
 		if(!ArrayUtils.isEmpty(assembleids)){
@@ -219,10 +222,17 @@ public class DspManageControler {
 				dspAssembleEntity.setComponentName(request.getParameter("componentName_"+assembleid));
 				dspAssembleEntity.setComponentNo(request.getParameter("componentNo_"+assembleid));
 				dspAssembleEntity.setSerialNoRecord(request.getParameter("serialNoRecord_"+assembleid));
+				if(StringUtils.isEmpty(dspAssembleEntity.getSerialNoRecord())){
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("dsp.Controler.serialNoRecord.Assemble.isNotEmpty"));
+					return baseResponse;
+				}
 				dspAssembles.add(dspAssembleEntity);
 			}
 		}
-		return dspAssembles;
+		baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		baseResponse.setReturnObjects(dspAssembles);
+		return baseResponse;
 	}
 	/*
 	 * 修改Dsp装配信息
@@ -268,8 +278,12 @@ public class DspManageControler {
 				if(at!=null && at.getUserEntity()!=null){
 					dspEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				dspEntity.setAssembleRecords(getDspAssembles(request));
-				baseResponse=dspService.modifyDsp(dspEntity);
+				
+				baseResponse=getDspAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					dspEntity.setAssembleRecords((List<DspAssembleEntity>)baseResponse.getReturnObjects());
+					baseResponse=dspService.modifyDsp(dspEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("dsp.Controler.modDsp.exception"),e);

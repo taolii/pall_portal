@@ -99,7 +99,7 @@ var CisternSettingModal=function(contextPath,ids){
 					$(ids.dataForm+" [name=cisternPn]").val(item.cisternPn);
 					$(ids.modal).modal("hide");
 					cisternAssembleDatatables.clear().draw();
-					cisternAssembleTable.addPreprocssingSettingAssemblesPassAjax(cisternAssembleDatatables,item.csid);
+					cisternAssembleTable.addCisternSettingAssemblesPassAjax(cisternAssembleDatatables,item.csid,item.cisternPn);
 		        });
 			}
 		});

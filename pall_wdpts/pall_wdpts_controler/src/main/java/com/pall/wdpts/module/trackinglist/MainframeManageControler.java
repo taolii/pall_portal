@@ -45,7 +45,6 @@ import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
 import com.pall.wdpts.context.HolderContext;
-import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.TableDataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
@@ -96,7 +95,7 @@ public class MainframeManageControler {
 	private Model initConfigData(Model model){
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_MAINFRAME_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
-		model.addAttribute("mainframeModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_MAINFRAME_DATACONFIG_TYPE_MAINFRAMEMODEL)));
+		
 		return model;
 	}
 	/*
@@ -198,9 +197,12 @@ public class MainframeManageControler {
 					mainframeEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
 				if(StringUtils.isEmpty(mainframeEntity.getInspectTime()))mainframeEntity.setInspectTime(null);
-				mainframeEntity.setAssembleRecords(getMainframeAssembles(request));
-				mainframeEntity.setInspectRecords(getMainframeInspects(request));
-				baseResponse=mainframeService.addMainframe(mainframeEntity);
+				baseResponse=getMainframeAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					mainframeEntity.setAssembleRecords((List<MainframeAssembleEntity>)baseResponse.getReturnObjects());
+					mainframeEntity.setInspectRecords(getMainframeInspects(request));
+					baseResponse=mainframeService.addMainframe(mainframeEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("mainframe.Controler.addMainframe.exception"),e);
@@ -220,12 +222,12 @@ public class MainframeManageControler {
 		List<MainframeInspectEntity> mainframeInspects=new ArrayList<MainframeInspectEntity>();
 		if(!ArrayUtils.isEmpty(inspectids)){
 			for(String inspectid:inspectids){
-				if(StringUtils.isEmpty(request.getParameter("remarks_"+inspectid)) && StringUtils.isEmpty(request.getParameter("selfcheckContent_"+inspectid))
+				if(StringUtils.isEmpty(request.getParameter("inspect_remarks_"+inspectid)) && StringUtils.isEmpty(request.getParameter("selfcheckContent_"+inspectid))
 						&& StringUtils.isEmpty(request.getParameter("selfcheckName_"+inspectid)) && StringUtils.isEmpty(request.getParameter("selfcheckResult_"+inspectid))){
 					continue;
 				}
 				MainframeInspectEntity mainframeInspectEntity=new MainframeInspectEntity();
-				mainframeInspectEntity.setRemarks(request.getParameter("remarks_"+inspectid));
+				mainframeInspectEntity.setRemarks(request.getParameter("inspect_remarks_"+inspectid));
 				mainframeInspectEntity.setSelfcheckContent(request.getParameter("selfcheckContent_"+inspectid));
 				mainframeInspectEntity.setSelfcheckName(request.getParameter("selfcheckName_"+inspectid));
 				mainframeInspectEntity.setSelfcheckResult(request.getParameter("selfcheckResult_"+inspectid));
@@ -240,7 +242,8 @@ public class MainframeManageControler {
 	 * @param request 请求对象
 	 * @return
 	 */
-	private List<MainframeAssembleEntity> getMainframeAssembles(HttpServletRequest request){
+	private BaseResponse getMainframeAssembles(HttpServletRequest request){
+		BaseResponse baseResponse=new BaseResponse();
 		String[] assembleids=request.getParameterValues("assembleid");
 		List<MainframeAssembleEntity> mainframeAssembles=new ArrayList<MainframeAssembleEntity>();
 		if(!ArrayUtils.isEmpty(assembleids)){
@@ -254,10 +257,17 @@ public class MainframeManageControler {
 				mainframeAssembleEntity.setComponentName(request.getParameter("componentName_"+assembleid));
 				mainframeAssembleEntity.setComponentNo(request.getParameter("componentNo_"+assembleid));
 				mainframeAssembleEntity.setSerialNoRecord(request.getParameter("serialNoRecord_"+assembleid));
+				if(StringUtils.isEmpty(mainframeAssembleEntity.getSerialNoRecord())){
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("mainframe.Controler.serialNoRecord.Assemble.isNotEmpty"));
+					return baseResponse;
+				}
 				mainframeAssembles.add(mainframeAssembleEntity);
 			}
 		}
-		return mainframeAssembles;
+		baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		baseResponse.setReturnObjects(mainframeAssembles);
+		return baseResponse;
 	}
 	/*
 	 * 修改主机装配信息
@@ -304,10 +314,12 @@ public class MainframeManageControler {
 				if(at!=null && at.getUserEntity()!=null){
 					mainframeEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				
-				mainframeEntity.setAssembleRecords(getMainframeAssembles(request));
-				mainframeEntity.setInspectRecords(getMainframeInspects(request));
-				baseResponse=mainframeService.modifyMainframe(mainframeEntity);
+				baseResponse=getMainframeAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					mainframeEntity.setAssembleRecords((List<MainframeAssembleEntity>)baseResponse.getReturnObjects());
+					mainframeEntity.setInspectRecords(getMainframeInspects(request));
+					baseResponse=mainframeService.modifyMainframe(mainframeEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("mainframe.Controler.modMainframe.exception"),e);

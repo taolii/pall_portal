@@ -15,6 +15,10 @@ public class BaseTablesResponse {
 	 * 返回列表信息
 	 */
 	private DatatablesView datatablesView;
+	/*
+	 * 主记录
+	 */
+	private Object mainRecord;
 	
 	
 	public int getResultCode() {
@@ -34,6 +38,12 @@ public class BaseTablesResponse {
 	}
 	public void setDatatablesView(DatatablesView datatablesView) {
 		this.datatablesView = datatablesView;
+	}
+	public Object getMainRecord() {
+		return mainRecord;
+	}
+	public void setMainRecord(Object mainRecord) {
+		this.mainRecord = mainRecord;
 	}
 	
 }

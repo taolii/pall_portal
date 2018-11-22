@@ -45,7 +45,6 @@ import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
 import com.pall.wdpts.context.HolderContext;
-import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.TableDataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
@@ -95,7 +94,7 @@ public class CisternManageControler {
 	private Model initConfigData(Model model){
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_CISTERN_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
-		model.addAttribute("cisternModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_CISTERN_DATACONFIG_TYPE_CISTERNMODEL)));
+		
 		return model;
 	}
 	/*
@@ -195,8 +194,12 @@ public class CisternManageControler {
 				if(at!=null && at.getUserEntity()!=null){
 					cisternEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				cisternEntity.setAssembleRecords(getCisternAssembles(request));
-				baseResponse=cisternService.addCistern(cisternEntity);
+				baseResponse=getCisternAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					cisternEntity.setAssembleRecords((List<CisternAssembleEntity>)baseResponse.getReturnObjects());
+					baseResponse=cisternService.addCistern(cisternEntity);
+				}
+				
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("cistern.Controler.addCistern.exception"),e);
@@ -211,7 +214,8 @@ public class CisternManageControler {
 	 * @param request 请求对象
 	 * @return
 	 */
-	private List<CisternAssembleEntity> getCisternAssembles(HttpServletRequest request){
+	private BaseResponse getCisternAssembles(HttpServletRequest request){
+		BaseResponse baseResponse=new BaseResponse();
 		String[] assembleids=request.getParameterValues("assembleid");
 		List<CisternAssembleEntity> cisternAssembles=new ArrayList<CisternAssembleEntity>();
 		if(!ArrayUtils.isEmpty(assembleids)){
@@ -225,10 +229,17 @@ public class CisternManageControler {
 				cisternAssembleEntity.setComponentName(request.getParameter("componentName_"+assembleid));
 				cisternAssembleEntity.setComponentNo(request.getParameter("componentNo_"+assembleid));
 				cisternAssembleEntity.setSerialNoRecord(request.getParameter("serialNoRecord_"+assembleid));
+				if(StringUtils.isEmpty(cisternAssembleEntity.getSerialNoRecord())){
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("cistern.Controler.serialNoRecord.Assemble.isNotEmpty"));
+					return baseResponse;
+				}
 				cisternAssembles.add(cisternAssembleEntity);
 			}
 		}
-		return cisternAssembles;
+		baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		baseResponse.setReturnObjects(cisternAssembles);
+		return baseResponse;
 	}
 	/*
 	 * 修改水箱装配信息
@@ -274,8 +285,11 @@ public class CisternManageControler {
 				if(at!=null && at.getUserEntity()!=null){
 					cisternEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				cisternEntity.setAssembleRecords(getCisternAssembles(request));
-				baseResponse=cisternService.modifyCistern(cisternEntity);
+				baseResponse=getCisternAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					cisternEntity.setAssembleRecords((List<CisternAssembleEntity>)baseResponse.getReturnObjects());
+					baseResponse=cisternService.modifyCistern(cisternEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("cistern.Controler.modCistern.exception"),e);

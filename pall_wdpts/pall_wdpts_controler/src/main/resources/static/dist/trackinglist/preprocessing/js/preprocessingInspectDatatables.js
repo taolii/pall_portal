@@ -74,11 +74,11 @@ var PreprocessingInspectTable=function(contextPath,ids){
 			datatable.row.add(data).draw();
 		});
 	}
-	preprocessingInspectTable.addPreprocssingSettingInspectsPassAjax=function(datatable,psid){
+	preprocessingInspectTable.addPreprocssingSettingInspectsPassAjax=function(datatable,psid,preprocessingPn){
 		$.ajax({
 			type:'post',
             url:preprocessingInspectTable.contextPath+"/setting/preprocessingInspectDetail",
-            data:{"psid":psid},
+            data:{"psid":psid,"preprocessingPn":preprocessingPn},
             dataType:"json",
             async:true,
 	        success:function (result){
@@ -86,6 +86,10 @@ var PreprocessingInspectTable=function(contextPath,ids){
         	   	   showNotice('Error','<span style="padding-top:5px">信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         	   	   return;
         	   	}
+        		if(result.datatablesView.recordsTotal==0){
+        	   		showNotice('提示','未查询到匹配信息','success',1000*10);
+         	   	   return;
+        	   	};
         		var datas=JSON.stringify(result.datatablesView.data);
         	   	preprocessingInspectTable.addPreprocessingInspects(datatable,datas);
            },

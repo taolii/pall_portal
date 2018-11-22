@@ -276,7 +276,7 @@ public class CisternServiceImpl implements CisternService{
 	}
 
 	@Override
-	public BaseTablesResponse queryCisternSettingAssembleList(String csid) throws Exception {
+	public BaseTablesResponse queryCisternSettingAssembleList(String  csid) throws Exception {
 		BaseTablesResponse baseResponse=new BaseTablesResponse();
 		try{
 			List<CisternSettingAssembleEntity> cisternSettingAssembles=cisternDao.queryCisternSettingAssembleList(csid);

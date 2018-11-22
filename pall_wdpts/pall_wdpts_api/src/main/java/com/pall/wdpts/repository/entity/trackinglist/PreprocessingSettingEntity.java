@@ -15,6 +15,22 @@ public class PreprocessingSettingEntity {
 	@NotEmpty(message="{preprocessingSetting.form.preprocessingPn.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String preprocessingPn;
 	/*
+	 * 名称/Model
+	 */
+	private String preprocessingModel;
+	/*
+	 * PT选配件/Option
+	 */
+	private String ptOptions;
+	/*
+	 * PT选配件/Option
+	 */
+	private String ptOption;
+	/*
+	 * PT选配件/Option
+	 */
+	private String ptOption2;
+	/*
 	 * 预处理送检配置对象
 	 */
 	private List<PreprocessingSettingInspectEntity> preprocessingSettingInspects;
@@ -88,6 +104,31 @@ public class PreprocessingSettingEntity {
 	}
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
+	}
+
+	public String getPreprocessingModel() {
+		return preprocessingModel;
+	}
+	public void setPreprocessingModel(String preprocessingModel) {
+		this.preprocessingModel = preprocessingModel;
+	}
+	public String getPtOptions() {
+		return ptOptions;
+	}
+	public void setPtOptions(String ptOptions) {
+		this.ptOptions = ptOptions;
+	}
+	public String getPtOption() {
+		return ptOption;
+	}
+	public void setPtOption(String ptOption) {
+		this.ptOption = ptOption;
+	}
+	public String getPtOption2() {
+		return ptOption2;
+	}
+	public void setPtOption2(String ptOption2) {
+		this.ptOption2 = ptOption2;
 	}
 
 	public interface ADD{};  

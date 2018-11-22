@@ -23,47 +23,31 @@ var MainframeInspectTable=function(contextPath,ids){
 			          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
 	            },width:"100px"},
 	 	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
-	 	        	var component="<input type='hidden'  name='selfcheckContent_"+meta.row+"' value='"+data+"'></input>";
-			          if(data){//不为空
-			        	  $.each(data.split("|"), function(index, selfcheckContent){
-			        		  component=component+selfcheckContent+"<br>";
-			        		});
-			        	}
-			          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-	            },width:"100px"},
+	 	        	var trs="";
+		        	if(data.length>0){
+		        		for(var i=0;i<data.length;i++){
+		        			if(data.charAt(i)==0){
+		        				trs=trs+"<td><input disabled='disabled' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+		        			}else{
+		        				trs=trs+"<td><input disabled='disabled' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' checked='true' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+		        			}
+		        		}
+		        	}
+		        	return "" +
+	            	"<input type='hidden' name='selfcheckContent_"+meta.row+"' value='"+data+"'></input><table style='border:1px'>" +
+	            	"<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>" +
+	            	"<tr>" +
+	            	trs
+	            	"</tr>" +
+	            	"<table>"+
+	            			"";
+	            },width:"800px"},
 	 	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
-	 	        	var component="";
-			          if(data){//不为空
-			        	  var datas=data.split("|");
-	 		        	  if(datas && datas.length>=2){
-	 		        		 var checkedIndex=0;
-	 		        		 $.each(datas, function(index, selfcheckResult){
-	 		        			 if(index==0){
-	 		        				var temps=selfcheckResult.split('_');
-	 		        				if(temps.length>=2){
-	 	 		        				 checkedIndex=temps[0];
-	 	 		        				data=data.substr(temps[0].length+1,data.length);
-	 	 		        				selfcheckResult=selfcheckResult.substr(temps[0].length+1,selfcheckResult.length);
-	 	 		        			 }
-	 		        			  }
-	 		        			 var tempVaule=index+"_"+data;
-	 		        			 if(checkedIndex==index){
-	 		        				component=component+"<label class='radio-inline'><input type='radio' checked='checked' name='selfcheckResult_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+selfcheckResult+"</input></label>";
-	 		        			 }else{
-	 		        				component=component+"<label class='radio-inline'><input type='radio'  name='selfcheckResult_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+selfcheckResult+"</input></label>"; 
-	 		        			 }
-		 		        	});
-	 		        	  }else{
-	 		        		 component=component+"<input type='text' class='form-control' name='selfcheckResult_"+meta.row+"' value='"+data+"'/>";
-	 		        	  }
-			        	}else{
-			        		component=component+"<input type='text' class='form-control' name='selfcheckResult_"+meta.row+"' value=''/>";
-			        	}
-		          	  return component;
-	 	            },"width": "200px"},
+		          	  return "<input type='text' readonly='readonly' class='col-xs-12' name='selfcheckResult_"+meta.row+"' value='"+data+"'></input>";
+	 	            },"width": "180px"},
 	 	        {className : "ellipsis",data:"remarks",title:"备注",render : function(data,type, row, meta) {
-	          	  return "<input type='text' class='form-control' name='remarks_"+meta.row+"' value='"+data+"'></input>";
-	            },"width": "200px"}
+	          	  return "<input type='text' class='col-xs-12' name='inspect_remarks_"+meta.row+"' value='"+data+"'></input>";
+	            },"width": "180px"}
 		     ]
 	    }).api();
 		return datatable;
@@ -74,11 +58,11 @@ var MainframeInspectTable=function(contextPath,ids){
 			datatable.row.add(data).draw();
 		});
 	}
-	mainframeInspectTable.addPreprocssingSettingInspectsPassAjax=function(datatable,msid){
+	mainframeInspectTable.addMainframeSettingInspectsPassAjax=function(datatable,msid,mainframePn){
 		$.ajax({
 			type:'post',
             url:mainframeInspectTable.contextPath+"/setting/mainframeInspectDetail",
-            data:{"msid":msid},
+            data:{"msid":msid,"mainframePn":mainframePn},
             dataType:"json",
             async:true,
 	        success:function (result){
@@ -86,6 +70,10 @@ var MainframeInspectTable=function(contextPath,ids){
         	   	   showNotice('Error','<span style="padding-top:5px">信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         	   	   return;
         	   	}
+        		if(result.datatablesView.recordsTotal==0){
+        	   		//showNotice('提示','未查询到匹配信息','success',1000*10);
+         	   	   return;
+        	   	};
         		var datas=JSON.stringify(result.datatablesView.data);
         	   	mainframeInspectTable.addMainframeInspects(datatable,datas);
            },

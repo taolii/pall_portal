@@ -149,7 +149,7 @@ public interface MainframeDao {
 	public List<MainframeSettingAssembleEntity> queryMainframeSettingAssembleList(@Param("msid") String  msid);
 	/*
 	 * 根据条件查询 主机送检配置信息
-	 * @param mid 主机配置唯一标示
+	 * @param msid 主机配置唯一标示
 	 * @return 查询结果
 	 */
 	public List<MainframeSettingInspectEntity> queryMainframeSettingInspectList(@Param("msid") String  msid);

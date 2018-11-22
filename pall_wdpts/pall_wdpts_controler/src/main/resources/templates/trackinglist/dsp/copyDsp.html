@@ -40,7 +40,7 @@
 										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
 										<input type='hidden' id="dspSettingPsid" name="psid"  class="form-control" value="-1"/>
 										<input type='hidden' name="dspID"  class="form-control" th:value="${dspEntity.dspID}"/>
-										<input type='text' id="dspSettingDspPn" name="dspPn" readonly="readonly" class="form-control" th:value="${dspEntity.dspPn}"/>  
+										<input type='text' id="dspSettingDspPn" name="dspPn"  class="form-control" th:value="${dspEntity.dspPn}"/>  
 									</div>
 									<div class="col-md-1">
 										<span class=" btn btn-white btn-info" id="addDspPn">  
@@ -75,16 +75,13 @@
 											
 										</span>
 										<div class="col-md-4">
-											<select name="dspModel" class="form-control">
-								                <option  th:each="dspModelDataConfig:${dspModelDataConfigs}" th:selected="${dspEntity.dspModel==dspModelDataConfig.configName}" th:text="${dspModelDataConfig.configName}" th:value="${dspModelDataConfig.configName}">
-								                </option>
-		                                    </select> 
+											<input type='text'  name="dspModel"  readonly="readonly" class="form-control" th:value="${dspEntity.dspModel}"/>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="rowGroup">
+							<div class="form-group" >
+								<div class="rowGroup" style="display:none">
 									<span class="col-md-2  control-label">
 										<label th:text="#{pages.trackinglist.dsp.modDsp.form.productionTime}" th:remove="tag"></label> 
 										

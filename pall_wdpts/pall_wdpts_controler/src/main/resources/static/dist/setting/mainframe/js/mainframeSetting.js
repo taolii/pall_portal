@@ -57,13 +57,15 @@ $(document).ready(function() {
         	 }},
         	{className : "ellipsis",data: "msid",title:"配置ID",visible:false,render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"60px"},
             {className : "ellipsis",data: "mainframePn",title:"料号/PN",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"190px"},
+            {className : "ellipsis",data: "mainframeModel",title:"主机型号/Model",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"190px"},
+            {className : "ellipsis",data: "mainframeOptions",title:"主机选配件/Option",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"190px"},
             {className : "ellipsis",data: null,title:"装配记录/Manufacture Record",render : function(data,type, row, meta) {
             	return "<div id='showAssemblesDetail' class='action-buttons'><a  href='javascript:void(0)' class='green bigger-140 show-details-btn' title='Show Details'>"+
 				"<i class='ace-icon fa fa-angle-double-down'></i>"+
 				"<span class='sr-only'>Details</span>"
 				"</a></div>";
             },width:"160px"},
-            {className : "ellipsis",data: null,visible:false,title:"送检人员记录/Self Inspection Records",render : function(data,type, row, meta) {
+            {className : "ellipsis",data: null,title:"送检人员记录/Self Inspection Records",render : function(data,type, row, meta) {
             	  return "<div id='showInspectsDetail' class='action-buttons'><a  href='javascript:void(0)' class='green bigger-140 show-details-btn' title='Show Details'>"+
 					"<i class='ace-icon fa fa-angle-double-down'></i>"+
 					"<span class='sr-only'>Details</span>"
@@ -72,9 +74,9 @@ $(document).ready(function() {
              {className : "ellipsis",data: "operatorName",title:"操作员",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,width:"160px"},
              {className : "ellipsis",data: null,title:"操作",render : function(data,type, row, meta) {
                 	return "<div class='btn-group'>"+
-                	"<button id='copyRow' class='btn btn-primary btn-xs' type='button' ><i class='glyphicon glyphicon-copy'></i></button>"+
-                    "<button id='editRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-edit'></i></button>"+
-                    "<button id='delRow' class='btn btn-primary btn-xs' type='button'><i class='fa fa-trash-o'></i></button>"+
+                	"<button id='copyRow' class='btn btn-primary btn-xs' type='button' data-toggle='tooltip' data-placement='bottom' title='拷贝'><i class='glyphicon glyphicon-copy'></i></button>"+
+                    "<button id='editRow' class='btn btn-primary btn-xs' type='button' data-toggle='tooltip' data-placement='bottom' title='修改'><i class='fa fa-edit'></i></button>"+
+                    "<button id='delRow' class='btn btn-primary btn-xs' type='button' data-toggle='tooltip' data-placement='bottom' title='删除'><i class='fa fa-trash-o'></i></button>"+
                     "</div>";
               },width:"160px"},
         ],

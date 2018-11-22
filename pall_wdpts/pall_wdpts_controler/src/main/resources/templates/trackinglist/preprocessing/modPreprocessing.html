@@ -43,7 +43,7 @@
 										<input id="operator" name="operator" type="hidden" th:value="${operator}"/>
 										<input type='hidden' id="preprocessingSettingPsid" name="psid"  class="form-control" value="-1"/>
 										<input type='hidden' name="preprocessingID"  class="form-control" th:value="${preprocessingEntity.preprocessingID}"/>
-										<input type='text' id="preprocessingSettingPreprocessingPn" name="preprocessingPn" readonly="readonly" class="form-control" th:value="${preprocessingEntity.preprocessingPn}"/>  
+										<input type='text' id="preprocessingSettingPreprocessingPn" name="preprocessingPn"  class="form-control" th:value="${preprocessingEntity.preprocessingPn}"/>  
 									</div>
 									<div class="col-md-1">
 										<span class=" btn btn-white btn-info" id="addPreprocessingPn">  
@@ -78,34 +78,8 @@
 											
 										</span>
 										<div class="col-md-4">
-											<select name="preprocessingModel" class="form-control">
-								                <option  th:each="preprocessingModelDataConfig:${preprocessingModelDataConfigs}" th:selected="${preprocessingEntity.preprocessingModel==preprocessingModelDataConfig.configName}" th:text="${preprocessingModelDataConfig.configName}" th:value="${preprocessingModelDataConfig.configName}">
-								                </option>
-		                                    </select> 
+											<input type='text'  name="preprocessingModel"  readonly="readonly" class="form-control" th:value="${preprocessingEntity.preprocessingModel}"/> 
 										</div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.trackinglist.preprocessing.modPreprocessing.form.productionTime}" th:remove="tag"></label> 
-										
-									</span>
-									<div class="col-md-4">
-										<input type='text' name="productionTime"  id='addFormProductionTime' class="form-control form_datetime" th:value="${preprocessingEntity.productionTime}"/>  
-									</div>
-								</div>
-								<div class="rowGroup">
-									<span class="col-md-2  control-label">
-										<label th:text="#{pages.trackinglist.preprocessing.modPreprocessing.form.ptOption}" th:remove="tag"></label> 
-										
-									</span>
-									<div class="col-md-2">
-										<input type='text' name="ptOption"  class="form-control" th:value="${preprocessingEntity.ptOption}"/>  
-									</div>
-									<div class="col-md-2">
-										<input type='text' name="ptOption2"  class="form-control" th:value="${preprocessingEntity.ptOption2}"/>  
 									</div>
 								</div>
 							</div>
@@ -116,6 +90,30 @@
 									</span>
 									<div class="col-md-4">
 										<input type='text' name="cOrderID"  class="form-control" th:value="${preprocessingEntity.cOrderID}"/>  
+									</div>
+								</div>
+								<div class="rowGroup">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.preprocessing.modPreprocessing.form.ptOption}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-2">
+										<input type='text' name="ptOption"  readonly="readonly" class="form-control" th:value="${preprocessingEntity.ptOption}"/>  
+									</div>
+									<div class="col-md-2">
+										<input type='text' name="ptOption2"  readonly="readonly" class="form-control" th:value="${preprocessingEntity.ptOption2}"/>  
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								
+								<div class="rowGroup" style="display:none">
+									<span class="col-md-2  control-label">
+										<label th:text="#{pages.trackinglist.preprocessing.modPreprocessing.form.productionTime}" th:remove="tag"></label> 
+										
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="productionTime"  id='addFormProductionTime' class="form-control form_datetime" th:value="${preprocessingEntity.productionTime}"/>  
 									</div>
 								</div>
 								<div class="rowGroup">

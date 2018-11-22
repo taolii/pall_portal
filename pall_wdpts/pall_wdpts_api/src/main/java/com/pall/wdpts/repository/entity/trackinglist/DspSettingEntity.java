@@ -15,6 +15,10 @@ public class DspSettingEntity {
 	@NotEmpty(message="{dspSetting.form.dspPn.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String dspPn;
 	/*
+	 * Dsp型号/Model
+	 */
+	private String dspModel;
+	/*
 	 * Dsp装配配置对象
 	 */
 	private List<DspSettingAssembleEntity> dspSettingAssembles;
@@ -77,6 +81,14 @@ public class DspSettingEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	
+	public String getDspModel() {
+		return dspModel;
+	}
+	public void setDspModel(String dspModel) {
+		this.dspModel = dspModel;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

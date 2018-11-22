@@ -111,7 +111,7 @@ public interface DspDao {
 	public int delDspSettingAssembles(@Param("dsids") List<Integer> dsids);
 	/*
 	 * 根据条件查询Dsp装配配置信息
-	 * @param dspid Dsp配置唯一标示
+	 * @param dsid Dsp配置唯一标示
 	 * @return 查询结果
 	 */
 	public List<DspSettingAssembleEntity> queryDspSettingAssembleList(@Param("dsid") String  dsid);

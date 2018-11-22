@@ -145,7 +145,7 @@ f.operatorid,g.account operatorName from t_trackinglist_mainframe f left join t_
 	</delete>
  	<select id="queryMainframeSettingList" resultType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingEntity"
 	parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeSettingFormQueryEntity"> 
- 		select msid,mainframe_pn mainframePn,f.input_time inputTime,f.update_time updateTime,f.operatorid,g.account operatorName from t_ums_setting_mainframe f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
+ 		select msid,mainframe_pn mainframePn,mainframe_model mainframeModel,f.mainframe_option mainframeOption,f.mainframe_option2 mainframeOption2,CONCAT(f.mainframe_option,'|',f.mainframe_option2) mainframeOptions,f.input_time inputTime,f.update_time updateTime,f.operatorid,g.account operatorName from t_ums_setting_mainframe f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1 
 	     <if test="mainframePn != null and mainframePn != '' ">  
 	       AND f.mainframe_pn = #{mainframePn}  
 	    </if>
@@ -167,10 +167,10 @@ f.operatorid,g.account operatorName from t_trackinglist_mainframe f left join t_
     	<selectKey keyProperty="msid" order="AFTER" resultType="java.lang.Integer">
             select LAST_INSERT_ID()
         </selectKey>
-    	insert into  t_ums_setting_mainframe(mainframe_pn,operatorid,input_time,update_time)values(#{mainframePn},#{operatorid},now(),now())
+    	insert into  t_ums_setting_mainframe(mainframe_pn,mainframe_model,mainframe_option,mainframe_option2,operatorid,input_time,update_time)values(#{mainframePn},#{mainframeModel},#{mainframeOption},#{mainframeOption2},#{operatorid},now(),now())
     </insert>
     <update id="modMainframeSetting" parameterType="com.pall.wdpts.repository.entity.trackinglist.MainframeEntity">
-        update  t_ums_setting_mainframe f set f.mainframe_pn=#{mainframePn},f.operatorid=#{operatorid},f.update_time=now() where f.msid=#{msid}
+        update  t_ums_setting_mainframe f set f.mainframe_pn=#{mainframePn},f.mainframe_model=#{mainframeModel},f.mainframe_option=#{mainframeOption},f.mainframe_option2=#{mainframeOption2},f.operatorid=#{operatorid},f.update_time=now() where f.msid=#{msid}
     </update>
     <delete id="delMainframeSetting"  parameterType="java.util.List">  
         DELETE FROM t_ums_setting_mainframe WHERE msid in 

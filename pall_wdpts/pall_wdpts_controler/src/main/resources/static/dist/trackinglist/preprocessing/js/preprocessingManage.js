@@ -9,8 +9,8 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     });
-	$('#queryStartAssembleTime').val(currentDate(30));
-	$('#queryEndAssembleTime').val(currentDate(-1));
+	//$('#queryStartAssembleTime').val(currentDate(30));
+	//$('#queryEndAssembleTime').val(currentDate(-1));
 	var columns_setting=[
 		{className: "ellipsis",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
             return '<input  type="checkbox" class="ace"><span class="lbl"></span>';
@@ -44,10 +44,10 @@ $(document).ready(function() {
 	var columns_settingfoot=[
         {className : "center",data: null,title:"操作",render : function(data,type, row, meta) {
         	return "<div class='btn-group'>"+
-        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
-            "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
-            "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
-            "<button id='exportRow' class='btn btn-warning btn-xs' type='button' style='display:none'><i class='ace-icon fa fa-download bigger-120'></i></button>"+
+        	"<button id='copyRow' class='btn btn-xs btn-success' type='button' style='display:none' data-toggle='tooltip' data-placement='bottom' title='拷贝'><i class='ace-icon glyphicon glyphicon-copy bigger-120'></i></button>"+
+            "<button id='editRow' class='btn btn-xs btn-info' type='button' style='display:none' data-toggle='tooltip' data-placement='bottom' title='修改'><i class='ace-icon fa fa-edit bigger-120'></i></button>"+
+            "<button id='delRow' class='btn btn-danger btn-xs' type='button' style='display:none' data-toggle='tooltip' data-placement='bottom' title='删除'><i class='ace-icon fa fa-trash-o bigger-120'></i></button>"+
+            "<button id='exportRow' class='btn btn-warning btn-xs' type='button' style='display:none' data-toggle='tooltip' data-placement='bottom' title='导出'><i class='ace-icon fa fa-download bigger-120'></i></button>"+
             "</div>";
           }, width : "200px"}
     ];

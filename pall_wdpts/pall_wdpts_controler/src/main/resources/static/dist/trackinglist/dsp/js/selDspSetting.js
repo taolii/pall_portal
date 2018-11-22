@@ -99,7 +99,7 @@ var DspSettingModal=function(contextPath,ids){
 					$(ids.dataForm+" [name=dspPn]").val(item.dspPn);
 					$(ids.modal).modal("hide");
 					dspAssembleDatatables.clear().draw();
-					dspAssembleTable.addPreprocssingSettingAssemblesPassAjax(dspAssembleDatatables,item.dsid);
+					dspAssembleTable.addDspSettingAssemblesPassAjax(dspAssembleDatatables,item.dsid,item.dspPn);
 		        });
 			}
 		});

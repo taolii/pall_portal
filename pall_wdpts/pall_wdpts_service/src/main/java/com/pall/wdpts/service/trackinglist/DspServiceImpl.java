@@ -278,7 +278,7 @@ public class DspServiceImpl implements  DspService{
 	}
 
 	@Override
-	public BaseTablesResponse queryDspSettingAssembleList(String dspid) throws Exception {
+	public BaseTablesResponse queryDspSettingAssembleList(String  dspid) throws Exception {
 		BaseTablesResponse baseResponse=new BaseTablesResponse();
 		try{
 			List<DspSettingAssembleEntity> dspSettingAssembles=dspDao.queryDspSettingAssembleList(dspid);

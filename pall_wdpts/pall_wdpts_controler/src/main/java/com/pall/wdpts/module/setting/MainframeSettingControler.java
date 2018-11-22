@@ -24,10 +24,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pall.wdpts.annotation.Token;
 import com.pall.wdpts.common.constants.IResponseConstants;
 import com.pall.wdpts.common.constants.KeyConstants;
+import com.pall.wdpts.common.datatables.Entity.DatatablesView;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
 import com.pall.wdpts.context.HolderContext;
+import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
@@ -59,7 +61,7 @@ public class MainframeSettingControler{
 	 * 初始化配置数据
 	 */
 	private Model initConfigData(Model model){
-		
+		model.addAttribute("mainframeModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.SETTING_MAINFRAME_DATACONFIG_TYPE_MAINFRAMEMODEL)));
 		return model;
 	}
 	/*
@@ -150,13 +152,23 @@ public class MainframeSettingControler{
 		List<MainframeSettingInspectEntity> mainframeSettingInspects=new ArrayList<MainframeSettingInspectEntity>();
 		if(!ArrayUtils.isEmpty(inspectids)){
 			for(String inspectid:inspectids){
-				if(StringUtils.isEmpty(request.getParameter("remarks_"+inspectid)) && StringUtils.isEmpty(request.getParameter("selfcheckContent_"+inspectid))
+				if(StringUtils.isEmpty(request.getParameter("inspect_remarks_"+inspectid)) && StringUtils.isEmpty(request.getParameter("selfcheckContent_"+inspectid))
 						&& StringUtils.isEmpty(request.getParameter("selfcheckName_"+inspectid)) && StringUtils.isEmpty(request.getParameter("selfcheckResult_"+inspectid))){
 					continue;
 				}
 				MainframeSettingInspectEntity mainframeSettingInspectEntity=new MainframeSettingInspectEntity();
-				mainframeSettingInspectEntity.setRemarks(request.getParameter("remarks_"+inspectid));
-				mainframeSettingInspectEntity.setSelfcheckContent(request.getParameter("selfcheckContent_"+inspectid));
+				mainframeSettingInspectEntity.setRemarks(request.getParameter("inspect_remarks_"+inspectid));
+				StringBuffer selfcheckContent=new StringBuffer();
+				String tempcheckContent="";
+				for(int j=1;j<9;j++){
+					tempcheckContent=request.getParameter("selfcheckContent_"+inspectid+"_"+j);
+					if(StringUtils.isEmpty(tempcheckContent)){
+						selfcheckContent.append("0");
+					}else{
+						selfcheckContent.append(tempcheckContent);
+					}
+				}
+				mainframeSettingInspectEntity.setSelfcheckContent(selfcheckContent.toString());
 				mainframeSettingInspectEntity.setSelfcheckName(request.getParameter("selfcheckName_"+inspectid));
 				mainframeSettingInspectEntity.setSelfcheckResult(request.getParameter("selfcheckResult_"+inspectid));
 				if(!StringUtils.isEmpty(mainframeSettingInspectEntity.getSelfcheckContent())||!StringUtils.isEmpty(mainframeSettingInspectEntity.getSelfcheckName())||!StringUtils.isEmpty(mainframeSettingInspectEntity.getSelfcheckResult())||!StringUtils.isEmpty(mainframeSettingInspectEntity.getRemarks())){
@@ -270,11 +282,29 @@ public class MainframeSettingControler{
 		return JSON.toJSONString(baseResponse);
     }
 	@RequestMapping(value="/setting/mainframeInspectDetail", method= RequestMethod.POST)
-    public @ResponseBody String mainframeInspectDetail(Model model,@RequestParam("msid") String  msid, HttpServletRequest request) {
+    public @ResponseBody String mainframeInspectDetail(Model model,MainframeSettingFormQueryEntity  mainframeSettingFormQueryEntity, HttpServletRequest request) {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=mainframeService.queryMainframeSettingInspectList(msid);
+			if(StringUtils.isEmpty(mainframeSettingFormQueryEntity.getMsid()) && !StringUtils.isEmpty(mainframeSettingFormQueryEntity.getMainframePn())){
+				mainframeSettingFormQueryEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
+				baseResponse=mainframeService.queryMainframeSettingList(mainframeSettingFormQueryEntity);
+				if(baseResponse.getDatatablesView().getRecordsTotal()>0){
+					MainframeSettingEntity mainframeSettingEntity=(MainframeSettingEntity)baseResponse.getDatatablesView().getData().get(0);
+					mainframeSettingFormQueryEntity.setMsid((String.valueOf(mainframeSettingEntity.getMsid())));
+					baseResponse=mainframeService.queryMainframeSettingInspectList(mainframeSettingFormQueryEntity.getMsid());
+					if(baseResponse!=null){
+						baseResponse.setMainRecord(mainframeSettingEntity);
+					}
+				}else{
+					DatatablesView datatablesViews=new DatatablesView();
+					baseResponse.setDatatablesView(datatablesViews);
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}	
+			}else{
+				baseResponse=mainframeService.queryMainframeSettingInspectList(mainframeSettingFormQueryEntity.getMsid());
+			}
+			
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("mainframeSetting.Controler.mainframeInspectDetail.exception"),e);
@@ -285,11 +315,28 @@ public class MainframeSettingControler{
 		 return jsonData;
     }
 	@RequestMapping(value="/setting/mainframeAssembleDetail", method= RequestMethod.POST)
-    public @ResponseBody String mainframeAssembleDetail(Model model,@RequestParam("msid") String  msid, HttpServletRequest request) {
+    public @ResponseBody String mainframeAssembleDetail(Model model,MainframeSettingFormQueryEntity  mainframeSettingFormQueryEntity, HttpServletRequest request) {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=mainframeService.queryMainframeSettingAssembleList(msid);
+			if(StringUtils.isEmpty(mainframeSettingFormQueryEntity.getMsid()) && !StringUtils.isEmpty(mainframeSettingFormQueryEntity.getMainframePn())){
+				mainframeSettingFormQueryEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
+				baseResponse=mainframeService.queryMainframeSettingList(mainframeSettingFormQueryEntity);
+				if(baseResponse.getDatatablesView().getRecordsTotal()>0){
+					MainframeSettingEntity mainframeSettingEntity=(MainframeSettingEntity)baseResponse.getDatatablesView().getData().get(0);
+					mainframeSettingFormQueryEntity.setMsid((String.valueOf(mainframeSettingEntity.getMsid())));
+					baseResponse=mainframeService.queryMainframeSettingAssembleList(mainframeSettingFormQueryEntity.getMsid());
+					if(baseResponse!=null){
+						baseResponse.setMainRecord(mainframeSettingEntity);
+					}
+				}else{
+					DatatablesView datatablesViews=new DatatablesView();
+					baseResponse.setDatatablesView(datatablesViews);
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}	
+			}else{
+				baseResponse=mainframeService.queryMainframeSettingAssembleList(mainframeSettingFormQueryEntity.getMsid());
+			}
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("mainframeSetting.Controler.mainframeAssembleDetail.exception"),e);

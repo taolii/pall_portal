@@ -88,10 +88,7 @@ public class KeyConstants {
 	 * DSP装配流程跟踪单流程下载子目录名称
 	 */
 	public static final String TRACKINGLIST_DSP_DOWNLOAD_SUBDIRECTORY="trackinglist/dsp/download/subdirectory";
-	/*
-	 * DSP配置_DSP型号/Model
-	 */
-	public static final String TRACKINGLIST_DSP_DATACONFIG_TYPE_DSPMODEL="trackinglist/dsp/dataconfig/type/dspModel";
+	
 	/*
 	 * 水箱装配流程跟踪单流程菜单id
 	 */
@@ -108,10 +105,7 @@ public class KeyConstants {
 	 * 水箱装配流程跟踪单流程下载子目录名称
 	 */
 	public static final String TRACKINGLIST_CISTERN_DOWNLOAD_SUBDIRECTORY="trackinglist/cistern/download/subdirectory";
-	/*
-	 * 水箱配置_水箱型号/Model
-	 */
-	public static final String TRACKINGLIST_CISTERN_DATACONFIG_TYPE_CISTERNMODEL="trackinglist/cistern/dataconfig/type/cisternModel";
+	
 	/*
 	 * 预处理装配流程跟踪单流程菜单id
 	 */
@@ -132,10 +126,7 @@ public class KeyConstants {
 	 * 预处理装配流程跟踪单word模板assemble配置信息 起始行_属性key|属性key 属性key数量和table表格列数相同
 	 */
 	public static final String TRACKINGLIST_PREPROCESSING_WORD_ASSEMBLECONFIG="trackinglist/preprocessing/word/assembleConfig";
-	/*
-	 * 预处理配置_名称/Model
-	 */
-	public static final String TRACKINGLIST_PREPROCESSING_DATACONFIG_TYPE_PREPROCESSINGMODEL="trackinglist/preprocessing/dataconfig/type/preprocessingModel";
+	
 	/*
 	 * 主机装配流程跟踪单流程菜单id
 	 */
@@ -153,8 +144,20 @@ public class KeyConstants {
 	 */
 	public static final String TRACKINGLIST_MAINFRAME_DOWNLOAD_SUBDIRECTORY="trackinglist/mainFrame/download/subdirectory";
 	/*
+	 * DSP配置_DSP型号/Model
+	 */
+	public static final String SETTING_DSP_DATACONFIG_TYPE_DSPMODEL="setting/dsp/dataconfig/type/dspModel";
+	/*
+	 * 水箱配置_水箱型号/Model
+	 */
+	public static final String SETTING_CISTERN_DATACONFIG_TYPE_CISTERNMODEL="setting/cistern/dataconfig/type/cisternModel";
+	/*
+	 * 预处理配置_名称/Model
+	 */
+	public static final String SETTING_PREPROCESSING_DATACONFIG_TYPE_PREPROCESSINGMODEL="setting/preprocessing/dataconfig/type/preprocessingModel";
+	/*
 	 * 主机_主机型号/Model
 	 */
-	public static final String TRACKINGLIST_MAINFRAME_DATACONFIG_TYPE_MAINFRAMEMODEL="trackinglist/mainframe/dataconfig/type/mainframeModel";
+	public static final String SETTING_MAINFRAME_DATACONFIG_TYPE_MAINFRAMEMODEL="setting/mainframe/dataconfig/type/mainframeModel";
 	
 }

@@ -15,6 +15,19 @@ public class CisternSettingEntity {
 	@NotEmpty(message="{cisternSetting.form.cisternPn.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String cisternPn;
 	/*
+	 * 水箱型号/Model
+	 */
+	private String cisternModel;
+	/*
+	 * 水箱选配件/Options
+	 */
+	private String cisternOption;
+	/*
+	 * 水箱选配件/Options
+	 */
+	private String cisternOption2;
+	private String cisternOptions;
+	/*
 	 * 水箱装配配置对象
 	 */
 	private List<CisternSettingAssembleEntity> cisternSettingAssembles;
@@ -78,6 +91,32 @@ public class CisternSettingEntity {
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
 	}
+	
+	public String getCisternModel() {
+		return cisternModel;
+	}
+	public void setCisternModel(String cisternModel) {
+		this.cisternModel = cisternModel;
+	}
+	public String getCisternOption() {
+		return cisternOption;
+	}
+	public void setCisternOption(String cisternOption) {
+		this.cisternOption = cisternOption;
+	}
+	public String getCisternOption2() {
+		return cisternOption2;
+	}
+	public void setCisternOption2(String cisternOption2) {
+		this.cisternOption2 = cisternOption2;
+	}
+	public String getCisternOptions() {
+		return cisternOptions;
+	}
+	public void setCisternOptions(String cisternOptions) {
+		this.cisternOptions = cisternOptions;
+	}
+
 	public interface ADD{};  
 	public interface SAVE{};
 }

@@ -24,10 +24,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pall.wdpts.annotation.Token;
 import com.pall.wdpts.common.constants.IResponseConstants;
 import com.pall.wdpts.common.constants.KeyConstants;
+import com.pall.wdpts.common.datatables.Entity.DatatablesView;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
 import com.pall.wdpts.context.HolderContext;
+import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
@@ -58,7 +60,7 @@ public class CisternSettingControler{
 	 * 初始化配置数据
 	 */
 	private Model initConfigData(Model model){
-		
+		model.addAttribute("cisternModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.SETTING_CISTERN_DATACONFIG_TYPE_CISTERNMODEL)));
 		return model;
 	}
 	/*
@@ -239,11 +241,28 @@ public class CisternSettingControler{
 		return JSON.toJSONString(baseResponse);
     }
 	@RequestMapping(value="/setting/cisternAssembleDetail", method= RequestMethod.POST)
-    public @ResponseBody String cisternAssembleDetail(Model model,@RequestParam("csid") String  csid, HttpServletRequest request) {
+    public @ResponseBody String cisternAssembleDetail(Model model,CisternSettingFormQueryEntity  cisternSettingFormQueryEntity, HttpServletRequest request) {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=cisternService.queryCisternSettingAssembleList(csid);
+			if(StringUtils.isEmpty(cisternSettingFormQueryEntity.getCsid()) && !StringUtils.isEmpty(cisternSettingFormQueryEntity.getCisternPn())){
+				cisternSettingFormQueryEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
+				baseResponse=cisternService.queryCisternSettingList(cisternSettingFormQueryEntity);
+				if(baseResponse.getDatatablesView().getRecordsTotal()>0){
+					CisternSettingEntity cisternSettingEntity=(CisternSettingEntity)baseResponse.getDatatablesView().getData().get(0);
+					cisternSettingFormQueryEntity.setCsid(String.valueOf(cisternSettingEntity.getCsid()));
+					baseResponse=cisternService.queryCisternSettingAssembleList(cisternSettingFormQueryEntity.getCsid());
+					if(baseResponse!=null){
+						baseResponse.setMainRecord(cisternSettingEntity);
+					}
+				}else{
+					DatatablesView datatablesViews=new DatatablesView();
+					baseResponse.setDatatablesView(datatablesViews);
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}	
+			}else{
+				baseResponse=cisternService.queryCisternSettingAssembleList(cisternSettingFormQueryEntity.getCsid());
+			}
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("cisternSetting.Controler.cisternAssembleDetail.exception"),e);

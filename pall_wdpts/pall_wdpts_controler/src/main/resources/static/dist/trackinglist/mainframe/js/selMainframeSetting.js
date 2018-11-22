@@ -117,8 +117,8 @@ var MainframeSettingModal=function(contextPath,ids){
 					$(ids.modal).modal("hide");
 					mainframeAssembleDatatables.clear().draw();
 					mainframeInspectDatatables.clear().draw();
-					mainframeAssembleTable.addPreprocssingSettingAssemblesPassAjax(mainframeAssembleDatatables,item.msid);
-					mainframeInspectTable.addPreprocssingSettingInspectsPassAjax(mainframeInspectDatatables,item.msid);
+					mainframeAssembleTable.addMainframeSettingAssemblesPassAjax(mainframeAssembleDatatables,item.msid,item.mainframePn);
+					mainframeInspectTable.addMainframeSettingInspectsPassAjax(mainframeInspectDatatables,item.msid,item.mainframePn);
 		        });
 			}
 		});

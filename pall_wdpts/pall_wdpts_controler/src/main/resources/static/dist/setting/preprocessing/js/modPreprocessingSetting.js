@@ -34,7 +34,8 @@ $(document).ready(function() {
     	if("copy"==operator){
     		$.post(contextPath+"/setting/addPreprocessingSetting",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"添加预处理配置成功",'success',1000*5);
+        			//showNotice('Success',"添加预处理配置成功",'success',1000*5);
+        			window.location.href=contextPath+"/setting/preprocessingSetting";
         		}else{
         			showNotice('Error','<span style="padding-top:5px">添加预处理配置失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
@@ -43,14 +44,19 @@ $(document).ready(function() {
     	}else{
     		$.post(contextPath+"/setting/modPreprocessingSetting",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"更新预处理配置成功",'success',1000*5);
+        			//showNotice('Success',"更新预处理配置成功",'success',1000*5);
+        			window.location.href=contextPath+"/setting/preprocessingSetting";
         		}else{
         			showNotice('Error','<span style="padding-top:5px">更新预处理配置失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
         		$form.bootstrapValidator('disableSubmitButtons', false);
             },'json'); 
     	}
-    });
+    }).on("keypress",function(e) {
+    	if (e.which == 13) {
+    		return false;
+    	}
+	});
 	$("#addBackButton").on("click",function(){
     	window.location.href=contextPath+"/setting/preprocessingSetting";
     });

@@ -51,6 +51,7 @@ import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
+import com.pall.wdpts.repository.entity.trackinglist.MainframeAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingFormQueryEntity;
@@ -96,7 +97,7 @@ public class PreprocessingManageControler{
 	private Model initConfigData(Model model){
 		Map<Integer,List<TableHeaderConfigEntity>> tableHeaderConfigs=TableDataConfigInitiator.getTableHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_TABLENAME));
 		model.addAttribute("tableHeaderConfigs", tableHeaderConfigs);
-		model.addAttribute("preprocessingModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_DATACONFIG_TYPE_PREPROCESSINGMODEL)));
+		
 		return model;
 	}
 	/*
@@ -197,10 +198,13 @@ public class PreprocessingManageControler{
 				if(at!=null && at.getUserEntity()!=null){
 					preprocessingEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				preprocessingEntity.setAssembleRecords(getPreprocessingAssembles(request));
-				preprocessingEntity.setInspectRecords(getPreprocessingInspects(request));
 				if(StringUtils.isEmpty(preprocessingEntity.getInspectTime()))preprocessingEntity.setInspectTime(null);
-				baseResponse=preprocessingService.addPreprocessing(preprocessingEntity);
+				baseResponse=getPreprocessingAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					preprocessingEntity.setAssembleRecords((List<PreprocessingAssembleEntity>)baseResponse.getReturnObjects());
+					preprocessingEntity.setInspectRecords(getPreprocessingInspects(request));
+					baseResponse=preprocessingService.addPreprocessing(preprocessingEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessing.Controler.addPreprocessing.exception"),e);
@@ -240,7 +244,8 @@ public class PreprocessingManageControler{
 	 * @param request 请求对象
 	 * @return
 	 */
-	private List<PreprocessingAssembleEntity> getPreprocessingAssembles(HttpServletRequest request){
+	private BaseResponse getPreprocessingAssembles(HttpServletRequest request){
+		BaseResponse baseResponse=new BaseResponse();
 		String[] assembleids=request.getParameterValues("assembleid");
 		List<PreprocessingAssembleEntity> preprocessingAssembles=new ArrayList<PreprocessingAssembleEntity>();
 		if(!ArrayUtils.isEmpty(assembleids)){
@@ -254,10 +259,17 @@ public class PreprocessingManageControler{
 				preprocessingAssembleEntity.setComponentName(request.getParameter("componentName_"+assembleid));
 				preprocessingAssembleEntity.setComponentNo(request.getParameter("componentNo_"+assembleid));
 				preprocessingAssembleEntity.setSerialNoRecord(request.getParameter("serialNoRecord_"+assembleid));
+				if(StringUtils.isEmpty(preprocessingAssembleEntity.getSerialNoRecord())){
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.serialNoRecord.Assemble.isNotEmpty"));
+					return baseResponse;
+				}
 				preprocessingAssembles.add(preprocessingAssembleEntity);
 			}
 		}
-		return preprocessingAssembles;
+		baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+		baseResponse.setReturnObjects(preprocessingAssembles);
+		return baseResponse;
 	}
 	/*
 	 * 修改预处理装配信息
@@ -304,9 +316,12 @@ public class PreprocessingManageControler{
 				if(at!=null && at.getUserEntity()!=null){
 					preprocessingEntity.setOperatorid(at.getUserEntity().getOperatorid());
 				}
-				preprocessingEntity.setAssembleRecords(getPreprocessingAssembles(request));
-				preprocessingEntity.setInspectRecords(getPreprocessingInspects(request));
-				baseResponse=preprocessingService.modifyPreprocessing(preprocessingEntity);
+				baseResponse=getPreprocessingAssembles(request);
+				if(IResponseConstants.RESPONSE_CODE_SUCCESS==baseResponse.getResultCode()){
+					preprocessingEntity.setAssembleRecords((List<PreprocessingAssembleEntity>)baseResponse.getReturnObjects());
+					preprocessingEntity.setInspectRecords(getPreprocessingInspects(request));
+					baseResponse=preprocessingService.modifyPreprocessing(preprocessingEntity);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessing.Controler.modPreprocessing.exception"),e);

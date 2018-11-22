@@ -84,8 +84,8 @@ public interface DspService {
 	public BaseResponse delDspSetting(List<Integer> dsids) throws Exception;
 	/*
 	 * 根据条件查询Dsp装配配置信息
-	 * @param dsid Dsp配置唯一标示
+	 * @param dspid Dsp配置唯一标示
 	 * @return 查询结果
 	 */
-	public BaseTablesResponse queryDspSettingAssembleList(String  dsid) throws Exception;
+	public BaseTablesResponse queryDspSettingAssembleList(String  dspid) throws Exception;
 }

@@ -368,7 +368,7 @@ public class PreprocessingServiceImpl implements  PreprocessingService{
 	}
 
 	@Override
-	public BaseTablesResponse queryPreprocessingSettingInspectList(String psid) throws Exception {
+	public BaseTablesResponse queryPreprocessingSettingInspectList(String  psid) throws Exception {
 		BaseTablesResponse baseResponse=new BaseTablesResponse();
 		try{
 			List<PreprocessingSettingInspectEntity> preprocessingSettingInspects=preprocessingDao.queryPreprocessingSettingInspectList(psid);

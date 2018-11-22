@@ -60,44 +60,26 @@ $(document).ready(function() {
   	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
             },"width": "100px"},
 	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
-        		var component="";
-  	          	if(data){//不为空
-  	        	  $.each(data.split("|"), function(index, selfcheckContent){
-  	        		  component=component+selfcheckContent+"<br>";
-  	        		});
-  	        	}
-  	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
-            },"width": "100px"},
-	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
-	        	var component="";
-		          if(data){//不为空
-		        	  var datas=data.split("|");
-		        	  if(datas && datas.length>=2){
-		        		 var checkedIndex=0;
-		        		 $.each(datas, function(index, selfcheckResult){
-		        			 if(index==0){
-		        				var temps=selfcheckResult.split('_');
-		        				if(temps.length>=2){
-	 		        				 checkedIndex=temps[0];
-	 		        				data=data.substr(temps[0].length+1,data.length);
-	 		        				selfcheckResult=selfcheckResult.substr(temps[0].length+1,selfcheckResult.length);
-	 		        			 }
-		        			  }
-		        			 var tempVaule=index+"_"+data;
-		        			 if(checkedIndex==index){
-		        				component=component+"<label class='radio-inline' title='"+selfcheckResult+"' ><input type='radio' checked='checked'  name='selfcheckResult_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+selfcheckResult+"</input></label>";
-		        			 }else{
-		        				component=component+"<label class='radio-inline' title='"+selfcheckResult+"'><input type='radio'   name='selfcheckResult_"+meta.row+"' value='"+tempVaule+"'>&nbsp;&nbsp;"+selfcheckResult+"</input></label>"; 
-		        			 }
-	 		        	});
-		        	  }else{
-		        		 component="<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+data+"</span>"
-		        	  }
-		        	}else{
-		        		component="<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+data+"</span>"
-		        	}
-  	          return component;
-	            },"width": "200px"},
+	        	var trs="";
+	        	if(data.length>0){
+	        		for(var i=0;i<data.length;i++){
+	        			if(data.charAt(i)==0){
+	        				trs=trs+"<td><input disabled='disabled' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+	        			}else{
+	        				trs=trs+"<td><input disabled='disabled' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' checked='true' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+	        			}
+	        		}
+	        	}
+	        	return "" +
+            	"<table style='border:1px'>" +
+            	"<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>" +
+            	"<tr>" +
+            	trs
+            	"</tr>" +
+            	"<table>"+
+            			"";
+            },"width": "800px"},
+	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "100px"},
 	        {className : "ellipsis",data:"remarks",title:"备注",render : TABLE_CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,"width": "100px"}
 	     ]
     })).api();

@@ -24,10 +24,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pall.wdpts.annotation.Token;
 import com.pall.wdpts.common.constants.IResponseConstants;
 import com.pall.wdpts.common.constants.KeyConstants;
+import com.pall.wdpts.common.datatables.Entity.DatatablesView;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
 import com.pall.wdpts.context.HolderContext;
+import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
@@ -58,7 +60,7 @@ public class DspSettingControler{
 	 * 初始化配置数据
 	 */
 	private Model initConfigData(Model model){
-		
+		model.addAttribute("dspModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.SETTING_DSP_DATACONFIG_TYPE_DSPMODEL)));
 		return model;
 	}
 	/*
@@ -239,11 +241,29 @@ public class DspSettingControler{
 		return JSON.toJSONString(baseResponse);
     }
 	@RequestMapping(value="/setting/dspAssembleDetail", method= RequestMethod.POST)
-    public @ResponseBody String dspAssembleDetail(Model model,@RequestParam("dsid") String  dsid, HttpServletRequest request) {
+    public @ResponseBody String dspAssembleDetail(Model model,DspSettingFormQueryEntity  dspSettingFormQueryEntity, HttpServletRequest request) {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=dspService.queryDspSettingAssembleList(dsid);
+			if(StringUtils.isEmpty(dspSettingFormQueryEntity.getDsid()) && !StringUtils.isEmpty(dspSettingFormQueryEntity.getDspPn())){
+				dspSettingFormQueryEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
+				baseResponse=dspService.queryDspSettingList(dspSettingFormQueryEntity);
+				if(baseResponse.getDatatablesView().getRecordsTotal()>0){
+					DspSettingEntity dspSettingEntity=(DspSettingEntity)baseResponse.getDatatablesView().getData().get(0);
+					dspSettingFormQueryEntity.setDsid(String.valueOf(dspSettingEntity.getDsid()));
+					baseResponse=dspService.queryDspSettingAssembleList(dspSettingFormQueryEntity.getDsid());
+					if(baseResponse!=null){
+						baseResponse.setMainRecord(dspSettingEntity);
+					}
+				}else{
+					DatatablesView datatablesViews=new DatatablesView();
+					baseResponse.setDatatablesView(datatablesViews);
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}	
+			}else{
+				baseResponse=dspService.queryDspSettingAssembleList(dspSettingFormQueryEntity.getDsid());
+			}
+			
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("dspSetting.Controler.dspAssembleDetail.exception"),e);

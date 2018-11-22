@@ -38,7 +38,7 @@
 									</span>
 									<div class="col-md-3">
 										<input type='hidden' id="dspSettingDsid" name="dsid"  class="form-control" value="-1"/>
-										<input type='text' id="dspSettingDspPn" name="dspPn" readonly="readonly" class="form-control" />  
+										<input type='text' id="dspSettingDspPn" name="dspPn"  class="form-control" />  
 									</div>
 									<div class="col-md-1">
 										<span class=" btn btn-white btn-info" id="addDspPn">  
@@ -73,16 +73,13 @@
 											
 										</span>
 										<div class="col-md-4">
-											<select name="dspModel" class="form-control">
-								                <option  th:each="dspModelDataConfig:${dspModelDataConfigs}" th:text="${dspModelDataConfig.configName}" th:value="${dspModelDataConfig.configName}">
-								                </option>
-		                                    </select> 
+											<input type='text'  name="dspModel"  readonly="readonly" class="form-control" />   
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="rowGroup">
+								<div class="rowGroup" style="display:none">
 									<span class="col-md-2  control-label">
 										<label th:text="#{pages.trackinglist.dsp.addDsp.form.productionTime}" th:remove="tag"></label> 
 										

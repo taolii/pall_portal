@@ -117,8 +117,8 @@ var PreprocessingSettingModal=function(contextPath,ids){
 					$(ids.modal).modal("hide");
 					preprocessingAssembleDatatables.clear().draw();
 					preprocessingInspectDatatables.clear().draw();
-					preprocessingAssembleTable.addPreprocssingSettingAssemblesPassAjax(preprocessingAssembleDatatables,item.psid);
-					preprocessingInspectTable.addPreprocssingSettingInspectsPassAjax(preprocessingInspectDatatables,item.psid);
+					preprocessingAssembleTable.addPreprocssingSettingAssemblesPassAjax(preprocessingAssembleDatatables,item.psid,item.preprocessingPn);
+					preprocessingInspectTable.addPreprocssingSettingInspectsPassAjax(preprocessingInspectDatatables,item.psid,item.preprocessingPn);
 		        });
 			}
 		});

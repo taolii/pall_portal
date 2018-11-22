@@ -74,17 +74,25 @@ var DspAssembleTable=function(contextPath,ids){
 			datatable.row.add(data).draw();
 		});
 	}
-	dspAssembleTable.addPreprocssingSettingAssemblesPassAjax=function(datatable,dsid){
+	dspAssembleTable.addDspSettingAssemblesPassAjax=function(datatable,dsid,dspPn,formid){
 		$.ajax({
 			type:'post',
             url:dspAssembleTable.contextPath+"/setting/dspAssembleDetail",
-            data:{"dsid":dsid},
+            data:{"dsid":dsid,"dspPn":dspPn},
             dataType:"json",
             async:true,
 	        success:function (result){
         	   	if (result.resultCode!=0) {
         	   	   showNotice('Error','<span style="padding-top:5px">信息查询失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         	   	   return;
+        	   	}
+        	   	if(result.datatablesView.recordsTotal==0){
+        	   		showNotice('提示','未查询到匹配信息','success',1000*10);
+         	   	   return;
+        	   	};
+        	   	$(formid+" [name=dspModel]").val("");
+        	   	if(result.mainRecord!=null){
+        	   		$(formid+" [name=dspModel]").val(result.mainRecord.dspModel);
         	   	}
         		var datas=JSON.stringify(result.datatablesView.data);
         	   	dspAssembleTable.addDspAssembles(datatable,datas);

@@ -32,13 +32,18 @@ $(document).ready(function() {
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/setting/addDspSetting",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			showNotice('Success',"添加Dsp配置成功",'success',1000*5);
+    			//showNotice('Success',"添加Dsp配置成功",'success',1000*5);
+    			window.location.href=contextPath+"/setting/dspSetting";
     		}else{
     			showNotice('Error','<span style="padding-top:5px">添加Dsp配置失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
     		$form.bootstrapValidator('disableSubmitButtons', false);
         },'json');
-    });
+    }).on("keypress",function(e) {
+    	if (e.which == 13) {
+    		return false;
+    	}
+	});
 	$("#addBackButton").on("click",function(){
     	window.location.href=contextPath+"/setting/dspSetting";
     });

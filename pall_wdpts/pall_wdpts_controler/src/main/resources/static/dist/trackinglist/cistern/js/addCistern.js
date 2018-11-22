@@ -9,10 +9,10 @@ $(document).ready(function() {
 	var cisternAssembleTable=new CisternAssembleTable(contextPath,ids);
 	var cisternAssembleDatatables=cisternAssembleTable.initTable();
 	
-	var modalids={"dataForm":"#addDataForm","modal":"#selcisternSettingModal","wrapper":"#cisternSettingDatatableContainer","cisternSettingDatatable":"#cisternSettingDatatable","queryForm":"#queryCisternSettingForm","assemblesDetail":"#showAssemblesDetail","shutModalButton":"#selcisternSettingButton","contextPath":contextPath,"queryModalButton":"#btn-modal-query"};
+	/*var modalids={"dataForm":"#addDataForm","modal":"#selcisternSettingModal","wrapper":"#cisternSettingDatatableContainer","cisternSettingDatatable":"#cisternSettingDatatable","queryForm":"#queryCisternSettingForm","assemblesDetail":"#showAssemblesDetail","shutModalButton":"#selcisternSettingButton","contextPath":contextPath,"queryModalButton":"#btn-modal-query"};
 	var cisternSettingModal=new CisternSettingModal(contextPath,modalids);
 	var modalTables=cisternSettingModal.initModalTable();
-	cisternSettingModal.initModalShut(modalTables,cisternAssembleTable,cisternAssembleDatatables);
+	cisternSettingModal.initModalShut(modalTables,cisternAssembleTable,cisternAssembleDatatables);*/
 	$('#addFormAssembleTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -23,7 +23,7 @@ $(document).ready(function() {
     });
 	
 	$("#addCisternPn").on("click",function(){
-		$selcisternSettingModal=$("#selcisternSettingModal");
+		/*$selcisternSettingModal=$("#selcisternSettingModal");
         $selcisternSettingModal.draggable({ handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
@@ -34,7 +34,9 @@ $(document).ready(function() {
 			$.each($.fn.dataTable.tables(true), function(){
 				$(this).DataTable().columns.adjust();
 			});
-		});
+		});*/
+		cisternAssembleDatatables.clear().draw();
+		cisternAssembleTable.addCisternSettingAssemblesPassAjax(cisternAssembleDatatables,"",$("#cisternSettingCisternPn").val(),ids.dataForm);
     });
 	$("#addDataForm").bootstrapValidator({
         message: 'This value is not valid',
@@ -102,13 +104,18 @@ $(document).ready(function() {
     	var bv = $form.data('bootstrapValidator');
     	$.post(contextPath+"/trackinglist/addCistern",  $form.serialize(), function(result) {
     		if(result.resultCode==0){
-    			showNotice('Success',"添加水箱装配流程跟踪单成功",'success',1000*5);
+    			//showNotice('Success',"添加水箱装配流程跟踪单成功",'success',1000*5);
+    			window.location.href=contextPath+"/trackinglist/cisternManage";
     		}else{
     			showNotice('Error','<span style="padding-top:5px">添加水箱装配流程跟踪单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
     		}
     		$form.bootstrapValidator('disableSubmitButtons', false);
         },'json'); 
-    });
+    }).on("keypress",function(e) {
+    	if (e.which == 13) {
+    		return false;
+    	}
+	});
 	$("#addBackButton").on("click",function(){
     	window.location.href=contextPath+"/trackinglist/cisternManage";
     });

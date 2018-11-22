@@ -10,10 +10,10 @@ $(document).ready(function() {
 	var preprocessingInspectDatatables=preprocessingInspectTable.initTable();
 	preprocessingInspectTable.addPreprocessingInspectsPassAjax(preprocessingInspectDatatables,$(ids.dataForm+" [name=preprocessingID]").val());
 	//初始化preprocessingSetting Modal
-	var modalids={"dataForm":"#modDataForm","modal":"#selpreprocessingSettingModal","wrapper":"#preprocessingSettingDatatableContainer","preprocessingSettingDatatable":"#preprocessingSettingDatatable","queryForm":"#queryPreprocessingSettingForm","assemblesDetail":"#showAssemblesDetail","inspectsDetail":"#showInspectsDetail","shutModalButton":"#selpreprocessingSettingButton","contextPath":contextPath,"queryModalButton":"#btn-modal-query"};
+	/*var modalids={"dataForm":"#modDataForm","modal":"#selpreprocessingSettingModal","wrapper":"#preprocessingSettingDatatableContainer","preprocessingSettingDatatable":"#preprocessingSettingDatatable","queryForm":"#queryPreprocessingSettingForm","assemblesDetail":"#showAssemblesDetail","inspectsDetail":"#showInspectsDetail","shutModalButton":"#selpreprocessingSettingButton","contextPath":contextPath,"queryModalButton":"#btn-modal-query"};
 	var preprocessingSettingModal=new PreprocessingSettingModal(contextPath,modalids);
 	var modalTables=preprocessingSettingModal.initModalTable();
-	preprocessingSettingModal.initModalShut(modalTables,preprocessingAssembleTable,preprocessingAssembleDatatables,preprocessingInspectTable,preprocessingInspectDatatables);
+	preprocessingSettingModal.initModalShut(modalTables,preprocessingAssembleTable,preprocessingAssembleDatatables,preprocessingInspectTable,preprocessingInspectDatatables);*/
 	$('#addFormAssembleTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -27,7 +27,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$("#addPreprocessingPn").on("click",function(){
-		$selpreprocessingSettingModal=$("#selpreprocessingSettingModal");
+		/*$selpreprocessingSettingModal=$("#selpreprocessingSettingModal");
         $selpreprocessingSettingModal.draggable({ handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
@@ -38,7 +38,9 @@ $(document).ready(function() {
 			$.each($.fn.dataTable.tables(true), function(){
 				$(this).DataTable().columns.adjust();
 			});
-		});
+		});*/
+		preprocessingAssembleDatatables.clear().draw();
+		preprocessingAssembleTable.addPreprocssingSettingAssemblesPassAjax(preprocessingAssembleDatatables,"",$("#preprocessingSettingPreprocessingPn").val(),ids.dataForm);
     });
 	$(ids.dataForm).bootstrapValidator({
         message: 'This value is not valid',
@@ -115,7 +117,8 @@ $(document).ready(function() {
     	if("copy"==operator){
     		$.post(contextPath+"/trackinglist/addPreprocessing",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"添加预处理装配流程跟踪单成功",'success',1000*5);
+        			//showNotice('Success',"添加预处理装配流程跟踪单成功",'success',1000*5);
+        			window.location.href=contextPath+"/trackinglist/preprocessingManage";
         		}else{
         			showNotice('Error','<span style="padding-top:5px">添加预处理装配流程跟踪单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
@@ -124,14 +127,19 @@ $(document).ready(function() {
     	}else{
     		$.post(contextPath+"/trackinglist/modPreprocessing",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"修改预处理装配流程跟踪单成功",'success',1000*5);
+        			//showNotice('Success',"修改预处理装配流程跟踪单成功",'success',1000*5);
+        			window.location.href=contextPath+"/trackinglist/preprocessingManage";
         		}else{
         			showNotice('Error','<span style="padding-top:5px">修改预处理装配流程跟踪单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
         		$form.bootstrapValidator('disableSubmitButtons', false);
             },'json'); 
     	}
-    });
+    }).on("keypress",function(e) {
+    	if (e.which == 13) {
+    		return false;
+    	}
+	});
 	$("#addBackButton").on("click",function(){
     	window.location.href=contextPath+"/trackinglist/preprocessingManage";
     });

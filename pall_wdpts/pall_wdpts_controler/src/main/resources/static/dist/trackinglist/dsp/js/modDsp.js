@@ -6,10 +6,10 @@ $(document).ready(function() {
 	var dspAssembleDatatables=dspAssembleTable.initTable();
 	dspAssembleTable.addDspAssemblesPassAjax(dspAssembleDatatables,$(ids.dataForm+" [name=dspID]").val());
 	//初始化dspSetting Modal
-	var modalids={"dataForm":"#modDataForm","modal":"#seldspSettingModal","wrapper":"#dspSettingDatatableContainer","dspSettingDatatable":"#dspSettingDatatable","queryForm":"#queryDspSettingForm","assemblesDetail":"#showAssemblesDetail","shutModalButton":"#seldspSettingButton","contextPath":contextPath,"queryModalButton":"#btn-modal-query"};
+	/*var modalids={"dataForm":"#modDataForm","modal":"#seldspSettingModal","wrapper":"#dspSettingDatatableContainer","dspSettingDatatable":"#dspSettingDatatable","queryForm":"#queryDspSettingForm","assemblesDetail":"#showAssemblesDetail","shutModalButton":"#seldspSettingButton","contextPath":contextPath,"queryModalButton":"#btn-modal-query"};
 	var dspSettingModal=new DspSettingModal(contextPath,modalids);
 	var modalTables=dspSettingModal.initModalTable();
-	dspSettingModal.initModalShut(modalTables,dspAssembleTable,dspAssembleDatatables);
+	dspSettingModal.initModalShut(modalTables,dspAssembleTable,dspAssembleDatatables);*/
 	$('#addFormAssembleTime').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
@@ -19,7 +19,7 @@ $(document).ready(function() {
         locale: moment.locale('zh-cn')  
     });
 	$("#addDspPn").on("click",function(){
-		$seldspSettingModal=$("#seldspSettingModal");
+		/*$seldspSettingModal=$("#seldspSettingModal");
         $seldspSettingModal.draggable({ handle:".table-header",
     		scroll: true, scrollSensitivity: 100,
     		cursor: "move"});
@@ -30,7 +30,9 @@ $(document).ready(function() {
 			$.each($.fn.dataTable.tables(true), function(){
 				$(this).DataTable().columns.adjust();
 			});
-		});
+		});*/
+		dspAssembleDatatables.clear().draw();
+		dspAssembleTable.addDspSettingAssemblesPassAjax(dspAssembleDatatables,"",$("#dspSettingDspPn").val(),ids.dataForm);
     });
 	$(ids.dataForm).bootstrapValidator({
         message: 'This value is not valid',
@@ -100,7 +102,8 @@ $(document).ready(function() {
     	if("copy"==operator){
     		$.post(contextPath+"/trackinglist/addDsp",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"添加Dsp装配流程跟踪单成功",'success',1000*5);
+        			//showNotice('Success',"添加Dsp装配流程跟踪单成功",'success',1000*5);
+        			window.location.href=contextPath+"/trackinglist/dspManage";
         		}else{
         			showNotice('Error','<span style="padding-top:5px">添加Dsp装配流程跟踪单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
@@ -109,14 +112,19 @@ $(document).ready(function() {
     	}else{
     		$.post(contextPath+"/trackinglist/modDsp",  $form.serialize(), function(result) {
         		if(result.resultCode==0){
-        			showNotice('Success',"修改Dsp装配流程跟踪单成功",'success',1000*5);
+        			//showNotice('Success',"修改Dsp装配流程跟踪单成功",'success',1000*5);
+        			window.location.href=contextPath+"/trackinglist/dspManage";
         		}else{
         			showNotice('Error','<span style="padding-top:5px">修改Dsp装配流程跟踪单失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
         		}
         		$form.bootstrapValidator('disableSubmitButtons', false);
             },'json'); 
     	}
-    });
+    }).on("keypress",function(e) {
+    	if (e.which == 13) {
+    		return false;
+    	}
+	});
 	$("#addBackButton").on("click",function(){
     	window.location.href=contextPath+"/trackinglist/dspManage";
     });

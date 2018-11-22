@@ -24,13 +24,17 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pall.wdpts.annotation.Token;
 import com.pall.wdpts.common.constants.IResponseConstants;
 import com.pall.wdpts.common.constants.KeyConstants;
+import com.pall.wdpts.common.datatables.Entity.DatatablesView;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
 import com.pall.wdpts.context.HolderContext;
+import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
+import com.pall.wdpts.repository.entity.trackinglist.CisternSettingEntity;
+import com.pall.wdpts.repository.entity.trackinglist.DspSettingFormQueryEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingSettingFormQueryEntity;
@@ -59,7 +63,7 @@ public class PreprocessingSettingControler {
 	 * 初始化配置数据
 	 */
 	private Model initConfigData(Model model){
-		
+		model.addAttribute("preprocessingModelDataConfigs", DataConfigInitiator.getDataConfig(UmsConfigInitiator.getDataConfig(KeyConstants.SETTING_PREPROCESSING_DATACONFIG_TYPE_PREPROCESSINGMODEL)));
 		return model;
 	}
 	/*
@@ -270,11 +274,29 @@ public class PreprocessingSettingControler {
 		return JSON.toJSONString(baseResponse);
     }
 	@RequestMapping(value="/setting/preprocessingInspectDetail", method= RequestMethod.POST)
-    public @ResponseBody String preprocessingInspectDetail(Model model,@RequestParam("psid") String  psid, HttpServletRequest request) {
+    public @ResponseBody String preprocessingInspectDetail(Model model,PreprocessingSettingFormQueryEntity  preprocessingSettingFormQueryEntity, HttpServletRequest request) {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingService.queryPreprocessingSettingInspectList(psid);
+			if(StringUtils.isEmpty(preprocessingSettingFormQueryEntity.getPsid()) && !StringUtils.isEmpty(preprocessingSettingFormQueryEntity.getPreprocessingPn())){
+				preprocessingSettingFormQueryEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
+				baseResponse=preprocessingService.queryPreprocessingSettingList(preprocessingSettingFormQueryEntity);
+				if(baseResponse.getDatatablesView().getRecordsTotal()>0){
+					PreprocessingSettingEntity preprocessingSettingEntity=(PreprocessingSettingEntity)baseResponse.getDatatablesView().getData().get(0);
+					preprocessingSettingFormQueryEntity.setPsid(String.valueOf(preprocessingSettingEntity.getPsid()));
+					baseResponse=preprocessingService.queryPreprocessingSettingInspectList(preprocessingSettingFormQueryEntity.getPsid());
+					if(baseResponse!=null){
+						baseResponse.setMainRecord(preprocessingSettingEntity);
+					}
+				}else{
+					DatatablesView datatablesViews=new DatatablesView();
+					baseResponse.setDatatablesView(datatablesViews);
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}	
+			}else{
+				baseResponse=preprocessingService.queryPreprocessingSettingInspectList(preprocessingSettingFormQueryEntity.getPsid());
+			}
+			
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.preprocessingInspectDetail.exception"),e);
@@ -285,11 +307,28 @@ public class PreprocessingSettingControler {
 		 return jsonData;
     }
 	@RequestMapping(value="/setting/preprocessingAssembleDetail", method= RequestMethod.POST)
-    public @ResponseBody String preprocessingAssembleDetail(Model model,@RequestParam("psid") String  psid, HttpServletRequest request) {
+    public @ResponseBody String preprocessingAssembleDetail(Model model,PreprocessingSettingFormQueryEntity  preprocessingSettingFormQueryEntity, HttpServletRequest request) {
         BaseTablesResponse baseResponse=new BaseTablesResponse();
         String jsonData="";
 		try {
-			baseResponse=preprocessingService.queryPreprocessingSettingAssembleList(psid);
+			if(StringUtils.isEmpty(preprocessingSettingFormQueryEntity.getPsid()) && !StringUtils.isEmpty(preprocessingSettingFormQueryEntity.getPreprocessingPn())){
+				preprocessingSettingFormQueryEntity.setPageSize(Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.PAGE_DEFAULT_PAGE_SIZE)));
+				baseResponse=preprocessingService.queryPreprocessingSettingList(preprocessingSettingFormQueryEntity);
+				if(baseResponse.getDatatablesView().getRecordsTotal()>0){
+					PreprocessingSettingEntity preprocessingSettingEntity=(PreprocessingSettingEntity)baseResponse.getDatatablesView().getData().get(0);
+					preprocessingSettingFormQueryEntity.setPsid(String.valueOf(preprocessingSettingEntity.getPsid()));
+					baseResponse=preprocessingService.queryPreprocessingSettingAssembleList(preprocessingSettingFormQueryEntity.getPsid());
+					if(baseResponse!=null){
+						baseResponse.setMainRecord(preprocessingSettingEntity);
+					}
+				}else{
+					DatatablesView datatablesViews=new DatatablesView();
+					baseResponse.setDatatablesView(datatablesViews);
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_SUCCESS);
+				}	
+			}else{
+				baseResponse=preprocessingService.queryPreprocessingSettingAssembleList(preprocessingSettingFormQueryEntity.getPsid());
+			}
 			jsonData=JSON.toJSONString(baseResponse,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullNumberAsZero);
 		} catch (Exception e) {
 			logger.error(resourceUtils.getMessage("preprocessingSetting.Controler.preprocessingAssembleDetail.exception"),e);
