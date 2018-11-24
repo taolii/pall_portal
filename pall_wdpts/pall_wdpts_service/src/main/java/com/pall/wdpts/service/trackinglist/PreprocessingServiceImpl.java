@@ -68,6 +68,14 @@ public class PreprocessingServiceImpl implements  PreprocessingService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			PreprocessingFormQueryEntity preprocessingFormQueryEntity=new PreprocessingFormQueryEntity();
+			preprocessingFormQueryEntity.setSerialNo(preprocessingEntity.getSerialNo());
+			int records=preprocessingDao.queryPreprocessingTotalRecords(preprocessingFormQueryEntity);
+			if(records>0){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.form.serialNo.exists"));
+				return baseResponse;
+			}
 			int resultNum=preprocessingDao.addPreprocessing(preprocessingEntity);
 			if(resultNum>0){
 				//添加预处理装配配置信息
@@ -120,6 +128,20 @@ public class PreprocessingServiceImpl implements  PreprocessingService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			PreprocessingFormQueryEntity preprocessingFormQueryEntity=new PreprocessingFormQueryEntity();;
+			preprocessingFormQueryEntity.setStartPageNum(0);
+			preprocessingFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			preprocessingFormQueryEntity.setSerialNo(preprocessingEntity.getSerialNo());
+			List<PreprocessingEntity> preprocessingEntitys=preprocessingDao.queryPreprocessingList(preprocessingFormQueryEntity);
+			if(null!=preprocessingEntitys && preprocessingEntitys.size()>=1){
+				if(preprocessingEntitys.size()==1 && preprocessingEntitys.get(0).getSerialNo().equals(preprocessingEntity.getSerialNo())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.form.serialNo.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=preprocessingDao.modPreprocessing(preprocessingEntity);
 			if(resultNum>0){
 				List<Integer> preprocessingids=new ArrayList<Integer>();
@@ -279,6 +301,20 @@ public class PreprocessingServiceImpl implements  PreprocessingService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			PreprocessingSettingFormQueryEntity preprocessingSettingFormQueryEntity=new PreprocessingSettingFormQueryEntity();
+			preprocessingSettingFormQueryEntity.setPreprocessingPn(preprocessingSettingEntity.getPreprocessingPn());
+			preprocessingSettingFormQueryEntity.setStartPageNum(0);
+			preprocessingSettingFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			List<PreprocessingSettingEntity> preprocessingSettingEntitys=preprocessingDao.queryPreprocessingSettingList(preprocessingSettingFormQueryEntity);
+			if(null!=preprocessingSettingEntitys && preprocessingSettingEntitys.size()>=1){
+				if(preprocessingSettingEntitys.size()==1 && preprocessingSettingEntitys.get(0).getPreprocessingPn().equals(preprocessingSettingEntity.getPreprocessingPn())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("preprocessingSetting.form.preprocessingPn.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=preprocessingDao.modPreprocessingSetting(preprocessingSettingEntity);
 			if(resultNum>0){
 				List<Integer> psids=new ArrayList<Integer>();

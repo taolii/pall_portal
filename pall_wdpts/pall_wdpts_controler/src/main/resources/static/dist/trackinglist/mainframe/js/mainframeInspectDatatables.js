@@ -27,9 +27,9 @@ var MainframeInspectTable=function(contextPath,ids){
 		        	if(data.length>0){
 		        		for(var i=0;i<data.length;i++){
 		        			if(data.charAt(i)==0){
-		        				trs=trs+"<td><input disabled='disabled' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+		        				trs=trs+"<td style='padding-left:5px;'><label data-toggle='tooltip' data-placement='bottom' title='OFF' class='el-switch el-switch-lg el-switch-red'><input type='checkbox' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' disabled='disabled' value='1'><span class='el-switch-style'></span></label></td>";
 		        			}else{
-		        				trs=trs+"<td><input disabled='disabled' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' checked='true' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+		        				trs=trs+"<td style='padding-left:5px;'><label data-toggle='tooltip' data-placement='bottom' title='ON' class='el-switch el-switch-lg el-switch-red'><input type='checkbox' name='selfcheckContent_"+meta.row+"_"+(i+1)+"' checked='true' disabled='disabled' value='1'><span class='el-switch-style'></span></label></td>";
 		        			}
 		        		}
 		        	}
@@ -41,7 +41,7 @@ var MainframeInspectTable=function(contextPath,ids){
 	            	"</tr>" +
 	            	"<table>"+
 	            			"";
-	            },width:"800px"},
+	            },width:"600px"},
 	 	        {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
 		          	  return "<input type='text' readonly='readonly' class='col-xs-12' name='selfcheckResult_"+meta.row+"' value='"+data+"'></input>";
 	 	            },"width": "180px"},

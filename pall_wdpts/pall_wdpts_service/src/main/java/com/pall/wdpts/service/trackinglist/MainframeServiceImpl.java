@@ -67,6 +67,14 @@ public class MainframeServiceImpl implements MainframeService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			MainframeFormQueryEntity mainframeFormQueryEntity=new MainframeFormQueryEntity();
+			mainframeFormQueryEntity.setSerialNo(mainframeEntity.getSerialNo());
+			int records=mainframeDao.queryMainframeTotalRecords(mainframeFormQueryEntity);
+			if(records>0){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("mainframe.form.serialNo.exists"));
+				return baseResponse;
+			}
 			int resultNum=mainframeDao.addMainframe(mainframeEntity);
 			if(resultNum>0){
 				//添加主机装配配置信息
@@ -119,6 +127,20 @@ public class MainframeServiceImpl implements MainframeService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			MainframeFormQueryEntity mainframeFormQueryEntity=new MainframeFormQueryEntity();;
+			mainframeFormQueryEntity.setStartPageNum(0);
+			mainframeFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			mainframeFormQueryEntity.setSerialNo(mainframeEntity.getSerialNo());
+			List<MainframeEntity> mainframeEntitys=mainframeDao.queryMainframeList(mainframeFormQueryEntity);
+			if(null!=mainframeEntitys && mainframeEntitys.size()>=1){
+				if(mainframeEntitys.size()==1 && mainframeEntitys.get(0).getSerialNo().equals(mainframeEntity.getSerialNo())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("mainframe.form.serialNo.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=mainframeDao.modMainframe(mainframeEntity);
 			if(resultNum>0){
 				List<Integer> mainframeids=new ArrayList<Integer>();
@@ -278,6 +300,20 @@ public class MainframeServiceImpl implements MainframeService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			MainframeSettingFormQueryEntity mainframeSettingFormQueryEntity=new MainframeSettingFormQueryEntity();
+			mainframeSettingFormQueryEntity.setMainframePn(mainframeSettingEntity.getMainframePn());
+			mainframeSettingFormQueryEntity.setStartPageNum(0);
+			mainframeSettingFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			List<MainframeSettingEntity> mainframeSettingEntitys=mainframeDao.queryMainframeSettingList(mainframeSettingFormQueryEntity);
+			if(null!=mainframeSettingEntitys && mainframeSettingEntitys.size()>=1){
+				if(mainframeSettingEntitys.size()==1 && mainframeSettingEntitys.get(0).getMainframePn().equals(mainframeSettingEntity.getMainframePn())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("mainframeSetting.form.mainframePn.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=mainframeDao.modMainframeSetting(mainframeSettingEntity);
 			if(resultNum>0){
 				List<Integer> msids=new ArrayList<Integer>();

@@ -65,6 +65,14 @@ public class CisternServiceImpl implements CisternService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			CisternFormQueryEntity cisternFormQueryEntity=new CisternFormQueryEntity();
+			cisternFormQueryEntity.setSerialNo(cisternEntity.getSerialNo());
+			int records=cisternDao.queryCisternTotalRecords(cisternFormQueryEntity);
+			if(records>0){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("cistern.form.serialNo.exists"));
+				return baseResponse;
+			}
 			int resultNum=cisternDao.addCistern(cisternEntity);
 			if(resultNum>0){
 				//添加水箱装配配置信息
@@ -101,6 +109,20 @@ public class CisternServiceImpl implements CisternService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			CisternFormQueryEntity cisternFormQueryEntity=new CisternFormQueryEntity();;
+			cisternFormQueryEntity.setStartPageNum(0);
+			cisternFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			cisternFormQueryEntity.setSerialNo(cisternEntity.getSerialNo());
+			List<CisternEntity> cisternEntitys=cisternDao.queryCisternList(cisternFormQueryEntity);
+			if(null!=cisternEntitys && cisternEntitys.size()>=1){
+				if(cisternEntitys.size()==1 && cisternEntitys.get(0).getSerialNo().equals(cisternEntity.getSerialNo())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("cistern.form.serialNo.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=cisternDao.modCistern(cisternEntity);
 			if(resultNum>0){
 				List<Integer> cisternids=new ArrayList<Integer>();
@@ -226,6 +248,20 @@ public class CisternServiceImpl implements CisternService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			CisternSettingFormQueryEntity cisternSettingFormQueryEntity=new CisternSettingFormQueryEntity();
+			cisternSettingFormQueryEntity.setCisternPn(cisternSettingEntity.getCisternPn());
+			cisternSettingFormQueryEntity.setStartPageNum(0);
+			cisternSettingFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			List<CisternSettingEntity> cisternSettingEntitys=cisternDao.queryCisternSettingList(cisternSettingFormQueryEntity);
+			if(null!=cisternSettingEntitys && cisternSettingEntitys.size()>=1){
+				if(cisternSettingEntitys.size()==1 && cisternSettingEntitys.get(0).getCisternPn().equals(cisternSettingEntity.getCisternPn())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("cisternSetting.form.cisternPn.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=cisternDao.modCisternSetting(cisternSettingEntity);
 			if(resultNum>0){
 				List<Integer> csids=new ArrayList<Integer>();

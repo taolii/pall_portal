@@ -25,21 +25,21 @@ $(document).ready(function() {
 	        	if(data.length>0){
 	        		for(var i=0;i<data.length;i++){
 	        			if(data.charAt(i)==0){
-	        				trs=trs+"<td><input name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+	        				trs=trs+"<td><input name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch ace-switch-4 btn-rotate' type='checkbox' value='1'><span class='lbl'></span></td>";
 	        			}else{
-	        				trs=trs+"<td><input name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch btn-empty' checked='true' type='checkbox' value='1'><span class='lbl' data-lbl='ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF'></span></td>";
+	        				trs=trs+"<td><input name='selfcheckContent_"+meta.row+"_"+(i+1)+"' class='ace ace-switch ace-switch-4 btn-rotate' checked='true' type='checkbox' value='1'><span class='lbl'></span></td>";
 	        			}
 	        		}
 	        	}
 	        	return "" +
-            	"<table style='border:1px'>" +
+            	"<table>" +
             	"<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>" +
             	"<tr>" +
             	trs
             	"</tr>" +
             	"<table>"+
             			"";
-            },width:"800px"},
+            },width:"900px"},
             {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
             	return "<input type='text' class='col-xs-12' name='selfcheckResult_"+meta.row+"' value='"+data+"'></input>";
             },width:"120px"},

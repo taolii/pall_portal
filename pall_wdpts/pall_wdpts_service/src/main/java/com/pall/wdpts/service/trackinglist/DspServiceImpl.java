@@ -66,6 +66,14 @@ public class DspServiceImpl implements  DspService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			DspFormQueryEntity dspFormQueryEntity=new DspFormQueryEntity();
+			dspFormQueryEntity.setSerialNo(dspEntity.getSerialNo());
+			int records=dspDao.queryDspTotalRecords(dspFormQueryEntity);
+			if(records>0){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("dsp.form.serialNo.exists"));
+				return baseResponse;
+			}
 			int resultNum=dspDao.addDsp(dspEntity);
 			if(resultNum>0){
 				//添加Dsp装配配置信息
@@ -102,6 +110,20 @@ public class DspServiceImpl implements  DspService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			DspFormQueryEntity dspFormQueryEntity=new DspFormQueryEntity();;
+			dspFormQueryEntity.setStartPageNum(0);
+			dspFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			dspFormQueryEntity.setSerialNo(dspEntity.getSerialNo());
+			List<DspEntity> dspEntitys=dspDao.queryDspList(dspFormQueryEntity);
+			if(null!=dspEntitys && dspEntitys.size()>=1){
+				if(dspEntitys.size()==1 && dspEntitys.get(0).getSerialNo().equals(dspEntity.getSerialNo())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("dsp.form.serialNo.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=dspDao.modDsp(dspEntity);
 			if(resultNum>0){
 				List<Integer> dspids=new ArrayList<Integer>();
@@ -228,6 +250,20 @@ public class DspServiceImpl implements  DspService{
 			throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			DspSettingFormQueryEntity dspSettingFormQueryEntity=new DspSettingFormQueryEntity();
+			dspSettingFormQueryEntity.setDspPn(dspSettingEntity.getDspPn());
+			dspSettingFormQueryEntity.setStartPageNum(0);
+			dspSettingFormQueryEntity.setPageSize(Integer.MAX_VALUE);
+			List<DspSettingEntity> dspSettingEntitys=dspDao.queryDspSettingList(dspSettingFormQueryEntity);
+			if(null!=dspSettingEntitys && dspSettingEntitys.size()>=1){
+				if(dspSettingEntitys.size()==1 && dspSettingEntitys.get(0).getDspPn().equals(dspSettingEntity.getDspPn())){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("dspSetting.form.dspPn.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=dspDao.modDspSetting(dspSettingEntity);
 			if(resultNum>0){
 				List<Integer> dspids=new ArrayList<Integer>();
