@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
+import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.context.HolderContext;
@@ -49,12 +51,15 @@ import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
+import com.pall.wdpts.repository.entity.trackinglist.DspEntity;
+import com.pall.wdpts.repository.entity.trackinglist.DspFormQueryEntity;
 import com.pall.wdpts.repository.entity.trackinglist.DspAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.DspEntity;
 import com.pall.wdpts.repository.entity.trackinglist.DspFormQueryEntity;
 import com.pall.wdpts.repository.entity.user.UserEntity.ADD;
 import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
 import com.pall.wdpts.repository.entity.workflow.ExcelSaveEntity;
+import com.pall.wdpts.service.excel.IExcelHandler;
 import com.pall.wdpts.service.excel.IExcelTemplateHandler;
 import com.pall.wdpts.service.menu.ButtonManageService;
 import com.pall.wdpts.service.trackinglist.DspService;
@@ -87,6 +92,9 @@ public class DspManageControler {
 	 */
 	@Value("${trackling.dsp.template}")
 	private String templateFilePath;
+	@Autowired
+	@Qualifier("xlsxExcelHandler")
+	private IExcelHandler iExcelHandler;
 	/*
 	 * 初始化配置数据
 	 */
@@ -403,5 +411,77 @@ public class DspManageControler {
 			
 		}
 		 return jsonData;
+    }
+	/*
+	 * 导出水箱装配信息
+	 */
+	@RequestMapping(value="trackinglist/exportDsps", method= RequestMethod.POST)
+    public @ResponseBody String exportDsps(Model model,DspFormQueryEntity  dspFormQueryEntity, HttpServletRequest request) {
+		BaseResponse baseResponse=new BaseResponse();
+		List<DspEntity> dspEntitys=null;
+		try {
+			dspEntitys=dspService.exportDspList(dspFormQueryEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("dsp.service.queryDsp.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("dsp.service.queryDsp.exception"));
+			return JSON.toJSONString(baseResponse);
+		}
+		if(dspEntitys==null){
+			dspEntitys=new ArrayList<DspEntity>();
+		}
+		 Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_DSP_TABLENAME));
+		int currentRowNum=excelheadlinesMap.size();
+        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
+        if(null!=dspEntitys && dspEntitys.size()>0){
+        	if(!StringUtils.isEmpty(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        		if(dspEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+        			baseResponse.setResultMsg(resourceUtils.getMessage("export.records.over.the.limit")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
+        			baseResponse.setReturnObjects(null);
+        			return JSON.toJSONString(baseResponse);
+	        	}
+        	}
+        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_DSP_TABLENAME), dspEntitys,currentRowNum);
+        }
+		//设置下载保存文件路径
+    	StringBuilder downloadFileFullPath=new StringBuilder();
+    	downloadFileFullPath.append(this.getClass().getResource("/").getPath());
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(downloadFilePath);
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_DSP_DOWNLOAD_SUBDIRECTORY));
+    	downloadFileFullPath.append(File.separator);
+    	//设置下载保存文件路径名称
+    	StringBuilder fileName=new StringBuilder();
+    	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
+    	fileName.append("_");
+    	fileName.append(resourceUtils.getMessage("dsp.Controler.exportDsp.filename"));
+    	fileName.append("_");
+    	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
+    	fileName.append(sf.format(new Date()));
+    	fileName.append(".");
+    	fileName.append(KeyConstants.EXCEL_SUFFIX_XLSX);
+    	OutputStream out =null;
+        try {
+        	Files.createParentDirs(new File(downloadFileFullPath.toString()+fileName.toString()));
+        	out=new FileSystemResource(downloadFileFullPath.toString()+fileName.toString()).getOutputStream();
+			Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("dsp.Controler.exportDsp.filename"), excelheadlinesMap, rowdatas);
+			workbook.write(out);
+			List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
+			ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
+			excelSaveEntity.setFileName(fileName.toString());
+			excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_DSP_DOWNLOAD_SUBDIRECTORY));
+			excelSaveEntitys.add(excelSaveEntity);
+			baseResponse.setReturnObjects(excelSaveEntitys);
+			return JSON.toJSONString(baseResponse);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("dsp.Controler.exportDsp.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("dsp.Controler.exportDsp.exception")+":"+e.toString());
+		}finally{
+			IOUtils.close(out);
+		}
+		return JSON.toJSONString(baseResponse);
     }
 }

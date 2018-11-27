@@ -76,7 +76,7 @@ $(document).ready(function() {
             serialNo: {
                 validators: {
                     notEmpty: {
-                        message: '序列号/Serial NO不能为空'
+                        message: '序列号/Serial No不能为空'
                     }
                 }
             },

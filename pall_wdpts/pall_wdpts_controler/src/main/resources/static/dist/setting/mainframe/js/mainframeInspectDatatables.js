@@ -17,7 +17,7 @@ $(document).ready(function() {
         		return "<input type='text' class='col-xs-12' name='selfcheckName_"+meta.row+"' value='"+data+"'></input>"+
         		"<input type='hidden' name='inspectid'  value='"+meta.row+"'></input>";
             },width:"120px"},
-            {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
+            {className : "center",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
             	var trs="";
             	if(data.length==0){
             		data="00000000";
@@ -39,7 +39,7 @@ $(document).ready(function() {
             	"</tr>" +
             	"<table>"+
             			"";
-            },width:"900px"},
+            },width:"500px"},
             {className : "ellipsis",data:"selfcheckResult",title:"自检结果",render : function(data,type, row, meta) {
             	return "<input type='text' class='col-xs-12' name='selfcheckResult_"+meta.row+"' value='"+data+"'></input>";
             },width:"120px"},

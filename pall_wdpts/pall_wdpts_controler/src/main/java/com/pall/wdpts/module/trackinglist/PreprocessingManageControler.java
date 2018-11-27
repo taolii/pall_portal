@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,17 +42,16 @@ import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
+import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
 import com.pall.wdpts.context.HolderContext;
-import com.pall.wdpts.init.DataConfigInitiator;
 import com.pall.wdpts.init.TableDataConfigInitiator;
 import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
-import com.pall.wdpts.repository.entity.trackinglist.MainframeAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingEntity;
 import com.pall.wdpts.repository.entity.trackinglist.PreprocessingFormQueryEntity;
@@ -59,6 +59,7 @@ import com.pall.wdpts.repository.entity.trackinglist.PreprocessingInspectEntity;
 import com.pall.wdpts.repository.entity.user.UserEntity.ADD;
 import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
 import com.pall.wdpts.repository.entity.workflow.ExcelSaveEntity;
+import com.pall.wdpts.service.excel.IExcelHandler;
 import com.pall.wdpts.service.excel.IExcelTemplateHandler;
 import com.pall.wdpts.service.menu.ButtonManageService;
 import com.pall.wdpts.service.trackinglist.PreprocessingService;
@@ -81,6 +82,9 @@ public class PreprocessingManageControler{
 	@Autowired
 	@Qualifier("xlsxTemplateHandler")
 	private IExcelTemplateHandler iExcelTemplateHandler;
+	@Autowired
+	@Qualifier("xlsxExcelHandler")
+	private IExcelHandler iExcelHandler;
 	/*
 	 * 下载文件路径
 	 */
@@ -468,5 +472,77 @@ public class PreprocessingManageControler{
 			
 		}
 		 return jsonData;
+    }
+	/*
+	 * 导出水箱装配信息
+	 */
+	@RequestMapping(value="trackinglist/exportPreprocessings", method= RequestMethod.POST)
+    public @ResponseBody String exportPreprocessings(Model model,PreprocessingFormQueryEntity  preprocessingFormQueryEntity, HttpServletRequest request) {
+		BaseResponse baseResponse=new BaseResponse();
+		List<PreprocessingEntity> preprocessingEntitys=null;
+		try {
+			preprocessingEntitys=preprocessingService.exportPreprocessingList(preprocessingFormQueryEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("preprocessing.service.queryPreprocessing.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.service.queryPreprocessing.exception"));
+			return JSON.toJSONString(baseResponse);
+		}
+		if(preprocessingEntitys==null){
+			preprocessingEntitys=new ArrayList<PreprocessingEntity>();
+		}
+		 Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_TABLENAME));
+		int currentRowNum=excelheadlinesMap.size();
+        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
+        if(null!=preprocessingEntitys && preprocessingEntitys.size()>0){
+        	if(!StringUtils.isEmpty(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        		if(preprocessingEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+        			baseResponse.setResultMsg(resourceUtils.getMessage("export.records.over.the.limit")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
+        			baseResponse.setReturnObjects(null);
+        			return JSON.toJSONString(baseResponse);
+	        	}
+        	}
+        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_TABLENAME), preprocessingEntitys,currentRowNum);
+        }
+		//设置下载保存文件路径
+    	StringBuilder downloadFileFullPath=new StringBuilder();
+    	downloadFileFullPath.append(this.getClass().getResource("/").getPath());
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(downloadFilePath);
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_DOWNLOAD_SUBDIRECTORY));
+    	downloadFileFullPath.append(File.separator);
+    	//设置下载保存文件路径名称
+    	StringBuilder fileName=new StringBuilder();
+    	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
+    	fileName.append("_");
+    	fileName.append(resourceUtils.getMessage("preprocessing.Controler.exportPreprocessing.filename"));
+    	fileName.append("_");
+    	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
+    	fileName.append(sf.format(new Date()));
+    	fileName.append(".");
+    	fileName.append(KeyConstants.EXCEL_SUFFIX_XLSX);
+    	OutputStream out =null;
+        try {
+        	Files.createParentDirs(new File(downloadFileFullPath.toString()+fileName.toString()));
+        	out=new FileSystemResource(downloadFileFullPath.toString()+fileName.toString()).getOutputStream();
+			Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("preprocessing.Controler.exportPreprocessing.filename"), excelheadlinesMap, rowdatas);
+			workbook.write(out);
+			List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
+			ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
+			excelSaveEntity.setFileName(fileName.toString());
+			excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_PREPROCESSING_DOWNLOAD_SUBDIRECTORY));
+			excelSaveEntitys.add(excelSaveEntity);
+			baseResponse.setReturnObjects(excelSaveEntitys);
+			return JSON.toJSONString(baseResponse);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("preprocessing.Controler.exportPreprocessing.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("preprocessing.Controler.exportPreprocessing.exception")+":"+e.toString());
+		}finally{
+			IOUtils.close(out);
+		}
+		return JSON.toJSONString(baseResponse);
     }
 }

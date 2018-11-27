@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-10-16 16:21:07
+Date: 2018-11-26 22:19:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -286,7 +286,7 @@ CREATE TABLE `t_ums_data_config` (
   `UPDATETIME` datetime DEFAULT NULL,
   PRIMARY KEY (`DATAID`),
   KEY `idx_udc_config_datatype_configname` (`DATATYPE`,`configname`)
-) ENGINE=InnoDB AUTO_INCREMENT=840 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=844 DEFAULT CHARSET=utf8 COMMENT='数据字典配置表';
 
 -- ----------------------------
 -- Records of t_ums_data_config
@@ -856,6 +856,10 @@ INSERT INTO `t_ums_data_config` VALUES ('836', '34', '05-5003', '', '9', '2018-0
 INSERT INTO `t_ums_data_config` VALUES ('837', '34', '03-0008', '', '9', '2018-08-23 13:43:00', '2018-08-23 13:43:00');
 INSERT INTO `t_ums_data_config` VALUES ('838', '47', 'Ref', '', '9', '2018-09-19 12:16:33', '2018-09-19 12:16:33');
 INSERT INTO `t_ums_data_config` VALUES ('839', '37', 'Ref', '', '9', '2018-09-19 12:16:58', '2018-09-19 12:16:58');
+INSERT INTO `t_ums_data_config` VALUES ('840', '27', '05-0001', '', '9', '2018-10-24 20:41:04', '2018-10-24 20:41:04');
+INSERT INTO `t_ums_data_config` VALUES ('841', '27', '05-0002', '', '9', '2018-10-24 20:41:21', '2018-10-24 20:41:21');
+INSERT INTO `t_ums_data_config` VALUES ('842', '27', '05-0003', '', '9', '2018-10-24 20:41:28', '2018-10-24 20:41:28');
+INSERT INTO `t_ums_data_config` VALUES ('843', '27', '05-0004', '', '9', '2018-10-24 20:41:34', '2018-10-24 20:41:34');
 
 -- ----------------------------
 -- Table structure for t_ums_deptinfo
@@ -1049,7 +1053,7 @@ CREATE TABLE `t_ums_reagentmixture` (
   `wo_num` varchar(30) DEFAULT '' COMMENT 'WO#',
   `amount` double(10,4) DEFAULT NULL COMMENT 'Amount(mg)',
   `ph_value` varchar(20) DEFAULT '' COMMENT 'PH值',
-  `concentration` varchar(20) DEFAULT '' COMMENT '浓度',
+  `concentration` varchar(50) DEFAULT NULL,
   `temperature_up_starttime` datetime DEFAULT NULL COMMENT '回温开始时间',
   `temperature_up_endtime` datetime DEFAULT NULL COMMENT '回温结束时间',
   `reagent_temperature` varchar(20) NOT NULL DEFAULT '' COMMENT '试剂温度',
@@ -1064,7 +1068,7 @@ CREATE TABLE `t_ums_reagentmixture` (
   KEY `idx_ur_reagentmiture_reagentmixture` (`lot_num`) USING BTREE,
   KEY `idx_ur_reagentmiture_mainreagent` (`main_reagent`) USING BTREE,
   KEY `idx_ur_reagentmiture_configtime` (`config_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='试剂混合表';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='试剂混合表';
 
 -- ----------------------------
 -- Records of t_ums_reagentmixture
@@ -1090,6 +1094,8 @@ INSERT INTO `t_ums_reagentmixture` VALUES ('24', '2018-05-29 10:49:28', '01-0026
 INSERT INTO `t_ums_reagentmixture` VALUES ('25', '2018-08-23 12:41:26', '05-0041', 'jjhhgfd', 'kkkkkkkjjgd', '', '2.5000', null, null, null, null, '', '', '', '', '', '2018-08-23 12:44:19', '2018-08-23 12:44:19', '9');
 INSERT INTO `t_ums_reagentmixture` VALUES ('26', '2018-08-23 12:46:13', '05-0041', '', 'kjhfdf', '', '0.0000', null, null, null, null, '', '', '', '', '', '2018-08-23 12:46:59', '2018-08-23 12:46:59', '9');
 INSERT INTO `t_ums_reagentmixture` VALUES ('27', '2018-08-23 12:46:13', '05-0043', '', 'kjhfdfsdfsdfs', '', '0.0000', null, null, null, null, '', '', '', '', '', '2018-08-23 12:47:32', '2018-08-23 12:47:32', '9');
+INSERT INTO `t_ums_reagentmixture` VALUES ('28', '2018-10-11 20:42:27', '05-0001', '', 'qqq', '', '0.0000', null, null, null, null, '', '', '', '', '', '2018-10-24 20:42:53', '2018-10-24 20:42:53', '9');
+INSERT INTO `t_ums_reagentmixture` VALUES ('29', '2018-11-06 16:51:26', '01-0001', '', 'sfsd', '', '0.0000', null, 'sdfsfs', null, null, '', '', '', '', '', '2018-11-06 16:51:31', '2018-11-06 16:51:31', '9');
 
 -- ----------------------------
 -- Table structure for t_ums_reagentmixture_sns
@@ -1104,7 +1110,7 @@ CREATE TABLE `t_ums_reagentmixture_sns` (
   `reagents_sn` varchar(100) DEFAULT NULL COMMENT '试剂编号',
   PRIMARY KEY (`srmid`),
   KEY `idx_urs_sns_rmid` (`rmid`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='试剂编号表';
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COMMENT='试剂编号表';
 
 -- ----------------------------
 -- Records of t_ums_reagentmixture_sns
@@ -1142,6 +1148,7 @@ INSERT INTO `t_ums_reagentmixture_sns` VALUES ('48', '24', 'reagentmixturetable2
 INSERT INTO `t_ums_reagentmixture_sns` VALUES ('49', '10', 'reagentmixturetable209781', '04-0013', '04-0013', 'MP180117C');
 INSERT INTO `t_ums_reagentmixture_sns` VALUES ('50', '26', 'reagentmixturetable209835', '05-0041', '03-0006', 'qqadadadadsa');
 INSERT INTO `t_ums_reagentmixture_sns` VALUES ('51', '27', 'reagentmixturetable209835', '05-0043', '03-0006', 'qdfrrte');
+INSERT INTO `t_ums_reagentmixture_sns` VALUES ('52', '28', 'reagentmixturetable209770', '05-0001', '04-0001', 'qqqq');
 
 -- ----------------------------
 -- Table structure for t_ums_right
@@ -1873,68 +1880,6 @@ INSERT INTO `t_ums_th_config` VALUES ('209', 'reagentmixturetable', '1', '16', n
 INSERT INTO `t_ums_th_config` VALUES ('209', 'reagentmixturetable', '1', '17', null, '1', '1', null, 'reserver2', '0', '备注2', null);
 INSERT INTO `t_ums_th_config` VALUES ('209', 'reagentmixturetable', '1', '18', null, '1', '1', null, 'reserver3', '0', '备注3', null);
 INSERT INTO `t_ums_th_config` VALUES ('209', 'reagentmixturetable', '1', '19', null, '1', '1', null, null, '0', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '1', null, '2', '1', null, null, '2', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '2', null, '2', '1', null, 'crID', '1', 'crID', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '3', null, '2', '1', null, 'lot', '0', 'New Lot#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '4', null, '2', '1', null, 'bioPatNum', '0', 'NEW BIO PN#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '5', null, '2', '1', null, 'trayNums', '0', 'NEW TRAY#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '6', null, '2', '1', null, 'oldLotNums', '0', 'Old Lot#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '7', null, '2', '1', null, 'oldTrayNums', '0', 'Old Tray#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '8', null, '2', '1', null, 'oldBioPatNums', '0', 'OLD BIO PN#', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '9', null, '2', '1', null, 'reagentMixture', '0', '混合试剂', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '10', null, '1', '2', null, null, '0', 'Fiber', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '12', null, '2', '1', null, 'coatingStation', '0', 'Coating Station', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '13', null, '2', '1', null, 'crOperator1', '0', '生化镀膜作业人员1', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '14', null, '2', '1', null, 'crOperator2', '0', '生化镀膜作业人员2', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '15', null, '2', '1', null, 'docRev', '0', '版本', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '16', null, '2', '1', null, 'auxiliaryReagent1', '0', '03-0018 or 03-0067 KB', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '17', null, '2', '1', null, 'auxiliaryReagent2', '0', '05-0079 1ug/ml BPA', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '18', null, '2', '1', null, 'auxiliaryReagent3', '0', '05-0080 6ug/ml HIgG', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '19', null, '2', '1', null, 'goodsQty', '0', 'Goods', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '20', null, '2', '1', null, 'inputQty', '0', 'Input', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '21', null, '2', '1', null, 'theoryYield', '0', 'Theoretical Yield', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '22', null, '2', '1', null, 'actualYield', '0', 'Actual Yield', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '23', null, '2', '1', null, 'theoryActualYield', '0', 'Theoretical VS Actual', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '24', null, '2', '1', null, 'remark', '0', '备注', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '25', null, '2', '1', null, 'operatorName', '0', '操作员', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '26', null, '2', '1', null, null, '2', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '2', '10', null, '1', '1', null, 'rawMaterial', '0', 'Raw Material', null);
-INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '2', '11', null, '1', '1', null, 'inPutDate', '0', 'In Put Date', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '1', null, '2', '1', null, null, '2', null, null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '2', null, '2', '1', null, 'crID', '1', 'crID', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '3', null, '2', '1', null, 'bioPatNum', '0', 'BIO PN#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '4', null, '2', '1', null, 'lot', '0', 'Lot', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '5', null, '2', '1', null, 'reagentMixture', '0', '混合试剂', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '6', null, '2', '1', null, 'trayLotNums', '0', '14-####Lot', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '7', null, '2', '1', null, 'tLotNums', '0', 'T#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '8', null, '2', '1', null, 'apsLotNums', '0', 'APSLOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '9', null, '2', '1', null, 'ocLotNums', '0', 'OP LOT#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '10', null, '2', '1', null, 'cleanLotNums', '0', 'Clean Lot#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '11', null, '2', '1', null, 'polishLotNums', '0', 'Polish Lot#', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '12', null, '1', '2', null, null, '0', 'Fiber', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '14', null, '2', '1', null, 'coatingStation', '0', 'Coating Station', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '15', null, '2', '1', null, 'crOperator1', '0', '生化镀膜作业人员1', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '16', null, '2', '1', null, 'crOperator2', '0', '生化镀膜作业人员2', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '17', null, '2', '1', null, 'docRev', '0', '版本', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '18', null, '2', '1', null, 'auxiliaryReagent1', '0', '03-0018 or 03-0067 KB', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '19', null, '2', '1', null, 'auxiliaryReagent2', '0', '05-0079 1ug/ml BPA', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '20', null, '2', '1', null, 'auxiliaryReagent3', '0', '05-0080 6ug/ml HIgG', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '21', null, '2', '1', null, 'polishBoms', '0', 'POLISH Bom', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '22', null, '2', '1', null, 'cleanBoms', '0', 'Clean BOM', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '23', null, '2', '1', null, 'ocBoms', '0', '光学Bom', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '24', null, '2', '1', null, 'apsBoms', '0', 'APS Bom', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '25', null, '2', '1', null, 'assemblyBoms', '0', '组装 Bom', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '26', null, '2', '1', null, 'bioBom', '0', '生物镀膜 Bom', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '27', null, '2', '1', null, 'goodsQty', '0', 'Goods', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '28', null, '2', '1', null, 'inputQty', '0', 'Input', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '29', null, '2', '1', null, 'theoryYield', '0', 'Theoretical Yield', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '30', null, '2', '1', null, 'actualYield', '0', 'Actual Yield', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '31', null, '2', '1', null, 'theoryActualYield', '0', 'Theoretical VS Actual', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '32', null, '2', '1', null, 'remark', '0', '备注', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '33', null, '2', '1', null, 'operatorName', '0', '操作员', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '34', null, '2', '1', null, null, '2', '操作', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '2', '12', null, '1', '1', null, 'rawMaterial', '0', 'Raw Material', null);
-INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '2', '13', null, '1', '1', null, 'inPutDate', '0', 'In Put Date', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '1', null, '1', '2', null, '', '0', '05-0041', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '3', null, '1', '1', null, '', '0', '05-0043', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', '18-0009', '1', '4', null, '1', '1', null, '', '0', '05-0044', null);
@@ -2370,6 +2315,74 @@ INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '2', null, '1', '1'
 INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '3', null, '1', '1', null, '05-0106|04-0022', '0', '04-0022', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '4', null, '1', '1', null, '05-0106|04-0022', '0', '04-0022', null);
 INSERT INTO `t_ums_th_config` VALUES ('206', '18-0027', '2', '5', null, '1', '1', null, '05-0106|03-0018', '0', '03-0018', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '1', null, '2', '1', null, null, '2', null, null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '2', null, '2', '1', null, 'crID', '1', 'crID', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '3', null, '2', '1', null, 'bioPatNum', '0', 'BIO PN#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '4', null, '2', '1', null, 'lot', '0', 'Lot', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '5', null, '2', '1', null, 'reagentMixture', '0', '混合试剂', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '6', null, '2', '1', null, 'trayLotNums', '0', '14-####Lot', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '7', null, '2', '1', null, 'tLotNums', '0', 'T#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '8', null, '2', '1', null, 'apsLotNums', '0', 'APSLOT#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '9', null, '2', '1', null, 'ocLotNums', '0', 'OP LOT#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '10', null, '2', '1', null, 'cleanLotNums', '0', 'Clean Lot#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '11', null, '2', '1', null, 'polishLotNums', '0', 'Polish Lot#', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '12', null, '1', '2', null, null, '1', 'Fiber', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '14', null, '2', '1', null, 'coatingStation', '0', 'Coating Station', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '15', null, '2', '1', null, 'crOperator1', '0', '生化镀膜作业人员1', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '16', null, '2', '1', null, 'crOperator2', '0', '生化镀膜作业人员2', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '17', null, '2', '1', null, 'docRev', '0', '版本', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '18', null, '2', '1', null, 'auxiliaryReagent1', '0', 'QC1', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '19', null, '2', '1', null, 'auxiliaryReagent2', '0', 'QC2', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '20', null, '2', '1', null, 'auxiliaryReagent3', '0', 'QC3', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '21', null, '2', '1', null, 'auxiliaryReagent4', '0', 'QC4', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '22', null, '2', '1', null, 'auxiliaryReagent5', '0', 'QC5', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '23', null, '2', '1', null, 'auxiliaryReagent6', '0', 'QC6', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '24', null, '2', '1', null, 'polishBoms', '0', 'POLISH Bom', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '25', null, '2', '1', null, 'cleanBoms', '0', 'Clean BOM', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '26', null, '2', '1', null, 'ocBoms', '0', '光学Bom', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '27', null, '2', '1', null, 'apsBoms', '0', 'APS Bom', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '28', null, '2', '1', null, 'assemblyBoms', '0', '组装 Bom', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '29', null, '2', '1', null, 'bioBom', '0', '生物镀膜 Bom', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '30', null, '2', '1', null, 'goodsQty', '0', 'Goods', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '31', null, '2', '1', null, 'inputQty', '0', 'Input', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '32', null, '2', '1', null, 'theoryYield', '0', 'Theoretical Yield', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '33', null, '2', '1', null, 'actualYield', '0', 'Actual Yield', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '34', null, '2', '1', null, 'theoryActualYield', '0', 'Theoretical VS Actual', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '35', null, '2', '1', null, 'remark', '0', '备注', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '36', null, '2', '1', null, 'operatorName', '0', '操作员', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '1', '37', null, '2', '1', null, null, '2', '操作', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '2', '12', null, '1', '1', null, 'rawMaterial', '1', 'Raw Material', null);
+INSERT INTO `t_ums_th_config` VALUES ('206', 'chemicalreagenttable', '2', '13', null, '1', '1', null, 'inPutDate', '1', 'In Put Date', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '1', null, '2', '1', null, null, '2', null, null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '2', null, '2', '1', null, 'crID', '1', 'crID', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '3', null, '2', '1', null, 'lot', '0', 'New Lot#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '4', null, '2', '1', null, 'bioPatNum', '0', 'NEW BIO PN#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '5', null, '2', '1', null, 'trayNums', '0', 'NEW TRAY#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '6', null, '2', '1', null, 'oldLotNums', '0', 'Old Lot#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '7', null, '2', '1', null, 'oldTrayNums', '0', 'Old Tray#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '8', null, '2', '1', null, 'oldBioPatNums', '0', 'OLD BIO PN#', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '9', null, '2', '1', null, 'reagentMixture', '0', '混合试剂', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '10', null, '1', '2', null, null, '1', 'Fiber', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '12', null, '2', '1', null, 'coatingStation', '0', 'Coating Station', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '13', null, '2', '1', null, 'crOperator1', '0', '生化镀膜作业人员1', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '14', null, '2', '1', null, 'crOperator2', '0', '生化镀膜作业人员2', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '15', null, '2', '1', null, 'docRev', '0', '版本', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '16', null, '2', '1', null, 'auxiliaryReagent1', '0', 'QC1', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '17', null, '2', '1', null, 'auxiliaryReagent2', '0', 'QC2', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '18', null, '2', '1', null, 'auxiliaryReagent3', '0', 'QC3', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '19', null, '2', '1', null, 'auxiliaryReagent4', '0', 'QC4', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '20', null, '2', '1', null, 'auxiliaryReagent5', '0', 'QC5', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '21', null, '2', '1', null, 'auxiliaryReagent6', '0', 'QC6', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '22', null, '2', '1', null, 'goodsQty', '0', 'Goods', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '23', null, '2', '1', null, 'inputQty', '0', 'Input', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '24', null, '2', '1', null, 'theoryYield', '0', 'Theoretical Yield', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '25', null, '2', '1', null, 'actualYield', '0', 'Actual Yield', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '26', null, '2', '1', null, 'theoryActualYield', '0', 'Theoretical VS Actual', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '27', null, '2', '1', null, 'remark', '0', '备注', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '28', null, '2', '1', null, 'operatorName', '0', '操作员', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '1', '29', null, '2', '1', null, null, '2', '操作', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '2', '10', null, '1', '1', null, 'rawMaterial', '1', 'Raw Material', null);
+INSERT INTO `t_ums_th_config` VALUES ('207', 'twicechemicalreagenttable', '2', '11', null, '1', '1', null, 'inPutDate', '1', 'In Put Date', null);
 
 -- ----------------------------
 -- Table structure for t_ums_userpermission
@@ -2465,7 +2478,7 @@ CREATE TABLE `t_ums_workflow_assembly` (
   KEY `idx_uwa_assembly_partnum` (`part_num`),
   KEY `idx_uwa_assembly_deliverytime` (`delivery_time`),
   KEY `idx_uwa_assembly_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1269 DEFAULT CHARSET=utf8 COMMENT='组装表'
+) ENGINE=InnoDB AUTO_INCREMENT=1268 DEFAULT CHARSET=utf8 COMMENT='组装表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -3618,15 +3631,13 @@ INSERT INTO `t_ums_workflow_assembly` VALUES ('1254', '2018-05-30', 'K39462', 'A
 INSERT INTO `t_ums_workflow_assembly` VALUES ('1255', '2018-05-30', 'K39463', 'A1805151XH', '96', 'Q2004', 'JS180126', 'K180530XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:02:06', '2018-07-19 10:02:06');
 INSERT INTO `t_ums_workflow_assembly` VALUES ('1256', '2018-05-30', 'K39464', 'A1805151XH', '96', 'Q2004', 'JS180126', 'K180530XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:02:08', '2018-07-19 10:02:08');
 INSERT INTO `t_ums_workflow_assembly` VALUES ('1257', '2018-05-30', 'K39434', 'A1805151XH', '119', 'Q677', 'JS180126', 'K180530XH', null, '96', '23', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:03:05', '2018-07-19 10:03:05');
-INSERT INTO `t_ums_workflow_assembly` VALUES ('1258', '2018-05-30', 'K39465', 'A1805151XH', '115', 'Q2004', 'JS180126', 'K180530XH', null, '96', '19', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:03:57', '2018-07-19 10:03:57');
-INSERT INTO `t_ums_workflow_assembly` VALUES ('1260', '2018-06-04', 'K40033', 'A1805152XH', '96', 'Q2826:82|Q2022:14', 'JS180126', 'K180604XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:10:49', '2018-07-19 10:10:49');
+INSERT INTO `t_ums_workflow_assembly` VALUES ('1258', '2018-10-26', 'K39465', 'A1805151XH', '96', 'Q2004', 'JS180126', 'K180530XH', '09-0079', '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:03:57', '2018-10-26 15:19:33');
+INSERT INTO `t_ums_workflow_assembly` VALUES ('1260', '2018-10-26', 'K40033', 'A1805152XH', '96', 'Q2826:82|Q2022:14', 'JS180126', 'K180604XH', '09-0079', '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:10:49', '2018-10-26 15:29:13');
 INSERT INTO `t_ums_workflow_assembly` VALUES ('1262', '2018-06-04', 'K40067', 'A1805152XH', '96', 'Q1849', 'JS180126', 'K180604XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:29:25', '2018-07-19 10:42:34');
-INSERT INTO `t_ums_workflow_assembly` VALUES ('1263', '2018-06-04', 'K39458', 'A1805151XH', '96', 'Q2004', 'JS180126', 'K180530XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:33:42', '2018-08-01 17:30:27');
 INSERT INTO `t_ums_workflow_assembly` VALUES ('1264', '2018-06-04', 'K39652', 'A1805151XH', '96', 'Q2207', 'JS180126', 'K180601XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:41:19', '2018-07-19 10:41:19');
 INSERT INTO `t_ums_workflow_assembly` VALUES ('1265', '2018-06-04', 'K39655', 'A1805151XH', '96', 'Q2207', 'JS180126', 'K180601XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 10:41:24', '2018-07-19 10:41:24');
 INSERT INTO `t_ums_workflow_assembly` VALUES ('1266', '2018-06-04', 'K40067', 'A1805152XH', '96', 'Q1849', 'JS180126', 'K180604XH', null, '96', '0', '14-0014', '102987390', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-19 16:24:54', '2018-07-19 16:24:54');
-INSERT INTO `t_ums_workflow_assembly` VALUES ('1267', '2018-07-26', '888888888', 'A1805152XH', '103', 'Q1849', '9999', 'ooiyggg', '09-0079', '96', '7', '09-0071', 'llkjj', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-26 15:45:04', '2018-07-26 15:46:05');
-INSERT INTO `t_ums_workflow_assembly` VALUES ('1268', '2018-07-26', '888888888', 'A1805152XH', '107', 'Q1849', '9999', 'ooiyggg', '09-0079', '96', '11', '09-0071', 'llkjj', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-07-26 15:45:51', '2018-07-26 15:45:51');
+INSERT INTO `t_ums_workflow_assembly` VALUES ('1267', '2018-11-06', 'sewrw', 'A1805151XH', '96', 'Q2501', '', 'ewrew', null, '96', '0', '09-0071', 'werew', null, '拆夹工作人员1', '装夹工作人员1', '9', '2018-11-06 16:39:41', '2018-11-06 16:39:41');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_biocoating
@@ -3661,12 +3672,15 @@ CREATE TABLE `t_ums_workflow_biocoating` (
   `operatorid` int(11) NOT NULL COMMENT '操作员id',
   `input_time` datetime NOT NULL COMMENT '录入时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `auxiliary_reagent4` varchar(30) DEFAULT NULL,
+  `auxiliary_reagent5` varchar(30) DEFAULT NULL,
+  `auxiliary_reagent6` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`cr_id`,`input_time`),
   KEY `idx_uwb_biocoating_lot` (`lot`),
   KEY `idx_uwb_biocoating_biopatnum` (`bio_pat_num`),
   KEY `idx_uwb_biocoating_inputdate` (`in_put_date`),
   KEY `idx_uwb_biocoating_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='生化镀膜表'
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='生化镀膜表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -3720,12 +3734,15 @@ CREATE TABLE `t_ums_workflow_biocoating` (
 -- ----------------------------
 -- Records of t_ums_workflow_biocoating
 -- ----------------------------
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('5', '1806071', null, '18-0009', 'CP1', 'CP1', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-19 10:33:18', '2018-07-19 10:58:37');
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('6', '1806011', null, '18-0009', 'B10', 'C11', 'XC171120', '2018-06-01', 'B-0280', '17', '10752', '', '', '', '11520', '2', '0', '84', '626', '56', 'T12 T14 T20 T63 T64 T88 T102 T111', null, '99.98', '93.33', '93.35', '9', '2018-07-19 15:40:25', '2018-07-19 15:44:05');
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('7', '18060713', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-19 16:31:14', '2018-08-01 17:30:41');
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('8', '18060714', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-23 16:36:24', '2018-07-23 16:36:24');
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('9', '18060713', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '0', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '0', null, null, '9', '2018-08-23 13:52:37', '2018-08-23 13:52:37');
-INSERT INTO `t_ums_workflow_biocoating` VALUES ('10', '18060713', null, '18-0004', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '0', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '0', null, null, '9', '2018-08-24 10:15:25', '2018-08-24 10:15:25');
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('5', '1806071', null, '18-0009', 'CP1', 'CP1', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-19 10:33:18', '2018-07-19 10:58:37', null, null, null);
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('6', '1806011', null, '18-0009', 'B10', 'C11', 'XC171120', '2018-06-01', 'B-0280', '17', '10752', '', '', '', '11520', '2', '0', '84', '626', '56', 'T12 T14 T20 T63 T64 T88 T102 T111', null, '99.98', '93.33', '93.35', '9', '2018-07-19 15:40:25', '2018-07-19 15:44:05', null, null, null);
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('7', '18060713', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-19 16:31:14', '2018-08-01 17:30:41', null, null, null);
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('8', '18060714', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '11520', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '100.00', '93.33', '93.33', '9', '2018-07-23 16:36:24', '2018-07-23 16:36:24', null, null, null);
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('9', '18060713', null, '18-0009', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', '', '', '', '0', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '0', null, null, '9', '2018-08-23 13:52:37', '2018-08-23 13:52:37', null, null, null);
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('10', '18060713', null, '18-0004', 'B10', 'B10', 'XC171120', '2018-06-07', 'B-0280', '17', '10752', 'SI180328', 'SI180328', 'SI180328', '0', '0', '0', '8', '626', '134', 'T16 T32 T39 T50 T65 T72 T102 T103', null, '0', null, null, '9', '2018-08-24 10:15:25', '2018-11-06 15:48:16', 'SI180328', 'SI180328', 'SI180328');
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('11', '123', '18-0009', '18-0001', 'B10', 'B10', 'RP160722', null, 'B-0011', '', '0', '', '', '', '0', '0', '0', '0', '0', '0', '', null, '0', null, null, '9', '2018-10-24 20:37:07', '2018-10-24 20:37:07', null, null, null);
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('12', '12333', null, '18-0001', 'B10', 'B10', 'RP160722', null, 'B-0011', '', '0', '', '', '', '0', '0', '0', '0', '0', '0', '', null, '0', null, null, '9', '2018-10-24 20:43:38', '2018-10-24 20:43:38', null, null, null);
+INSERT INTO `t_ums_workflow_biocoating` VALUES ('13', 'adaw', null, '18-0001', 'B10', 'B10', 'RP160722', null, 'B-0011', 'sdrere', '0', 'SI180328', 'SI180328', 'SI180328', '96', '0', '0', '0', '0', '0', '', null, '100.00', '0.0', '0.0', '9', '2018-11-06 16:41:02', '2018-11-06 16:41:02', 'SI180328', 'SI180328', 'SI180328');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_biocoating_reagents
@@ -3849,6 +3866,19 @@ INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('9', 'reagentmixturetab
 INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('9', 'reagentmixturetable209835_51', '05-0043', '03-0006', 'qdfrrte');
 INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('10', 'reagentmixturetable209835_50', '05-0041', '03-0006', 'qqadadadadsa');
 INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('10', 'reagentmixturetable209835_51', '05-0043', '03-0006', 'qdfrrte');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('11', 'reagentmixturetable209437_19', '03-0006', '01-0029', 'SI180328');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('11', 'reagentmixturetable209442_20', '05-5003', '01-0022', 'SI180117');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('12', 'reagentmixturetable209770_52', '05-0001', '04-0001', 'qqqq');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209437_19', '03-0006', '01-0029', 'SI180328');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209442_20', '05-5003', '01-0022', 'SI180117');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209441_21', '05-5003', '01-0025', 'SI180416A SI180416B SI180416C');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209443_22', '03-0007', '01-0027', 'SI170419');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209431_23', '03-0007', '01-0028', 'NA');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209430_26', '03-0008', '01-0011', 'XY170907');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209445_27', '03-0008', '03-0007', 'BF18041101');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209429_28', '03-0005', '01-0002', 'SI180416');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209430_29', '03-0005', '01-0011', 'XY170907:294  XY180420:506');
+INSERT INTO `t_ums_workflow_biocoating_reagents` VALUES ('13', 'reagentmixturetable209436_32', '01-0026', '01-0026', 'FI180418');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_biocoating_relation
@@ -4461,6 +4491,7 @@ INSERT INTO `t_ums_workflow_biocoating_relation` VALUES ('8', 'K40042', 'T117');
 INSERT INTO `t_ums_workflow_biocoating_relation` VALUES ('8', 'K40043', 'T118');
 INSERT INTO `t_ums_workflow_biocoating_relation` VALUES ('8', 'K40044', 'T119');
 INSERT INTO `t_ums_workflow_biocoating_relation` VALUES ('8', 'K40045', 'T120');
+INSERT INTO `t_ums_workflow_biocoating_relation` VALUES ('13', 'sewrw', 'T01');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_clean
@@ -4491,7 +4522,7 @@ CREATE TABLE `t_ums_workflow_clean` (
   KEY `idx_uwc_cleaning_workordernum` (`work_order_num`),
   KEY `idx_uwc_cleaning_partnum` (`part_num`),
   KEY `idx_uwc_cleaning_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8 COMMENT='清洗表'
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8 COMMENT='清洗表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -4617,6 +4648,9 @@ INSERT INTO `t_ums_workflow_clean` VALUES ('104', '2018-03-22', 'Q1849', 'DX1803
 INSERT INTO `t_ums_workflow_clean` VALUES ('105', '2018-03-22', 'Q1415', 'DX1803015', '1534', null, 'CX180309', '2', '1534', '99.87', '0', '09-0071', '102850059', '9', '2018-06-19 16:19:41', '2018-07-10 10:09:31');
 INSERT INTO `t_ums_workflow_clean` VALUES ('106', '2018-03-22', 'Q1450', 'DX1803015', '1534', null, 'CX180309', '3', '1534', '99.80', '0', '09-0071', '102850059', '9', '2018-06-19 16:20:09', '2018-07-10 10:08:56');
 INSERT INTO `t_ums_workflow_clean` VALUES ('107', '2018-03-22', 'Q2826', 'DX1803015', '1534', null, 'CX180309', '5', '1534', '99.67', null, '09-0071', '102850059', '9', '2018-06-19 16:20:56', '2018-07-10 10:08:30');
+INSERT INTO `t_ums_workflow_clean` VALUES ('108', '2018-03-22', 'Q2491', 'DX1803009', '1534', null, 'CX1803092', '2', '1534', '99.87', '0', '09-0071', '102850059', '9', '2018-10-26 13:37:59', '2018-10-26 13:38:27');
+INSERT INTO `t_ums_workflow_clean` VALUES ('109', '2018-11-06', 'sdfs', 'sdfsdfd', '1534', null, 'erte', '0', '1534', '100.00', '0', '09-0071', 'erte', '9', '2018-11-06 16:23:50', '2018-11-06 16:23:50');
+INSERT INTO `t_ums_workflow_clean` VALUES ('110', '2018-11-06', 'sdfs', 'sdfsdfdsds', '1534', null, 'ertedfdf', '0', '1534', '100.00', '0', '09-0071', 'erte', '9', '2018-11-06 16:34:54', '2018-11-06 16:35:03');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_defect
@@ -4869,7 +4903,6 @@ INSERT INTO `t_ums_workflow_defect` VALUES ('73', '192', '640', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('202', '172', '223', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('74', '192', '637', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('74', '192', '633', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('203', '172', '223', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('75', '181', '324', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('75', '182', '242', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('11', '192', '633', '1');
@@ -4907,6 +4940,7 @@ INSERT INTO `t_ums_workflow_defect` VALUES ('715', '202', '738', '11');
 INSERT INTO `t_ums_workflow_defect` VALUES ('715', '202', '740', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('715', '202', '745', '15');
 INSERT INTO `t_ums_workflow_defect` VALUES ('715', '202', '743', '1');
+INSERT INTO `t_ums_workflow_defect` VALUES ('203', '172', '223', '5');
 INSERT INTO `t_ums_workflow_defect` VALUES ('204', '172', '223', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('76', '181', '324', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('76', '182', '242', '3');
@@ -5170,6 +5204,7 @@ INSERT INTO `t_ums_workflow_defect` VALUES ('412', '201', '735', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('412', '202', '738', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('412', '202', '745', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('412', '202', '743', '1');
+INSERT INTO `t_ums_workflow_defect` VALUES ('220', '172', '223', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('157', '172', '223', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('93', '181', '324', '6');
 INSERT INTO `t_ums_workflow_defect` VALUES ('93', '181', '232', '1');
@@ -5399,14 +5434,6 @@ INSERT INTO `t_ums_workflow_defect` VALUES ('42', '181', '324', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('42', '192', '635', '3');
 INSERT INTO `t_ums_workflow_defect` VALUES ('42', '192', '640', '5');
 INSERT INTO `t_ums_workflow_defect` VALUES ('42', '192', '639', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '201', '731', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '201', '727', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '201', '733', '7');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '201', '732', '5');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '202', '746', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '202', '739', '2');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '202', '742', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1258', '202', '743', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('171', '172', '223', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('107', '181', '324', '4');
 INSERT INTO `t_ums_workflow_defect` VALUES ('107', '182', '243', '1');
@@ -5417,6 +5444,8 @@ INSERT INTO `t_ums_workflow_defect` VALUES ('44', '191', '254', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('44', '192', '635', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('44', '192', '640', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('44', '192', '639', '2');
+INSERT INTO `t_ums_workflow_defect` VALUES ('108', '181', '324', '1');
+INSERT INTO `t_ums_workflow_defect` VALUES ('108', '182', '251', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('173', '172', '223', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('45', '191', '253', '2');
 INSERT INTO `t_ums_workflow_defect` VALUES ('45', '191', '256', '2');
@@ -5498,15 +5527,11 @@ INSERT INTO `t_ums_workflow_defect` VALUES ('243', '202', '727', '4');
 INSERT INTO `t_ums_workflow_defect` VALUES ('243', '202', '733', '3');
 INSERT INTO `t_ums_workflow_defect` VALUES ('243', '202', '736', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('243', '202', '735', '1');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1267', '201', '737', '9');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1267', '201', '737', '7');
 INSERT INTO `t_ums_workflow_defect` VALUES ('180', '172', '223', '3');
 INSERT INTO `t_ums_workflow_defect` VALUES ('52', '182', '242', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('52', '191', '253', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('52', '192', '633', '7');
 INSERT INTO `t_ums_workflow_defect` VALUES ('52', '192', '640', '8');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1268', '202', '746', '5');
-INSERT INTO `t_ums_workflow_defect` VALUES ('1268', '202', '742', '6');
 INSERT INTO `t_ums_workflow_defect` VALUES ('181', '172', '223', '4');
 INSERT INTO `t_ums_workflow_defect` VALUES ('53', '191', '262', '1');
 INSERT INTO `t_ums_workflow_defect` VALUES ('53', '191', '253', '1');
@@ -5760,7 +5785,7 @@ CREATE TABLE `t_ums_workflow_opticalfilming` (
   KEY `idx_uwo_opticalgilming_partnum` (`part_num`),
   KEY `idx_uwo_opticalgilming_supplier` (`supplier`),
   KEY `idx_uwo_opticalgilming_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='光学镀膜表'
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COMMENT='光学镀膜表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -5886,6 +5911,8 @@ INSERT INTO `t_ums_workflow_opticalfilming` VALUES ('76', '2018-05-15', 'CX18030
 INSERT INTO `t_ums_workflow_opticalfilming` VALUES ('77', '2018-05-15', 'CX180309', '1534', 'Q2379', 'O1804255XH', '1534', '15', '0', '0', '12-0003', '海泰', null, '102902985', '9', '2018-07-10 15:33:33', '2018-08-01 17:29:57');
 INSERT INTO `t_ums_workflow_opticalfilming` VALUES ('78', '2018-05-15', 'CX180309', '1534', 'Q2071', 'O1804254XH', '1534', '10', '0', '0', '12-0003', '海泰', null, '102902985', '9', '2018-07-10 15:34:05', '2018-07-10 15:34:05');
 INSERT INTO `t_ums_workflow_opticalfilming` VALUES ('79', '2018-05-15', 'CX180309', '1534', 'Q300', 'O1804254XH', '1534', '13', '0', '0', '12-0003', '海泰', null, '102902985', '9', '2018-07-10 15:35:14', '2018-07-10 15:35:14');
+INSERT INTO `t_ums_workflow_opticalfilming` VALUES ('80', '2018-11-06', 'ertedfdf', '1534', 'sdfs', 'fresfsfds', '1534', '0', '0', '0', '09-0071', '新产业', null, 'sfsd', '9', '2018-11-06 16:35:26', '2018-11-06 16:37:35');
+INSERT INTO `t_ums_workflow_opticalfilming` VALUES ('81', '2018-11-06', 'erte', '1534', 'sdfs', 'fretreserere', '1534', '0', '0', '0', '09-0071', '新产业', null, 'sfsd', '9', '2018-11-06 16:35:52', '2018-11-06 16:37:44');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_platedfilm
@@ -5926,7 +5953,7 @@ CREATE TABLE `t_ums_workflow_platedfilm` (
   KEY `idx_uwp_platedfilm_partnum` (`part_num`),
   KEY `idx_uwp_platedfilm_fixtureattribute` (`fixture_attribute`),
   KEY `idx_uwp_platedfilm_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8 COMMENT='化学镀膜表'
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8 COMMENT='化学镀膜表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -6052,6 +6079,8 @@ INSERT INTO `t_ums_workflow_platedfilm` VALUES ('83', '2018-05-15', null, 'O1804
 INSERT INTO `t_ums_workflow_platedfilm` VALUES ('84', '2018-05-15', null, 'O1804261XH', '1534', 'Q1311', 'SI180403', 'K', null, 'A1805153XH', '1517', '17', '8', null, null, '0', '9', '0', '0', null, '13-0003', '102911894', '9', '2018-07-10 17:19:30', '2018-07-10 17:19:30');
 INSERT INTO `t_ums_workflow_platedfilm` VALUES ('85', '2018-05-15', null, 'O1804261XH', '1534', 'Q2050', 'SI180403', 'K', null, 'A1805153XH', '1518', '16', '8', null, null, '0', '8', '0', '0', null, '13-0003', '102911894', '9', '2018-07-10 17:20:45', '2018-07-10 17:20:45');
 INSERT INTO `t_ums_workflow_platedfilm` VALUES ('86', '2018-05-15', null, 'O1804261XH', '1502', 'Q987', 'SI180403', 'K', null, 'A1805153XH', '1486', '16', '8', null, null, '0', '8', '0', '0', null, '13-0003', '102911894', '9', '2018-07-10 17:22:20', '2018-07-10 17:22:20');
+INSERT INTO `t_ums_workflow_platedfilm` VALUES ('87', '2018-11-06', '2018-11-06', 'fretreserere', '1534', 'sdfs', '', 'K', null, 'sfserwere', '1534', '0', '0', null, null, '0', '0', '0', '0', null, '09-0071', 'werewr', '9', '2018-11-06 16:38:02', '2018-11-06 16:38:16');
+INSERT INTO `t_ums_workflow_platedfilm` VALUES ('88', '2018-11-06', '2018-11-06', 'fresfsfds', '1534', 'sdfs', '', 'K', null, 'sfserwere', '1534', '0', '0', null, null, '0', '0', '0', '0', null, '09-0071', 'werewr', '9', '2018-11-06 16:38:48', '2018-11-06 16:38:48');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_polish
@@ -6086,7 +6115,7 @@ CREATE TABLE `t_ums_workflow_polish` (
   KEY `idx_uwp_polish_partnum` (`part_num`),
   KEY `idx_uwp_polish_pickingtime` (`picking_time`),
   KEY `idx_uwp_polish_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=219 DEFAULT CHARSET=utf8 COMMENT='抛光表'
+) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8 COMMENT='抛光表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -6197,8 +6226,8 @@ INSERT INTO `t_ums_workflow_polish` VALUES ('197', '2018-01-31', '2018-03-14', '
 INSERT INTO `t_ums_workflow_polish` VALUES ('198', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q1315', '', '4#机器', '', '1534', '99.93', '1534', 'DX1803015', '09-0080', '102850058', null, '9', '2018-06-13 15:54:42', '2018-06-19 15:20:53');
 INSERT INTO `t_ums_workflow_polish` VALUES ('199', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q1849', '', '4#机器', '', '1534', '99.87', '1534', 'DX1803015', '09-0080', '102850058', null, '9', '2018-06-13 15:54:53', '2018-06-19 15:21:28');
 INSERT INTO `t_ums_workflow_polish` VALUES ('200', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q1415', '', '4#机器', '', '1534', '99.93', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:26:31', '2018-06-19 15:56:14');
-INSERT INTO `t_ums_workflow_polish` VALUES ('201', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q1450', '', '4#机器', '', '1534', '100.00', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:26:59', '2018-08-01 17:29:21');
-INSERT INTO `t_ums_workflow_polish` VALUES ('203', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q2826', '', '4#机器', '', '1534', '99.87', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:27:42', '2018-06-19 15:55:41');
+INSERT INTO `t_ums_workflow_polish` VALUES ('201', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q120', '', '4#机器', '', '1534', '100.00', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:26:59', '2018-10-26 11:37:47');
+INSERT INTO `t_ums_workflow_polish` VALUES ('203', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q2826', '', '4#机器', '', '1534', '99.67', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:27:42', '2018-11-03 09:50:18');
 INSERT INTO `t_ums_workflow_polish` VALUES ('204', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q1485', '', '4#机器', '', '1534', '99.87', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:28:03', '2018-06-19 15:55:21');
 INSERT INTO `t_ums_workflow_polish` VALUES ('205', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q359', '', '4#机器', '', '1534', '99.93', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:28:20', '2018-06-19 15:55:02');
 INSERT INTO `t_ums_workflow_polish` VALUES ('206', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q290', '', '4#机器', '', '1534', '99.93', '1534', 'DX1803015', '09-0080', ' 102850058', null, '9', '2018-06-19 15:28:43', '2018-06-19 15:54:40');
@@ -6212,6 +6241,8 @@ INSERT INTO `t_ums_workflow_polish` VALUES ('215', '2018-01-31', '2018-03-14', '
 INSERT INTO `t_ums_workflow_polish` VALUES ('216', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q1311', '', '4#机器', '', '1534', '100.00', '1534', 'DX1803016', '09-0080', ' 102850058', null, '9', '2018-06-19 15:32:14', '2018-06-19 15:50:57');
 INSERT INTO `t_ums_workflow_polish` VALUES ('217', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q2050', '', '4#机器', '', '1534', '99.80', '1534', 'DX1803016', '09-0080', ' 102850058', null, '9', '2018-06-19 15:32:33', '2018-06-19 15:50:29');
 INSERT INTO `t_ums_workflow_polish` VALUES ('218', '2018-01-31', '2018-03-14', 'XC171120', '0000001534', 'Q987', '', '4#机器', '', '1534', '99.87', '1534', 'DX1803016', '09-0080', ' 102850058', null, '9', '2018-06-19 15:32:44', '2018-06-19 15:49:55');
+INSERT INTO `t_ums_workflow_polish` VALUES ('219', '2018-11-06', '2018-11-06', 'sdfs', '0000001534', 'sdfs', 'sdfs', '1#机器', '', '1534', '100.00', '1534', 'sdfsdfd', '09-0071', 'sdfsdfs', '71-0000', '9', '2018-11-06 16:22:52', '2018-11-06 16:22:52');
+INSERT INTO `t_ums_workflow_polish` VALUES ('220', '2018-11-06', '2018-11-06', 'sdfsewere', '0000001534', 'sdfs', 'sdfs', '1#机器', '', '1534', '99.93', '1534', 'sdfsdfdsds', '09-0071', 'sdfsdfs', '71-0000', '9', '2018-11-06 16:23:14', '2018-11-06 16:34:06');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_twicebiocoating
@@ -6246,12 +6277,15 @@ CREATE TABLE `t_ums_workflow_twicebiocoating` (
   `operatorid` int(11) NOT NULL COMMENT '操作员id',
   `input_time` datetime NOT NULL COMMENT '录入时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `auxiliary_reagent4` varchar(30) DEFAULT NULL,
+  `auxiliary_reagent5` varchar(30) DEFAULT NULL,
+  `auxiliary_reagent6` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`cr_id`,`input_time`),
   KEY `idx_uwt_twicebiocoating_lot` (`lot`),
   KEY `idx_uwt_twicebiocoating_biopatnum` (`bio_pat_num`),
   KEY `idx_uwt_twicebiocoating_inputdate` (`in_put_date`),
   KEY `idx_uwt_twicebiocoating_operatorid` (`operatorid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='二次生化镀膜表'
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='二次生化镀膜表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -6305,8 +6339,10 @@ CREATE TABLE `t_ums_workflow_twicebiocoating` (
 -- ----------------------------
 -- Records of t_ums_workflow_twicebiocoating
 -- ----------------------------
-INSERT INTO `t_ums_workflow_twicebiocoating` VALUES ('3', '1806072', null, '18-0029', 'B10', 'N/A', 'XC171120', '2018-01-31', 'B-0011', '6', '3264', '', '', '', '3840', '0', '0', '0', '500', '76', 'T01 T16 T20 T21 T32 T40', null, '100.00', '85.0', '85.0', '9', '2018-07-17 14:33:48', '2018-08-01 17:30:58');
-INSERT INTO `t_ums_workflow_twicebiocoating` VALUES ('4', '1806073', null, '18-0029', 'C11', 'N/A', 'XC171120', '2018-01-31', 'B-0187', '6', '3264', '', '', '', '3840', '0', '0', '0', '500', '76', 'T01 T16 T20 T21 T32 T40', null, '100.00', '85.0', '85.0', '9', '2018-07-19 15:57:33', '2018-07-19 16:05:23');
+INSERT INTO `t_ums_workflow_twicebiocoating` VALUES ('3', '1806072', null, '18-0029', 'B10', 'N/A', 'XC171120', '2018-01-31', 'B-0011', '6', '3264', '', '', '', '3840', '0', '0', '0', '500', '76', 'T01 T16 T20 T21 T32 T40', null, '100.00', '85.0', '85.0', '9', '2018-07-17 14:33:48', '2018-08-01 17:30:58', null, null, null);
+INSERT INTO `t_ums_workflow_twicebiocoating` VALUES ('4', '1806073', null, '18-0029', 'C11', 'N/A', 'XC171120', '2018-01-31', 'B-0187', '6', '3264', '', '', '', '3840', '0', '0', '0', '500', '76', 'T01 T16 T20 T21 T32 T40', null, '100.00', '85.0', '85.0', '9', '2018-07-19 15:57:33', '2018-07-19 16:05:23', null, null, null);
+INSERT INTO `t_ums_workflow_twicebiocoating` VALUES ('5', '1806072', null, '18-0029', 'B10', 'N/A', 'XC171120', '2018-01-31', 'B-0011', '6', '3264', 'SI180328', 'SI180328', 'SI180328', '3840', '0', '0', '0', '500', '76', 'T01 T16 T20 T21 T32 T40', '09-0071', '100.00', '85.0', '85.0', '9', '2018-11-06 16:48:51', '2018-11-06 16:48:51', 'SI180328', 'SI180328', 'SI180328');
+INSERT INTO `t_ums_workflow_twicebiocoating` VALUES ('6', 'sdfdsfs', null, '18-0029', 'B10', 'B10', 'XC171120', null, 'B-0011', '', '0', 'SI180328', 'SI180328', 'SI180328', '96', '0', '0', '0', '0', '0', '', null, '100.00', '0.0', '0.0', '9', '2018-11-06 16:49:32', '2018-11-06 16:49:32', 'SI180328', 'SI180328', 'SI180328');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_twicebiocoating_reagents
@@ -6409,6 +6445,14 @@ INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('4', 'reagentmixtu
 INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('4', 'reagentmixturetable209427_39', '03-0047', '01-0045', 'SI170704');
 INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('4', 'reagentmixturetable209425_40', '03-0047', '01-0048', 'SI170704');
 INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('4', 'reagentmixturetable209424_41', '03-0047', '01-0063', 'SI170904');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209604_37', '04-0023', '02-0044', 'BG180416');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209428_36', '03-0046', '01-0062', 'SI170815:4.6835|SI171003:0.0703');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209429_28', '03-0005', '01-0002', 'SI180416');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209430_29', '03-0005', '01-0011', 'XY170907:294  XY180420:506');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209426_38', '03-0047', '01-0009', 'SI170207');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209427_39', '03-0047', '01-0045', 'SI170704');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209425_40', '03-0047', '01-0048', 'SI170704');
+INSERT INTO `t_ums_workflow_twicebiocoating_reagents` VALUES ('5', 'reagentmixturetable209424_41', '03-0047', '01-0063', 'SI170904');
 
 -- ----------------------------
 -- Table structure for t_ums_workflow_twicebiocoating_relation
@@ -6639,6 +6683,47 @@ INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('4', 'T37', '18060
 INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('4', 'T38', '1806011', 'T113', '18-0009');
 INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('4', 'T39', '1806011', 'T114', '18-0009');
 INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('4', 'T40', '1806011', 'T115', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T01', '1806011', 'T13', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T02', '1806011', 'T04', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T03', '1806011', 'T16', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T04', '1806011', 'T24', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T05', '1806011', 'T26', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T06', '1806011', 'T28', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T07', '1806011', 'T50', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T08', '1806011', 'T51', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T09', '1806011', 'T52', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T10', '1806011', 'T53', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T11', '1806011', 'T54', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T12', '1806011', 'T55', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T13', '1806011', 'T57', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T14', '1806011', 'T58', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T15', '1806011', 'T59', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T16', '1806011', 'T61', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T17', '1806011', 'T62', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T18', '1806011', 'T65', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T19', '1806011', 'T67', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T20', '1806011', 'T69', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T21', '1806011', 'T74', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T22', '1806011', 'T75', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T23', '1806011', 'T78', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T24', '1806011', 'T79', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T25', '1806011', 'T97', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T26', '1806011', 'T99', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T27', '1806011', 'T100', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T28', '1806011', 'T101', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T29', '1806011', 'T103', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T30', '1806011', 'T104', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T31', '1806011', 'T105', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T32', '1806011', 'T106', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T33', '1806011', 'T107', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T34', '1806011', 'T108', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T35', '1806011', 'T109', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T36', '1806011', 'T110', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T37', '1806011', 'T112', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T38', '1806011', 'T116', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T39', '1806011', 'T117', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('5', 'T40', '1806011', 'T119', '18-0009');
+INSERT INTO `t_ums_workflow_twicebiocoating_relation` VALUES ('6', 'sdfsd', 'sdf', 'fs', 'sdfs');
 
 -- ----------------------------
 -- View structure for menubuttonview

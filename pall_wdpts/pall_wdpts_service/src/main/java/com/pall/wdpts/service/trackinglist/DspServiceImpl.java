@@ -392,4 +392,22 @@ public class DspServiceImpl implements  DspService{
 		}
 		return baseResponse;
 	}
+	@Override
+	public List<DspEntity> exportDspList(DspFormQueryEntity dspFormQueryEntity) throws Exception {
+		List<DspEntity> dspEntitys=null;
+		try{
+			dspFormQueryEntity.setStartPageNum(0);
+			//查询总记录数
+			int totalRecords=dspDao.queryDspTotalRecords(dspFormQueryEntity);
+			if(totalRecords==0){
+				return new ArrayList<DspEntity>();
+			}
+			//分页查询结果集
+			dspFormQueryEntity.setPageSize(totalRecords);
+			dspEntitys=dspDao.queryDspList(dspFormQueryEntity);
+		}catch(Exception e){
+			throw e;
+		}
+		return dspEntitys;
+	}
 }

@@ -18,10 +18,16 @@ import com.pall.wdpts.repository.entity.trackinglist.CisternSettingFormQueryEnti
 public interface CisternService {
 	/*
 	 * 根据条件查询水箱装配记录信息
-	 * @param cisternAssembleFormQueryEntity 水箱装配查询对象
+	 * @param cisternFormQueryEntity 水箱装配查询对象
 	 * @return 查询结果
 	 */
 	public BaseTablesResponse queryCisternList(CisternFormQueryEntity  cisternFormQueryEntity) throws Exception;
+	/*
+	 * 根据条件导出水箱装配记录信息
+	 * @param cisternFormQueryEntity 水箱装配查询对象
+	 * @return 查询结果
+	 */
+	public List<CisternEntity> exportCisternList(CisternFormQueryEntity  cisternFormQueryEntity) throws Exception;
 	/*
 	 * 根据条件查询水箱装配记录信息
 	 * @param cisternID 水箱装配查询对象

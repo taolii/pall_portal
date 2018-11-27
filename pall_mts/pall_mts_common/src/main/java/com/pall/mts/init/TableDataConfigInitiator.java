@@ -308,7 +308,8 @@ public class TableDataConfigInitiator {
 							excelHeaderNode.setColNum(excelHeaderNode.getColNum()-1);
 							tempExcelHeaderNode=excelHeaderNode;
 						}else if(hiddenColNums.get(j)<excelHeaderNode.getColNum()+excelHeaderNode.getCellspan()){
-							excelHeaderNode.setCellspan(excelHeaderNode.getCellspan()-1);
+							//excelHeaderNode.setCellspan(excelHeaderNode.getCellspan()-1);
+							excelHeaderNode.setColNum(excelHeaderNode.getColNum()-1);
 							tempExcelHeaderNode=excelHeaderNode;
 						}
 						continue;

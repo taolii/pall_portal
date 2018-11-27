@@ -59,7 +59,7 @@ $(document).ready(function() {
   	        	}
   	          return "<span data-toggle='tooltip' data-placement='bottom' title='"+data+"'>"+component+"</span>";
             },"width": "180px"},
-	        {className : "ellipsis",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
+	        {className : "center",data:"selfcheckContent",title:"自检内容",render : function(data,type, row, meta) {
 	            var trs="";
 	        	if(data.length>0){
 	        		for(var i=0;i<data.length;i++){

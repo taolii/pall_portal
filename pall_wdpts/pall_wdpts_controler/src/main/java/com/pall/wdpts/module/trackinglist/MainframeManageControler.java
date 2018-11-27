@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
+import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
@@ -50,6 +52,8 @@ import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
+import com.pall.wdpts.repository.entity.trackinglist.MainframeEntity;
+import com.pall.wdpts.repository.entity.trackinglist.MainframeFormQueryEntity;
 import com.pall.wdpts.repository.entity.trackinglist.MainframeAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.MainframeEntity;
 import com.pall.wdpts.repository.entity.trackinglist.MainframeFormQueryEntity;
@@ -57,6 +61,7 @@ import com.pall.wdpts.repository.entity.trackinglist.MainframeInspectEntity;
 import com.pall.wdpts.repository.entity.user.UserEntity.ADD;
 import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
 import com.pall.wdpts.repository.entity.workflow.ExcelSaveEntity;
+import com.pall.wdpts.service.excel.IExcelHandler;
 import com.pall.wdpts.service.excel.IExcelTemplateHandler;
 import com.pall.wdpts.service.menu.ButtonManageService;
 import com.pall.wdpts.service.trackinglist.MainframeService;
@@ -79,6 +84,9 @@ public class MainframeManageControler {
 	@Autowired
 	@Qualifier("xlsxTemplateHandler")
 	private IExcelTemplateHandler iExcelTemplateHandler;
+	@Autowired
+	@Qualifier("xlsxExcelHandler")
+	private IExcelHandler iExcelHandler;
 	/*
 	 * 下载文件路径
 	 */
@@ -466,5 +474,77 @@ public class MainframeManageControler {
 			
 		}
 		 return jsonData;
+    }
+	/*
+	 * 导出水箱装配信息
+	 */
+	@RequestMapping(value="trackinglist/exportMainframes", method= RequestMethod.POST)
+    public @ResponseBody String exportMainframes(Model model,MainframeFormQueryEntity  mainframeFormQueryEntity, HttpServletRequest request) {
+		BaseResponse baseResponse=new BaseResponse();
+		List<MainframeEntity> mainframeEntitys=null;
+		try {
+			mainframeEntitys=mainframeService.exportMainframeList(mainframeFormQueryEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("mainframe.service.queryMainframe.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("mainframe.service.queryMainframe.exception"));
+			return JSON.toJSONString(baseResponse);
+		}
+		if(mainframeEntitys==null){
+			mainframeEntitys=new ArrayList<MainframeEntity>();
+		}
+		 Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_MAINFRAME_TABLENAME));
+		int currentRowNum=excelheadlinesMap.size();
+        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
+        if(null!=mainframeEntitys && mainframeEntitys.size()>0){
+        	if(!StringUtils.isEmpty(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        		if(mainframeEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+        			baseResponse.setResultMsg(resourceUtils.getMessage("export.records.over.the.limit")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
+        			baseResponse.setReturnObjects(null);
+        			return JSON.toJSONString(baseResponse);
+	        	}
+        	}
+        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_MAINFRAME_TABLENAME), mainframeEntitys,currentRowNum);
+        }
+		//设置下载保存文件路径
+    	StringBuilder downloadFileFullPath=new StringBuilder();
+    	downloadFileFullPath.append(this.getClass().getResource("/").getPath());
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(downloadFilePath);
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_MAINFRAME_DOWNLOAD_SUBDIRECTORY));
+    	downloadFileFullPath.append(File.separator);
+    	//设置下载保存文件路径名称
+    	StringBuilder fileName=new StringBuilder();
+    	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
+    	fileName.append("_");
+    	fileName.append(resourceUtils.getMessage("mainframe.Controler.exportMainframe.filename"));
+    	fileName.append("_");
+    	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
+    	fileName.append(sf.format(new Date()));
+    	fileName.append(".");
+    	fileName.append(KeyConstants.EXCEL_SUFFIX_XLSX);
+    	OutputStream out =null;
+        try {
+        	Files.createParentDirs(new File(downloadFileFullPath.toString()+fileName.toString()));
+        	out=new FileSystemResource(downloadFileFullPath.toString()+fileName.toString()).getOutputStream();
+			Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("mainframe.Controler.exportMainframe.filename"), excelheadlinesMap, rowdatas);
+			workbook.write(out);
+			List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
+			ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
+			excelSaveEntity.setFileName(fileName.toString());
+			excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_MAINFRAME_DOWNLOAD_SUBDIRECTORY));
+			excelSaveEntitys.add(excelSaveEntity);
+			baseResponse.setReturnObjects(excelSaveEntitys);
+			return JSON.toJSONString(baseResponse);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("mainframe.Controler.exportMainframe.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("mainframe.Controler.exportMainframe.exception")+":"+e.toString());
+		}finally{
+			IOUtils.close(out);
+		}
+		return JSON.toJSONString(baseResponse);
     }
 }

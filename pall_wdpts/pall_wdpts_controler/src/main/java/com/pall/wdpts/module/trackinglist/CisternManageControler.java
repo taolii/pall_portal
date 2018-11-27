@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.i18n.ResourceUtils;
 import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
+import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
@@ -56,6 +58,7 @@ import com.pall.wdpts.repository.entity.trackinglist.CisternFormQueryEntity;
 import com.pall.wdpts.repository.entity.user.UserEntity.ADD;
 import com.pall.wdpts.repository.entity.user.UserEntity.SAVE;
 import com.pall.wdpts.repository.entity.workflow.ExcelSaveEntity;
+import com.pall.wdpts.service.excel.IExcelHandler;
 import com.pall.wdpts.service.excel.IExcelTemplateHandler;
 import com.pall.wdpts.service.menu.ButtonManageService;
 import com.pall.wdpts.service.trackinglist.CisternService;
@@ -78,6 +81,9 @@ public class CisternManageControler {
 	@Autowired
 	@Qualifier("xlsxTemplateHandler")
 	private IExcelTemplateHandler iExcelTemplateHandler;
+	@Autowired
+	@Qualifier("xlsxExcelHandler")
+	private IExcelHandler iExcelHandler;
 	/*
 	 * 下载文件路径
 	 */
@@ -320,9 +326,7 @@ public class CisternManageControler {
 		baseResponse.setReturnObjects(null);
 		return JSON.toJSONString(baseResponse);
     }
-	/*
-	 * 导出水箱装配信息
-	 */
+	
 	@RequestMapping(value="trackinglist/exportCistern", method= RequestMethod.POST)
     public @ResponseBody String exportCistern(Model model,@RequestParam("cisternID") String cisternID, HttpServletRequest request) {
 		BaseResponse baseResponse=new BaseResponse();
@@ -409,5 +413,77 @@ public class CisternManageControler {
 			
 		}
 		 return jsonData;
+    }
+	/*
+	 * 导出水箱装配信息
+	 */
+	@RequestMapping(value="trackinglist/exportCisterns", method= RequestMethod.POST)
+    public @ResponseBody String exportCisterns(Model model,CisternFormQueryEntity  cisternFormQueryEntity, HttpServletRequest request) {
+		BaseResponse baseResponse=new BaseResponse();
+		List<CisternEntity> cisternEntitys=null;
+		try {
+			cisternEntitys=cisternService.exportCisternList(cisternFormQueryEntity);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("cistern.service.queryCistern.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("cistern.service.queryCistern.exception"));
+			return JSON.toJSONString(baseResponse);
+		}
+		if(cisternEntitys==null){
+			cisternEntitys=new ArrayList<CisternEntity>();
+		}
+		 Map<Integer,List<ExcelHeaderNode>> excelheadlinesMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_CISTERN_TABLENAME));
+		int currentRowNum=excelheadlinesMap.size();
+        Map<Integer,List<ExcelDataNode>> rowdatas=new HashMap<Integer,List<ExcelDataNode>>();
+        if(null!=cisternEntitys && cisternEntitys.size()>0){
+        	if(!StringUtils.isEmpty(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        		if(cisternEntitys.size()>Integer.parseInt(UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS))){
+        			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+        			baseResponse.setResultMsg(resourceUtils.getMessage("export.records.over.the.limit")+":"+UmsConfigInitiator.getDataConfig(KeyConstants.EXCEL_EXPORT_RECORDS_LIMITS));
+        			baseResponse.setReturnObjects(null);
+        			return JSON.toJSONString(baseResponse);
+	        	}
+        	}
+        	rowdatas=ExcelTools.getExcelDatas(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_CISTERN_TABLENAME), cisternEntitys,currentRowNum);
+        }
+		//设置下载保存文件路径
+    	StringBuilder downloadFileFullPath=new StringBuilder();
+    	downloadFileFullPath.append(this.getClass().getResource("/").getPath());
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(downloadFilePath);
+    	downloadFileFullPath.append(File.separator);
+    	downloadFileFullPath.append(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_CISTERN_DOWNLOAD_SUBDIRECTORY));
+    	downloadFileFullPath.append(File.separator);
+    	//设置下载保存文件路径名称
+    	StringBuilder fileName=new StringBuilder();
+    	fileName.append(resourceUtils.getMessage("bootstrap.system.name"));
+    	fileName.append("_");
+    	fileName.append(resourceUtils.getMessage("cistern.Controler.exportCistern.filename"));
+    	fileName.append("_");
+    	SimpleDateFormat sf=new SimpleDateFormat("yyyymmddhh24mmss");
+    	fileName.append(sf.format(new Date()));
+    	fileName.append(".");
+    	fileName.append(KeyConstants.EXCEL_SUFFIX_XLSX);
+    	OutputStream out =null;
+        try {
+        	Files.createParentDirs(new File(downloadFileFullPath.toString()+fileName.toString()));
+        	out=new FileSystemResource(downloadFileFullPath.toString()+fileName.toString()).getOutputStream();
+			Workbook workbook=iExcelHandler.getExcelWorkbook(resourceUtils.getMessage("cistern.Controler.exportCistern.filename"), excelheadlinesMap, rowdatas);
+			workbook.write(out);
+			List<ExcelSaveEntity> excelSaveEntitys=new ArrayList<ExcelSaveEntity>();
+			ExcelSaveEntity excelSaveEntity=new ExcelSaveEntity();
+			excelSaveEntity.setFileName(fileName.toString());
+			excelSaveEntity.setSubDirectory(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_CISTERN_DOWNLOAD_SUBDIRECTORY));
+			excelSaveEntitys.add(excelSaveEntity);
+			baseResponse.setReturnObjects(excelSaveEntitys);
+			return JSON.toJSONString(baseResponse);
+		} catch (Exception e) {
+			logger.error(resourceUtils.getMessage("cistern.Controler.exportCistern.exception"),e);
+			baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+			baseResponse.setResultMsg(resourceUtils.getMessage("cistern.Controler.exportCistern.exception")+":"+e.toString());
+		}finally{
+			IOUtils.close(out);
+		}
+		return JSON.toJSONString(baseResponse);
     }
 }

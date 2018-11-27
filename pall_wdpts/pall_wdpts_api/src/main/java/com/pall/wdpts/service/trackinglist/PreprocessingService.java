@@ -23,6 +23,12 @@ public interface PreprocessingService {
 	 */
 	public BaseTablesResponse queryPreprocessingList(PreprocessingFormQueryEntity  preprocessingFormQueryEntity) throws Exception;
 	/*
+	 * 根据条件导出预处理装配记录信息
+	 * @param preprocessingFormQueryEntity 预处理装配查询对象
+	 * @return 查询结果
+	 */
+	public List<PreprocessingEntity> exportPreprocessingList(PreprocessingFormQueryEntity  preprocessingFormQueryEntity) throws Exception;
+	/*
 	 * 根据条件查询预处理装配记录信息
 	 * @param preprocessingID 预处理装配查询对象
 	 * @return 查询结果

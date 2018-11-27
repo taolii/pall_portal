@@ -390,4 +390,23 @@ public class CisternServiceImpl implements CisternService{
 		}
 		return baseResponse;
 	}
+
+	@Override
+	public List<CisternEntity> exportCisternList(CisternFormQueryEntity cisternFormQueryEntity) throws Exception {
+		List<CisternEntity> cisternEntitys=null;
+		try{
+			cisternFormQueryEntity.setStartPageNum(0);
+			//查询总记录数
+			int totalRecords=cisternDao.queryCisternTotalRecords(cisternFormQueryEntity);
+			if(totalRecords==0){
+				return new ArrayList<CisternEntity>();
+			}
+			//分页查询结果集
+			cisternFormQueryEntity.setPageSize(totalRecords);
+			cisternEntitys=cisternDao.queryCisternList(cisternFormQueryEntity);
+		}catch(Exception e){
+			throw e;
+		}
+		return cisternEntitys;
+	}
 }

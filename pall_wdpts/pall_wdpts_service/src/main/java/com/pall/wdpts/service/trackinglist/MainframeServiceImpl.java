@@ -504,5 +504,23 @@ public class MainframeServiceImpl implements MainframeService{
 		}
 		return baseResponse;
 	}
+	@Override
+	public List<MainframeEntity> exportMainframeList(MainframeFormQueryEntity mainframeFormQueryEntity) throws Exception {
+		List<MainframeEntity> mainframeEntitys=null;
+		try{
+			mainframeFormQueryEntity.setStartPageNum(0);
+			//查询总记录数
+			int totalRecords=mainframeDao.queryMainframeTotalRecords(mainframeFormQueryEntity);
+			if(totalRecords==0){
+				return new ArrayList<MainframeEntity>();
+			}
+			//分页查询结果集
+			mainframeFormQueryEntity.setPageSize(totalRecords);
+			mainframeEntitys=mainframeDao.queryMainframeList(mainframeFormQueryEntity);
+		}catch(Exception e){
+			throw e;
+		}
+		return mainframeEntitys;
+	}
 	
 }

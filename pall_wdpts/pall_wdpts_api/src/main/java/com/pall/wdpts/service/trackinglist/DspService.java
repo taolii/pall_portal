@@ -23,6 +23,12 @@ public interface DspService {
 	 */
 	public BaseTablesResponse queryDspList(DspFormQueryEntity  dspFormQueryEntity) throws Exception;
 	/*
+	 * 根据条件导出Dsp装配记录信息
+	 * @param dspFormQueryEntity Dsp装配查询对象
+	 * @return 查询结果
+	 */
+	public List<DspEntity> exportDspList(DspFormQueryEntity  dspFormQueryEntity) throws Exception;
+	/*
 	 * 根据条件查询Dsp装配记录信息
 	 * @param dspID Dsp装配查询对象
 	 * @return 查询结果

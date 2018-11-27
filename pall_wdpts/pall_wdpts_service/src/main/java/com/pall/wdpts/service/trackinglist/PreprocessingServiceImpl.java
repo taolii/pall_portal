@@ -505,5 +505,22 @@ public class PreprocessingServiceImpl implements  PreprocessingService{
 		}
 		return baseResponse;
 	}
-	
+	@Override
+	public List<PreprocessingEntity> exportPreprocessingList(PreprocessingFormQueryEntity preprocessingFormQueryEntity) throws Exception {
+		List<PreprocessingEntity> preprocessingEntitys=null;
+		try{
+			preprocessingFormQueryEntity.setStartPageNum(0);
+			//查询总记录数
+			int totalRecords=preprocessingDao.queryPreprocessingTotalRecords(preprocessingFormQueryEntity);
+			if(totalRecords==0){
+				return new ArrayList<PreprocessingEntity>();
+			}
+			//分页查询结果集
+			preprocessingFormQueryEntity.setPageSize(totalRecords);
+			preprocessingEntitys=preprocessingDao.queryPreprocessingList(preprocessingFormQueryEntity);
+		}catch(Exception e){
+			throw e;
+		}
+		return preprocessingEntitys;
+	}
 }

@@ -2,6 +2,7 @@ package com.pall.mts.service.excel;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -21,7 +22,6 @@ import com.alibaba.druid.util.StringUtils;
 import com.pall.mts.common.constants.KeyConstants;
 import com.pall.mts.common.support.excel.ExcelDataNode;
 import com.pall.mts.common.support.excel.ExcelHeaderNode;
-import com.pall.mts.service.excel.IExcelHandler;
 /*
  * excel 2007以上数据格式处理类
  */
@@ -39,11 +39,24 @@ public class XLSXExcelHandler implements IExcelHandler{
 		}
 		//创建Sheet表头
 		createTableHeader(workbook,sheet,excelheadlinesMap);
+		
 		//生成数据行记录信息
 		createTableRecord(workbook,sheet,rowdatas);
 		return workbook;
 	}
-
+	private void setSheetStyle(Workbook workbook,XSSFSheet sheet,String styleType,Set<Integer> rowdatas,int startColNum,int lastColNum){
+		CellStyle cellStyle=getCellStyle(workbook,styleType);
+		//设置单元格样式
+    	for(Integer rownum:rowdatas){
+    		//创建行对象
+            XSSFRow row = sheet.getRow(rownum-1);
+    		for (int j=startColNum-1;j<lastColNum;j++) {
+   			 	XSSFCell cell=row.getCell(j);
+   			 	if(cell==null)cell=row.createCell(j);
+   			 	cell.setCellStyle(cellStyle);
+            }
+    	}
+	}
 	@Override
 	public CellStyle getCellStyle(Workbook workbook,String cellTypeName) {
 		if(workbook==null)workbook=getWorkbook();
@@ -104,19 +117,7 @@ public class XLSXExcelHandler implements IExcelHandler{
             }
     		
     	}
-    	//设置单元格样式
-    	for(Integer rownum:excelheadlinesMap.keySet()){
-    		//创建行对象
-            XSSFRow row = sheet.getRow(rownum-1);
-    		for (int j=startColNum-1;j<lastColNum;j++) {
-   			 	XSSFCell cell=row.getCell(j);
-   			 	if(cell==null){
-   			 		cell=row.createCell(j);
-	                cell.setCellValue("");
-   			 	}
-   			 cell.setCellStyle(getCellStyle(workbook,KeyConstants.EXCEL_CELL_STYLE_HEADLINE_CONFIGNAME_XLSX));
-            }
-    	}
+    	setSheetStyle(workbook,sheet,KeyConstants.EXCEL_CELL_STYLE_HEADLINE_CONFIGNAME_XLSX,excelheadlinesMap.keySet(),startColNum,lastColNum);
     }  
     /** 
      * 生成数据记录信息
@@ -142,20 +143,9 @@ public class XLSXExcelHandler implements IExcelHandler{
                 }else{
                 	 cell.setCellValue(excelDataNode.getData());
                 }
+                //cell.setCellStyle(getCellStyle(workbook,KeyConstants.EXCEL_CELL_STYLE_DATA_CONFIGNAME_XLSX));
         	}
         }
-        //设置单元格样式
-        for(Integer rownum:rowdatas.keySet()){
-    		//创建行对象
-            XSSFRow row = sheet.getRow(rownum);
-    		for (int j=startColNum-1;j<lastColNum;j++) {
-   			 	XSSFCell cell=row.getCell(j);
-   			 	if(cell==null){
-   			 		cell=row.createCell(j);
-	                cell.setCellValue("");
-   			 	}
-   			 cell.setCellStyle(getCellStyle(workbook,KeyConstants.EXCEL_CELL_STYLE_DATA_CONFIGNAME_XLSX));
-            }
-    	}
+        setSheetStyle(workbook,sheet,KeyConstants.EXCEL_CELL_STYLE_DATA_CONFIGNAME_XLSX,rowdatas.keySet(),startColNum,lastColNum);
     }  
 }

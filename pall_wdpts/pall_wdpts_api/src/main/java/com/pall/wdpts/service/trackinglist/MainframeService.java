@@ -23,6 +23,12 @@ public interface MainframeService {
 	 */
 	public BaseTablesResponse queryMainframeList(MainframeFormQueryEntity  mainframeFormQueryEntity) throws Exception;
 	/*
+	 * 根据条件导出主机装配记录信息
+	 * @param mainframeFormQueryEntity 主机装配查询对象
+	 * @return 查询结果
+	 */
+	public List<MainframeEntity> exportMainframeList(MainframeFormQueryEntity  mainframeFormQueryEntity) throws Exception;
+	/*
 	 * 根据条件查询主机装配记录信息
 	 * @param mainframeID 主机配查询对象
 	 * @return 查询结果

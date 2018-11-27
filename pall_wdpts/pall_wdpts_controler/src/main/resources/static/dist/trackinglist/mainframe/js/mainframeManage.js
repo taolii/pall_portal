@@ -121,9 +121,9 @@ $(document).ready(function() {
 	$("#btn-add").click(function(){
 		manage.addItem();
 	});
-	/*$("#btn-export").click(function(){
-		manage.exportItem();
-	});*/
+	$("#btn-export").click(function(){
+		manage.exportItems();
+	});
 	$("#btn-delAll").click(function(){
 		var arrItemId = [];
         $("tbody :checkbox:checked",$table).each(function(i) {
@@ -229,6 +229,19 @@ $(document).ready(function() {
 	    exportItem:function(item){
 	    	$wrapper.spinModal();
 	         $.post(contextPath+"/trackinglist/exportMainframe",{"mainframeID":item.mainframeID}, function(result) {
+	        	 if(result.resultCode==0){
+	        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
+    	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;
+    	    		 window.location.href = downUrl;
+            		}else{
+            			showNotice('Error','<span style="padding-top:5px">数据导出失败,详情如下:</span><br/><span class="icon-exclamation-sign"><i class="glyphicon glyphicon-play"></i>'+result.resultMsg+'</span>','error',1000*10);
+            		}
+	        	 $wrapper.spinModal(false);
+             },'json'); 
+	    },
+	    exportItems:function(){
+	    	$wrapper.spinModal();
+	         $.post(contextPath+"/trackinglist/exportMainframes",$queryForm.serializeArray(), function(result) {
 	        	 if(result.resultCode==0){
 	        		 var fileName=encodeURI(result.returnObjects[0].fileName); 
     	    		 var downUrl = contextPath+'/workflow/excelfileDownload?fileName=' +fileName+"&subDirectory="+result.returnObjects[0].subDirectory;

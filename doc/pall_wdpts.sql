@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-10-16 16:20:38
+Date: 2018-11-26 22:20:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -421,7 +421,7 @@ CREATE TABLE `t_trackinglist_mainframe` (
   KEY `idx_workorder_no` (`workorder_no`),
   KEY `idx_serial_no` (`serial_no`),
   KEY `idx_mainframe_model` (`mainframe_model`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='主机装配流程跟踪单表'
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='主机装配流程跟踪单表'
 /*!50100 PARTITION BY RANGE (to_days(input_time))
 (PARTITION p201801 VALUES LESS THAN (737060) ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN (737091) ENGINE = InnoDB,
@@ -478,6 +478,7 @@ CREATE TABLE `t_trackinglist_mainframe` (
 INSERT INTO `t_trackinglist_mainframe` VALUES ('4', '2018-09-28', '2018-09-28 18:08:01', '', 'LWFS31101C', '撒发生', '撒发生', 'Cascada I', '水电费', '水电费是', '', '若无特别说明，装配跟踪单记录人员即为装配人员，若非记录者装配设备请于备注处注明。', '阿萨德', '', null, '9', '2018-09-28 18:08:26', '2018-09-28 18:09:44');
 INSERT INTO `t_trackinglist_mainframe` VALUES ('5', '2018-09-28', '2018-09-28 18:08:01', '', 'LWFS31101C', '撒发生', '撒发生', 'Cascada I', '水电费', '水电费是', '', '若无特别说明，装配跟踪单记录人员即为装配人员，若非记录者装配设备请于备注处注明。', '阿萨德', '', null, '9', '2018-09-28 18:09:51', '2018-09-28 18:09:51');
 INSERT INTO `t_trackinglist_mainframe` VALUES ('6', '2018-09-28', '2018-09-28 18:08:01', 'asfda33', 'LWFS31101C', '撒发生', '撒发生', 'Cascada I', '水电费', '水电费是', '', '若无特别说明，装配跟踪单记录人员即为装配人员，若非记录者装配设备请于备注处注明。', '阿萨德', '', null, '9', '2018-10-09 11:35:43', '2018-10-10 18:25:57');
+INSERT INTO `t_trackinglist_mainframe` VALUES ('7', '2018-11-20', null, '反射', 'LWFS31101C', '额分别', '二维表', null, 'k', 'j', '', '若无特别说明，装配跟踪单记录人员即为装配人员，若非记录者装配设备请于备注处注明。', '山东省', '', null, '9', '2018-11-20 23:52:32', '2018-11-23 22:21:45');
 
 -- ----------------------------
 -- Table structure for t_trackinglist_mainframe_assemble
@@ -590,6 +591,26 @@ INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('6', '水质变送器|Wa
 INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('6', '水质变送器|Water quality transducer', 'CM6 UP产水电导仪 UP quality sensor', '阿萨德', '阿萨德');
 INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('6', '主机主板|Main unit PCB', 'Cascada MU-MAIN PCB(2 levels)', '', '');
 INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('6', '主机显示屏|Main unit LCD', 'MU LCD PCB with touch screen LCD', '', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '开关电源（主机）|Power module (MU)', 'SP-200-24', '似懂非懂', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '循环泵|Recirculation pump', 'EC-203-300ARS', 'SJZ-EC-', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '循环压力变送器|Loop PT3', 'MPM4150', '胜多负少', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', 'CM2 RO产水电导仪|RO quality sensor', '胜多负少', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', '2# 电导变送器|2# transducer', '胜多负少', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', 'CM4中间电导|Intermediate sensor', '似懂非懂', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', '6# 电导变送器|2# transducer', '水电费', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', 'CM6 UP产水电导仪|UP quality sensor', '胜多负少', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '主机主板|Main unit PCB', 'Cascada MU-MAIN PCB(2 levels)', '水电费', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '主机显示屏|Main unit LCD', 'MU LCD PCB with touch screen LCD', '胜多负少', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '开关电源（主机）|Power module (MU)', 'SP-200-24', '水电费', '胜多负少');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '循环泵|Recirculation pump', 'EC-203-300ARS', 'SJZ-EC-', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '循环压力变送器|Loop PT3', 'MPM4150', '胜多负少的', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', 'CM2 RO产水电导仪|RO quality sensor', '是的', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', '2# 电导变送器|2# transducer', '似懂非懂是', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', 'CM4中间电导|Intermediate sensor', '似懂非懂是', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', '6# 电导变送器|2# transducer', '胜多负少', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '水质变送器|Water quality transducer', 'CM6 UP产水电导仪|UP quality sensor', '水电费', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '主机主板|Main unit PCB', 'Cascada MU-MAIN PCB(2 levels)', '水电费', '');
+INSERT INTO `t_trackinglist_mainframe_assemble` VALUES ('7', '主机显示屏|Main unit LCD', 'MU LCD PCB with touch screen LCD', '对方的身份', '水电费');
 
 -- ----------------------------
 -- Table structure for t_trackinglist_mainframe_inspect
@@ -678,6 +699,7 @@ INSERT INTO `t_trackinglist_mainframe_inspect` VALUES ('5', '流路及组件检�
 INSERT INTO `t_trackinglist_mainframe_inspect` VALUES ('5', '拨码记录|Dial switch ', '1|2|3|4|5|6|7|8', '型号/Type：', '');
 INSERT INTO `t_trackinglist_mainframe_inspect` VALUES ('6', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '0_合格/Pass|不合格/Fail', '');
 INSERT INTO `t_trackinglist_mainframe_inspect` VALUES ('6', '拨码记录|Dial switch ', '1|2|3|4|5|6|7|8', '型号/Type：', '');
+INSERT INTO `t_trackinglist_mainframe_inspect` VALUES ('7', '拨码记录|Dial switch ', '10010111', '型号/Type：', 'pass');
 
 -- ----------------------------
 -- Table structure for t_trackinglist_preprocessing
@@ -1084,10 +1106,10 @@ INSERT INTO `t_ums_config` VALUES ('113', 'tracklinglist/cistern/templatename', 
 INSERT INTO `t_ums_config` VALUES ('114', 'trackinglist/cistern/download/subdirectory', '1', 'cistern', null, '2', '水箱装配流程跟踪单流程下载子目录名称');
 INSERT INTO `t_ums_config` VALUES ('82', 'right/button/righttype', '1', '2', null, '2', '权限表中button对应的righttype');
 INSERT INTO `t_ums_config` VALUES ('4', 'right/menu/righttype', '1', '1', null, '2', '权限表中menu对应的righttype');
-INSERT INTO `t_ums_config` VALUES ('115', 'trackinglist/dsp/dataconfig/type/dspModel', '1', '48', null, '2', 'DSP配置_DSP型号/Model');
-INSERT INTO `t_ums_config` VALUES ('116', 'trackinglist/cistern/dataconfig/type/cisternModel', '1', '49', null, '2', '水箱配置_水箱型号/Model');
-INSERT INTO `t_ums_config` VALUES ('117', 'trackinglist/preprocessing/dataconfig/type/preprocessingModel', '1', '50', null, '2', '预处理配置_名称/Model');
-INSERT INTO `t_ums_config` VALUES ('118', 'trackinglist/mainframe/dataconfig/type/mainframeModel', '1', '51', null, '2', '主机_主机型号/Model');
+INSERT INTO `t_ums_config` VALUES ('115', 'setting/dsp/dataconfig/type/dspModel', '1', '48', null, '2', 'DSP配置_DSP型号/Model');
+INSERT INTO `t_ums_config` VALUES ('116', 'setting/cistern/dataconfig/type/cisternModel', '1', '49', null, '2', '水箱配置_水箱型号/Model');
+INSERT INTO `t_ums_config` VALUES ('117', 'setting/preprocessing/dataconfig/type/preprocessingModel', '1', '50', null, '2', '预处理配置_名称/Model');
+INSERT INTO `t_ums_config` VALUES ('118', 'setting/mainframe/dataconfig/type/mainframeModel', '1', '51', null, '2', '主机_主机型号/Model');
 
 -- ----------------------------
 -- Table structure for t_ums_data_button
@@ -1688,6 +1710,9 @@ CREATE TABLE `t_ums_setting_cistern` (
   `operatorid` int(11) DEFAULT NULL,
   `input_time` datetime NOT NULL COMMENT '录入时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `cistern_model` varchar(100) DEFAULT NULL,
+  `cistern_option` varchar(100) DEFAULT NULL,
+  `cistern_option2` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`csid`),
   KEY `idx_cistern_pn` (`cistern_pn`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='水箱配置记录表'
@@ -1760,9 +1785,9 @@ CREATE TABLE `t_ums_setting_cistern` (
 -- ----------------------------
 -- Records of t_ums_setting_cistern
 -- ----------------------------
-INSERT INTO `t_ums_setting_cistern` VALUES ('18', 'LWFS32401', '9', '2018-09-26 17:14:11', '2018-09-26 17:14:11');
-INSERT INTO `t_ums_setting_cistern` VALUES ('19', 'LWFS32401R', '9', '2018-09-26 17:16:27', '2018-09-26 17:16:27');
-INSERT INTO `t_ums_setting_cistern` VALUES ('20', 'LWFS32401S', '9', '2018-09-26 17:19:42', '2018-09-26 17:19:42');
+INSERT INTO `t_ums_setting_cistern` VALUES ('18', 'LWFS32401', '9', '2018-09-26 17:14:11', '2018-09-26 17:14:11', null, null, null);
+INSERT INTO `t_ums_setting_cistern` VALUES ('19', 'LWFS32401R', '9', '2018-09-26 17:16:27', '2018-11-06 18:04:14', null, null, null);
+INSERT INTO `t_ums_setting_cistern` VALUES ('20', 'LWFS32401S', '9', '2018-09-26 17:19:42', '2018-11-15 01:40:47', 'PE Reservoir 35 L', 'k', 'j');
 
 -- ----------------------------
 -- Table structure for t_ums_setting_cistern_assemble
@@ -1869,9 +1894,10 @@ CREATE TABLE `t_ums_setting_dsp` (
   `operatorid` int(11) DEFAULT NULL,
   `input_time` datetime NOT NULL COMMENT '录入时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `dsp_model` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`dsid`),
   KEY `idx_dsp_pn` (`dsp_pn`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='DSP配置记录表'
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='DSP配置记录表'
 /*!50100 PARTITION BY HASH (dsid)
 (PARTITION p1 ENGINE = InnoDB,
  PARTITION p2 ENGINE = InnoDB,
@@ -1941,12 +1967,13 @@ CREATE TABLE `t_ums_setting_dsp` (
 -- ----------------------------
 -- Records of t_ums_setting_dsp
 -- ----------------------------
-INSERT INTO `t_ums_setting_dsp` VALUES ('2', 'LWFS32601', '9', '2018-09-26 16:58:18', '2018-09-26 17:08:54');
-INSERT INTO `t_ums_setting_dsp` VALUES ('3', 'LWFS32602', '9', '2018-09-26 16:59:52', '2018-09-26 17:09:03');
-INSERT INTO `t_ums_setting_dsp` VALUES ('4', 'LWFS32603', '9', '2018-09-26 17:00:39', '2018-09-26 17:09:11');
-INSERT INTO `t_ums_setting_dsp` VALUES ('5', 'LWFS32604', '9', '2018-09-26 17:03:00', '2018-09-26 17:03:00');
-INSERT INTO `t_ums_setting_dsp` VALUES ('6', 'LWFS32605', '9', '2018-09-26 17:07:55', '2018-09-26 17:07:55');
-INSERT INTO `t_ums_setting_dsp` VALUES ('7', 'LWFS32606', '9', '2018-09-26 17:07:59', '2018-09-26 17:07:59');
+INSERT INTO `t_ums_setting_dsp` VALUES ('2', 'LWFS32601', '9', '2018-09-26 16:58:18', '2018-09-26 17:08:54', null);
+INSERT INTO `t_ums_setting_dsp` VALUES ('3', 'LWFS32602', '9', '2018-09-26 16:59:52', '2018-11-15 01:40:22', '灵活取水手柄 III 级水     Flexible DSP Type III');
+INSERT INTO `t_ums_setting_dsp` VALUES ('4', 'LWFS32603', '9', '2018-09-26 17:00:39', '2018-09-26 17:09:11', null);
+INSERT INTO `t_ums_setting_dsp` VALUES ('5', 'LWFS32604', '9', '2018-09-26 17:03:00', '2018-09-26 17:03:00', null);
+INSERT INTO `t_ums_setting_dsp` VALUES ('6', 'LWFS32605', '9', '2018-09-26 17:07:55', '2018-09-26 17:07:55', null);
+INSERT INTO `t_ums_setting_dsp` VALUES ('7', 'LWFS32606', '9', '2018-09-26 17:07:59', '2018-09-26 17:07:59', null);
+INSERT INTO `t_ums_setting_dsp` VALUES ('8', 'LWFS326031', '9', '2018-10-16 16:52:27', '2018-11-15 01:40:28', '远程取水站 II 级水      DSP With Station Type II');
 
 -- ----------------------------
 -- Table structure for t_ums_setting_dsp_assemble
@@ -2071,6 +2098,13 @@ INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('7', 'DSP手柄圆形挂件|Dis
 INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('7', '灵活取水手柄配件|Flexible DSP accessories', '硬插直接1/4\"*3/8\"|Stem reducer(1/4\"tube*3/8\"stem)', '有 Yes|无 No', '');
 INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('7', '灵活取水手柄配件|Flexible DSP accessories', '宝塔直接3/8\"*3/8\" Tube barb connector 3/8\"|stem', '有 Yes|无 No', '');
 INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('7', '灵活取水手柄配件|Flexible DSP accessories', '主机侧面取水手柄挂件&螺钉|Flexible dispenser rack', '有 Yes|无 No', '');
+INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('8', '滚轮与IO板配合|Dispenser roller and IO board Assembly', '滚动阻尼及微动开关|Roll damping and micro switch', '合格 Pass|不合格 Fail', '');
+INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('8', 'IO板接线线序|IO Board Wring ', '线序复核：红-黑-蓝-棕-绿-白-黑-黑|Self inspection wring', '合格 Pass|不合格 Fail', '');
+INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('8', 'FFC排线|FFC cable', 'FFC 排线弯曲于手柄挂钩方向，金手指金属面朝|Self Inspection-FFC Cable', '合格 Pass|不合格 Fail', '');
+INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('8', 'DSP手柄圆形挂件|Dispenser holder', '是否漏装及方向是否正确|direction', '合格 Pass|不合格 Fail', '');
+INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('8', '远程取水站配件|Remote DSP With Station accessories', '底座自检（流路，标签，硅胶垫，外观）|Dispenser base inspection', '合格 Pass|不合格 Fail', '');
+INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('8', '远程取水站配件|Remote DSP With Station accessories', '底座水路上下盖（Cable位置，外观）|Dispenser base inspection', '合格 Pass|不合格 Fail', '');
+INSERT INTO `t_ums_setting_dsp_assemble` VALUES ('8', '远程取水站配件|Remote DSP With Station accessories', '铝杆支架及螺钉|Dispenser base inspection', '有 Yes|无 No', '');
 
 -- ----------------------------
 -- Table structure for t_ums_setting_mainframe
@@ -2082,9 +2116,12 @@ CREATE TABLE `t_ums_setting_mainframe` (
   `operatorid` int(11) DEFAULT NULL,
   `input_time` datetime NOT NULL COMMENT '录入时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `mainframe_model` varchar(100) DEFAULT NULL,
+  `mainframe_option` varchar(100) DEFAULT NULL,
+  `mainframe_option2` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`msid`),
   KEY `idx_mainframe_pn` (`mainframe_pn`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='主机配置记录表'
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='主机配置记录表'
 /*!50100 PARTITION BY HASH (msid)
 (PARTITION p1 ENGINE = InnoDB,
  PARTITION p2 ENGINE = InnoDB,
@@ -2154,8 +2191,10 @@ CREATE TABLE `t_ums_setting_mainframe` (
 -- ----------------------------
 -- Records of t_ums_setting_mainframe
 -- ----------------------------
-INSERT INTO `t_ums_setting_mainframe` VALUES ('18', ' LWFS31101', '9', '2018-09-26 17:26:18', '2018-09-26 17:26:18');
-INSERT INTO `t_ums_setting_mainframe` VALUES ('19', 'LWFS31101C', '9', '2018-09-26 17:30:31', '2018-10-09 13:52:17');
+INSERT INTO `t_ums_setting_mainframe` VALUES ('18', ' LWFS31101', '9', '2018-09-26 17:26:18', '2018-11-20 11:38:07', 'Cascada III.I', 'k', 'j');
+INSERT INTO `t_ums_setting_mainframe` VALUES ('19', 'LWFS31101C', '9', '2018-09-26 17:30:31', '2018-11-20 12:05:00', 'Cascada III', 'k', 'j');
+INSERT INTO `t_ums_setting_mainframe` VALUES ('20', ' LWFS311011', '9', '2018-11-20 12:02:00', '2018-11-20 12:02:00', 'Cascada III.I', 'k', 'j');
+INSERT INTO `t_ums_setting_mainframe` VALUES ('21', 'sada', '9', '2018-11-24 02:58:18', '2018-11-24 02:58:33', 'Cascada I', 'asda', 'asda');
 
 -- ----------------------------
 -- Table structure for t_ums_setting_mainframe_assemble
@@ -2267,6 +2306,16 @@ INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('19', '水质变送器|Wa
 INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('19', '水质变送器|Water quality transducer', 'CM6 UP产水电导仪|UP quality sensor', '', '');
 INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('19', '主机主板|Main unit PCB', 'Cascada MU-MAIN PCB(2 levels)', '', '');
 INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('19', '主机显示屏|Main unit LCD', 'MU LCD PCB with touch screen LCD', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '开关电源（主机）|Power module (MU)', 'SP-200-24', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '循环泵|Recirculation pump', 'EC-203-300ARS', 'SJZ-EC-', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '循环压力变送器|Loop PT3', 'MPM4150', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '水质变送器|Water quality transducer', 'CM4中间电导 Intermediate sensor', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '水质变送器|Water quality transducer', '4# 电导变送器     2# transducer', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '水质变送器|Water quality transducer', 'CM6 UP产水电导仪 UP quality sensor', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '水质变送器|Water quality transducer', '6# 电导变送器     2# transducer', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '主机主板|Main unit PCB', 'Cascada MU-MAIN PCB(2 levels)', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('20', '主机显示屏|Main unit LCD', 'MU LCD PCB with touch screen LCD', '', '');
+INSERT INTO `t_ums_setting_mainframe_assemble` VALUES ('21', 'asd', 'aasda', 'sad', 'aasd');
 
 -- ----------------------------
 -- Table structure for t_ums_setting_mainframe_inspect
@@ -2349,12 +2398,10 @@ CREATE TABLE `t_ums_setting_mainframe_inspect` (
 -- ----------------------------
 -- Records of t_ums_setting_mainframe_inspect
 -- ----------------------------
-INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('18', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '合格/Pass|不合格/Fail', '');
-INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('18', '拨码记录|Dial switch ', '1|2|3|4|5|6|7|8', '型号/Type：', '');
-INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('19', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '合格/Pass|不合格/Fail', '');
-INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('19', '拨码记录|Dial switch ', '1|2|3|4|5|6|7|8', '型号/Type：', '');
-INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('19', '流路及组件检查/Inspection', '参照流路图检查组件是否有误及流路是否正确/Assembly inspection', '合格/Pass|不合格/Fail', '');
-INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('19', '拨码记录|Dial switch ', '1|2|3|4|5|6|7|8', '型号/Type：', '');
+INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('18', '拨码记录|Dial switch ', '01001000', '型号/Type：', '');
+INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('19', '拨码记录|Dial switch ', '10010111', '型号/Type：', '');
+INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('20', '拨码记录|Dial switch ', '01001010', '型号/Type：', '');
+INSERT INTO `t_ums_setting_mainframe_inspect` VALUES ('21', 'asda', '11010111', 'asda', 'asda');
 
 -- ----------------------------
 -- Table structure for t_ums_setting_preprocessing
@@ -2366,6 +2413,9 @@ CREATE TABLE `t_ums_setting_preprocessing` (
   `operatorid` int(11) DEFAULT NULL,
   `input_time` datetime NOT NULL COMMENT '录入时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `preprocessing_model` varchar(100) DEFAULT NULL,
+  `pt_option` varchar(100) DEFAULT NULL,
+  `pt_option2` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`psid`),
   KEY `idx_preprocessing_pn` (`preprocessing_pn`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='预处理装配流程跟踪单装配记录表'
@@ -2438,10 +2488,10 @@ CREATE TABLE `t_ums_setting_preprocessing` (
 -- ----------------------------
 -- Records of t_ums_setting_preprocessing
 -- ----------------------------
-INSERT INTO `t_ums_setting_preprocessing` VALUES ('13', 'LWFS32701C', '9', '2018-09-05 23:22:26', '2018-09-06 00:10:04');
-INSERT INTO `t_ums_setting_preprocessing` VALUES ('14', 'LWFS32701', '9', '2018-09-05 23:35:59', '2018-09-05 23:59:20');
-INSERT INTO `t_ums_setting_preprocessing` VALUES ('15', 'LWFS32701P', '9', '2018-09-05 23:39:34', '2018-09-06 00:09:20');
-INSERT INTO `t_ums_setting_preprocessing` VALUES ('16', 'LWFS32701PC', '9', '2018-09-05 23:43:38', '2018-09-06 00:06:41');
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('13', 'LWFS32701C', '9', '2018-09-05 23:22:26', '2018-11-15 01:41:04', 'Pretreatment', 'k', 'j');
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('14', 'LWFS32701', '9', '2018-09-05 23:35:59', '2018-09-05 23:59:20', null, null, null);
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('15', 'LWFS32701P', '9', '2018-09-05 23:39:34', '2018-09-06 00:09:20', null, null, null);
+INSERT INTO `t_ums_setting_preprocessing` VALUES ('16', 'LWFS32701PC', '9', '2018-09-05 23:43:38', '2018-09-06 00:06:41', null, null, null);
 
 -- ----------------------------
 -- Table structure for t_ums_setting_preprocessing_assemble
@@ -2667,7 +2717,7 @@ INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '1', null, '1', '1
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '2', null, '1', '1', null, 'dspID', '1', 'id', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '3', null, '1', '1', null, 'cOrderID', '0', '客户订单信息', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '4', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
-INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '5', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '5', null, '1', '1', null, 'productionTime', '1', '生产时间', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '6', null, '1', '1', null, 'dspPn', '0', '型号/PN', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '7', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTable', '1', '8', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
@@ -2682,7 +2732,7 @@ INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '1', null, '1'
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '2', null, '1', '1', null, 'cisternID', '1', 'id', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '3', null, '1', '1', null, 'cOrderID', '0', '客户订单信息', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '4', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
-INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '5', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '5', null, '1', '1', null, 'productionTime', '1', '生产时间', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '6', null, '1', '1', null, 'cisternPn', '0', '料号/PN', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '7', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTable', '1', '8', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
@@ -2698,7 +2748,7 @@ INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '1', nul
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '2', null, '1', '1', null, 'preprocessingID', '1', 'id', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '3', null, '1', '1', null, 'cOrderID', '0', '客户订单信息', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '4', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
-INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '5', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '5', null, '1', '1', null, 'productionTime', '1', '生产时间', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '6', null, '1', '1', null, 'preprocessingPn', '0', '料号/PN', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '7', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTable', '1', '8', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
@@ -2717,14 +2767,14 @@ INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '1', null, '
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '2', null, '1', '1', null, 'mainframeID', '1', 'id', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '3', null, '1', '1', null, 'cOrderID', '0', '客户订单信息', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '4', null, '1', '1', null, 'assembleTime', '0', '装配日期', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '5', null, '1', '1', null, 'productionTime', '0', '生产时间', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '5', null, '1', '1', null, 'productionTime', '1', '生产时间', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '6', null, '1', '1', null, 'mainframePn', '0', '料号/PN', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '7', null, '1', '1', null, 'serialNo', '0', '序列号/Serial NO', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '8', null, '1', '1', null, 'workorderNo', '0', '工单号/WO', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '9', null, '1', '1', null, 'mainframeModel', '0', '主机型号/Model', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '10', null, '1', '1', null, 'mainframeOptions', '0', '主机选配件/Option', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '11', null, '1', '1', null, 'assembleRecords', '0', '装配记录', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '12', null, '1', '1', null, 'inspectRecords', '1', '送检人员记录', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '12', null, '1', '1', null, 'inspectRecords', '0', '送检人员记录', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '13', null, '1', '1', null, 'exceptionRecord', '0', '异常记录', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '14', null, '1', '1', null, 'remarks', '0', '备注', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTable', '1', '15', null, '1', '1', null, 'assembleOperator', '0', '装配人员', null);
@@ -2747,8 +2797,8 @@ INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '4
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '4', '1', null, '1', '2', null, '', '0', '名称/Modle：', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '4', '3', null, '1', '2', null, 'preprocessingModel', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '4', '5', null, '1', '1', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '3', '6', null, '1', '2', null, '', '0', '生产时间：', null);
-INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '3', '8', null, '1', '2', null, 'productionTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '3', '6', null, '1', '2', null, '', '0', '客户订单信息：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '3', '8', null, '1', '2', null, 'cOrderID', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '5', '1', null, '1', '9', null, '', '0', '装配记录/Manufacture Record', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '6', '1', null, '1', '1', null, 'assembleRecords:preprocessingID', '0', '序号\r\nNO', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate_inspect', '6', '2', null, '1', '2', null, 'assembleRecords:componentName', '0', '组件名称\r\nComponent Name', null);
@@ -2789,8 +2839,8 @@ INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '4', '
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '4', '9', null, '1', '1', null, 'mainframeOption2', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '4', '1', null, '1', '2', null, '', '0', '主机型号/Modle：', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '4', '3', null, '1', '3', null, 'mainframeModel', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '3', '6', null, '1', '2', null, '', '0', '生产时间：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '3', '8', null, '1', '2', null, 'productionTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '3', '6', null, '1', '2', null, '', '0', '客户订单信息：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '3', '8', null, '1', '2', null, 'cOrderID', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '5', '1', null, '1', '9', null, '', '0', '装配记录/Manufacture Record', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '6', '1', null, '1', '1', null, 'assembleRecords:mainframeID', '0', '序号\r\nNO', null);
 INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate_inspect', '6', '2', null, '1', '2', null, 'assembleRecords:componentName', '0', '组件名称\r\nComponent Name', null);
@@ -2825,8 +2875,8 @@ INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '2', '8', null, '1',
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '3', '1', null, '1', '2', null, '', '0', '工单号/WO：', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '3', '3', null, '1', '2', null, 'workorderNo', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '3', '5', null, '1', '1', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '3', '6', null, '1', '2', null, '', '0', '生产时间：', null);
-INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '3', '8', null, '1', '2', null, 'productionTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '3', '6', null, '1', '2', null, '', '0', '客户订单信息：', null);
+INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '3', '8', null, '1', '2', null, 'cOrderID', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '4', '1', null, '1', '2', null, '', '0', 'DSP型号/Model：', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '4', '3', null, '1', '7', null, 'dspModel', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('401', 'dspTemplate', '5', '1', null, '1', '9', null, '', '0', '装配记录/Manufacture Record', null);
@@ -2853,8 +2903,8 @@ INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '2', '8', null, 
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '3', '1', null, '1', '2', null, '', '0', '工单号/WO：', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '3', '3', null, '1', '2', null, 'workorderNo', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '3', '5', null, '1', '1', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '3', '6', null, '1', '2', null, '', '0', '生产时间：', null);
-INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '3', '8', null, '1', '2', null, 'productionTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '3', '6', null, '1', '2', null, '', '0', '客户订单信息：', null);
+INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '3', '8', null, '1', '2', null, 'cOrderID', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '4', '1', null, '1', '2', null, '', '0', '水箱型号/Model：', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '4', '3', null, '1', '3', null, 'cisternModel', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '4', '6', null, '1', '2', null, '', '0', '水箱选配件/Options：', null);
@@ -2875,37 +2925,6 @@ INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '9', '6', null, 
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '9', '7', null, '1', '1', null, 'assembleOperator', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '9', '8', null, '1', '1', null, '', '0', '装配日期：', null);
 INSERT INTO `t_ums_th_config` VALUES ('402', 'cisternTemplate', '9', '9', null, '1', '1', null, 'assembleTime', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '1', '1', null, '1', '9', null, '', '0', '主机装配流程跟踪单/PT Assembly Record', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '1', null, '1', '2', null, '', '0', '料号/PN:', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '3', null, '1', '2', null, 'mainframePn', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '5', null, '1', '1', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '6', null, '1', '2', null, '', '0', '序列号/Serial No:', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '8', null, '1', '2', null, 'serialNo', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '1', null, '1', '2', null, '', '0', '工单号/WO：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '3', null, '1', '2', null, 'workorderNo', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '5', null, '1', '1', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '6', null, '1', '2', null, '', '0', '主机选配件/Options：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '8', null, '1', '1', null, 'mainframeOption', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '9', null, '1', '1', null, 'mainframeOption2', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '1', null, '1', '2', null, '', '0', '主机型号/Modle：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '3', null, '1', '3', null, 'mainframeModel', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '6', null, '1', '2', null, '', '0', '生产时间：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '8', null, '1', '2', null, 'productionTime', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '5', '1', null, '1', '9', null, '', '0', '装配记录/Manufacture Record', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '1', null, '1', '1', null, 'assembleRecords:mainframeID', '0', '序号\r\nNO', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '2', null, '1', '2', null, 'assembleRecords:componentName', '0', '组件名称\r\nComponent Name', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '4', null, '1', '2', null, 'assembleRecords:componentNo', '0', '组件型号\r\nComponent Module', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '6', null, '1', '2', null, 'assembleRecords:serialNoRecord', '4', '序列号记录\r\nSerial No', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '8', null, '1', '2', null, 'assembleRecords:remarks', '0', '备注\r\nRemarks', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '7', '1', null, '1', '1', null, '', '0', '异常记录：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '7', '2', null, '1', '8', null, 'exceptionRecord', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '8', '1', null, '1', '1', null, '', '0', '备注：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '8', '2', null, '1', '8', null, 'remarks', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '9', '1', null, '1', '5', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '9', '6', null, '1', '1', null, '', '0', '装配人员：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '9', '7', null, '1', '1', null, 'assembleOperator', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '9', '8', null, '1', '1', null, '', '0', '装配日期：', null);
-INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '9', '9', null, '1', '1', null, 'assembleTime', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '1', '1', null, '1', '9', null, '', '0', '预处理装配流程跟踪单/PT Assembly Record', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '1', null, '1', '2', null, '', '0', '料号/PN:', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '3', null, '1', '2', null, 'preprocessingPn', '0', '', null);
@@ -2915,8 +2934,8 @@ INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '2', '8', 
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '1', null, '1', '2', null, '', '0', '工单号/WO：', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '3', null, '1', '2', null, 'workorderNo', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '5', null, '1', '1', null, '', '0', '', null);
-INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '6', null, '1', '2', null, '', '0', '生产时间：', null);
-INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '8', null, '1', '2', null, 'productionTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '6', null, '1', '2', null, '', '0', '客户订单信息：', null);
+INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '3', '8', null, '1', '2', null, 'cOrderID', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '1', null, '1', '2', null, '', '0', '名称/Modle：', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '3', null, '1', '2', null, 'preprocessingModel', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '4', '5', null, '1', '1', null, '', '0', '', null);
@@ -2938,6 +2957,43 @@ INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '9', '6', 
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '9', '7', null, '1', '1', null, 'assembleOperator', '0', '', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '9', '8', null, '1', '1', null, '', '0', '装配日期：', null);
 INSERT INTO `t_ums_th_config` VALUES ('403', 'preprocessingTemplate', '9', '9', null, '1', '1', null, 'assembleTime', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '1', '1', null, '1', '9', null, '', '0', '主机装配流程跟踪单/PT Assembly Record', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '1', null, '1', '2', null, '', '0', '料号/PN:', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '3', null, '1', '2', null, 'mainframePn', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '5', null, '1', '1', null, '', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '6', null, '1', '2', null, '', '0', '序列号/Serial No:', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '2', '8', null, '1', '2', null, 'serialNo', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '1', null, '1', '2', null, '', '0', '工单号/WO：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '3', null, '1', '2', null, 'workorderNo', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '5', null, '1', '1', null, '', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '6', null, '1', '2', null, '', '0', '主机选配件/Options：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '8', null, '1', '1', null, 'mainframeOption', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '9', null, '1', '1', null, 'mainframeOption2', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '1', null, '1', '2', null, '', '0', '主机型号/Modle：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '4', '3', null, '1', '3', null, 'mainframeModel', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '6', null, '1', '2', null, '', '0', '客户订单信息：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '3', '8', null, '1', '2', null, 'cOrderID', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '5', '1', null, '1', '9', null, '', '0', '装配记录/Manufacture Record', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '1', null, '1', '1', null, 'assembleRecords:mainframeID', '0', '序号\r\nNO', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '2', null, '1', '2', null, 'assembleRecords:componentName', '0', '组件名称\r\nComponent Name', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '4', null, '1', '2', null, 'assembleRecords:componentNo', '0', '组件型号\r\nComponent Module', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '6', null, '1', '2', null, 'assembleRecords:serialNoRecord', '4', '序列号记录\r\nSerial No', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '6', '8', null, '1', '2', null, 'assembleRecords:remarks', '0', '备注\r\nRemarks', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '7', '1', null, '1', '9', null, '', '0', '送检人员记录/Self Inspection Records', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '8', '1', null, '1', '1', null, 'inspectRecords:mainframeID', '0', '序号\r\nNO', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '8', '2', null, '1', '2', null, 'inspectRecords:selfcheckName', '0', '自检名称\r\nInspection Item', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '8', '4', null, '1', '2', null, 'inspectRecords:selfcheckContent', '0', '自检内容\r\nSelf Inspection Content\r\n(1:ON 0:OFF)', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '8', '6', null, '1', '2', null, 'inspectRecords:selfcheckResult', '4', '自检结果\r\nSelf Inspection Result', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '8', '8', null, '1', '2', null, 'inspectRecords:remarks', '0', '备注\r\nRemarks', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '9', '1', null, '1', '1', null, '', '0', '异常记录：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '9', '2', null, '1', '8', null, 'exceptionRecord', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '10', '1', null, '1', '1', null, '', '0', '备注：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '10', '2', null, '1', '8', null, 'remarks', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '11', '1', null, '1', '5', null, '', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '11', '6', null, '1', '1', null, '', '0', '装配人员：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '11', '7', null, '1', '1', null, 'assembleOperator', '0', '', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '11', '8', null, '1', '1', null, '', '0', '装配日期：', null);
+INSERT INTO `t_ums_th_config` VALUES ('404', 'mainframeTemplate', '11', '9', null, '1', '1', null, 'assembleTime', '0', '', null);
 
 -- ----------------------------
 -- Table structure for t_ums_userpermission
