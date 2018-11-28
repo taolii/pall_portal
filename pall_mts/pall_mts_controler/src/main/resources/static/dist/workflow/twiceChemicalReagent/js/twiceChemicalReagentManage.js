@@ -11,7 +11,9 @@ $(document).ready(function() {
 	$('#queryEndInPutDate').val(currentDate(-1));
 	var contextPath=$("#contextPath").val();
 	var columns_setting=[
-    	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
+		 {className: "ellipsis",title:"<input class='ace' type='checkbox' name='cb-check-all'/><span class='lbl'></span>",width:"20px",data: null,render: function (data, type, row, meta) {
+             return '<input  type="checkbox" class="ace"><span class="lbl"></span>';
+    	 }}
     ];
 	var tableFieldBinds=$("#tableFieldBinds").val();
 	tableFieldBinds=eval("(" + tableFieldBinds + ")");

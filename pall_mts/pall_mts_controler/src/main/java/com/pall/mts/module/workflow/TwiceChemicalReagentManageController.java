@@ -14,11 +14,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,13 +57,13 @@ import com.pall.mts.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.mts.repository.entity.menu.ButtonEntity;
 import com.pall.mts.repository.entity.workflow.ChemicalReagentEntity;
 import com.pall.mts.repository.entity.workflow.ExcelSaveEntity;
+import com.pall.mts.repository.entity.workflow.OpticalCoatingEntity.ADD;
+import com.pall.mts.repository.entity.workflow.OpticalCoatingEntity.SAVE;
 import com.pall.mts.repository.entity.workflow.TwiceChemicalCompoundReagentsEntity;
 import com.pall.mts.repository.entity.workflow.TwiceChemicalReagentEntity;
 import com.pall.mts.repository.entity.workflow.TwiceChemicalReagentMixtureQueryFormEntity;
 import com.pall.mts.repository.entity.workflow.TwiceChemicalReagentQueryFormEntity;
 import com.pall.mts.repository.entity.workflow.TwiceChemicalReagentRelationEntity;
-import com.pall.mts.repository.entity.workflow.OpticalCoatingEntity.ADD;
-import com.pall.mts.repository.entity.workflow.OpticalCoatingEntity.SAVE;
 import com.pall.mts.service.excel.IExcelHandler;
 import com.pall.mts.service.menu.ButtonManageService;
 import com.pall.mts.service.workflow.TwiceChemicalReagentService;

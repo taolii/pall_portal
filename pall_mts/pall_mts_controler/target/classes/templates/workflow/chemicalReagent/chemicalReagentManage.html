@@ -159,19 +159,7 @@
 		                 		<div class="table-responsive" style="overflow-x:hidden">
 		                 			<input id="tableFieldBinds" name="tableFieldBinds" type="hidden" th:value="${tableFieldBinds}"/>
 			                 		<table id="datatable" class="table table-striped table-bordered table-hover" >
-										<thead>
-											<tr  th:each="headLines,iterStat:${tableHeaderConfigs}">
-												<th th:each="headLineConfigEntity:${headLines.value}" th:colspan="${headLineConfigEntity.cols}" th:rowspan="${headLineConfigEntity.rows}" class="center" style="color:#307ecc">
-													<span th:if="${headLineConfigEntity.lineNum==1 and headLineConfigEntity.colNum==1}"  th:remove="tag">
-														<input class="ace" type="checkbox" name="cb-check-all"/>
-														<span class="lbl"></span>
-													</span>
-													<span th:unless="${headLineConfigEntity.lineNum==1 and headLineConfigEntity.colNum==1}" th:text="${headLineConfigEntity.headline}" th:remove="tag">
-														
-													</span>
-												</th>
-											</tr>
-										</thead>
+										
 									</table>
 								</div>
 		                 	</div>

@@ -12,13 +12,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.ReflectionUtils;
 
 import com.alibaba.druid.util.StringUtils;
-import com.pall.mts.common.constants.KeyConstants;
 import com.pall.mts.common.support.excel.ExcelDataNode;
 import com.pall.mts.common.support.excel.ExcelHeaderNode;
-import com.pall.mts.init.TableDataConfigInitiator;
-import com.pall.mts.init.UmsConfigInitiator;
 import com.pall.mts.repository.entity.workflow.ChemicalCompoundReagentsEntity;
 import com.pall.mts.repository.entity.workflow.DefectEntity;
+import com.pall.mts.repository.entity.workflow.TwiceChemicalCompoundReagentsEntity;
 
 public class ExcelTools {
 	/*
@@ -50,6 +48,19 @@ public class ExcelTools {
 		   							List<ChemicalCompoundReagentsEntity> chemicalCompoundReagents=(List<ChemicalCompoundReagentsEntity>)ReflectionUtils.getField(fieldMap.get(fieldName), objEntity);
 		   							if(chemicalCompoundReagents!=null){
 		   								for(ChemicalCompoundReagentsEntity chemicalCompoundReagentsEntity:chemicalCompoundReagents){
+		   									if(StringUtils.isEmpty(chemicalCompoundReagentsEntity.getMainReagent()+chemicalCompoundReagentsEntity.getReagentsName()))continue;
+				   								if(null!=fieldNameBindMap.get(chemicalCompoundReagentsEntity.getMainReagent()+"|"+chemicalCompoundReagentsEntity.getReagentsName())){
+									   				ExcelDataNode excelDataNode=new ExcelDataNode();
+									   				excelDataNode.setColNum(fieldNameBindMap.get(chemicalCompoundReagentsEntity.getMainReagent()+"|"+chemicalCompoundReagentsEntity.getReagentsName()).getColNum());
+									   				excelDataNode.setData(chemicalCompoundReagentsEntity.getReagentsSn());
+										        	excelDataNodes.add(excelDataNode);
+							   				   }
+				   							}
+		   							}
+		   						}else if(pt.getActualTypeArguments()[0]==TwiceChemicalCompoundReagentsEntity.class){
+		   							List<TwiceChemicalCompoundReagentsEntity> chemicalCompoundReagents=(List<TwiceChemicalCompoundReagentsEntity>)ReflectionUtils.getField(fieldMap.get(fieldName), objEntity);
+		   							if(chemicalCompoundReagents!=null){
+		   								for(TwiceChemicalCompoundReagentsEntity chemicalCompoundReagentsEntity:chemicalCompoundReagents){
 		   									if(StringUtils.isEmpty(chemicalCompoundReagentsEntity.getMainReagent()+chemicalCompoundReagentsEntity.getReagentsName()))continue;
 				   								if(null!=fieldNameBindMap.get(chemicalCompoundReagentsEntity.getMainReagent()+"|"+chemicalCompoundReagentsEntity.getReagentsName())){
 									   				ExcelDataNode excelDataNode=new ExcelDataNode();

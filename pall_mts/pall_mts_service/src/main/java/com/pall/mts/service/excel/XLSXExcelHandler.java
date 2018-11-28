@@ -44,12 +44,12 @@ public class XLSXExcelHandler implements IExcelHandler{
 		createTableRecord(workbook,sheet,rowdatas);
 		return workbook;
 	}
-	private void setSheetStyle(Workbook workbook,XSSFSheet sheet,String styleType,Set<Integer> rowdatas,int startColNum,int lastColNum){
+	private void setSheetStyle(Workbook workbook,XSSFSheet sheet,String styleType,Set<Integer> rowdatas,int startColNum,int lastColNum,int changeNum){
 		CellStyle cellStyle=getCellStyle(workbook,styleType);
 		//设置单元格样式
     	for(Integer rownum:rowdatas){
     		//创建行对象
-            XSSFRow row = sheet.getRow(rownum-1);
+            XSSFRow row = sheet.getRow(rownum-changeNum);
     		for (int j=startColNum-1;j<lastColNum;j++) {
    			 	XSSFCell cell=row.getCell(j);
    			 	if(cell==null)cell=row.createCell(j);
@@ -117,7 +117,7 @@ public class XLSXExcelHandler implements IExcelHandler{
             }
     		
     	}
-    	setSheetStyle(workbook,sheet,KeyConstants.EXCEL_CELL_STYLE_HEADLINE_CONFIGNAME_XLSX,excelheadlinesMap.keySet(),startColNum,lastColNum);
+    	setSheetStyle(workbook,sheet,KeyConstants.EXCEL_CELL_STYLE_HEADLINE_CONFIGNAME_XLSX,excelheadlinesMap.keySet(),startColNum,lastColNum,1);
     }  
     /** 
      * 生成数据记录信息
@@ -146,6 +146,6 @@ public class XLSXExcelHandler implements IExcelHandler{
                 //cell.setCellStyle(getCellStyle(workbook,KeyConstants.EXCEL_CELL_STYLE_DATA_CONFIGNAME_XLSX));
         	}
         }
-        setSheetStyle(workbook,sheet,KeyConstants.EXCEL_CELL_STYLE_DATA_CONFIGNAME_XLSX,rowdatas.keySet(),startColNum,lastColNum);
+        setSheetStyle(workbook,sheet,KeyConstants.EXCEL_CELL_STYLE_DATA_CONFIGNAME_XLSX,rowdatas.keySet(),startColNum,lastColNum,0);
     }  
 }
