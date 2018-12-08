@@ -16,6 +16,10 @@ public class MainframeInspectEntity {
 	 */
 	private String selfcheckContent;
 	/*
+	 * 图片信息
+	 */
+	private byte[] imageByteArrays;
+	/*
 	 * 自检结果
 	 */
 	private String selfcheckResult;
@@ -53,6 +57,12 @@ public class MainframeInspectEntity {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public byte[] getImageByteArrays() {
+		return imageByteArrays;
+	}
+	public void setImageByteArrays(byte[] imageByteArrays) {
+		this.imageByteArrays = imageByteArrays;
 	}
 	
 }

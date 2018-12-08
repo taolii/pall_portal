@@ -9,15 +9,20 @@ import java.util.Map;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
@@ -26,6 +31,7 @@ import org.springframework.stereotype.Repository;
 
 import com.alibaba.druid.util.StringUtils;
 import com.google.common.io.Files;
+import com.pall.wdpts.common.constants.KeyConstants;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
 /*
  * excel 2007以上数据格式处理类
@@ -93,12 +99,11 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
     				lastColNum=excelHeaderNode.getColNum();
     			}
    			 	XSSFCell cell=row.createCell(excelHeaderNode.getColNum()-1);
-                cell.setCellValue(excelHeaderNode.getHeadline());
-                if(StringUtils.isEmpty(excelHeaderNode.getFieldName())){
-                	//setTemplateCellStyle(workbook,cell);
-                }else{
-                	//setCommonCellStyle(workbook,cell);
-                }
+                if(excelHeaderNode.getInvisible()==KeyConstants.EXCEL_INSERT_DAILSWITCH_EXPORT_TYPE && excelHeaderNode.getImageBytes()!=null && excelHeaderNode.getImageBytes().length>0){
+                	insertPicture(workbook,sheet,cell,excelHeaderNode.getImageBytes());
+				}else{
+					cell.setCellValue(excelHeaderNode.getHeadline());
+				}
        			if(excelHeaderNode.getCellspan()>1){
        				for(int j=0;j<excelHeaderNode.getCellspan()-1;j++){
        					cell=row.createCell(excelHeaderNode.getColNum()+j);
@@ -116,6 +121,22 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
     	sheetMap.put("startColNum", startColNum);
     	sheetMap.put("lastColNum", lastColNum);
     	return sheetMap;
+	}
+	/*
+	 * 插入图片信息
+	 */
+	private void insertPicture(Workbook workbook,XSSFSheet sheet,XSSFCell cell,byte[] byteArray){
+		int pictureId = workbook.addPicture(byteArray, XSSFWorkbook.PICTURE_TYPE_PNG);
+		XSSFDrawing patriarch = sheet.createDrawingPatriarch();
+		XSSFClientAnchor anchor = new XSSFClientAnchor();
+		anchor.setCol1(cell.getColumnIndex());
+		anchor.setRow1(cell.getRowIndex());
+		anchor.setDx1(0);
+		anchor.setDy1(0);
+		anchor.setDx2(0);
+		anchor.setDy2(0);
+		Picture pict =patriarch.createPicture(anchor, pictureId); 
+		pict.resize(2,1);
 	}
 	/*
 	 * 设置单元格通用样式
@@ -183,8 +204,8 @@ public class XLSXTemplateHandler implements IExcelTemplateHandler{
     	for(Integer rownum:excelTemplateMap.keySet()){
     		//创建行对象
             XSSFRow row = sheet.getRow(rownum-1);
-            row.setHeight((short)(15.625*30));
-    		row.setHeightInPoints((float)30);
+            row.setHeight((short)(30*50));
+    		row.setHeightInPoints((float)40);
     		for (int j=startColNum-1;j<lastColNum;j++) {
    			 	XSSFCell cell=row.getCell(j);
    			 	if(cell==null){

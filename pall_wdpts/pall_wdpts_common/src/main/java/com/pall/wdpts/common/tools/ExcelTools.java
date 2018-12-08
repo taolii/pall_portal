@@ -195,6 +195,8 @@ public class ExcelTools {
 		 								}
 		 								tempExcelHeaderNode.setHeadline(headLine);
 		 							}
+		 						}else if(!StringUtils.isEmpty(tempExcelHeaderNode.getHeadline()) && KeyConstants.EXCEL_INSERT_DAILSWITCH_TYPE==tempExcelHeaderNode.getInvisible()){
+		 							tempExcelHeaderNode.setInvisible(KeyConstants.EXCEL_INSERT_DAILSWITCH_EXPORT_TYPE);
 		 						}
 		 						templateDatas.get(initRowNum).add(tempExcelHeaderNode);
 		 					}

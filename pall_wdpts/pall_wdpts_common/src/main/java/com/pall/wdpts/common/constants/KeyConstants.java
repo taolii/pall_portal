@@ -57,6 +57,11 @@ public class KeyConstants {
 	 */
 	public static final int EXCEL_INSERT_SYMBOL_TYPE=4;
 	/*
+	 * Excel插入拨码类型
+	 */
+	public static final int EXCEL_INSERT_DAILSWITCH_TYPE=5;
+	public static final int EXCEL_INSERT_DAILSWITCH_EXPORT_TYPE=10;
+	/*
 	 * Excel插入符号类型
 	 */
 	public static final int[] EXCEL_INSERT_SYMBOL_TYPE_CHECK={0x2611,0x2610};

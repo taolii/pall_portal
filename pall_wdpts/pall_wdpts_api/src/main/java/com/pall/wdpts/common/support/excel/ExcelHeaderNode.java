@@ -33,6 +33,10 @@ public class ExcelHeaderNode implements Comparable<ExcelHeaderNode>{
 	 * 是否可见
 	 */
 	private int invisible;
+	/*
+	 * 图片信息
+	 */
+	private byte[] imageBytes;
     /*
      * 单元格样式
      */
@@ -85,6 +89,13 @@ public class ExcelHeaderNode implements Comparable<ExcelHeaderNode>{
 	}
 	public void setDefectType(int defectType) {
 		this.defectType = defectType;
+	}
+	
+	public byte[] getImageBytes() {
+		return imageBytes;
+	}
+	public void setImageBytes(byte[] imageBytes) {
+		this.imageBytes = imageBytes;
 	}
 	public int compareTo(ExcelHeaderNode  excelHeaderNode) {
 		/*

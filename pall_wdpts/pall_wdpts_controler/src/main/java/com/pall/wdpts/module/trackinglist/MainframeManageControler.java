@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,7 @@ import com.pall.wdpts.common.response.BaseResponse;
 import com.pall.wdpts.common.response.BaseTablesResponse;
 import com.pall.wdpts.common.support.excel.ExcelDataNode;
 import com.pall.wdpts.common.support.excel.ExcelHeaderNode;
+import com.pall.wdpts.common.tools.DialSwitchHandler;
 import com.pall.wdpts.common.tools.ExcelTools;
 import com.pall.wdpts.common.tools.JSONTools;
 import com.pall.wdpts.context.HolderContext;
@@ -52,8 +54,6 @@ import com.pall.wdpts.init.UmsConfigInitiator;
 import com.pall.wdpts.interceptor.support.AuthToken;
 import com.pall.wdpts.repository.entity.dataconfig.TableHeaderConfigEntity;
 import com.pall.wdpts.repository.entity.menu.ButtonEntity;
-import com.pall.wdpts.repository.entity.trackinglist.MainframeEntity;
-import com.pall.wdpts.repository.entity.trackinglist.MainframeFormQueryEntity;
 import com.pall.wdpts.repository.entity.trackinglist.MainframeAssembleEntity;
 import com.pall.wdpts.repository.entity.trackinglist.MainframeEntity;
 import com.pall.wdpts.repository.entity.trackinglist.MainframeFormQueryEntity;
@@ -87,6 +87,8 @@ public class MainframeManageControler {
 	@Autowired
 	@Qualifier("xlsxExcelHandler")
 	private IExcelHandler iExcelHandler;
+	@Autowired
+	private DialSwitchHandler dialSwitchHandler;
 	/*
 	 * 下载文件路径
 	 */
@@ -425,6 +427,17 @@ public class MainframeManageControler {
         	Map<Integer,List<ExcelHeaderNode>> excelTemplateMap=TableDataConfigInitiator.getExcelHeaderConfig(UmsConfigInitiator.getDataConfig(KeyConstants.TRACKINGLIST_MAINFRAME_TEMPLATENAME));
         	if(excelTemplateMap!=null){
         		excelTemplateMap=ExcelTools.getExcelTempateDatas(excelTemplateMap,mainframeEntity,0);
+        	}
+        	if(excelTemplateMap!=null){
+        		for(Integer rownum:excelTemplateMap.keySet()){
+        			if(CollectionUtils.isEmpty(excelTemplateMap.get(rownum)))continue;
+        			for(ExcelHeaderNode excelHeaderNode:excelTemplateMap.get(rownum)){
+        				if(ObjectUtils.isEmpty(excelHeaderNode)) continue;
+        				if(excelHeaderNode.getInvisible()==KeyConstants.EXCEL_INSERT_DAILSWITCH_EXPORT_TYPE && !StringUtils.isEmpty(excelHeaderNode.getHeadline())){
+        					excelHeaderNode.setImageBytes(dialSwitchHandler.dialSwitchHandler(excelHeaderNode.getHeadline()));
+        				}
+        			}
+        		}
         	}
         	
         	Workbook workbook=iExcelTemplateHandler.getExcelWorkbook(mainframeEntity.getMainframePn(), excelTemplateMap);

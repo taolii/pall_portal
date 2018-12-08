@@ -78,10 +78,7 @@
 											
 										</span>
 										<div class="col-md-4">
-											<select name="mainframeModel" class="form-control">
-								                <option  th:each="mainframeModelDataConfig:${mainframeModelDataConfigs}" th:selected="${mainframeEntity.mainframeModel==mainframeModelDataConfig.configName}" th:text="${mainframeModelDataConfig.configName}" th:value="${mainframeModelDataConfig.configName}">
-								                </option>
-		                                    </select> 
+											 <input type='text'  name="mainframeModel"  readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframeModel}"/> 
 										</div>
 									</div>
 								</div>
@@ -101,10 +98,10 @@
 										
 									</span>
 									<div class="col-md-2">
-										<input type='text' name="mainframeOption"  class="form-control" th:value="${mainframeEntity.mainframeOption}"/>  
+										<input type='text' name="mainframeOption"  readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframeOption}"/>  
 									</div>
 									<div class="col-md-2">
-										<input type='text' name="mainframeOption2"  class="form-control" th:value="${mainframeEntity.mainframeOption2}"/>  
+										<input type='text' name="mainframeOption2"  readonly="readonly" class="form-control" th:value="${mainframeEntity.mainframeOption2}"/>  
 									</div>
 								</div>
 							</div>
