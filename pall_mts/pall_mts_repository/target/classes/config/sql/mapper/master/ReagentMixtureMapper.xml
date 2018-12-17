@@ -17,6 +17,12 @@ f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_
 	    <if test="mainReagent != null and mainReagent != '' ">  
 	       AND f.main_reagent= #{mainReagent}  
 	    </if>
+	    <if test="lotNum != null and lotNum != '' ">  
+	       AND f.lot_num= #{lotNum}  
+	    </if>
+	     <if test="reagentsSn != null and reagentsSn != '' ">  
+	    	AND exists(select 1 from t_ums_reagentmixture_sns a where a.rmid=f.rmid and a.reagents_sn=#{reagentsSn})   
+	    </if>
 	     order by f.updatetime desc limit #{startPageNum},#{pageSize}
  	</select> 
 	<select id="queryReagentMixtureTotalRecords" resultType="int" parameterType="com.pall.mts.repository.entity.reagentmixture.ReagentMixtureQueryFormEntity"> 
@@ -32,6 +38,12 @@ f.operatorid,g.account operatorName from t_ums_reagentmixture f left join t_ums_
 	    </if>
 	    <if test="mainReagent != null and mainReagent != '' ">  
 	       AND f.main_reagent= #{mainReagent}  
+	    </if>
+	    <if test="lotNum != null and lotNum != '' ">  
+	       AND f.lot_num= #{lotNum}  
+	    </if>
+	     <if test="reagentsSn != null and reagentsSn != '' ">  
+	    	AND exists(select 1 from t_ums_reagentmixture_sns a where a.rmid=f.rmid and a.reagents_sn=#{reagentsSn})   
 	    </if>
  	</select>
  	

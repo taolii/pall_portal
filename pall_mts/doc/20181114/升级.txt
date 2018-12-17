@@ -5,3 +5,5 @@
  alter table  t_ums_workflow_platedfilm add partition(partition p2022 values less than MAXVALUE);
  alter table  t_ums_workflow_polish add partition(partition p2022 values less than MAXVALUE);
  alter table  t_ums_workflow_twicebiocoating add partition(partition p2022 values less than MAXVALUE);
+ ALTER TABLE t_ums_reagentmixture ADD INDEX idx_ur_reagentmiture_lot_num (`lot_num`);
+ALTER TABLE t_ums_reagentmixture_sns ADD INDEX idx_urs_sns_reagents_sn (`reagents_sn`);

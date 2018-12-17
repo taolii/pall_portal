@@ -25,6 +25,15 @@ public class ReagentMixtureQueryFormEntity {
 	 * 主试剂
 	 */
 	private String mainReagent;
+	/*
+	 * 试剂编号
+	 */
+	private String reagentsSn;
+	/*
+	 * LOT#
+	 */
+	private String lotNum;
+	
 	public int getStartPageNum() {
 		return startPageNum;
 	}
@@ -66,6 +75,18 @@ public class ReagentMixtureQueryFormEntity {
 	}
 	public void setRmid(String rmid) {
 		this.rmid = rmid;
+	}
+	public String getReagentsSn() {
+		return reagentsSn;
+	}
+	public void setReagentsSn(String reagentsSn) {
+		this.reagentsSn = reagentsSn;
+	}
+	public String getLotNum() {
+		return lotNum;
+	}
+	public void setLotNum(String lotNum) {
+		this.lotNum = lotNum;
 	}
 	
 }
