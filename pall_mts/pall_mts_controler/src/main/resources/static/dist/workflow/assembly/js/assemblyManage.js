@@ -8,7 +8,7 @@ $(document).ready(function() {
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
     }); 
-	$('#queryStartDeliveryTime').val(currentDate(30));
+	$('#queryStartDeliveryTime').val(currentDate(60));
 	$('#queryEndDliveryTime').val(currentDate(-1));
 	var columns_setting=[
     	TABLE_CONSTANT.DATA_TABLES.COLUMN.CHECKBOX
