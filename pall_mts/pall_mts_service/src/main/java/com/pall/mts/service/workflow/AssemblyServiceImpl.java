@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.pall.mts.repository.entity.workflow.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,6 @@ import com.pall.mts.common.i18n.ResourceUtils;
 import com.pall.mts.common.response.BaseResponse;
 import com.pall.mts.common.response.BaseTablesResponse;
 import com.pall.mts.init.UmsConfigInitiator;
-import com.pall.mts.repository.entity.workflow.AssemblyEntity;
-import com.pall.mts.repository.entity.workflow.AssemblyQueryFormEntity;
-import com.pall.mts.repository.entity.workflow.DefectEntity;
 import com.pall.mts.repository.mapper.workflow.AssemblyDao;
 import com.pall.mts.repository.mapper.workflow.DefectDao;
 
@@ -92,6 +90,15 @@ public class AssemblyServiceImpl implements AssemblyService{
 	public BaseResponse addAssembly(AssemblyEntity assemblyEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			AssemblyQueryFormEntity assemblyQueryFormEntity=new AssemblyQueryFormEntity();
+			assemblyQueryFormEntity.setFixtureNum(assemblyEntity.getFixtureNum());
+			assemblyQueryFormEntity.setInputLotNum(assemblyEntity.getInputLotNum());
+			int totalCount=assemblyDao.queryAssemblyQueryTotalRecords(assemblyQueryFormEntity);
+			if(totalCount>=1){
+				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+				baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.service.addAssembly.fixtureandinputlotnum.exists"));
+				return baseResponse;
+			}
 			int resultNum=assemblyDao.addAssembly(assemblyEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=assemblyEntity.getDefects();
@@ -124,6 +131,21 @@ public class AssemblyServiceImpl implements AssemblyService{
 	public BaseResponse  modifyAssembly(AssemblyEntity assemblyEntity) throws Exception {
 		BaseResponse baseResponse=new BaseResponse();
 		try{
+			AssemblyQueryFormEntity assemblyQueryFormEntity=new AssemblyQueryFormEntity();
+			assemblyQueryFormEntity.setStartPageNum(0);
+			assemblyQueryFormEntity.setPageSize(Integer.MAX_VALUE);
+			assemblyQueryFormEntity.setFixtureNum(assemblyEntity.getFixtureNum());
+			assemblyQueryFormEntity.setInputLotNum(assemblyEntity.getInputLotNum());
+			List<AssemblyEntity> assemblyEntitys=assemblyDao.queryAssemblyQueryList(assemblyQueryFormEntity);
+			if(null!=assemblyEntitys && assemblyEntitys.size()>=1){
+				if(assemblyEntitys.size()==1 && assemblyEntitys.get(0).getAssemblyID().intValue()==assemblyEntity.getAssemblyID().intValue()){
+					//更新本身不做处理
+				}else{
+					baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
+					baseResponse.setResultMsg(resourceUtils.getMessage("assemblyManage.workflow.service.addAssembly.fixtureandinputlotnum.exists"));
+					return baseResponse;
+				}
+			}
 			int resultNum=assemblyDao.modifyAssembly(assemblyEntity);
 			if(resultNum>0){
 				List<DefectEntity> defects=assemblyEntity.getDefects();

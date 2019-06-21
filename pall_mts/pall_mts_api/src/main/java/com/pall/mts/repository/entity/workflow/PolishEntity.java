@@ -41,9 +41,13 @@ public class PolishEntity {
 	@NotEmpty(message="{polshmanage.form.valid.PolishEntity.fixtureNumber.NotEmpty}",groups={SAVE.class,ADD.class})
 	private String fixtureNumber;
 	/*
-	 * 测量值，多个测量值以逗号分隔
+	 * 工作面测量值，多个测量值以逗号分隔
 	 */
 	private String measuredValues;
+	/*
+	 * 非工作面测量值，多个测量值以逗号分隔
+	 */
+	private String noMeasuredValues;
 	/*
 	 * 抛磨盘序列号
 	 */
@@ -248,6 +252,14 @@ public class PolishEntity {
 		this.polishBoms = polishBoms;
 	}
 
-	public interface ADD{};  
+	public String getNoMeasuredValues() {
+		return noMeasuredValues;
+	}
+
+	public void setNoMeasuredValues(String noMeasuredValues) {
+		this.noMeasuredValues = noMeasuredValues;
+	}
+
+	public interface ADD{};
 	public interface SAVE{};
 }

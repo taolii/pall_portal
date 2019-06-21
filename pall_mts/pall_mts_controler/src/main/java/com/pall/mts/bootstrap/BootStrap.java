@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 
 @SpringBootApplication
 @Configuration
-@EnableAutoConfiguration
 @ImportResource("classpath:./config/spring/*.xml")
 public class BootStrap extends SpringBootServletInitializer {
 	@Override
