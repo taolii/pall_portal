@@ -91,8 +91,7 @@ public class AssemblyServiceImpl implements AssemblyService{
 		BaseResponse baseResponse=new BaseResponse();
 		try{
 			AssemblyQueryFormEntity assemblyQueryFormEntity=new AssemblyQueryFormEntity();
-			assemblyQueryFormEntity.setFixtureNum(assemblyEntity.getFixtureNum());
-			assemblyQueryFormEntity.setInputLotNum(assemblyEntity.getInputLotNum());
+			assemblyQueryFormEntity.setTrayLotNum(assemblyEntity.getTrayLotNum());
 			int totalCount=assemblyDao.queryAssemblyQueryTotalRecords(assemblyQueryFormEntity);
 			if(totalCount>=1){
 				baseResponse.setResultCode(IResponseConstants.RESPONSE_CODE_FAILED);
@@ -134,8 +133,7 @@ public class AssemblyServiceImpl implements AssemblyService{
 			AssemblyQueryFormEntity assemblyQueryFormEntity=new AssemblyQueryFormEntity();
 			assemblyQueryFormEntity.setStartPageNum(0);
 			assemblyQueryFormEntity.setPageSize(Integer.MAX_VALUE);
-			assemblyQueryFormEntity.setFixtureNum(assemblyEntity.getFixtureNum());
-			assemblyQueryFormEntity.setInputLotNum(assemblyEntity.getInputLotNum());
+			assemblyQueryFormEntity.setTrayLotNum(assemblyEntity.getTrayLotNum());
 			List<AssemblyEntity> assemblyEntitys=assemblyDao.queryAssemblyQueryList(assemblyQueryFormEntity);
 			if(null!=assemblyEntitys && assemblyEntitys.size()>=1){
 				if(assemblyEntitys.size()==1 && assemblyEntitys.get(0).getAssemblyID().intValue()==assemblyEntity.getAssemblyID().intValue()){

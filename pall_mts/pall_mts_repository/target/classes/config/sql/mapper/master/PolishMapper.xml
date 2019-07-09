@@ -4,7 +4,7 @@
 	<select id="queryPolishList" resultType="com.pall.mts.repository.entity.workflow.PolishEntity"
 	parameterType="com.pall.mts.repository.entity.workflow.PolishQueryFormEntity"> 
  		select f.polish_id polishID,f.picking_time pickingTime,f.polish_time polishTime,f.input_lot_num inputLotNum,f.input_qty inputQty,f.fixture_number fixtureNumber,
- 		f.throw_millstone_num throwMillstoneNum,f.throw_millstone_position throwMillstonePosition,f.measured_values measuredValues,f.casual_inspection_sum casualInspectionNum,f.yield,f.polish_lot_num polishLotNum,f.output_qty outputQty,
+ 		f.throw_millstone_num throwMillstoneNum,f.throw_millstone_position throwMillstonePosition,f.measured_values measuredValues,f.no_measured_values noMeasuredValues,f.casual_inspection_sum casualInspectionNum,f.yield,f.polish_lot_num polishLotNum,f.output_qty outputQty,
  		f.part_num partNum,f.work_order_num workOrderNum,f.polish_bom polishbom,f.input_time inputTime,f.update_time updateTime,f.operatorid,g.account operatorName from t_ums_workflow_polish f left join t_ums_admininfo g on f.operatorid=g.operatorid where 1=1
 		<if test="polishID != null and polishID != '' ">  
 	       AND f.polish_id = #{polishID}  
@@ -89,12 +89,12 @@
     	<selectKey keyProperty="polishID" order="AFTER" resultType="java.lang.Integer">
             select LAST_INSERT_ID()
         </selectKey>
-    	insert into  t_ums_workflow_polish(picking_time,polish_time,input_lot_num,measured_values,input_qty,fixture_number,throw_millstone_num,throw_millstone_position,casual_inspection_sum,yield,output_qty,polish_lot_num,part_num,work_order_num,polish_bom,operatorid,input_time,update_time)
-        values(#{pickingTime},#{polishTime},#{inputLotNum},#{measuredValues},#{inputQty},#{fixtureNumber},#{throwMillstoneNum},#{throwMillstonePosition},#{casualInspectionNum},#{yield},#{outputQty},#{polishLotNum},#{partNum},#{workOrderNum},#{polishBom},#{operatorid},now(),now())
+    	insert into  t_ums_workflow_polish(picking_time,polish_time,input_lot_num,measured_values,no_measured_values,input_qty,fixture_number,throw_millstone_num,throw_millstone_position,casual_inspection_sum,yield,output_qty,polish_lot_num,part_num,work_order_num,polish_bom,operatorid,input_time,update_time)
+        values(#{pickingTime},#{polishTime},#{inputLotNum},#{measuredValues},#{noMeasuredValues},#{inputQty},#{fixtureNumber},#{throwMillstoneNum},#{throwMillstonePosition},#{casualInspectionNum},#{yield},#{outputQty},#{polishLotNum},#{partNum},#{workOrderNum},#{polishBom},#{operatorid},now(),now())
     </insert>
     <update id="modifyPolish" parameterType="com.pall.mts.repository.entity.workflow.PolishEntity">
         update  t_ums_workflow_polish f set f.picking_time=#{pickingTime},f.polish_time=#{polishTime},f.input_lot_num=#{inputLotNum},f.input_qty=#{inputQty},f.fixture_number=#{fixtureNumber},f.throw_millstone_num=#{throwMillstoneNum},
-        f.throw_millstone_position=#{throwMillstonePosition},f.casual_inspection_sum=#{casualInspectionNum},f.measured_values=#{measuredValues},
+        f.throw_millstone_position=#{throwMillstonePosition},f.casual_inspection_sum=#{casualInspectionNum},f.measured_values=#{measuredValues},f.no_measured_values=#{noMeasuredValues},
         f.yield=#{yield},f.output_qty=#{outputQty},f.polish_lot_num=#{polishLotNum},f.part_num=#{partNum},f.work_order_num=#{workOrderNum},f.polish_bom=#{polishBom},f.operatorid=#{operatorid},f.update_time=now()
         where f.polish_id=#{polishID}
     </update>

@@ -229,18 +229,28 @@
 								</div>
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
+										<label th:text="#{pages.workflow.polish.modPolish.form.nomeasuredValues}" th:remove="tag"></label>
+
+									</span>
+									<div class="col-md-4">
+										<input type='text' name="noMeasuredValues" class="form-control"  th:value="${polishEntity.noMeasuredValues}"/>
+									</div>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<div class="rowGroup">
+									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.polish.modPolish.form.partNum}" th:remove="tag"></label>
 										<font style="color:#a94442">*</font>
 									</span>
 									<div class="col-md-4">
 										<select name="partNum" class="select2_single form-control">
-							              <option  th:each="dataConfig:${pnDataConfigs}" th:selected="${polishEntity.partNum==dataConfig.configName}"  th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
-							              </option>
-	                                	</select>   
+											<option  th:each="dataConfig:${pnDataConfigs}" th:selected="${polishEntity.partNum==dataConfig.configName}"  th:text="${dataConfig.configName}" th:value="${dataConfig.configName}">
+											</option>
+										</select>
 									</div>
 								</div>
-							</div>
-							<div class="form-group">
 								<div class="rowGroup">
 									<span class="col-md-2 control-label">
 										<label th:text="#{pages.workflow.polish.modPolish.form.workOrderNum}" th:remove="tag"></label>
@@ -251,9 +261,7 @@
 										<input type='text' name="workOrderNum" class="form-control" th:value="${polishEntity.workOrderNum}"/> 
 									</div>
 								</div>
-								<div class="rowGroup">
-									
-								</div>
+
 							</div>
 							<div class="form-group">
 								<div class="rowGroup">
