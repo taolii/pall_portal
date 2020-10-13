@@ -29,7 +29,7 @@
 		<poi_version>3.15</poi_version>
 		<poi-ooxml_version>3.15</poi-ooxml_version>
 		<!-- Test libs -->
-		<junit_version>4.10</junit_version>
+		<junit_version>4.13.1</junit_version>
 		<easymock_version>3.0</easymock_version>
 		<jmockit_version>0.999.8</jmockit_version>
 		<commons_lang3_version>3.4</commons_lang3_version>
