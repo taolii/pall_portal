@@ -17,7 +17,7 @@
         <java_target_version>1.8</java_target_version>
         <file_encoding>UTF-8</file_encoding>
         <project.build.sourceEncoding>${file_encoding}</project.build.sourceEncoding>
-        <dubbo-version>2.5.3</dubbo-version>
+        <dubbo-version>2.6.12</dubbo-version>
         <guava-version>19.0</guava-version>
         <fastjson-version>1.2.7</fastjson-version>
         <httpclient_version>4.5.2</httpclient_version>
